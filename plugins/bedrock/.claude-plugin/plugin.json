@@ -1,0 +1,9 @@
+{
+  "name": "bedrock",
+  "description": "Haffey Enterprises engineering skills: application-code authoring (FastAPI/async/port-adapter, plus operational shell scripts), decision records (ADR/DDR/SDD with a pre-authoring deliberation gate), testing (TDD + coverage discipline), code review (three-hat LAA/SA/EA + conformance checklist), and structured debugging. Self-contained and stack-bound to Python 3.11+/FastAPI/async-SQLAlchemy/GCP/GitHub; a different stack is a rebind, not a line-edit.",
+  "version": "1.0.0",
+  "author": {
+    "name": "T-Bone-Haff",
+    "email": "tad@tadhaffey.com"
+  }
+}

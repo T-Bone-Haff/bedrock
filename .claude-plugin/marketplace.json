@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "bedrock",
+  "description": "Haffey Enterprises engineering skills — portable, stack-bound authoring and review disciplines distilled from the HE-Bedrock corpus.",
+  "owner": {
+    "name": "T-Bone-Haff",
+    "email": "tad@tadhaffey.com"
+  },
+  "plugins": [
+    {
+      "name": "bedrock",
+      "description": "Haffey Enterprises engineering skills: application-code authoring, decision records (ADR/DDR/SDD), testing, code review, and debugging. Self-contained; stack-bound to Python/FastAPI/async/GCP/GitHub.",
+      "author": {
+        "name": "T-Bone-Haff",
+        "email": "tad@tadhaffey.com"
+      },
+      "source": "./plugins/bedrock",
+      "category": "development",
+      "homepage": "https://github.com/T-Bone-Haff/bedrock"
+    }
+  ]
+}
