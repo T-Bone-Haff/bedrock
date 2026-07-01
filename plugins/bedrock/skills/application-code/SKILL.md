@@ -45,4 +45,5 @@ Load the reference for the area you're working in — each is self-contained and
 
 - **Writing tests** → the `testing` skill. This skill carries the *toolchain* that makes tests runnable and gated (the `pytest-cov` 90% gate in `pyproject.toml`, in `01-code-structure.md` §10) because that's part of scaffolding a service — but the test layout, naming, mocking, fixtures, and AAA discipline live in `testing`.
 - **Reviewing a finished diff** → the `code-review` skill. This skill is about *authoring* code that conforms; deciding whether an existing change conforms is a review task.
-- **Git workflow, branching, CI/CD pipelines, deployment/provisioning** are out of scope here — they're not code-authoring concerns.
+- **Infrastructure — provisioning, networking, IAM, Kubernetes manifests, and the Terraform delivery pipeline** → the `infrastructure-code` skill. The seam is the container image: this skill *builds* it, `infrastructure-code` *provisions and runs* it.
+- **Git workflow and branching, and the application build/test/deploy pipeline** remain out of scope here — shared version-control and (forthcoming) app-CI/CD concerns, not code-authoring ones.

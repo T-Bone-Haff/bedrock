@@ -279,7 +279,7 @@ USER appuser
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
 ```
 
-*Provisioning (cluster setup, IAM, networking, deploy automation) is environment-specific and out of scope for this skill — it's a deployment concern, not a code-authoring one.*
+*Provisioning what runs this image — cluster setup, IAM, networking, deploy automation — is the `infrastructure-code` skill's job, not a code-authoring concern. The seam is the image: this skill builds it; `infrastructure-code` provisions and runs it.*
 
 ---
 
