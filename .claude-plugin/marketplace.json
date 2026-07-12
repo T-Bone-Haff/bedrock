@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "bedrock",
-      "description": "Haffey Enterprises engineering skills: application-code authoring, decision records (ADR/DDR/SDD), testing, code review, debugging, and infrastructure-as-code. Self-contained; stack-bound to Python/FastAPI/async/GCP/GitHub.",
+      "description": "Haffey Enterprises engineering skills: application-code authoring, decision records (ADR/DDR/SDD), testing, code review, debugging, infrastructure-as-code, and standards/skills authoring. Self-contained; stack-bound to Python/FastAPI/async/GCP/GitHub.",
       "author": {
         "name": "T-Bone-Haff",
         "email": "tad@tadhaffey.com"

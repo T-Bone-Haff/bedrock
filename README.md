@@ -2,7 +2,7 @@
 
 **Haffey Enterprises engineering skills** — by T-Bone-Haff (Tad Haffey, Haffey Enterprises LLC).
 
-Five self-contained Claude skills distilled from the HE-Bedrock governance corpus. They carry the *content* — the engineering standard, the doctype templates, the testing and review disciplines — with none of the self-governance machinery (no kit-versioning, no ledgers, no audit cadences). Each skill is independent and free of cross-corpus references; the only dependency a skill has is its own bundled `reference/` and `templates/` files.
+Seven self-contained Claude skills distilled from the HE-Bedrock governance corpus. They carry the *content* — the engineering standard, the doctype templates, the testing and review disciplines — with none of the self-governance machinery (no kit-versioning, no ledgers, no audit cadences). Each skill is independent and free of cross-corpus references; the only dependency a skill has is its own bundled `reference/` and `templates/` files.
 
 ## The skills
 
@@ -13,10 +13,12 @@ Five self-contained Claude skills distilled from the HE-Bedrock governance corpu
 | `bedrock:testing` | Test-driven sequence (observe a meaningful red before green), coverage discipline, and the unit/integration/contract/e2e patterns. |
 | `bedrock:code-review` | Reviewing a finished diff via the three-hat (LAA/SA/EA) method, with a severity-tagged conformance checklist and a solo-operator self-review discipline. |
 | `bedrock:debug` | Structured debugging — reproduce, hypothesize, falsify, fix the root cause. A reasoning protocol, language-agnostic. |
+| `bedrock:infrastructure-code` | Authoring infrastructure-as-code — Terraform/GCP conventions, remote state, environments, Kubernetes and stateful workloads, and the infra delivery pipeline. |
+| `bedrock:author-standard` | Authoring a reusable standard — a skill, convention set, or template: sourcing (forward-author, never back-distill), the skill-membership test, binding declaration, hardening rules, and proving via cascade onto a real consumer. Single-file reasoning protocol, stack-agnostic. |
 
 ## Stack binding
 
-The conventions assume **Python 3.11+ / FastAPI / async SQLAlchemy / GCP / GitHub**. They're portable across projects *on that stack*; a materially different stack is a **rebind** — a re-derivation of the equivalents — not a line-edit. `debug` is the exception: its discipline is language-agnostic.
+The conventions assume **Python 3.11+ / FastAPI / async SQLAlchemy / GCP / GitHub**. They're portable across projects *on that stack*; a materially different stack is a **rebind** — a re-derivation of the equivalents — not a line-edit. `debug` and `author-standard` are the exceptions: their disciplines are stack-agnostic.
 
 ## Install — Claude Code
 
@@ -43,7 +45,7 @@ cp -r plugins/bedrock/skills/* ~/.claude/skills/
 
 ## Install — Claude.ai (web / mobile)
 
-Claude.ai takes skills as individual ZIPs, one per skill (Settings → Capabilities → Skills → upload; code execution must be enabled). Zip each folder under `plugins/bedrock/skills/` so the archive contains the folder with its `SKILL.md`, then upload the five. Once uploaded on the web, they're enabled account-wide and available in the iOS app's chats.
+Claude.ai takes skills as individual ZIPs, one per skill (Settings → Capabilities → Skills → upload; code execution must be enabled). Zip each folder under `plugins/bedrock/skills/` so the archive contains the folder with its `SKILL.md`, then upload the seven. Once uploaded on the web, they're enabled account-wide and available in the iOS app's chats.
 
 ## Maintenance
 
