@@ -1,6 +1,6 @@
 # Reference: Conformance Checklist
 
-The concrete checks the SA hat runs, the full per-hat question sets, and the disposition disciplines. The method, severity vocabulary, and self-review discipline are in `SKILL.md`.
+The concrete checks the SA (Solution Architect) hat runs, the full per-hat question sets, and the disposition disciplines. The method, severity vocabulary, and self-review discipline are in `SKILL.md`.
 
 ## Contents
 
@@ -9,6 +9,7 @@ The concrete checks the SA hat runs, the full per-hat question sets, and the dis
 - [3. No-drift confirmations](#3-no-drift-confirmations)
 - [4. Out-of-scope triage](#4-out-of-scope-triage)
 - [5. Retrospective review for pre-standard code](#5-retrospective-review-for-pre-standard-code)
+- [6. Checkers and validators](#6-checkers-and-validators)
 
 ---
 
@@ -47,27 +48,28 @@ Run this against every change. Each item is a conformance question; the full rul
 - [ ] All automated gates passed (lint, format, type-check, tests, coverage, security scan).
 - [ ] Data-classification tier documented where the change introduces or moves data.
 - [ ] A decision record was filed if the change adopts a non-standard library or pattern.
+- [ ] Change adds or modifies a checker/validator: the §6 coverage accounting ran.
 
-The checklist is the SA hat's instrument; it does not replace the LAA and EA lenses (§2), which the checklist can't capture — scope-fit and posture-fit are judgment, not checkboxes.
+The checklist is the SA hat's instrument; it does not replace the LAA (Lead Application Architect) and EA (Enterprise Architect) lenses (§2), which the checklist can't capture — scope-fit and posture-fit are judgment, not checkboxes.
 
 ---
 
 ## 2. Per-hat question sets
 
-**LAA — what is this change?**
+**LAA — Lead Application Architect — what is this change?**
 - Does the change match the scope it claims (ticket, PR description)?
 - Are the things it closes the things that scope actually covered?
 - Is there scope creep — unrelated changes riding along?
 - Are dependencies and side effects declared?
 - Does the title/description match what the diff actually does?
 
-**SA — how does this change conform?**
+**SA — Solution Architect — how does this change conform?**
 - Does the code follow the conventions? (the §1 checklist)
 - Did all automated gates fire and pass?
 - Are tests at threshold, types clean, cross-references resolving?
 - Is the change correct under edge cases and error paths — not just on the happy path?
 
-**EA — should this land in this shape, at this time?**
+**EA — Enterprise Architect — should this land in this shape, at this time?**
 - Does the change integrate with the broader posture, or pull against it?
 - Is the reversibility appropriate to the risk?
 - Does it commit the project to a position that warrants a decision record first?
@@ -100,3 +102,19 @@ The discipline protects the review from sprawling into a rewrite of everything i
 Code written before the conventions were adopted is grandfathered — the review discipline applies to changes from adoption forward, not retroactively across the whole codebase.
 
 The trigger: when pre-standard code receives a **substantive** modification, the change reviews the **whole touched file** against the checklist and three hats, not just the diff — because a substantive touch is the natural moment to bring the file up to standard, and reviewing only the diff leaves the surrounding non-conformance invisible. Trivial touches (typo, formatting, version-string bump) don't trigger it. A file that's completed retrospective review can carry a marker in its module comment block so the next reviewer knows it's already been brought current.
+
+---
+
+## 6. Checkers and validators
+
+When the change under review is itself a checker — a validator, a conformance check, a lint rule, a guard — the review runs one additional accounting: **the gap between the check's authority text and its mechanization is either a violation mode or a stated reason. Every silent skip path is unaudited coverage.**
+
+The procedure: enumerate what the check's authority text demands, then account for every case the implementation doesn't flag. Each unflagged case must be one of exactly three things — a **violation mode** (the check fires on it), a **fail-loud** (the check refuses rather than guesses), or a **documented justification** (the skip is deliberate and stated). A case that is none of the three is unaudited coverage — an add/fix finding at the appropriate severity.
+
+Interrogate three seams specifically — the places where coverage silently narrows:
+
+- **Presence assumptions across enforcement-tier lines.** An exemption or precedent valid on one side of an existence-constraint line does not transfer to the other; re-derive it there rather than inheriting it.
+- **Null propagation in negated predicates.** In a three-valued-logic substrate, a negated equality silently drops nulls; every negated predicate over nullable data needs an explicit null ruling.
+- **Parse/merge/union steps upstream of the comparison.** Any many-to-one step before the check runs — parsing that collapses duplicate keys, map-building with last-write-wins, unions that dedupe — can destroy the evidence the check exists to examine. Verify the check sees the data before the collapse, or that the collapse is itself checked.
+
+This is the mechanized twin of "Narrated process is data" (SKILL.md): that rule is about narrative coverage that looks complete and isn't; this one is about a checker's own coverage that looks complete and isn't.
