@@ -22,7 +22,7 @@ The conventions assume **Python 3.11+ / FastAPI / async SQLAlchemy / GCP / GitHu
 
 ## Install — Claude Code
 
-Push this repo to `github.com/T-Bone-Haff/bedrock`, then:
+Add the marketplace and install the plugin:
 
 ```
 /plugin marketplace add T-Bone-Haff/bedrock
@@ -30,23 +30,16 @@ Push this repo to `github.com/T-Bone-Haff/bedrock`, then:
 /reload-plugins
 ```
 
-Or, for local use without pushing to GitHub, point the marketplace at the unzipped folder:
+For local development of the kit itself, point the marketplace at a clone instead: `/plugin marketplace add /path/to/bedrock`. Do **not** copy skill folders out of the repo by hand — a copied skill is an unsynced snapshot with no update path and no staleness signal; it will silently rot the moment the next release lands.
 
-```
-/plugin marketplace add /path/to/bedrock
-/plugin install bedrock@bedrock
-```
+## Install — Claude.ai / Cowork
 
-Or, simplest of all, drop the skill folders straight in:
+Install through the plugin marketplace: Settings → Customize → Plugins → Add marketplace from repository (`T-Bone-Haff/bedrock`) → install **bedrock**. The seven skills load account-wide from the plugin. Do not upload skills as individual ZIPs — hand-uploaded copies are unsynced snapshots that compete with the plugin's skills for routing.
 
-```
-cp -r plugins/bedrock/skills/* ~/.claude/skills/
-```
+## Staying current
 
-## Install — Claude.ai (web / mobile)
-
-Claude.ai takes skills as individual ZIPs, one per skill (Settings → Capabilities → Skills → upload; code execution must be enabled). Zip each folder under `plugins/bedrock/skills/` so the archive contains the folder with its `SKILL.md`, then upload the seven. Once uploaded on the web, they're enabled account-wide and available in the iOS app's chats.
+Releases are pushed, not discovered: a bedrock release completes with a push to its enumerated consumer surfaces, recorded on that release's rollout ledger — a per-release ticket in the HE-Bedrock tracker (pattern: "bedrock X.Y.Z cascade — consumer-surface rollout ledger"). The enumeration lives there, not here. Marketplace installs stay current via marketplace refresh + plugin update; live sessions need a restart to load the new version. Any snapshot a consumer keeps anyway — a vendored authority file, a pinned copy — must verify currency at time-of-use against the *current* release, not against whatever baseline it was vendored from.
 
 ## Maintenance
 
-Edit the relevant skill's `reference/` or `templates/` file directly — single source of truth per skill. There is no corpus to keep in sync.
+Edit the relevant skill's `reference/` or `templates/` file directly — single source of truth per skill. There is no corpus to keep in sync. Releases follow the push discipline in the `author-standard` skill.

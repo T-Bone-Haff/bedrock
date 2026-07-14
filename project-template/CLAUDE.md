@@ -29,4 +29,4 @@ A materially different choice on any axis is a **rebind**, not a substitution �
 
 ## Project-specific rules
 
-{{Only rules with no other home — repeatedly-invoked, project-specific content that can't live in a skill or an ADR. Most conventions live in the skills; leave this empty until something genuinely earns a place here. Premature codification is an anti-pattern.}}
+{{Only rules with no other home — repeatedly-invoked, project-specific content that can't live in a skill or an ADR. Most conventions live in the skills; leave this empty until something genuinely earns a place here. Premature codification is an anti-pattern. Under-govern until it hurts: prefer the lightest artifact that captures the value, and let structure follow content.}}

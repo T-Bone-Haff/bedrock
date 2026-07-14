@@ -37,6 +37,7 @@ And remember what a form can and cannot give: **shape, not substance.** A blank 
 ## Harden it (drafting rules)
 
 - **One house vocabulary.** A shared ladder (severity, status, tiers) is defined once, house-wide; each artifact declares only its own binding to it (which tier means what *to this tool*). Per-artifact vocabularies are drift surfaces; crosswalks between competing ladders rot.
+- **Point, don't mirror.** When any reusable or orientation artifact — a skill, a README, a repo-root CLAUDE.md, a template — needs an authority's enumerated content (a vocabulary, a skill list, a taxonomy, a mapping owned elsewhere), point to the authority; don't restate it inline. An inline restatement is a standing drift surface: it goes stale the next time the authority moves, and "fixing" it by re-copying just re-plants it. The decision-record-body form of this rule lives in `author-decision-record`; this is the class-level rule it instantiates.
 - **Name the discriminating axis at the assignment site.** When a value or rule is justified by multiple entangled properties, every later assignment that matches one axis but not another reads as a contradiction until the discriminator is stated where the assignment happens — not only where it was first derived.
 - **Pressure needs an exit.** Prohibiting a gaming behavior without releasing the pressure that produces it just relocates the failure. Pair every anti-gaming rule with a sanctioned exit in the fail-safe direction (at the cap, drop — don't re-label).
 
@@ -49,7 +50,12 @@ And remember what a form can and cannot give: **shape, not substance.** A blank 
 
 ## Distribute vs. remediate
 
-A standard's kit **pushes the standard** — the conventions, templates, scan tooling — and stops at the consumer's boundary. The consumer adopts and remediates its own corpus, on its own cycle. Reaching into a consumer to hand-edit its documents conflates two duties that want separate owners and separate cadences.
+A release of a standard is not complete until it has been **pushed to the enumerated consumer surfaces** — the kit owns that enumeration, and a surface with no push path is a finding, not a footnote. Push means the update and its staleness signal arrive unbidden: the knock, never the remediation. The consumer still adopts and remediates its own corpus on its own cycle — push is not auto-remediation, and reaching into a consumer to hand-edit its documents conflates two duties that want separate owners and separate cadences.
+
+Two rules keep the channel honest:
+
+- **Staleness is signal-bearing, never silent.** A pull-only channel where nothing prompts the pull leaves consumers quietly stale across releases; every enumerated surface needs a mechanism by which lag announces itself.
+- **Snapshot consumers verify currency against a fresh baseline.** A vendored authority or hand-synced copy is checked at time-of-use against the *current* release — a currency check run against a stale baseline is vacuously green, which is worse than no check at all.
 
 When a governing posture has already shifted, bringing old artifacts up is **propagation, not a new decision** — the target shape already exists; apply it without re-deliberating it.
 

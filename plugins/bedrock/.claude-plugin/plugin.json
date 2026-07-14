@@ -1,7 +1,7 @@
 {
   "name": "bedrock",
   "description": "Haffey Enterprises engineering skills: application-code authoring (FastAPI/async/port-adapter, plus operational shell scripts), decision records (ADR/DDR/SDD with a pre-authoring deliberation gate), testing (TDD + coverage discipline), code review (three-hat LAA/SA/EA + conformance checklist), structured debugging, infrastructure-as-code authoring (Terraform/GCP/GKE plus the delivery pipeline), and standards/skills authoring (forward-authoring over back-distillation, the skill-membership test, binding declaration, cascade-proving). Self-contained and stack-bound to Python 3.11+/FastAPI/async-SQLAlchemy/GCP/GitHub; a different stack is a rebind, not a line-edit.",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": {
     "name": "T-Bone-Haff",
     "email": "tad@tadhaffey.com"
