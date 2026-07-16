@@ -2,7 +2,7 @@
 
 **Haffey Enterprises engineering skills** — by T-Bone-Haff (Tad Haffey, Haffey Enterprises LLC).
 
-Seven self-contained Claude skills distilled from the HE-Bedrock governance corpus. They carry the *content* — the engineering standard, the doctype templates, the testing and review disciplines — with none of the self-governance machinery (no kit-versioning, no ledgers, no audit cadences). Each skill is independent and free of cross-corpus references; the only dependency a skill has is its own bundled `reference/` and `templates/` files.
+Eight self-contained Claude skills distilled from the HE-Bedrock governance corpus. They carry the *content* — the engineering standard, the doctype templates, the testing and review disciplines — with none of the self-governance machinery (no kit-versioning, no ledgers, no audit cadences). Each skill is independent and free of cross-corpus references; the only dependency a skill has is its own bundled `reference/` and `templates/` files.
 
 ## The skills
 
@@ -15,10 +15,11 @@ Seven self-contained Claude skills distilled from the HE-Bedrock governance corp
 | `bedrock:debug` | Structured debugging — reproduce, hypothesize, falsify, fix the root cause. A reasoning protocol, language-agnostic. |
 | `bedrock:infrastructure-code` | Authoring infrastructure-as-code — Terraform/GCP conventions, remote state, environments, Kubernetes and stateful workloads, and the infra delivery pipeline. |
 | `bedrock:author-standard` | Authoring a reusable standard — a skill, convention set, or template: sourcing (forward-author, never back-distill), the skill-membership test, binding declaration, hardening rules, and proving via cascade onto a real consumer. Single-file reasoning protocol, stack-agnostic. |
+| `bedrock:design-review-loop` | Reviewing a design-record set (ADR/DDR/SDD) driven to mechanical convergence — stance-isolated LAA/SA/EA hats plus a coherence sweep, arbiter classification, and a mechanical gate. Cites `code-review` for the shared authority. |
 
 ## Stack binding
 
-The conventions assume **Python 3.11+ / FastAPI / async SQLAlchemy / GCP / GitHub**. They're portable across projects *on that stack*; a materially different stack is a **rebind** — a re-derivation of the equivalents — not a line-edit. `debug` and `author-standard` are the exceptions: their disciplines are stack-agnostic.
+The conventions assume **Python 3.11+ / FastAPI / async SQLAlchemy / GCP / GitHub**. They're portable across projects *on that stack*; a materially different stack is a **rebind** — a re-derivation of the equivalents — not a line-edit. Three skills sit outside that default: `debug` and `author-standard` are stack-agnostic reasoning protocols, bound to nothing. `design-review-loop` is bound, but not to the stack — its binding is the SOFIA `agent-loop` runner and the ADR/DDR/SDD doctype family, and a different runner or doctype family is its rebind. Every other skill is bound to the stack above.
 
 ## Install — Claude Code
 
@@ -34,7 +35,7 @@ For local development of the kit itself, point the marketplace at a clone instea
 
 ## Install — Claude.ai / Cowork
 
-Install through the plugin marketplace: Settings → Customize → Plugins → Add marketplace from repository (`T-Bone-Haff/bedrock`) → install **bedrock**. The seven skills load account-wide from the plugin. Do not upload skills as individual ZIPs — hand-uploaded copies are unsynced snapshots that compete with the plugin's skills for routing.
+Install through the plugin marketplace: Settings → Customize → Plugins → Add marketplace from repository (`T-Bone-Haff/bedrock`) → install **bedrock**. The eight skills load account-wide from the plugin. Do not upload skills as individual ZIPs — hand-uploaded copies are unsynced snapshots that compete with the plugin's skills for routing.
 
 ## Staying current
 
