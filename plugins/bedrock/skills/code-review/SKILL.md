@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review a finished code change — a diff, a PR, or your own work before merging — for conformance, correctness, and fit. Applies the three-hat (LAA / SA / EA) method, produces severity-tagged findings (BLOCKING / MATERIAL / COSMETIC / POSITIVE), and includes a solo-operator self-review discipline for when there's no second reviewer. Use whenever reviewing code, checking a change before merge, doing a self-review of your own diff, or asking "is this ready", "review this PR", "does this conform", "what's wrong with this change". Reviews Python service code against the house engineering conventions; authoring that code is the application-code skill, and these conventions assume that stack — on a different stack, treat them as a rebind.
+description: Review a finished code change — a diff, a PR, or your own work before merging — for conformance, correctness, and fit. Applies the three-hat (LAA / SA / EA) method, produces severity-tagged findings (BLOCKING / MATERIAL / COSMETIC / POSITIVE), and includes a solo-operator self-review discipline for when there's no second reviewer. Use whenever reviewing code, checking a change before merge, doing a self-review of your own diff, or asking "is this ready", "review this PR", "does this conform", "what's wrong with this change". Reviews Python service code against the house engineering conventions; authoring that code is the application-code skill, and these conventions assume that stack — on a different stack, treat them as a rebind. Reviewing a design-record set (ADR/DDR/SDD) to convergence rather than a code change is the design-review-loop skill, which cites this skill for the LAA/SA/EA authority and the severity ladder.
 ---
 
 # Code Review
@@ -40,6 +40,8 @@ Every review runs three lenses. Each asks a different question; all three execut
 - Does it integrate with the broader system posture, or pull against it?
 - Is the reversibility appropriate to the risk? Is it committing the project to a position that deserves a decision record first?
 - Is the timing right — or does this want to wait for something?
+
+**Scope boundary.** This skill reviews a *code change* (diff/PR). Reviewing or converging a *design-record set* (ADR/DDR/SDD) — where SA conforms to canonical authorities rather than a code checklist, plus a coherence sweep, an arbiter, and a mechanical convergence gate — is the `design-review-loop` skill, which cites this skill as the authority for the LAA/SA/EA role-names and the ladder.
 
 ## Findings
 
