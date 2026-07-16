@@ -10,7 +10,7 @@ The kit spans the authoring-through-review lifecycle for services on the house s
 
 ## Stack binding
 
-The conventions assume **Python 3.11+ / FastAPI / async SQLAlchemy / GCP / GitHub**. They're portable across projects *on that stack*; a materially different stack is a **rebind** — a re-derivation of the equivalents — not a line-edit. Three skills sit outside that default: `debug` and `author-standard` are stack-agnostic reasoning protocols, bound to nothing. `design-review-loop` is bound, but not to the stack — its binding is the SOFIA `agent-loop` runner and the ADR/DDR/SDD doctype family, and a different runner or doctype family is its rebind. Every other skill is bound to the stack above.
+The conventions assume **Python 3.11+ / FastAPI / async SQLAlchemy / GCP / GitHub**. They're portable across projects *on that stack*; a materially different stack is a **rebind** — a re-derivation of the equivalents — not a line-edit. Not every skill binds to that stack: reasoning-protocol skills like `debug` and `author-standard` are stack-agnostic, bound to nothing, and `design-review-loop` binds to a substrate rather than the stack — the SOFIA `agent-loop` runner and the ADR/DDR/SDD doctype family, whose change is its rebind. Each skill declares its own binding.
 
 ## Install — Claude Code
 
