@@ -4,7 +4,7 @@
 
 ## Engineering conventions
 
-This project follows the **bedrock** engineering skills (`application-code`, `testing`, `code-review`, `author-decision-record`, `debug`), which are installed in Claude (account + Claude Code plugin) and trigger automatically. The conventions are not vendored into this repo — they're ambient.
+This project follows the **bedrock** engineering skills — installed as a plugin in Claude (account + Claude Code), auto-discovered, and triggered by task. The conventions are not vendored into this repo — they're ambient.
 
 Stack assumption: Python 3.11+ / FastAPI / async SQLAlchemy / GCP / GitHub. A materially different stack is a rebind, captured as an ADR (see `CLAUDE.md`).
 
