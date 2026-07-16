@@ -1,6 +1,6 @@
 # CLAUDE.md — {{PROJECT}}
 
-Repo-root orientation for Claude (auto-loaded by Claude Code). This file is **context, not conventions** — what this project is, its stack, and where things live. The engineering conventions are not here: they live in the `bedrock:` skills (`application-code`, `testing`, `code-review`, `author-decision-record`, `debug`), which trigger on their own. Keep this file lean; prune as it grows.
+Repo-root orientation for Claude (auto-loaded by Claude Code). This file is **context, not conventions** — what this project is, its stack, and where things live. The engineering conventions are not here: they live in the `bedrock:` skills — installed as a plugin, auto-discovered, and triggered by task, not vendored into this repo. Keep this file lean; prune as it grows.
 
 ## What this is
 

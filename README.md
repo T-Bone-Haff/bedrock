@@ -2,20 +2,11 @@
 
 **Haffey Enterprises engineering skills** — by T-Bone-Haff (Tad Haffey, Haffey Enterprises LLC).
 
-Eight self-contained Claude skills distilled from the HE-Bedrock governance corpus. They carry the *content* — the engineering standard, the doctype templates, the testing and review disciplines — with none of the self-governance machinery (no kit-versioning, no ledgers, no audit cadences). Each skill is independent and free of cross-corpus references; the only dependency a skill has is its own bundled `reference/` and `templates/` files.
+Self-contained Claude skills distilled from the HE-Bedrock governance corpus. They carry the *content* — the engineering standard, the doctype templates, the testing and review disciplines — with none of the self-governance machinery (no kit-versioning, no ledgers, no audit cadences). Each skill is independent and free of cross-corpus references; the only dependency a skill has is its own bundled `reference/` and `templates/` files.
 
-## The skills
+## What's in the kit
 
-| Skill | What it does |
-|---|---|
-| `bedrock:application-code` | Authoring Python service code — FastAPI/async, port/adapter layering, API/config/logging/errors/resilience/security, persistence, scaffolding, and the operational shell scripts that travel with a service. |
-| `bedrock:author-decision-record` | Authoring or choosing an ADR / DDR / SDD, with a pre-authoring deliberation gate that keeps rationale from being fabricated. Bundles the three doctype templates. |
-| `bedrock:testing` | Test-driven sequence (observe a meaningful red before green), coverage discipline, and the unit/integration/contract/e2e patterns. |
-| `bedrock:code-review` | Reviewing a finished diff via the three-hat (LAA/SA/EA) method, with a severity-tagged conformance checklist and a solo-operator self-review discipline. |
-| `bedrock:debug` | Structured debugging — reproduce, hypothesize, falsify, fix the root cause. A reasoning protocol, language-agnostic. |
-| `bedrock:infrastructure-code` | Authoring infrastructure-as-code — Terraform/GCP conventions, remote state, environments, Kubernetes and stateful workloads, and the infra delivery pipeline. |
-| `bedrock:author-standard` | Authoring a reusable standard — a skill, convention set, or template: sourcing (forward-author, never back-distill), the skill-membership test, binding declaration, hardening rules, and proving via cascade onto a real consumer. Single-file reasoning protocol, stack-agnostic. |
-| `bedrock:design-review-loop` | Reviewing a design-record set (ADR/DDR/SDD) driven to mechanical convergence — stance-isolated LAA/SA/EA hats plus a coherence sweep, arbiter classification, and a mechanical gate. Cites `code-review` for the shared authority. |
+The kit spans the authoring-through-review lifecycle for services on the house stack — writing application and infrastructure code, testing, reviewing diffs, structured debugging, authoring decision records and reusable standards, and driving design-record sets to convergence. Each capability is a self-contained skill that Claude auto-discovers and triggers by task; the live roster is the plugin's [`skills/`](plugins/bedrock/skills) folder, and every skill carries its own description.
 
 ## Stack binding
 
@@ -35,7 +26,7 @@ For local development of the kit itself, point the marketplace at a clone instea
 
 ## Install — Claude.ai / Cowork
 
-Install through the plugin marketplace: Settings → Customize → Plugins → Add marketplace from repository (`T-Bone-Haff/bedrock`) → install **bedrock**. The eight skills load account-wide from the plugin. Do not upload skills as individual ZIPs — hand-uploaded copies are unsynced snapshots that compete with the plugin's skills for routing.
+Install through the plugin marketplace: Settings → Customize → Plugins → Add marketplace from repository (`T-Bone-Haff/bedrock`) → install **bedrock**. The skills load account-wide from the plugin. Do not upload skills as individual ZIPs — hand-uploaded copies are unsynced snapshots that compete with the plugin's skills for routing.
 
 ## Staying current
 
