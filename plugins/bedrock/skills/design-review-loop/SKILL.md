@@ -67,7 +67,7 @@ One classification per finding, in isolation, authority fetched fresh: **`resolv
 The counter, the oscillation detector, and the router are pure functions over ledger state — **run, not reasoned** (see the bright line). `references/convergence-machinery.md` points to the runnable implementation and its spec and states the minimal ledger contract; it deliberately does not re-specify the gate in prose, because a prose gate is what gets emulated. Two facts the operator must hold:
 
 - **`decision-bearing` gates convergence regardless of severity.** An open decision-bearing finding halts the loop *even if* `open_cbm == 0` — even a COSMETIC one. Silently auto-resolving or silently dropping a discovered decision, however small, is the manufactured-alignment failure the loop exists to prevent.
-- **Oscillation is a decision, not a failure.** When a finding recurs (closed then reopened) or the open count plateaus, the loop is trading fixes, not converging — two altitudes want opposite things and no higher authority settles it. That surfaces to the operator *as a decision*, carrying the recurring finding as payload.
+- **A non-decreasing open set is a decision, not a failure — and it splits two ways.** **Recurrence** (a finding closed then reopened) halts as **`oscillation`**: two altitudes are genuinely trading fixes and no higher authority settles it. **Plateau without recurrence** (the open counted count stops strictly decreasing while positive) halts as **`non-convergence`**: accumulation the operator must come rule, *not* a fight. Either surfaces to the operator *as a decision*, carrying the recurring/plateaued findings as payload (RBT-69 Piece 3 split the honest labels apart).
 
 ## The author rule
 
