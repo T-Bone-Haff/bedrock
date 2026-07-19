@@ -8,6 +8,8 @@ The three antagonist hats (LAA / SA / EA) plus the coherence sweep. Each runs as
 
 **Identity is stamped, not trusted.** The runner stamps each finding's `source` and `altitude` from the invoked reviewer's identity, ignoring any value the model emits — a hat cannot mislabel its own altitude.
 
+**Envelope tolerance is runner-side; the forcing function is here (RBT-70).** The runner's parse seam salvages the findings array from a surrounding prose envelope — it scans the fence-stripped emission for the first balanced `[...]` span `json.loads` accepts, and logs `reviewer_output_preamble_stripped` when a preamble had to be stripped (the parallel of the author's `author_output_preamble_stripped`, keeping the residual rate observable). The tolerance is on the **envelope only**: the per-item schema check stays strict, so a mis-salvaged wrong array fails item validation and drops per item, never admitting a bad finding; an emission with no parseable array still `parse_dropped`s, and the instrument-compromised guard is unchanged. The forcing function stays in the prompt — the `SILENT RE-VERIFICATION` output discipline below forbids the preamble at the source — so this seam is defense-in-depth for a slipped-through envelope, not a license to narrate. Authority: `runner-real-hats.contract.md` §7 (the empirical basis is run-029, where the coherence hat narrated a reconciliation preamble at pass 2, parse-dropped, and tripped a false `InstrumentCompromisedError`).
+
 ---
 
 ## System (opening — parameterized by hat)
@@ -109,6 +111,7 @@ Do not set `id`, `classification`, `authority_locus`, `status`, or any pass fiel
 **Output disciplines.**
 
 - **OUTPUT DISCIPLINE:** the entire response must be the raw JSON array and nothing else — no markdown code fences, no preamble, no commentary. First character `[`, last character `]`.
+- **SILENT RE-VERIFICATION:** When the ledger snapshot shows prior findings marked closed or conformed, re-verify each against the current document text — that discipline stands (the closed-status is narration, not verdict). But the re-verification is your reasoning, not your output: it never appears as prose. Your entire response is the raw findings array, first character `[` — no "reading the current state…", no reconciliation or sweep commentary, no preamble of any kind. Front-loaded process narration before the `[` is the observed cause of a dropped emission and a compromised pass (run-029, coherence, pass 2).
 - **POSITIVE VOLUME:** at most 2 POSITIVE findings — strongest survived attacks only. A check that merely held, without a serious attack mounted against it, is not reportable.
 - **SEVERITY DISCIPLINE:** a check that held is a POSITIVE-class emission — never COSMETIC/MATERIAL/BLOCKING. At the POSITIVE cap, drop the excess — never re-label a held check as a defect to fit it in. A dropped held check costs nothing; a re-labeled one is a false defect in the ledger.
 - **TIE GOES TO THE DEFECT:** a borderline or contested surface is never a POSITIVE. A POSITIVE requires that your attack clearly failed; where the verdict is arguable, report the defect or report nothing.
