@@ -44,6 +44,14 @@ Run this against every change. Each item is a conformance question; the full rul
 - [ ] Coverage threshold met, honestly — no testable code omitted from measurement.
 - [ ] Behavior was specified test-first where the TDD discipline applies.
 
+**Agent code** (when the change touches code whose central act is an LLM call — adjudicate against the `agent-code` conventions)
+- [ ] Prompt changes carry a generation bump and were reviewed as semantic changes — no cosmetic exemption for prompt bytes.
+- [ ] New untrusted-input paths identified and handled — tool results and retrieved content treated as untrusted model input.
+- [ ] Tool-permission scope deltas justified against least-agency; write authority gated, never ambient.
+- [ ] No new LLM judgment on a terminal path — terminal predicates remain mechanical functions over durable state.
+- [ ] New model calls carry the structured-output contract and parse-seam discipline (strict item validation, observable drops, port-boundary identity stamping).
+- [ ] Cost posture intact — cache alignment not silently broken; usage capture present on new call sites.
+
 **Process**
 - [ ] All automated gates passed (lint, format, type-check, tests, coverage, security scan).
 - [ ] Data-classification tier documented where the change introduces or moves data.
