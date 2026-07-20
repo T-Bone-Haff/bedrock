@@ -35,10 +35,13 @@ Why the observed red matters: writing tests *alongside* the code and running the
 6. **Service-layer tests use the in-memory adapter, not a mocked port** — it preserves the contract the port enforces (the in-memory adapter is part of the application-code layout).
 7. **Disable telemetry export in the test environment before any app import**, by direct assignment — not `setdefault`-style conditional patterns, which a parent-env value silently defeats.
 8. **Every endpoint has a contract test** asserting request/response shape under representative inputs; the typed models are the source of truth.
+9. **Mechanical gates get deterministic tests; judgments get eval harnesses.** An LLM in the system exempts nothing around it from this sequence — the deterministic machinery (parsers, gates, routers, verifiers) is TDD'd and covered as always; the judgment steps themselves are evaluated per `reference/nondeterministic-components.md`.
 
 ## Where to look
 
 Load `reference/test-authoring.md` for the worked patterns: the test-tree layout; the full test-first meaningful-failure rules; coverage and omit discipline; AAA with a worked example; mocking and shared fixtures (`conftest.py`); contract tests (`respx`); integration tests (`httpx.AsyncClient`); containerized dependencies (`testcontainers`); isolation via transaction rollback; and e2e.
+
+Load `reference/nondeterministic-components.md` when the code under test embeds LLM judgment: the gates-vs-judgments split, recorded-fixture regression, LLM-as-judge with cold calibration, and what meaningful-red means for a judgment.
 
 ## Boundary with application-code
 
