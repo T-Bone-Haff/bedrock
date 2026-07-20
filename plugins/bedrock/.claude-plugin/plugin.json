@@ -1,7 +1,7 @@
 {
   "name": "bedrock",
   "description": "Haffey Enterprises engineering skills spanning the authoring-through-review lifecycle for Python services on the house stack: writing application and infrastructure code, testing, code review, structured debugging, authoring decision records (ADR/DDR/SDD), reusable standards, and execution relays, and driving design-record sets to mechanical convergence. Self-contained, auto-discovered per skill, and stack-bound to Python 3.11+/FastAPI/async-SQLAlchemy/GCP/GitHub; a different stack is a rebind, not a line-edit.",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "author": {
     "name": "T-Bone-Haff",
     "email": "tad@tadhaffey.com"
