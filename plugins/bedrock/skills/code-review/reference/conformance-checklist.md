@@ -52,6 +52,18 @@ Run this against every change. Each item is a conformance question; the full rul
 - [ ] New model calls carry the structured-output contract and parse-seam discipline (strict item validation, observable drops, port-boundary identity stamping).
 - [ ] Cost posture intact — cache alignment not silently broken; usage capture present on new call sites.
 
+**Frontend code** (when the change touches frontend code — adjudicate against the `frontend-code` conventions)
+- [ ] Layered import direction respected — no surface imports a concrete client or vendor SDK; seam interfaces consumed via providers.
+- [ ] No hardcoded visual values — color, type, spacing, and motion come from the design tokens; runtime config from the typed config module, no scattered `import.meta.env` reads.
+- [ ] Type-check and strict-type-checked lint clean; type escape hatches (`@ts-expect-error`, `as`-casts) carry site justifications.
+- [ ] Prototype-origin code was re-authored at hardening, not lint-fixed — the prototype rode in as design intent, and tests specifying the kept behavior landed with the re-author.
+- [ ] Generated contract types regenerated and drift-checked, never hand-edited; no hand-written mirror of a backend model.
+- [ ] XSS escape hatches reviewed — `dangerouslySetInnerHTML` only over sanitized content, URL props scheme-validated, no eval-class constructs.
+- [ ] No credentials in browser storage; no secrets in client config or the bundle.
+- [ ] Accessibility holds at the floor — semantic elements, accessible names on interactive elements, keyboard path intact, focus managed on navigation and dialog changes, motion respects reduced-motion.
+- [ ] Tests query by role and accessible name; mechanism-layer coverage floor met honestly (no omit-list or directory-placement dodges).
+- [ ] New dependency adoptions justified — architecture-shaping, recurring-cost, or proprietary-license adoptions carry a decision record.
+
 **Process**
 - [ ] All automated gates passed (lint, format, type-check, tests, coverage, security scan).
 - [ ] Data-classification tier documented where the change introduces or moves data.
