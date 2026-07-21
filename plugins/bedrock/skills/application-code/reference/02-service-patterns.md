@@ -251,7 +251,7 @@ Multi-dependency readiness: each dependency checked in its own try/except (one f
 
 **Fault classification.** Consumers branch on the `FaultClass` enum (§1) to decide retry eligibility and propagation — never on HTTP status code alone.
 
-**Statelessness.** Services hold no cross-request in-process state (no module-level dict mutated across requests). Per-request memoization (`@lru_cache` on a Settings factory) is fine; cross-request in-process caching is prohibited.
+**Statelessness.** Services hold no cross-request in-process state (no module-level dict mutated across requests). Process-lifetime memoization of immutable configuration (`@lru_cache` on the Settings factory — fixed at startup, never mutated across requests) is fine; cross-request in-process caching of mutable data is prohibited.
 
 ---
 

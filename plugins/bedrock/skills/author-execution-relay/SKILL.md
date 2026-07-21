@@ -17,7 +17,7 @@ An *execution relay* is a prompt artifact handed from a deliberation surface to 
 
 Every relay carries four blocks, in this order. The order is load-bearing: the guard precedes the task so verification cannot be skipped by momentum; the rider trails the task so mutation constraints arrive with the mutations in view.
 
-1. **Fresh-fetch guard** — the executor re-reads the governing doctrine from disk and never trusts the relay's summary of it or any prior-session memory (prior-art-as-authority is a named failure mode). The guard opens with an **identity gate**: remote, branch, expected files. Mismatch is stop-and-report, never search-and-substitute.
+1. **Fresh-fetch guard** — the executor re-reads the governing doctrine from disk and never trusts the relay's summary of it or any prior-session memory (prior-art-as-authority is a named failure mode). The guard opens with an **identity gate**: remote, branch, expected files. Mismatch is stop-and-report, never search-and-substitute. The identity gate extends to every authority the guard cites: each doctrine the executor is instructed to re-read is named by explicit path, resolved and existence-verified at drafting time — an alias is an unverified premise.
 2. **Task** — the operation itself, scoped and numbered, with per-item stop points wherever ratification is per-item, and base hashes for anything the relay replaces.
 3. **Stop gate** — what may be touched, what must not be, and the transaction posture (next section). Touch-scope is an allowlist of declared outputs, never a description of intent.
 4. **Mutation rider** — per-target verification of the stated FROM, the adjust-and-flag licenses (or their explicit absence), and the blanket STOP default.
@@ -27,9 +27,10 @@ A compact skeleton:
 ```
 ═══ FRESH-FETCH GUARD ═══
 You are <executor> working <repo>. This is an EXECUTION request relayed by the
-operator. Re-read the governing doctrine from disk — do NOT trust this prompt's
-summary of it, or prior-session memory. Identity gate: verify remote, branch,
-and that each named target exists as stated. On ANY mismatch: STOP and report.
+operator. Re-read the governing doctrine from disk at <named path(s)> — do NOT
+trust this prompt's summary of it, or prior-session memory. Identity gate:
+verify remote, branch, and that each named target exists as stated. On ANY
+mismatch: STOP and report.
 
 ═══ TASK ═══
 <The operation, scoped and numbered. Per-item stop points where ratification is
@@ -59,6 +60,7 @@ Two transaction postures, chosen at drafting time — the relay states which one
 Every relay carries silent premises — which repo, which branch, which version, which file state — and the author didn't notice they were premises. The discipline is structural, not vigilance:
 
 - **The identity gate makes repo-identity premises explicit.** Name the remote, the branch, the expected targets; instruct mismatch = stop-and-report. An unstated identity premise meets a frozen archive or the wrong clone silently.
+- **Name every artifact by explicit path, never by alias.** Any reference the executor must resolve — governing doctrine, a skill, a charter, a target file — resolves to an explicit path (or pinned URL) at drafting time, existence-verified by a safe read before the relay fires. An alias ("the vault doctrine," "your CLAUDE.md chain") delegates premise-resolution to executor guesswork, and resolution against the wrong artifact is silent until it isn't.
 - **Pre-state assertions are claims the executor verifies, not context it trusts.** "This file currently says X" is a checkable claim; write it as one.
 - **Operator assertions are claims too.** An instruction that embeds a factual claim — "note that X happened" — owes that claim a fresh verification before any durable write. Transcribing it because the operator said it is prior-art-as-authority wearing a different hat.
 - **Build change-lists from the live tree**, never from a document's description of its own layout — maps drift from the territory they claim.
@@ -69,7 +71,7 @@ Every relay carries silent premises — which repo, which branch, which version,
 
 - **Pin content, not history position.** A content hash covers exactly the bytes the ratification covered and is verifiable by any surface holding the file; a commit SHA pins a tree position that moves under rebase and covers bytes nobody adjudicated.
 - **A replacement handoff pins both ends:** the base hash (executor STOPs if the target moved since the replacement was authored — drift in the world) and the replacement hash (executor STOPs if its own write doesn't reproduce the ratified bytes — drift in the executor; a transcription defect is not a license to edit).
-- **Two transports carry a replacement; the pins are identical either way.** *Executor-writes:* the relay carries the ratified payload; the executor writes it and re-hashes its own write against the replacement pin. *Pre-placed:* the deliberation surface places the ratified bytes in the working tree before the relay fires; the executor **verifies rather than writes** — replacement pin checked against the bytes on disk, base pin checked from `git show HEAD:<path>`, since the tree no longer holds the base. A mismatch on either end is STOP under both transports. Pre-placement moves labor across the seam, never judgment: the ratified bytes are still the operator's, and the executor's verification is what makes them landable.
+- **Three transports carry a change; every transport pins both ends.** *Executor-writes:* the relay carries the ratified payload; the executor writes it and re-hashes its own write against the replacement pin. *Pre-placed:* the deliberation surface places the ratified bytes in the working tree before the relay fires; the executor **verifies rather than writes** — replacement pin checked against the bytes on disk, base pin checked from `git show HEAD:<path>`, since the tree no longer holds the base. *Derived-edit:* the relay carries no payload but a deterministic edit rule plus the base pin; the deliberation surface independently derives the **expected post-edit bytes** from the rule against the pinned base and pins them; the executor performs the edit and re-hashes its result against that pin. The post-edit pin is conditional on the base pin — a moved base fails first, so derivation at drafting time is safe. A mismatch on either end is STOP under all three transports. A relay MAY mix transports across targets; each target names its transport explicitly and carries that transport's pins — a target's transport is never left to inference. Pre-placement and derivation move labor across the seam, never judgment: the ratified bytes (or the rule that determines them) are still the operator's, and the executor's verification is what makes them landable.
 - **A hash proves fidelity, not sanity.** Pins verify that the landed bytes are the ratified bytes; they say nothing about whether those bytes are sane to land. An executor reading the full content or diff before landing is sanctioned conduct, not instruction-creep — author the relay expecting the read, and anything it surfaces arrives as gate input, never as a license to edit.
 - **A gated transaction closes with third-surface verification:** an independent surface re-hashes the landed artifacts against the ratified pins. Authored = ratified = landed becomes provable without trusting any single reporter — the executor's account of having verified is itself just a claim.
 
@@ -88,6 +90,7 @@ Separate, explicitly, what the executor may **adjust-and-flag** from what must *
 - **Scope the stage to the operation's declared outputs** — named paths, never `-A` / `-a` / `.`. A broad stage sweeps unexamined working-tree dirt into the operation's commit; unrelated dirt gets its own commit.
 - **Demand a proposed-commit artifact, not a done-story.** Completion is granted at a gate, never narrated past one — a done-story reads as a fact to ratify rather than a request to gate, and the gate never visibly fires. The executor's completion report is data to verify, not a verdict that discharges verification; `code-review` owns that rule (narrated process is data) — this discipline instantiates it in the relay artifact.
 - **Verbatim payloads are wrap-safe or they are not verbatim.** A payload whose bytes are the deliverable — an append fragment, a commit message, a marker block — is never margin-wrapped by an authoring pass: no line break lands mid-token, and whitespace inside the payload is content, not formatting. Carry such payloads fenced, and where the bytes matter enough to pin, validate with a hash or token-integrity check — the executor catching a wrapped token at the gate is the *last* line of defense, not the discipline.
+- **An otherwise-verbatim payload MAY carry named fill-slots.** Each slot is explicitly marked (a `<VERSION>`-style token), its fill rule is deterministic and stated in the relay — any surface applying the rule to the pinned base derives the same bytes — and everything outside the slots stays wrap-safe verbatim. An unnamed slot, or one whose fill requires judgment, voids the payload's verbatim status. Verification takes the derived-edit form: the deliberation surface derives the expected post-fill bytes and pins them.
 - **Pin the environment of every exact-match assertion.** Any byte-for-byte check over locale- or environment-sensitive tool output (`sort`, `ls`, glob order, date formatting) pins its environment (`LC_ALL=C`) or drops the exact-match — an unpinned assertion is a false-RED landmine on a different machine.
 
 ## Drafting posture
@@ -98,5 +101,6 @@ Separate, explicitly, what the executor may **adjust-and-flag** from what must *
 ## Boundaries with sibling skills
 
 - **Reviewing the landed change** → the `code-review` skill. It also owns narrated-process-is-data and the review-instrument design that enforces it; this skill instantiates that rule on the artifact side, and cites rather than restates it.
+- **A prompt the code ships** — a charter, a shipped prompt artifact — → the `agent-code` skill; a prompt the operator hands to an executor is this skill's relay. The two partition the prompt-artifact class, and `agent-code` declares the same seam from its side.
 - **Authoring this skill, or any reusable standard** → the `author-standard` skill: membership, sourcing, binding, shape, hardening, and proving all live there.
 - **Authoring a decision record the relay might land** → the `author-decision-record` skill; the relay carries the record, it doesn't author it.

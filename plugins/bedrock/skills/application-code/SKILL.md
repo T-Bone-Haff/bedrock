@@ -13,7 +13,7 @@ These conventions are written against a specific stack: **Python 3.11+, FastAPI,
 
 ## The misfit rule
 
-These are strong defaults, not scripture. Where a convention genuinely doesn't fit the work in front of you, state the exception and why in the code or commit, then proceed — don't silently violate it, and don't contort the code to satisfy a rule that doesn't earn its place here. A recurring misfit is a signal the convention should change, not a thing to keep working around.
+These are strong defaults, not scripture. Where a convention genuinely doesn't fit the work in front of you, state the exception and why in the code or commit, then proceed — don't silently violate it, and don't contort the work to satisfy a rule that doesn't earn its place here. A recurring misfit is a signal the convention should change, not a thing to keep working around. (House-wide rule, carried verbatim across its carrier skills.)
 
 ## Always-apply invariants
 
@@ -27,7 +27,7 @@ These hold for every module you write, regardless of which area you're in. If yo
 6. **Domain exceptions** extend a `DomainError` base and surface to HTTP via exception handlers — no scattered status codes, no silent cross-layer swallowing.
 7. **Validate inbound data with Pydantic** at the boundary before it reaches the service layer.
 8. **Every module carries the comment block**; every public function/class carries a Google-format docstring.
-9. **Outbound HTTP flows through the canonical `ServiceClient`** (retry, deadline, circuit breaker, correlation-ID, auth) — never per-call `httpx` clients.
+9. **Outbound HTTP flows through the canonical `ServiceClient`** (retry, deadline, circuit breaker, correlation-ID, auth) — never per-call `httpx` clients. One named exception: outbound **LLM traffic** flows through the canonical model transport instead — the `agent-code` skill's seam, declared on both sides.
 10. **Classify the data.** Tier 3/4 data never lands in logs (the log ceiling is Tier 2); it's encrypted at rest.
 
 ## Where to look
@@ -44,6 +44,7 @@ Load the reference for the area you're working in — each is self-contained and
 ## Boundaries with sibling skills
 
 - **Writing tests** → the `testing` skill. This skill carries the *toolchain* that makes tests runnable and gated (the `pytest-cov` 90% gate in `pyproject.toml`, in `01-code-structure.md` §10) because that's part of scaffolding a service — but the test layout, naming, mocking, fixtures, and AAA discipline live in `testing`.
+- **Code whose central act is an LLM call** → the `agent-code` skill. These ambient invariants still apply inside agent code; the seam is the model transport (there) vs. `ServiceClient` (here).
 - **Reviewing a finished diff** → the `code-review` skill. This skill is about *authoring* code that conforms; deciding whether an existing change conforms is a review task.
 - **Infrastructure — provisioning, networking, IAM, Kubernetes manifests, and the Terraform delivery pipeline** → the `infrastructure-code` skill. The seam is the container image: this skill *builds* it, `infrastructure-code` *provisions and runs* it.
 - **Git workflow and branching, and the application build/test/deploy pipeline** remain out of scope here — shared version-control and `app-delivery-pipeline` concerns, not code-authoring ones.

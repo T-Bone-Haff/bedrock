@@ -101,9 +101,10 @@ flow exists for.
 
 These are strong defaults, not scripture. Where a convention genuinely doesn't
 fit the work in front of you, state the exception and why in the code or
-commit, then proceed — don't silently violate it, and don't contort the code
-to satisfy a rule that doesn't earn its place. A recurring misfit is a signal
-the convention should change.
+commit, then proceed — don't silently violate it, and don't contort the work
+to satisfy a rule that doesn't earn its place here. A recurring misfit is a
+signal the convention should change, not a thing to keep working around.
+(House-wide rule, carried verbatim across its carrier skills.)
 
 ## Always-apply invariants
 
@@ -215,8 +216,8 @@ are the house contract discipline read from the other side of the wire.
   Rules of React name the plugin as their enforcement mechanism),
   `react-refresh`, and `eslint-plugin-jsx-a11y` (§ Accessibility). The
   upstream guidance reserves strict presets for teams highly proficient in
-  TypeScript; on the house's two-surface model that condition is met by
-  construction — the author is an agent operating under this skill, where a
+  TypeScript; under the house working model — code authored by an agent
+  operating under this skill — that condition is met by construction, and a
   stricter machine-checkable envelope is pure gain.
 - **Escape hatches are governed, not banned.** `@ts-expect-error` with a
   description over `@ts-ignore`; `as`-casts and `any`-adjacent constructs are
