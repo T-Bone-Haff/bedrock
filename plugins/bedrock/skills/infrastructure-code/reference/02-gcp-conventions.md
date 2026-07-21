@@ -177,6 +177,6 @@ Conventions for the platform's GCP services. Each is a sketch of the load-bearin
 
 **Secret Manager.** `user_managed` replication pinned to the region; `sensitivity = "high"` label. Secrets are *referenced* by services at runtime (and by Terraform via data sources), never written into config or state.
 
-**Artifact Registry.** One Docker repository per environment; the build pipeline pushes here, the runtime pulls. Images tagged with both semantic version and commit SHA (the tagging discipline is the `application-code` skill's; the registry is provisioned here).
+**Artifact Registry.** One Docker repository per environment; the build pipeline pushes here, the runtime pulls. Images tagged with both semantic version and commit SHA (the tagging discipline is the `app-delivery-pipeline` skill's; the registry is provisioned here).
 
 **GCS.** Versioning enabled on buckets holding state or snapshots; `prevent_destroy` on the state bucket; uniform bucket-level access; access restricted to the pipeline SA and admins.

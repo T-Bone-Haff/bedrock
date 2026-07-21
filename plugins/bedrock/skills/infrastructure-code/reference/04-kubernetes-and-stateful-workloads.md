@@ -119,6 +119,6 @@ Deployment configuration is declarative and version-controlled, and the cluster 
 - **Manifests live in version control.** Production deployment state derives from declared manifest state, not from console actions or `kubectl edit` against live objects.
 - **Manifest changes go through PR review** like any other change — a deployment change is a code change.
 - **Divergence is a violation.** If live state drifts from manifest state, reconcile by amending the manifest and re-applying through the pipeline — never by patching the cluster and leaving the manifest behind.
-- **Rollback is declarative too.** Roll back by pointing the workload at the previous image tag with the previous manifest state (images carry both semantic version and commit SHA, per the `application-code` build discipline). A rollback is followed by a tracking ticket capturing what failed, and the failed image is never re-deployed without an intervening fix.
+- **Rollback is declarative too.** Roll back by pointing the workload at the previous image tag with the previous manifest state (images carry both semantic version and commit SHA, per the `app-delivery-pipeline` tagging discipline). A rollback is followed by a tracking ticket capturing what failed, and the failed image is never re-deployed without an intervening fix.
 
 *The specific GitOps tool (Argo CD, Flux, Cloud Deploy, or plain pipeline `kubectl apply`) is enterprise-bound and ADR-homed — the discipline above holds regardless of which tool enforces it.*

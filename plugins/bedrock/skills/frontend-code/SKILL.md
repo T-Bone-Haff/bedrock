@@ -1,6 +1,6 @@
 ---
 name: frontend-code
-description: House engineering standard for authoring frontend code on the house web stack — React components and hooks, TypeScript strictness, Vite toolchain, plain-CSS styling on design tokens, the experience-first prototype→harden path, the OpenAPI typed-contract seam to the Python backend, frontend testing with vitest and Testing Library, accessibility to WCAG 2.2 AA, client-side security, and npm dependency discipline. Use whenever writing, structuring, scaffolding, or conforming frontend code: building a component, surface, or hook, hardening a prototype into governed code, wiring the API client or generating types from the backend contract, testing a component, setting up a frontend repo, adding routing or config or token-based styling, or checking whether frontend code follows the conventions. Assumes TypeScript + React + Vite + plain CSS on design tokens + vitest/Testing Library, deliberately without a component library; a materially different choice on any axis is a rebind, not a line-edit — version movement within an axis is a currency concern, never a rebind. Design-token values live in each repo's design authority — this skill points at them, never restates them. Reviewing a finished frontend diff is the code-review skill, whose conformance checklist carries the Frontend code section; the backend side of the contract seam is the application-code skill; the build/deploy pipeline belongs to the forthcoming app-delivery-pipeline skill.
+description: House engineering standard for authoring frontend code on the house web stack — React components and hooks, TypeScript strictness, Vite toolchain, plain-CSS styling on design tokens, the experience-first prototype→harden path, the OpenAPI typed-contract seam to the Python backend, frontend testing with vitest and Testing Library, accessibility to WCAG 2.2 AA, client-side security, and npm dependency discipline. Use whenever writing, structuring, scaffolding, or conforming frontend code: building a component, surface, or hook, hardening a prototype into governed code, wiring the API client or generating types from the backend contract, testing a component, setting up a frontend repo, adding routing or config or token-based styling, or checking whether frontend code follows the conventions. Assumes TypeScript + React + Vite + plain CSS on design tokens + vitest/Testing Library, deliberately without a component library; a materially different choice on any axis is a rebind, not a line-edit — version movement within an axis is a currency concern, never a rebind. Design-token values live in each repo's design authority — this skill points at them, never restates them. Reviewing a finished frontend diff is the code-review skill, whose conformance checklist carries the Frontend code section; the backend side of the contract seam is the application-code skill; the build/deploy pipeline belongs to the app-delivery-pipeline skill.
 ---
 
 # Frontend Code
@@ -223,7 +223,7 @@ are the house contract discipline read from the other side of the wire.
   justified at the site or they are review findings.
 - **The gate quartet:** type-check (`tsc`), lint, tests, and the coverage
   floor (`reference/testing.md`). This skill names what must pass; where the
-  pipeline runs is the forthcoming app-delivery-pipeline skill's territory.
+  pipeline runs is the app-delivery-pipeline skill's territory.
 
 ## Accessibility
 
@@ -274,7 +274,7 @@ not mirrored (pinned 2026-07-21, verify currency at adoption).
    delivery's.** The app is authored strict-CSP-ready — no inline scripts, no
    eval-class constructs, scripts and assets from self — so a strict
    (nonce/hash) policy can be adopted at the hosting layer without app
-   changes. The header itself is homed in the forthcoming app-delivery-pipeline
+   changes. The header itself is homed in the app-delivery-pipeline
    skill; the seam is declared here the way the service skills declare the
    container-image seam.
 3. **Credentials never in `localStorage` or `sessionStorage`.**
@@ -346,7 +346,7 @@ promoted when it hurts.
 - **The backend side of the contract seam** → `application-code`; its Pydantic
   models are the contract this skill's generated types consume.
 - **The build/test/deploy pipeline, hosting, and the CSP header** → the
-  forthcoming app-delivery-pipeline skill. This skill names what must pass and
+  app-delivery-pipeline skill. This skill names what must pass and
   what the app must be ready for; delivery owns where it runs.
 - **Code whose central act is an LLM call** — including a real orchestrator
   client behind a frontend seam — → `agent-code` for the call discipline; this
