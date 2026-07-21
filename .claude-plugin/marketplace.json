@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "bedrock",
-      "description": "Haffey Enterprises engineering skills for Python services on the house stack — code and infrastructure authoring, testing, review, debugging, decision records, and standards authoring. Self-contained, auto-discovered per skill; stack-bound to Python/FastAPI/async/GCP/GitHub.",
+      "description": "Haffey Enterprises engineering skills spanning the authoring-through-review lifecycle on the house stacks: writing application, infrastructure, agent/LLM-call, and frontend code, the app build/test/deploy pipeline, testing, code review, structured debugging, authoring decision records (ADR/DDR/SDD), reusable standards, and execution relays, and driving design-record sets to mechanical convergence. Self-contained and auto-discovered per skill. Service-side skills are stack-bound to Python 3.11+/FastAPI/async-SQLAlchemy/GCP/GitHub; the frontend skill binds TypeScript/React/Vite with plain CSS on design tokens. A different stack is a rebind, not a line-edit.",
       "author": {
         "name": "T-Bone-Haff",
         "email": "tad@tadhaffey.com"

@@ -46,3 +46,5 @@ Load `reference/nondeterministic-components.md` when the code under test embeds 
 ## Boundary with application-code
 
 The **`pyproject.toml` toolchain config** — the `pytest-cov` gate, `asyncio_mode`, the coverage threshold line — lives in the `application-code` skill, because standing it up is part of scaffolding a service. **This skill owns writing the tests and the coverage *discipline*** (what gets measured, the no-omit-cheating rule, the test kinds). If you're scaffolding the harness, that's application-code; if you're writing or shaping tests, you're here.
+
+**Frontend testing** → the `frontend-code` skill's testing reference — the vitest/Testing Library rebind of this discipline for the TypeScript/React stack; this skill's pytest binding does not gate frontend test work.

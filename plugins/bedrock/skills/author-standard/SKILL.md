@@ -50,7 +50,7 @@ And remember what a form can and cannot give: **shape, not substance.** A blank 
 
 ## Distribute vs. remediate
 
-A release of a standard is not complete until it has been **pushed to the enumerated consumer surfaces** — the kit owns that enumeration, and a surface with no push path is a finding, not a footnote. Push means the update and its staleness signal arrive unbidden: the knock, never the remediation. The consumer still adopts and remediates its own corpus on its own cycle — push is not auto-remediation, and reaching into a consumer to hand-edit its documents conflates two duties that want separate owners and separate cadences.
+A release of a standard is not complete until it has been **pushed to the enumerated consumer surfaces** — the release's rollout ledger owns that enumeration, and a surface with no push path is a finding, not a footnote. Push means the update and its staleness signal arrive unbidden: the knock, never the remediation. The consumer still adopts and remediates its own corpus on its own cycle — push is not auto-remediation, and reaching into a consumer to hand-edit its documents conflates two duties that want separate owners and separate cadences.
 
 Two rules keep the channel honest:
 

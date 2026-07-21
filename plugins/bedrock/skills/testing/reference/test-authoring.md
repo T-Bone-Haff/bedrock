@@ -28,11 +28,13 @@ tests/
 ├── conftest.py
 ├── unit/          # fast, isolated; external dependencies mocked
 ├── integration/   # real FastAPI app via httpx; containerized backends where needed
+├── contract/      # contract tests (§6): provider-side endpoint shape + consumer-side vs mocked providers
 └── e2e/           # full-stack against a deployed environment (advisory)
 ```
 
 - **Unit** — under ~1 second per test on average; externals mocked.
 - **Integration** — exercise the real app via `httpx.AsyncClient`.
+- **Contract** — the §6 contract tests, provider- and consumer-side, homed in their own directory.
 - **E2E** — run against a deployed environment; advisory (non-blocking) in CI.
 
 ---

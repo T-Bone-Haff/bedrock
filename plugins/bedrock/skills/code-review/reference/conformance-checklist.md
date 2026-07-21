@@ -15,7 +15,7 @@ The concrete checks the SA (Solution Architect) hat runs, the full per-hat quest
 
 ## 1. Conformance checklist
 
-Run this against every change. Each item is a conformance question; the full rule behind it lives in the `application-code` and `testing` conventions — consult those when an item needs adjudication. An item that passes is a candidate **POSITIVE** finding (§3); an item that fails is an **add/fix** finding at the appropriate severity.
+Run this against every change. Each item is a conformance question; the full rule behind it lives in the owning skill's conventions — `application-code` and `testing` for the base items, `agent-code` and `frontend-code` for their sections below — consult those when an item needs adjudication. An item that passes is a candidate **POSITIVE** finding (§3); an item that fails is an **add/fix** finding at the appropriate severity.
 
 **Structure and style**
 - [ ] Module comment block present on every new file.

@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review a finished code change — a diff, a PR, or your own work before merging — for conformance, correctness, and fit. Applies the three-hat (LAA / SA / EA) method, produces severity-tagged findings (BLOCKING / MATERIAL / COSMETIC / POSITIVE), and includes a solo-operator self-review discipline for when there's no second reviewer. Use whenever reviewing code, checking a change before merge, doing a self-review of your own diff, or asking "is this ready", "review this PR", "does this conform", "what's wrong with this change". Reviews Python service code against the house engineering conventions; authoring that code is the application-code skill, and these conventions assume that stack — on a different stack, treat them as a rebind. Reviewing a design-record set (ADR/DDR/SDD) to convergence rather than a code change is the design-review-loop skill, which cites this skill for the LAA/SA/EA authority and the severity ladder.
+description: Review a finished code change — a diff, a PR, or your own work before merging — for conformance, correctness, and fit. Applies the three-hat (LAA / SA / EA) method, produces severity-tagged findings (BLOCKING / MATERIAL / COSMETIC / POSITIVE), and includes a solo-operator self-review discipline for when there's no second reviewer. Use whenever reviewing code, checking a change before merge, doing a self-review of your own diff, or asking "is this ready", "review this PR", "does this conform", "what's wrong with this change". Reviews code against the house engineering conventions — the conformance checklist carries sections for Python service code (the application-code skill), agent/LLM-call code (agent-code), and frontend code (frontend-code); authoring the code is those skills' job, and each section adjudicates against its owning skill's stack — on a different stack, treat the conventions as a rebind. Reviewing a design-record set (ADR/DDR/SDD) to convergence rather than a code change is the design-review-loop skill, which cites this skill for the LAA/SA/EA authority and the severity ladder.
 ---
 
 # Code Review
@@ -67,5 +67,5 @@ When there's no second reviewer, the review still happens — self-review is *re
 
 ## Where to look
 
-- `reference/conformance-checklist.md` — the concrete checklist the SA hat runs, the full per-hat question sets, the no-drift-confirmation discipline, out-of-scope triage, and retrospective review for pre-standard code.
+- `reference/conformance-checklist.md` — the concrete checklist the SA hat runs, the full per-hat question sets, the no-drift-confirmation discipline, out-of-scope triage, retrospective review for pre-standard code, and the checkers-and-validators discipline.
 - `templates/review-record.md` — a lean written review-of-record, for when a change warrants a durable review document rather than inline comments. Most reviews are inline; reach for the doc on substantial or architectural changes.

@@ -238,4 +238,4 @@ Keep **infrastructure configuration separate from reusable module code**. Two pa
 
 Separate configurations by **approval and management boundary**: a foundational layer (org IAM, folders, shared networking) managed by the platform owner, distinct from per-application infrastructure. Configurations with different blast radius or different approvers belong in different state files (see `03-state-and-environments.md` §2) and often different directories or repos.
 
-Always commit: all `.tf` files, the `.terraform.lock.hcl` dependency lock, a `.gitignore`, and a `README.md`. Never commit: state files, `.terraform/`, saved plan files, or `.tfvars` carrying secrets (see `03-state-and-environments.md` §3).
+Always commit: all `.tf` files, the `.terraform.lock.hcl` dependency lock, a `.gitignore`, and a `README.md`. Never commit: state files, `.terraform/`, saved plan files, or `.tfvars` carrying secrets (see `03-state-and-environments.md` §4).

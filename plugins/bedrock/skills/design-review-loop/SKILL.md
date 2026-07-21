@@ -5,9 +5,9 @@ description: Run a stance-isolated, authority-cited, arbiter-gated review of a d
 
 # Design-Review Loop
 
-Driving a **set** of design records (ADR / DDR / SDD) to convergence by stance-isolated adversarial review, gated so the loop halts only to surface a decision the operator has not yet made. This SKILL.md carries the method, the invariants, and the operator contract; the `references/` carry the runnable instrument charters and the convergence machinery this skill governs but does not re-implement.
+Driving a **set** of design records (ADR / DDR / SDD) to convergence by stance-isolated adversarial review, gated so the loop halts only to surface a decision the operator has not yet made. This SKILL.md carries the method, the invariants, and the operator contract; the `reference/` files carry the runnable instrument charters and the convergence machinery this skill governs but does not re-implement.
 
-**Binding:** design-record sets reviewed against a ratified **canonical-authority + stated-design-intent** substrate, run on the SOFIA `agent-loop` machinery (`$SOFIA_ROOT/agent-loop/`). The machinery, the substrate corpus, and the doctype family are the binding — declared, not hidden. A materially different binding (a non-ADR/DDR/SDD doctype family, a different authority corpus, a different runner) is a **rebind**: re-derive the stances and the authority binding, don't line-edit. The mechanical spine below is the portable part.
+**Binding:** design-record sets reviewed against a ratified **canonical-authority + stated-design-intent** substrate, run on the SOFIA `agent-loop` machinery (`$SOFIA_ROOT/agent-loop/`; `$SOFIA_ROOT` resolves to the operator's SOFIA repository checkout, an OS-level environment variable on the operator's stack — a consumer without it takes the Emulation path below). The machinery, the substrate corpus, and the doctype family are the binding — declared, not hidden. A materially different binding (a non-ADR/DDR/SDD doctype family, a different authority corpus, a different runner) is a **rebind**: re-derive the stances and the authority binding, don't line-edit. The mechanical spine below is the portable part.
 
 ## What this is, and what it is not
 
@@ -31,10 +31,10 @@ So: reviewing a **code change** → `code-review`. Reviewing or converging a **d
 One pass over the set:
 
 1. **Assemble, fetched fresh.** The full document set (per-pass fresh) + the frozen per-run substrate + an immutable prior-pass ledger snapshot. Each reviewer gets its own frozen copy.
-2. **Review, in isolation.** The three hats and (when scheduled) the coherence sweep each run as their **own LLM call in their own context**, judging from one altitude's authority only, unable to see any other reviewer's current-pass output. (`references/reviewer-instrument.md`.)
+2. **Review, in isolation.** The three hats and (when scheduled) the coherence sweep each run as their **own LLM call in their own context**, judging from one altitude's authority only, unable to see any other reviewer's current-pass output. (`reference/reviewer-instrument.md`.)
 3. **Gather, then admit.** All scheduled reviewers finish; *then* their emissions are admitted through the mechanical admission gate in a fixed order. No admission interleaves with any review.
-4. **Classify.** The arbiter classifies each admitted open finding `resolvable` vs `decision-bearing`, one isolated call per finding, biased conservative. (`references/arbiter-classifier.md`.)
-5. **Route.** The mechanical gate composes the ledger state into exactly one of three exits — `CONVERGED`, `CONTINUE`, `HALT_DECISION`. (`references/convergence-machinery.md`.)
+4. **Classify.** The arbiter classifies each admitted open finding `resolvable` vs `decision-bearing`, one isolated call per finding, biased conservative. (`reference/arbiter-classifier.md`.)
+5. **Route.** The mechanical gate composes the ledger state into exactly one of three exits — `CONVERGED`, `CONTINUE`, `HALT_DECISION`. (`reference/convergence-machinery.md`.)
 
 Across passes: `CONTINUE` returns to the author (fix the resolvable findings) and loops; `HALT_DECISION` surfaces to the operator; `CONVERGED` ends the run.
 
@@ -49,7 +49,7 @@ Across passes: `CONTINUE` returns to the author (fix the resolvable findings) an
 
 ## The instruments
 
-Four stance-isolated reviewers, each a negative test biased toward rejection — the counterweight to the confirmation bias the three-hat method otherwise carries. Charters are near-verbatim in `references/reviewer-instrument.md`; the LAA/SA/EA expansions and the severity ladder are `code-review`'s authority (expanded once below for orientation, inlined in the charters per the convention above). Each line names the acronym and the **design-record** question that altitude asks — the adaptation this skill owns.
+Four stance-isolated reviewers, each a negative test biased toward rejection — the counterweight to the confirmation bias the three-hat method otherwise carries. Charters are near-verbatim in `reference/reviewer-instrument.md`; the LAA/SA/EA expansions and the severity ladder are `code-review`'s authority (expanded once below for orientation, inlined in the charters per the convention above). Each line names the acronym and the **design-record** question that altitude asks — the adaptation this skill owns.
 
 - **LAA — Lead Application Architect — *what does this record decide?*** Claim-fidelity and scope: does each record decide what it claims, no more (smuggled decisions) and no less; are dependencies and consequences declared.
 - **SA — Solution Architect — *how does this record conform, and is it sound?*** Conformance to each ratified canonical authority in scope (the design-record adaptation: authorities, **not** a code checklist), plus internal correctness, cross-reference resolution, and substantiation of claimed gates.
@@ -60,14 +60,14 @@ POSITIVE findings are **survived-attack records**, not praise: a load-bearing su
 
 ## The arbiter
 
-One classification per finding, in isolation, authority fetched fresh: **`resolvable`** (an already-ratified authority + locus *determines* the fix — name it, or it is not resolvable) vs **`decision-bearing`** (resolving it requires a choice not yet ratified — a silence, an unratified fork, a newly-discovered choice, or an unresolved authority conflict). Conservative by construction, because the two errors are not symmetric: a false `resolvable` silently manufactures the operator's alignment — the loop resolves, on its own, a choice he never made — which is invisible and unrecoverable; a false `decision-bearing` costs one glance at an escalation he waves through. Escalate when unsure. POSITIVEs are never classified. (`references/arbiter-classifier.md`.)
+One classification per finding, in isolation, authority fetched fresh: **`resolvable`** (an already-ratified authority + locus *determines* the fix — name it, or it is not resolvable) vs **`decision-bearing`** (resolving it requires a choice not yet ratified — a silence, an unratified fork, a newly-discovered choice, or an unresolved authority conflict). Conservative by construction, because the two errors are not symmetric: a false `resolvable` silently manufactures the operator's alignment — the loop resolves, on its own, a choice he never made — which is invisible and unrecoverable; a false `decision-bearing` costs one glance at an escalation he waves through. Escalate when unsure. POSITIVEs are never classified. (`reference/arbiter-classifier.md`.)
 
 ## The convergence machinery
 
-The counter, the oscillation detector, and the router are pure functions over ledger state — **run, not reasoned** (see the bright line). `references/convergence-machinery.md` points to the runnable implementation and its spec and states the minimal ledger contract; it deliberately does not re-specify the gate in prose, because a prose gate is what gets emulated. Two facts the operator must hold:
+The counter, the oscillation detector, and the router are pure functions over ledger state — **run, not reasoned** (see the bright line). `reference/convergence-machinery.md` points to the runnable implementation and its spec and states the minimal ledger contract; it deliberately does not re-specify the gate in prose, because a prose gate is what gets emulated. Two facts the operator must hold:
 
 - **`decision-bearing` gates convergence regardless of severity.** An open decision-bearing finding halts the loop *even if* `open_cbm == 0` — even a COSMETIC one. Silently auto-resolving or silently dropping a discovered decision, however small, is the manufactured-alignment failure the loop exists to prevent.
-- **A non-decreasing open set is a decision, not a failure — and it splits two ways.** **Recurrence** (a finding closed then reopened) halts as **`oscillation`**: two altitudes are genuinely trading fixes and no higher authority settles it. **Plateau without recurrence** (the open counted count stops strictly decreasing while positive) halts as **`non-convergence`**: accumulation the operator must come rule, *not* a fight. Either surfaces to the operator *as a decision*, carrying the recurring/plateaued findings as payload (RBT-69 Piece 3 split the honest labels apart).
+- **A non-decreasing open set is a decision, not a failure — and it splits two ways.** **Recurrence** (a finding closed then reopened) halts as **`oscillation`**: two altitudes are genuinely trading fixes and no higher authority settles it. **Plateau without recurrence** (the open counted-severity count stops strictly decreasing while positive) halts as **`non-convergence`**: accumulation the operator must come rule, *not* a fight. Either surfaces to the operator *as a decision*, carrying the recurring/plateaued findings as payload.
 
 ## The author rule
 
@@ -78,7 +78,7 @@ The author fixes **only `resolvable` findings, and only by conforming to the cit
 This skill serves **both a human operator and an agent operator through one seam** — the same inputs (record set + frozen substrate), the same convergence signal, the same escalation shape — so the loop does not know or care which is on the other side. On `HALT_DECISION`:
 
 - **Surface unbundled, one finding at a time.** One escalation per finding; bundling decisions is the opposite of ratify-one-at-a-time. Each escalation carries the finding, why the arbiter judged it decision-bearing, a **direct recommended disposition with rationale** (never a bare menu; no multiple-choice popup), and the honest empirical floor where the evidence is thin.
-- **Coalesce the docket by decision, not by finding (RBT-71 Piece B).** The ledger records stay unbundled and distinct (RBT-69 counting semantics preserved) — this is a **presentation shape**, no runner change. When a halt's decision set is surfaced, the triage step first **proposes a grouping into distinct underlying decisions**: several finding-records that express *one and the same* decision (the same decision re-raised by multiple hats, or across passes) become **one ratification ask** — its member finding-ids listed, with the body-evidence per group. Ratification is per *decision*, not per finding record; groups are **splittable on operator demand**. This never merges two *distinct* decisions into one ask — that remains the prohibited bundling above; it collapses duplicate finding-records of a single decision into a single ruling, so a decision the operator has already made is not re-asked once per hat.
+- **Coalesce the docket by decision, not by finding.** The ledger records stay unbundled and distinct — the counting semantics are preserved; this is a **presentation shape**, no runner change. When a halt's decision set is surfaced, the triage step first **proposes a grouping into distinct underlying decisions**: several finding-records that express *one and the same* decision (the same decision re-raised by multiple hats, or across passes) become **one ratification ask** — its member finding-ids listed, with the body-evidence per group. Ratification is per *decision*, not per finding record; groups are **splittable on operator demand**. This never merges two *distinct* decisions into one ask — that remains the prohibited bundling above; it collapses duplicate finding-records of a single decision into a single ruling, so a decision the operator has already made is not re-asked once per hat.
 - **The ruling becomes ratified authority.** Once ruled, a decision-bearing finding becomes `resolvable` (or is closed) and the loop proceeds; the ruling is substrate for the next pass.
 
 **Two halt classes, kept distinct.** The **mechanical router-halt** fires on a decision-bearing *finding* — it is the loop's own halt. An **authoring-gate ratification** is a different gate: it fires on a decision being *made* while authoring or amending a record, and it is owned by `author-decision-record` (its deliberation gate), pointed to here, not restated. An operator experiences both; do not route an authoring decision through the finding-classifier, or a finding through the authoring gate.
@@ -95,7 +95,7 @@ A run's findings earn trust only under a **cold** audit — done after the run, 
 
 ## Operating the instrument
 
-The loop is a nondeterministic measuring instrument, and running one is its own discipline, distinct from defining it (this document) and from scoring a finished run (the cold audit above): how many draws buy the recall a target needs (union-of-k fresh runs — not repeat passes, not retries), calibration against pre-registered known answers and positive controls, one-change-per-generation change control with no cosmetic exemption for prompt bytes, per-stream attribution when an output stream shifts, and the dispositions for aborted runs, chartered watch streams, absent inputs, and gated actors that never fire. That discipline lives in `references/operating-the-instrument.md` — consult it before running, between generations, and whenever a stream shifts or goes quiet. It operates the loop; it does not alter the convergence semantics above.
+The loop is a nondeterministic measuring instrument, and running one is its own discipline, distinct from defining it (this document) and from scoring a finished run (the cold audit above): how many draws buy the recall a target needs (union-of-k fresh runs — not repeat passes, not retries), calibration against pre-registered known answers and positive controls, one-change-per-generation change control with no cosmetic exemption for prompt bytes, per-stream attribution when an output stream shifts, and the dispositions for aborted runs, chartered watch streams, absent inputs, and gated actors that never fire. That discipline lives in `reference/operating-the-instrument.md` — consult it before running, between generations, and whenever a stream shifts or goes quiet. It operates the loop; it does not alter the convergence semantics above.
 
 ## What is ratified, and what is held
 
@@ -109,9 +109,9 @@ When the runner cannot be executed, a manual review is permitted **only** as an 
 
 ## Where to look
 
-- `references/reviewer-instrument.md` — the four stance-isolated reviewer charters (shared Contract factored once; the four `### Stance` blocks are the rebind surface).
-- `references/arbiter-classifier.md` — the arbiter charter (resolvable/decision-bearing, conservative bias, output schema).
-- `references/convergence-machinery.md` — pointer to the runnable gate + ledger, and the minimal ledger contract; the machinery you **run**, not reason.
-- `references/operating-the-instrument.md` — the operating discipline: draws and unions, calibration, generation change control, attribution, run dispositions, and the FALSE-POS diagnosis.
-- **Reference instantiation** — `$SOFIA_ROOT/agent-loop/`: `design/` (the specs this skill forward-authors from), `agent_loop/` (the runner), `runs/` (real run artifacts). The runner execution and the first skill-driven convergence run are tracked in **RBT-67**.
+- `reference/reviewer-instrument.md` — the four stance-isolated reviewer charters (shared Contract factored once; the four `### Stance` blocks are the rebind surface).
+- `reference/arbiter-classifier.md` — the arbiter charter (resolvable/decision-bearing, conservative bias, output schema).
+- `reference/convergence-machinery.md` — pointer to the runnable gate + ledger, and the minimal ledger contract; the machinery you **run**, not reason.
+- `reference/operating-the-instrument.md` — the operating discipline: draws and unions, calibration, generation change control, attribution, run dispositions, and the FALSE-POS diagnosis.
+- **Reference instantiation** — `$SOFIA_ROOT/agent-loop/`: `design/` (the specs this skill forward-authors from), `agent_loop/` (the runner), `runs/` (real run artifacts). The runner's execution line and the first skill-driven convergence run are tracked in the operator's tracker, not here.
 - **Authority cited** — `code-review` (LAA/SA/EA expansions + the severity ladder); `author-decision-record` (the authoring-gate deliberation discipline).

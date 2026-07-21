@@ -15,7 +15,7 @@ These conventions are written against a specific stack: **the Anthropic Messages
 
 ## Scope of evidence (read honestly)
 
-These conventions are **deep on review-loop-class constructs** — chartered multi-actor loops with mechanical gates — earned from ~15 real runs across four targets and twelve prompt generations of a ratified, spec-first corpus. They are **proven-pending-cascade on service-embedded LLM calls and interactive orchestration** (n=0 at authoring): the generalizations are stated because their mechanisms are general, and the first real consumers in those populations are expected to teach this skill things the loop could not. Where a section's posture differs by population, the section says so.
+These conventions are **deep on review-loop-class constructs** — chartered multi-actor loops with mechanical gates — earned from ~15 real runs across four targets of a ratified, spec-first corpus. They are **proven-pending-cascade on service-embedded LLM calls and interactive orchestration** (n=0 at authoring): the generalizations are stated because their mechanisms are general, and the first real consumers in those populations are expected to teach this skill things the loop could not. Where a section's posture differs by population, the section says so.
 
 ## The execute-vs-reason bright line
 
@@ -30,7 +30,7 @@ The most load-bearing discipline in this skill. Any construct embedding LLM judg
 
 **The consequence that makes the rules composable: continuity lives in durable state, not in any agent's context.** A ledger-class durable spine — fresh-fetched by every actor, never inherited as conversation memory — is what makes terminal predicates computable at all. Design the state first; the gates follow.
 
-The reference instantiation of all six rules is the SOFIA agent-loop (`$SOFIA_ROOT/agent-loop/` — `design/` for the specs, `agent_loop/` for the runner). Point at it; do not restate it.
+The reference instantiation of all six rules is the SOFIA agent-loop (`$SOFIA_ROOT/agent-loop/` — `design/` for the specs, `agent_loop/` for the runner; `$SOFIA_ROOT` resolves to the operator's SOFIA repository checkout, an OS-level environment variable on the operator's stack). Point at it; do not restate it.
 
 ## Prompt artifacts
 

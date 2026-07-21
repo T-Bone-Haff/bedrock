@@ -16,12 +16,10 @@ The pipeline for a Vite/TypeScript SPA: verify gates → build → hosted deploy
 
 ## 1. The gate sequence
 
-The verify job runs `frontend-code`'s **gate quartet**, in ascending order of cost:
+The verify job runs `frontend-code`'s **gate quartet** — that skill owns the quartet's membership and every threshold in it; this leg orders the run and adds the one pipeline-only step:
 
-1. **Lint** — `npm run lint`.
-2. **Type-check** — `tsc -b` (standing alone or as the first half of `npm run build`; either way its failure is legible as a *type* failure).
-3. **Test + coverage floor** — vitest with the coverage gate as `frontend-code`'s testing reference configures it. The pipeline runs the floor; it does not own the number.
-4. **Build** — `vite build` must succeed on every PR; a merge that can't produce a deployable bundle is already broken.
+1. **The gate quartet**, per `frontend-code`'s declaration, in ascending order of cost, each gate run exactly as that skill and its testing reference configure it — the pipeline runs the gates; it owns none of them. Keep failures legible per gate (`tsc -b` standing alone or as the first half of `npm run build` — either way its failure reads as a *type* failure).
+2. **Build** — `vite build` must succeed on every PR. A pipeline gate, not a quartet member: a merge that can't produce a deployable bundle is already broken.
 
 Installs are `npm ci` from the lockfile — never `npm install` in CI. Node version is pinned in the workflow and matches the repo's declared engine.
 
@@ -52,7 +50,7 @@ Homed here, set declaratively in `firebase.json` `headers`:
 
 - **Hashed assets** (`/assets/**` — everything Vite emits with a content hash): `Cache-Control: public, max-age=31536000, immutable`. The hash in the filename is the cache key; the header makes the CDN and browser honor it.
 - **`index.html` and anything served un-hashed**: `Cache-Control: no-cache` — revalidate every time. The entry document is the pointer into the hashed graph; caching the pointer is how users get a stale app with fresh assets, the classic SPA cache failure.
-- **SPA rewrite:** all routes → `/index.html`, so deep links survive refresh. Root-absolute asset paths (the HEX convention) compose with this; the rewrite must not shadow `/assets/**`.
+- **SPA rewrite:** all routes → `/index.html`, so deep links survive refresh. Root-absolute asset paths (the house convention, proven on the first frontend consumer) compose with this; the rewrite must not shadow `/assets/**`.
 
 ## 6. The CSP header and its companions
 
