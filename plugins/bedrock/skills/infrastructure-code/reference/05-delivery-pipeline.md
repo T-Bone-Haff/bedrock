@@ -85,7 +85,7 @@ The infrastructure delivery pipeline (`terraform plan/apply`) and the applicatio
 
 This isn't bureaucracy: infra changes and app changes have different blast radius, different reviewers, and different cadence (infra changes are rarer and higher-consequence). Path-filtered separate workflows keep a Terraform change from triggering an app rebuild and vice versa. Shared org-level gates — exactly-one `semver:` label, branch-name allowlist — apply to both, but the substantive jobs are disjoint.
 
-*The application build/test/deploy pipeline is its own concern and is not authored here — it's the boundary this skill shares with the future app-CI/CD skill. This reference covers the infra side only.*
+*The application build/test/deploy pipeline is its own concern and is not authored here — it's the boundary this skill shares with the `app-delivery-pipeline` skill. This reference covers the infra side only.*
 
 ---
 
