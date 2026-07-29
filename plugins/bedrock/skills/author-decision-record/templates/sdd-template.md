@@ -16,7 +16,7 @@
 | **Supersedes** | {{None — new service. OR: prior-service-name (retired). OR: SDD-NNN v{{X.Y.Z}}}} |
 | **References** | {{upstream ADR-NNN / DDR-NNN this service implements}} |
 
-<!-- An SDD records how one service is built. Before authoring, identify the upstream
+<!-- FILL: An SDD records how one service is built. Before authoring, identify the upstream
      ADRs/DDRs it implements and confirm they're ACCEPTED (not PROPOSED) — designing against a
      moving principle produces rework. Include only the sections this service needs; delete the
      migration sections for a greenfield service. -->
@@ -82,4 +82,9 @@ Upstream ADRs/DDRs · sibling/superseded SDDs · engineering standards this depe
 |---|---|---|---|
 | 0.1.0 | YYYY-MM-DD | {{ticket}} | Initial draft |
 
-<!-- Append new rows at the top. 0.X.0 for PROPOSED-phase revisions; 1.0.0 at first ACCEPTED. -->
+<!-- STANDING — do not delete. Append new rows at the TOP. 0.X.0 for
+     PROPOSED-phase revisions; 1.0.0 at first ACCEPTED. ONE LINE per row:
+     version, date, ticket, and a summary of at most 200 characters — the
+     deliberation goes to the ticket. Prior rows are frozen; the row for the
+     version you are currently authoring is amended in place until that
+     version commits. -->
