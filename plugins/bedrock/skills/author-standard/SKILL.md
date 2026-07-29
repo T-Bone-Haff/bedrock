@@ -67,6 +67,6 @@ When a governing posture has already shifted, bringing old artifacts up is **pro
 
 ## Boundaries with sibling skills
 
-- **Authoring a single ADR / DDR / SDD** → the `author-decision-record` skill. That skill owns decision-record *instances*, including their deliberation gate; this skill owns the reusable *class* — including the templates those records are written from.
+- **Authoring a single decision record — ADR, DDR, SDD, or construct spec** → the `author-decision-record` skill, which routes among them (a construct spec's discipline is then `author-construct-spec`'s). That skill owns decision-record *instances*, including their deliberation gate; this skill owns the reusable *class* — including the templates those records are written from.
 - **Reviewing a finished change** → the `code-review` skill. This skill authors the authorities that reviews cite.
 - **Mechanical skill packaging, zipping, and eval tooling** → the generic `skill-creator`. Use it downstream of this skill's judgments; it does not decide whether the artifact should exist or what authority it rests on.

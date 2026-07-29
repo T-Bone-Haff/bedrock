@@ -15,7 +15,7 @@
 | **Supersedes** | {{None — new ruling. OR: DDR-NNN v{{X.Y.Z}}}} |
 | **References** | {{upstream ADR(s)/DDR(s) this implements}} |
 
-<!-- A DDR records a specific design ruling — narrower than an ADR, deeper in technical
+<!-- FILL: A DDR records a specific design ruling — narrower than an ADR, deeper in technical
      detail. It needs either spike findings or a scoping output behind it; a DDR without
      empirical or deliberative grounding gets amended every time reality intrudes. DDRs are
      shape-flexible: include the substantive design sections this ruling needs, skip the rest.
@@ -66,4 +66,9 @@ Upstream ADRs this implements · sibling DDRs it coordinates with · SDDs that i
 |---|---|---|---|
 | 0.1.0 | YYYY-MM-DD | {{ticket}} | Initial draft |
 
-<!-- Append new rows at the top. 0.X.0 for PROPOSED-phase revisions; 1.0.0 at first ACCEPTED. -->
+<!-- STANDING — do not delete. Append new rows at the TOP. 0.X.0 for
+     PROPOSED-phase revisions; 1.0.0 at first ACCEPTED. ONE LINE per row:
+     version, date, ticket, and a summary of at most 200 characters — the
+     deliberation goes to the ticket. Prior rows are frozen; the row for the
+     version you are currently authoring is amended in place until that
+     version commits. -->

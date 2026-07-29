@@ -14,7 +14,7 @@
 | **Authors** | {{Author Name}} ({{roles}}) |
 | **Supersedes** | {{None — new principle. OR: ADR-NNN v{{X.Y.Z}}}} |
 
-<!-- An ADR records a platform principle: a commitment that holds regardless of which
+<!-- FILL: An ADR records a platform principle: a commitment that holds regardless of which
      services exist. Before authoring, have real deliberation to draw on — if you'd be
      inventing the Rationale or Alternatives, stop and deliberate first. Include only the
      sub-decisions this ADR actually constrains; omit what doesn't apply rather than padding. -->
@@ -65,4 +65,9 @@ Downstream DDRs/SDDs that implement this · sibling or superseded ADRs · engine
 |---|---|---|---|
 | 0.1.0 | YYYY-MM-DD | {{ticket}} | Initial draft |
 
-<!-- Append new rows at the top. 0.X.0 for PROPOSED-phase revisions; 1.0.0 at first ACCEPTED. -->
+<!-- STANDING — do not delete. Append new rows at the TOP. 0.X.0 for
+     PROPOSED-phase revisions; 1.0.0 at first ACCEPTED. ONE LINE per row:
+     version, date, ticket, and a summary of at most 200 characters — the
+     deliberation goes to the ticket. Prior rows are frozen; the row for the
+     version you are currently authoring is amended in place until that
+     version commits. -->
