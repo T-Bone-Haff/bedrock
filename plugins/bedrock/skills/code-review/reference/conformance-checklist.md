@@ -54,15 +54,19 @@ Run this against every change. Each item is a conformance question; the full rul
 
 **Frontend code** (when the change touches frontend code — adjudicate against the `frontend-code` conventions)
 - [ ] Layered import direction respected — no surface imports a concrete client or vendor SDK; seam interfaces consumed via providers.
-- [ ] No hardcoded visual values — color, type, spacing, and motion come from the design tokens; runtime config from the typed config module, no scattered `import.meta.env` reads.
+- [ ] No hardcoded visual values — color, type, spacing, and motion come from the design tokens; runtime config from the typed config module, no scattered `import.meta.env` reads; media assets referenced through the typed manifest, never by string literal.
 - [ ] Type-check and strict-type-checked lint clean; type escape hatches (`@ts-expect-error`, `as`-casts) carry site justifications.
 - [ ] Prototype-origin code was re-authored at hardening, not lint-fixed — the prototype rode in as design intent, and tests specifying the kept behavior landed with the re-author.
-- [ ] Generated contract types regenerated and drift-checked, never hand-edited; no hand-written mirror of a backend model.
+- [ ] Generated contract types regenerated and drift-checked, never hand-edited; no hand-written mirror of a backend model — vendor-surface declarations (Web Speech, prefixed constructors) are not mirrors, and are declared once in a single types module.
 - [ ] XSS escape hatches reviewed — `dangerouslySetInnerHTML` only over sanitized content, URL props scheme-validated, no eval-class constructs.
 - [ ] No credentials in browser storage; no secrets in client config or the bundle.
-- [ ] Accessibility holds at the floor — semantic elements, accessible names on interactive elements, keyboard path intact, focus managed on navigation and dialog changes, motion respects reduced-motion.
-- [ ] Tests query by role and accessible name; mechanism-layer coverage floor met honestly (no omit-list or directory-placement dodges).
-- [ ] New dependency adoptions justified — architecture-shaping, recurring-cost, or proprietary-license adoptions carry a decision record.
+- [ ] Accessibility holds at the floor — semantic elements, accessible names on interactive elements, keyboard path intact, focus managed on navigation and dialog changes, motion respects reduced-motion; target-size findings check 2.5.8's exceptions before demanding a rebuild.
+- [ ] Tests query by role and accessible name; mechanism-layer coverage floor met honestly — exclusions limited to tautologically-assertable code, claimed at the site, with the excluded line count reported; no directory-placement dodges.
+- [ ] New dependency or media-asset adoptions justified — architecture-shaping, recurring-cost, or proprietary-license adoptions are record exceptions.
+- [ ] Surfaces are responsive — a fixed-frame or scaled-to-fit surface carries a record exception naming its 1.4.10 claim; fluid type steps are rem-anchored and within the 2.5× ratio.
+- [ ] Browser media singletons (`AudioContext`, `MediaStream`, `SpeechRecognition`) have one owner reached through a seam, none constructed at point of use; streaming sessions tear down deterministically on stop and on unmount.
+- [ ] Permission-gated device access requested on a user gesture with its outcome modeled as state (unavailable / dismissed / denied / granted); the catch scopes to the permission call; no fallback simulates the unavailable modality.
+- [ ] Time-sequenced work lives in a hook or `lib/` module exposing start and cancel; cancellation settles every promise it created; no hand-rolled cancellation token stands in for `AbortSignal`.
 
 **Process**
 - [ ] All automated gates passed (lint, format, type-check, tests, coverage, security scan).
