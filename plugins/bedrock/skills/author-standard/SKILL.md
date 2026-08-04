@@ -1,6 +1,6 @@
 ---
 name: author-standard
-description: Author — or decide whether to author — a reusable standard: a Claude skill, an engineering convention set, a template, or any artifact meant to govern future work. Carries the sourcing rule (forward-author from established authority, never back-distill from an uncontrolled build), the membership test (task-triggered skill vs. always-on principle), binding declaration, shape and hardening disciplines, and the proving step (cascade onto a real consumer). Use whenever creating or extending a skill, standard, convention document, checklist, or template; deciding whether something should be a skill; or distilling a body of conventions into reusable artifacts. Authoring a single decision record is the author-decision-record skill; mechanical skill packaging and evals are the generic skill-creator — this skill governs whether to author, from what authority, and how to prove the result.
+description: Author — or decide whether to author — a reusable standard: a Claude skill, an engineering convention set, a template, or any artifact meant to govern future work. Carries the sourcing rule (forward-author from established authority, never back-distill from an uncontrolled build), the membership test (task-triggered skill vs. always-on principle), binding declaration, shape and hardening disciplines, the exception ladder, and the proving step (cascade onto a real consumer). Use whenever creating or extending a skill, standard, convention document, checklist, or template; deciding whether something should be a skill; or distilling a body of conventions into reusable artifacts. Authoring a single decision record is the author-decision-record skill; mechanical skill packaging and evals are the generic skill-creator — this skill governs whether to author, from what authority, and how to prove the result.
 ---
 
 # Author a Standard
@@ -40,6 +40,19 @@ And remember what a form can and cannot give: **shape, not substance.** A blank 
 - **Point, don't mirror.** When any reusable or orientation artifact — a skill, a README, a repo-root CLAUDE.md, a template — needs an authority's enumerated content (a vocabulary, a skill list, a taxonomy, a mapping owned elsewhere), point to the authority; don't restate it inline. An inline restatement is a standing drift surface: it goes stale the next time the authority moves, and "fixing" it by re-copying just re-plants it. The decision-record-body form of this rule lives in `author-decision-record`; this is the class-level rule it instantiates.
 - **Name the discriminating axis at the assignment site.** When a value or rule is justified by multiple entangled properties, every later assignment that matches one axis but not another reads as a contradiction until the discriminator is stated where the assignment happens — not only where it was first derived.
 - **Pressure needs an exit.** Prohibiting a gaming behavior without releasing the pressure that produces it just relocates the failure. Pair every anti-gaming rule with a sanctioned exit in the fail-safe direction (at the cap, drop — don't re-label).
+
+### The exception ladder
+
+A standard needs sanctioned ways not to apply, or it gets violated silently. Two tiers, defined once here and cited by name:
+
+- **Site exception** — the reason is stated at the site (in the code, the commit, or the artifact) and work proceeds. No external artifact, no second reader. The house misfit rule is this tier's form for *"the convention doesn't fit here"*; override-with-rationale is its form for *"the convention fits and this instance takes a different value."*
+- **Record exception** — the departure is argued in a decision record before it lands. Reserved for departures that change what downstream work may assume: an architecture-shaping dependency, abandoning a generated contract, a whole-project posture.
+
+**Site is the default; escalating to record needs its own reason.** Naming a heavier rung invites reaching for it, and a record is paid for by every future reader.
+
+**A rebind is not an exception.** It declares that the standard's binding does not hold and the equivalent conventions must be re-derived. Filing a rebind as an exception is how a standard ends up claiming authority over work it never bound.
+
+Carrier artifacts declare their binding to this ladder and use its names; they do not define their own tiers.
 
 ## Prove it (the standard earns trust against a consumer)
 

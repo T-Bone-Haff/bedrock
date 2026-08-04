@@ -3,9 +3,7 @@
 The house testing discipline for frontend code. **Deliberately separable and
 self-contained**: this file can be consumed by a quality-role actor without the
 authoring sections of `SKILL.md` — the split trigger that would graduate it to
-its own home is stated in SKILL.md § Where to look. The service-side testing
-skill is pytest-bound and names any other framework a rebind; this file *is*
-that rebind for the frontend stack, derived fresh rather than line-edited.
+its own home is stated in SKILL.md § Where to look.
 
 ## Framework stance
 
@@ -35,10 +33,8 @@ you.* Its operational consequence is a house rule:
 | Seams (API client ↔ backend contract) | Contract tests | request/response shapes asserted against the generated spec types |
 | Mocks | Conformance by construction | mocks implement the seam interface; the type system holds them to it |
 
-**E2e is an open surface, not a fabricated one.** No governed frontend carries
-an e2e harness yet; forward-authoring a browser-automation discipline against
-no consumer would be fabrication. It is adopted with its own ruling when a
-real need arrives.
+**E2e is not governed here.** No house convention exists for browser-automation
+testing; one is adopted when a real need arrives.
 
 ## The TDD split (mechanism vs. experience)
 
@@ -53,8 +49,7 @@ stated here so every assignment site can cite it:
 - **Experience code** — surfaces, visual behavior, motion — is specified
   **test-at-hardening** per the experience-first path: the prototype discovers
   the behavior; hardening writes it down as tests while re-authoring each
-  piece. Test-at-hardening is the honest frontend analogue of test-first, and
-  saying so plainly beats pretending prototypes were TDD'd.
+  piece. Test-at-hardening is the frontend analogue of test-first.
 
 Bug fixes need a reproducing test that fails before the fix lands, on either
 side of the axis.
@@ -67,22 +62,40 @@ specification, and is a gamed number by construction.
 
 - **Mechanism layers** (`lib/`, `hooks/`, seams/clients, engine logic) carry
   an **enforced floor: 90% line coverage** — the house default constant
-  applied to the derived form; declared as a default with
-  override-with-rationale, not scripture.
+  applied to the derived form; declared as a default, and **override is a site
+  exception** with its rationale.
 - **Surfaces** are exercised through component tests with coverage **measured
   and reported but ungated initially**. Whether surfaces earn their own gate,
-  and at what number, is an **open ruling deferred to the first proving
-  pass** — stated here so the deferral reads as a decision, not a gap.
+  and at what number, is not yet ruled.
 
-**Anti-gaming rules transfer whole from the house discipline:**
+**The tautological-assertion exclusion, and its bound.** Code that can only be
+asserted tautologically is excluded from the mechanism floor. A test asserting
+that an audio graph was wired the way the wiring code wires it fails when the
+code changes, not when the behavior is wrong — it specifies nothing, and paying
+mock ceremony for it buys a coverage number rather than a specification.
 
-- The omit list holds only genuinely untestable infrastructure; no testable
-  module escapes measurement.
+**The test: would the assertion fail when the behavior is wrong, or only when
+the code changes?**
+
+**Streaming-session state is not excluded.** Connection state, permission state,
+transcript accumulation, level derivation and teardown ordering are all
+observable and specifiable, and they stay under the gate.
+
+The exclusion is claimed at the site — the omit entry carries its reason where it
+omits — and **the gate reports the excluded line count alongside the floor.** An
+exclusion that grows silently turns a 90% floor over the remainder into a number
+that means nothing.
+
+**Anti-gaming rules:**
+
+- The omit list holds only what the exclusion above covers, plus infrastructure
+  with no behavior to specify; no module with assertable behavior escapes
+  measurement.
 - **Directory placement is not a dodge.** Moving mechanism logic into a
   surface file to escape the gated layers is the named cheat; the layering
   rules in SKILL.md make it a violation independently of coverage.
 - Coverage is confirmed at the gate quartet (type-check, lint, tests,
-  coverage), honestly — a threshold met by omission is not met.
+  coverage), honestly — a threshold met by **undeclared** omission is not met.
 
 ## Test hygiene
 

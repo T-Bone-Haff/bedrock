@@ -48,7 +48,7 @@ Installs are `npm ci` from the lockfile — never `npm install` in CI. Node vers
 
 Homed here, set declaratively in `firebase.json` `headers`:
 
-- **Hashed assets** (`/assets/**` — everything Vite emits with a content hash): `Cache-Control: public, max-age=31536000, immutable`. The hash in the filename is the cache key; the header makes the CDN and browser honor it.
+- **Hashed assets** (`/assets/**` — Vite's fingerprinted build output): `Cache-Control: public, max-age=31536000, immutable`. The hash in the filename is the cache key; the header makes the CDN and browser honor it. **The header trusts the path, so the path must hold only fingerprinted output** — anything copied verbatim from `publicDir` ships outside `/assets/`, because an un-hashed file under this header is cached for a year with no way to invalidate it. (`frontend-code` owns the authoring side: assets reach the bundler through the manifest.)
 - **`index.html` and anything served un-hashed**: `Cache-Control: no-cache` — revalidate every time. The entry document is the pointer into the hashed graph; caching the pointer is how users get a stale app with fresh assets, the classic SPA cache failure.
 - **SPA rewrite:** all routes → `/index.html`, so deep links survive refresh. Root-absolute asset paths (the house convention, proven on the first frontend consumer) compose with this; the rewrite must not shadow `/assets/**`.
 

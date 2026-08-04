@@ -1,6 +1,6 @@
 ---
 name: frontend-code
-description: House engineering standard for authoring frontend code on the house web stack — React components and hooks, TypeScript strictness, Vite toolchain, plain-CSS styling on design tokens, the experience-first prototype→harden path, the OpenAPI typed-contract seam to the Python backend, frontend testing with vitest and Testing Library, accessibility to WCAG 2.2 AA, client-side security, and npm dependency discipline. Use whenever writing, structuring, scaffolding, or conforming frontend code: building a component, surface, or hook, hardening a prototype into governed code, wiring the API client or generating types from the backend contract, testing a component, setting up a frontend repo, adding routing or config or token-based styling, or checking whether frontend code follows the conventions. Assumes TypeScript + React + Vite + plain CSS on design tokens + vitest/Testing Library, deliberately without a component library; a materially different choice on any axis is a rebind, not a line-edit — version movement within an axis is a currency concern, never a rebind. Design-token values live in each repo's design authority — this skill points at them, never restates them. Reviewing a finished frontend diff is the code-review skill, whose conformance checklist carries the Frontend code section; the backend side of the contract seam is the application-code skill; the build/deploy pipeline belongs to the app-delivery-pipeline skill.
+description: House engineering standard for authoring frontend code on the house web stack — React components and hooks, TypeScript strictness, Vite toolchain, plain-CSS styling on design tokens, responsive layout on container queries and fluid token scales, the experience-first prototype→harden path, the OpenAPI typed-contract seam to the Python backend, browser media and device-permission lifecycles, media-asset governance, frontend testing with vitest and Testing Library, accessibility to WCAG 2.2 AA, client-side security, and npm dependency discipline. Use whenever writing, structuring, scaffolding, or conforming frontend code: building a component, surface, or hook, hardening a prototype into governed code, making a surface responsive or choosing breakpoints, wiring the API client or generating types from the backend contract, adding audio/video/microphone/camera or any permission-gated device access, adding or referencing media assets, testing a component, setting up a frontend repo, adding routing or config or token-based styling, or checking whether frontend code follows the conventions. Assumes TypeScript + React + Vite + plain CSS on design tokens + vitest/Testing Library, deliberately without a component library; a materially different choice on any axis is a rebind, not a line-edit — version movement within an axis is a currency concern, never a rebind. Design-token values live in each repo's design authority — this skill points at them, never restates them. Reviewing a finished frontend diff is the code-review skill, whose conformance checklist carries the Frontend code section; the backend side of the contract seam is the application-code skill; the build/deploy pipeline belongs to the app-delivery-pipeline skill.
 ---
 
 # Frontend Code
@@ -21,54 +21,25 @@ CSS framework or component library, a different test framework — is a
 **rebind**: re-derive the equivalent conventions, don't line-edit these.
 
 **Version movement within an axis is not a rebind — it is a currency
-concern.** The frontend ecosystem versions faster than any stack the house has
-bound; pinning point versions into the binding would fossilize the standard
-against whichever consumer lags. Maintenance of version currency is a separate,
+concern.** Maintenance of version currency is a separate,
 ongoing concern from conformance to these conventions.
 
 *Currency note (dated 2026-07-21, verify at adoption):* authored against
 React 19.2 public guidance, TypeScript ~5.8 documentation, typescript-eslint
 v8.x shared configs, and current Vite documentation (v8, Rolldown-bundled,
-Node 20.19+ baseline). The first proving consumer runs React 18 / Vite 6 —
-inside the binding; its version lag is a maintenance item, not a conformance
-finding.
+Node 20.19+ baseline).
 
-**No component library is a position, not an accident.** The house ships a
+**No component library.** The house ships a
 bespoke design system: design tokens are the single visual source of truth, and
 components are authored against them directly. A component library imports a
 second design authority and a standing fight between its opinions and the
-tokens. Adopting one is a rebind-grade departure and takes a decision record.
-
-## Scope of evidence (read honestly)
-
-This skill is **forward-authored from established public authority** — the
-Rules of React, TypeScript and typescript-eslint strict guidance, Testing
-Library's guiding principles, WCAG 2.2, OWASP client-side guidance — not
-distilled from any build. Its proving base is **n=1**: one real frontend
-consumer, with the first governed build serving as the cascade. Sections with
-no live instance yet say so where they stand — the typed-contract seam has no
-live backend behind it, and the credential-handling rules predate any real
-auth surface. Expect the proving cascade to teach this skill things no
-authority document could; that is the proving step working. The second
-frontend build is the second proving pass and is what begins retiring the n=1
-caveat.
-
-**Evidence notes are not a compliance dial.** Every convention in this skill
-binds at full force from its landing, thin evidence base and all. The notes
-above and the per-section evidence lines are addressed to the skill's authors
-and its proving passes — they mark where the *standard* expects to learn,
-never where a *consumer* may loosen. The only sanctioned exit from any
-convention here is the misfit rule: a stated exception with its reason, at the
-site, every time. "It wasn't proven yet" is not an exception; it is not
-addressed to you.
+tokens. Adopting one is a **rebind** — re-derive the equivalent conventions
+rather than line-edit these — and the rebind is recorded.
 
 ## The experience-first path
 
 The house builds front-ends **experience-first**: prototype the experience
-fast, then harden into conformant code. This path is the paved road, and the
-conventions are shaped to serve it — a standard that treats the working style
-as an exception invites silent non-conformance; this one names the free zone
-so the fence around it is real.
+fast, then harden into conformant code. This path is the paved road.
 
 1. **Gates bind at the governed-repo boundary, not at the keyboard.**
    Conformance applies to code entering a governed repo's source tree.
@@ -92,7 +63,7 @@ so the fence around it is real.
    prototype discovered; hardening specifies it in tests as each piece is
    re-authored. The full split lives in `reference/testing.md`.
 
-The failure modes run both directions and both are named: prototype code
+The failure modes run both directions: prototype code
 drifting into production un-re-authored (the review checklist catches it), and
 conformance machinery leaking into prototype space and killing the speed the
 flow exists for.
@@ -104,7 +75,14 @@ fit the work in front of you, state the exception and why in the code or
 commit, then proceed — don't silently violate it, and don't contort the work
 to satisfy a rule that doesn't earn its place here. A recurring misfit is a
 signal the convention should change, not a thing to keep working around.
-(House-wide rule, carried verbatim across its carrier skills.)
+
+Thin evidence is not exception grounds. Every convention here binds at full
+force from its landing; "it wasn't proven yet" is neither a site nor a record
+exception.
+
+**Exception tiers are `author-standard`'s ladder** — *site exception* (this
+rule's own form, plus override-with-rationale) and *record exception*. This
+skill binds to those names and defines none of its own.
 
 ## Always-apply invariants
 
@@ -120,12 +98,19 @@ These hold for every module in governed frontend code:
    clients`, with `lib/` and shared types at the base. A surface importing a
    concrete client or a vendor SDK is a violation — surfaces depend on seam
    interfaces via providers.
-4. **Config from one source, twice.** Every visual value — color, type,
+4. **Config from one source, thrice.** Every visual value — color, type,
    spacing, motion — comes from the design tokens; nothing visual is
    hardcoded. Runtime config flows through one typed config module; scattered
-   `import.meta.env` reads are the frontend's scattered-`os.environ`.
-5. **Outbound HTTP flows through the canonical seam client** (§ The
-   typed-contract seam) — never scattered per-call fetches.
+   `import.meta.env` reads are the frontend's scattered-`os.environ`. Every
+   shipped media asset — audio, video, imagery, fonts — is reached through one
+   typed manifest, never by string literal at the point of use (§ Media assets).
+5. **A resource that must be singular flows through one owner.** Outbound HTTP
+   goes through the canonical seam client (§ The typed-contract seam) — never
+   scattered per-call fetches. Browser media singletons — `AudioContext`,
+   `MediaStream`, `SpeechRecognition` and their kin — go through one provider or
+   module singleton reached through a seam, never constructed at point of use
+   (§ Browser media). The reasons differ — uniformity for the client,
+   browser-imposed scarcity for the media singletons — and the rule does not.
 6. **Errors are rendered states.** Typed error states at the seams, error
    boundaries at the surface layer; no silent swallowing. No stray `console`
    output in production paths — console noise is neither error handling nor
@@ -137,12 +122,20 @@ These hold for every module in governed frontend code:
    § Client security.
 10. **The accessibility floor is WCAG 2.2 AA** — § Accessibility. Semantic
     HTML first; everything keyboard-operable.
+11. **Responsive by default.** Every surface adapts to its environment. A
+    fixed-frame or fixed-aspect surface is a **record exception** that names
+    which part of it claims WCAG 1.4.10's two-dimensional-layout exception, and
+    why (§ Responsive layout).
+12. **Permission-gated device access is requested on an explicit user gesture,
+    and its outcome is state.** Microphone, camera, geolocation, clipboard —
+    never requested at mount, and the outcome is modeled as first-class
+    rendered state, never swallowed (§ Browser media).
 
 **What deliberately does not transfer from the service-side house shape:** the
 async-first invariant (the browser's execution model makes it meaningless as a
 law) and the data-classification tier machinery (server-owned; the client
 carries exactly one line of it — no sensitive data into client-side logs or
-third-party analytics). Declared misfits, not oversights.
+third-party analytics).
 
 ## Components and hooks
 
@@ -157,10 +150,146 @@ third-party analytics). Declared misfits, not oversights.
   reflex — the seam/provider pattern covers cross-cutting dependencies first.
 - **Effects synchronize with external systems; they are not a data-flow
   tool.** Per React's own guidance: if it can be computed in render or handled
-  in an event handler, it is not an effect.
+  in an event handler, it is not an effect. **Components subscribe to external
+  event sources through `useSyncExternalStore`**, not `useEffect` + `setState` —
+  the latter is this same violation in its most common disguise.
 - **Props are typed interfaces, and seams stay narrow.** A component's props
   are its contract; passing whole objects where two fields suffice couples the
   surface to a shape it doesn't own.
+
+**Time-sequenced work has one owner and one cancellation contract.**
+Choreography — scheduled sequences, staged animation, timed media — lives in a
+hook or `lib/` module, never inline in a surface, and exposes start and cancel.
+Internals are free; **the seam is uniform.** `AbortSignal` is the house currency
+for that seam — hand-rolled cancellation tokens (monotonic sequence counters,
+timer-handle arrays exposed as the public contract) are the named anti-pattern.
+`AbortSignal.timeout()` and `AbortSignal.any()` are convenient where available;
+both reached baseline only in 2024, so neither is required.
+
+A cancelled sequence must **settle** every promise it created: a pending timer
+resolving a promise is cancelled by resolving or rejecting it, never by dropping
+the timer, or the awaiting frame is retained forever with its whole closure.
+Timer registries release fired entries.
+
+A timeline is **mechanism code** — fake-timer testable, under the coverage gate.
+It does not qualify for the tautological-assertion exclusion
+(`reference/testing.md`).
+
+## Responsive layout
+
+**Responsive is the default (invariant #11).** This section is how that gets
+built; the accessibility criteria it serves are §Accessibility's floor, cited
+rather than restated.
+
+**The two query kinds answer different questions.** Media queries answer *what is
+the environment?* — viewport, orientation, media type, and user preferences
+including `prefers-reduced-motion` and `prefers-color-scheme`. Container queries
+answer *how much room does this component have?* Page shell and environment
+response are media-queried; component-level adaptation is container-queried.
+**Neither is a fallback for the other.**
+
+**Container-query friction, named so it isn't discovered the hard way:** a
+container cannot query itself — measure an ancestor, and expect a wrapper
+element; flex items need explicit sizing or the container collapses; custom
+properties do not resolve inside container queries. **Size queries are baseline;
+style queries and scroll-state queries are not** — style queries lack Firefox,
+scroll-state is Chromium-only. Building on a non-baseline query is a site
+exception with the support gap stated.
+
+**Fluid type and space express on the design tokens.** Fluid steps use `clamp()`
+with a `rem` component in the middle value — pure `vw` does not scale under
+browser zoom and fails SC 1.4.4. **Every fluid step satisfies `max ≤ 2.5 × min`**,
+which is what keeps 200% reachable at every viewport width. As with contrast, the
+values live in the repo's design-token authority and this skill points at them:
+**the token authority carries the named obligation that every fluid step is
+rem-anchored and inside the 2.5× ratio.**
+
+**Fixed-frame surfaces.** A surface authored to one viewport and scaled to fit is
+a **record exception** (#11). Two criteria pull apart, and the record must treat
+them differently:
+
+- **SC 1.4.10 Reflow is arguable.** Its exception covers content requiring
+  two-dimensional layout for usage or meaning — maps and diagrams, data tables,
+  games, presentations, persistent toolbars, and layouts where consistent
+  orientation to related sections is important for understandability or
+  functionality. Instrument panels and HUDs live here. The record **names which
+  part of the surface claims the exception and why**; the exception does not
+  extend to surrounding chrome, which reflows on its own.
+- **SC 1.4.4 Resize Text is not.** It carries no such exception. A frame scaled
+  by a factor computed from viewport size cancels browser zoom exactly — halve
+  the viewport, halve the scale, rendered size unchanged — so zoom becomes a
+  mathematical no-op and no scaling mechanism remains. **`transform: scale()`
+  fitted to the viewport is a named anti-pattern**, not a layout technique.
+
+Where the record is granted, the obligations are: a **declared supported viewport
+range**; AA met **within** that range, not merely at the design size; a genuine
+text-resize path; and interactive target sizes evaluated **at the minimum
+supported scale rather than at scale 1**, against §Accessibility's target-size
+floor and its exceptions.
+
+## Browser media
+
+Invariant #5 says who owns a media singleton. This section says what its life
+looks like, and what happens when the user says no.
+
+**Static playback and streaming sessions are different lifecycles, and both are
+named.**
+
+*Static* — pre-rendered clips, synthesized one-shot cues — is bounded and
+fire-and-forget. The context may be long-lived; caches are keyed and bounded;
+teardown rides app teardown.
+
+*Streaming* — live capture, live synthesis, a duplex transport — is a
+**session**. Exactly one live session at a time. Teardown is deterministic and
+ordered, on stop and on unmount: release `MediaStream` tracks, disconnect nodes,
+release the context. Cancellation is explicit, never implied by garbage
+collection — the cancellation contract in §Components and hooks applies. Where a
+network transport is involved, reconnect posture is stated.
+
+**Device permission.** Invariant #12 requires the request on a user gesture and
+the outcome as state. The outcomes to model are at least: **unavailable** (no
+device, insecure context — `navigator.mediaDevices` is undefined on an insecure
+origin and property access throws — or unsupported browser), **dismissed**,
+**denied**, **granted**. Each is a rendered state; none is swallowed.
+
+When a permission-gated modality is unavailable, fall back to **the alternate
+modality §Accessibility item 6 already requires** — not to a simulation of the
+unavailable one. Simulating an input the user does not have manufactures a
+success signal: the UI reports success while the feature is dead.
+
+**Scope the catch to the permission call alone.** A single `try` spanning both
+the request and the setup that follows it reports your own bugs as the user's
+missing hardware — a defect in analyser wiring or an animation frame presents,
+permanently and silently, as "you have no microphone."
+
+**Not authored here: how streamed events reach React state.** Subscription
+lifecycle, backpressure and reconnect conventions for a live event source are
+un-governed. Components subscribe to external event sources through
+`useSyncExternalStore` (§ Components and hooks); beyond that line, there is no
+house convention to conform to yet.
+
+## Media assets
+
+Invariant #4 says media assets come from one manifest. The rest follows from how
+bundlers work.
+
+**The manifest is a typed module** carrying id, path, provenance, and whatever
+per-asset metadata the runtime needs — per-clip loudness trims, durations,
+captions. A string concatenated at a call site is not a reference; it is a lookup
+that fails silently when it misses.
+
+**Assets are reached through the manifest by import**, so the bundler
+fingerprints them. Content-hashed filenames are the consequence, not a separate
+act. `public/` (or its equivalent) is for assets that must keep a stable URL —
+referenced from outside the build, `robots.txt`-class — and using it is a **site
+exception** with its reason stated. **Hand-versioned filenames are the symptom of
+an asset that skipped the bundler**, and they interact badly with immutable cache
+headers.
+
+**License is dependency discipline's** (§ Dependency discipline, item 4): a
+proprietary-licensed or recurring-cost asset is a record exception, exactly as a
+dependency would be. **Cache posture is delivery's** — the manifest is what makes
+assets addressable to it.
 
 ## The typed-contract seam
 
@@ -178,7 +307,7 @@ generated types, not by discipline alone:
    from the service side transfers: outbound HTTP flows through the canonical
    client — which also carries the correlation ID on calls into the house
    backend. Swapping generators is a line-edit; abandoning generation is a
-   departure that takes a decision record.
+   **record exception**.
 3. **Generated artifacts are committed, regenerated by script, never
    hand-edited.** They live in a named location, and CI carries a **drift
    gate**: regenerate against the current spec and fail on diff.
@@ -196,10 +325,14 @@ generated types, not by discipline alone:
    the boundary. Mocks implement the same seam interface and stay conformant
    by construction.
 
-*Scope of evidence:* no live backend serves the spec to a governed frontend
-yet; the first real integration is this section's proving surface and may
-amend it. **Until it does, the section binds as written** — the mechanisms
-are the house contract discipline read from the other side of the wire.
+6. **Vendor-surface declarations are not domain types, and item 1's ban does
+   not reach them.** Where the TS DOM lib doesn't carry a browser surface — Web
+   Speech, vendor-prefixed constructors, experimental APIs — prefer a maintained
+   types-only package; where none exists, hand-declare the minimal structural
+   shape **once**, in a single types module, never per consumer. Vendor-prefixed
+   fallbacks resolve in one place. Item 1's ban on hand-written mirrors targets
+   your own backend's models; a `SpeechRecognition` interface the platform never
+   shipped types for is not a mirror of anything you own.
 
 ## Strictness
 
@@ -210,15 +343,11 @@ are the house contract discipline read from the other side of the wire.
   bugs: every index and record lookup honestly admits `undefined`. On existing
   codebases, adopt with rationale rather than by default.
   `exactOptionalPropertyTypes` is **considered and not defaulted** (real
-  friction with third-party types) — a ruling, not an oversight.
+  friction with third-party types).
 - **Lint:** the typescript-eslint **`strict-type-checked` +
   `stylistic-type-checked`** presets, plus `eslint-plugin-react-hooks` (the
   Rules of React name the plugin as their enforcement mechanism),
-  `react-refresh`, and `eslint-plugin-jsx-a11y` (§ Accessibility). The
-  upstream guidance reserves strict presets for teams highly proficient in
-  TypeScript; under the house working model — code authored by an agent
-  operating under this skill — that condition is met by construction, and a
-  stricter machine-checkable envelope is pure gain.
+  `react-refresh`, and `eslint-plugin-jsx-a11y` (§ Accessibility).
 - **Escape hatches are governed, not banned.** `@ts-expect-error` with a
   description over `@ts-ignore`; `as`-casts and `any`-adjacent constructs are
   justified at the site or they are review findings.
@@ -245,13 +374,18 @@ the engineering rules that make AA the default outcome:
    restates palette values. The token authority carries the named obligation
    to be AA-contrast-verified.
 5. **Motion respects `prefers-reduced-motion`** — every animation has a
-   reduced path or a stop. Scored, motion-heavy surfaces are exactly where
-   this rule earns its place.
+   reduced path or a stop.
 6. **Voice is an additional modality, never the only one.** Every
    voice-reachable action stays reachable by keyboard and visible UI.
 7. **Check the 2.2-specific AA criteria by name** — target size (minimum),
    focus not obscured, dragging alternatives, accessible authentication,
-   consistent help — they are the ones a 2.1-era instinct misses.
+   consistent help — they are the ones a 2.1-era instinct misses. **Target size
+   is 24×24 CSS pixels with five exceptions** — spacing (undersized targets
+   whose 24px-diameter circles do not intersect), equivalent (the same function
+   reachable from a conforming control on the page), inline (constrained by
+   surrounding line-height), user-agent-controlled, and essential. Read the
+   exceptions before rebuilding a control: a dense cluster with adequate spacing
+   already conforms.
 
 Enforcement stack: `eslint-plugin-jsx-a11y` at lint, role-query discipline at
 test, the code-review Frontend section at review. Per the experience-first
@@ -276,16 +410,12 @@ not mirrored (pinned 2026-07-21, verify currency at adoption).
    eval-class constructs, scripts and assets from self — so a strict
    (nonce/hash) policy can be adopted at the hosting layer without app
    changes. The header itself is homed in the app-delivery-pipeline
-   skill; the seam is declared here the way the service skills declare the
-   container-image seam.
+   skill.
 3. **Credentials never in `localStorage` or `sessionStorage`.**
    Script-readable storage falls entirely to a single XSS. Preference order:
    httpOnly-cookie sessions (or a backend-for-frontend) first; in-memory-only
    bearer tokens with silent refresh where a cookie architecture is genuinely
-   unavailable. *Scope of evidence: no house auth surface exists yet; the
-   first real login flow is this rule's proving surface. It binds as written
-   from day one — credential handling is exactly where a rule must precede
-   its first consumer.*
+   unavailable.
 4. **The bundle is public, by construction.** Every `VITE_`-prefixed variable
    and everything in the client build ships to the browser. No secrets in
    client config, period — the frontend inversion of "secrets from the
@@ -302,21 +432,20 @@ not mirrored (pinned 2026-07-21, verify currency at adoption).
 2. **Audit posture, noise handled honestly.** `npm audit` runs in CI;
    high/critical advisories in production dependencies block; dev-dependency
    advisories are triaged, not auto-blocking — a gate that cries wolf trains
-   people to ignore it. Default posture; override with rationale.
+   people to ignore it. Default posture; override is a site exception with its
+   rationale.
 3. **Minimal-dependency posture.** Prefer the platform — the web's own APIs
    are the stdlib. Every new runtime dependency is a justified act; anything
    that shapes architecture (a state-management library, a UI framework) is
-   **decision-record grade**, not an `npm install`.
-4. **The cost gate.** A dependency introducing a recurring cost or a
-   proprietary license is never routine — decision-record grade, always. The
-   default stack is free by construction, not by luck.
-5. **Node baseline declared in `engines`** — the toolchain floor is explicit,
-   not ambient.
+   a **record exception**, not an `npm install`.
+4. **The cost gate.** A dependency or shipped media asset introducing a
+   recurring cost or a proprietary license is never routine — a **record
+   exception**, always.
+5. **Node baseline declared in `engines`** — the toolchain floor is explicit.
 
-Deliberately not carried (under-govern until it hurts): provenance-attestation
-requirements, install-script lockdown regimes, exact-version manifests.
-Supply-chain posture beyond the lockfile-and-audit floor is a watch surface,
-promoted when it hurts.
+Not carried: provenance-attestation requirements, install-script lockdown
+regimes, exact-version manifests. Supply-chain posture beyond the
+lockfile-and-audit floor is un-governed.
 
 ## Where to look
 
@@ -324,21 +453,26 @@ promoted when it hurts.
   test kinds, the mechanism-vs-experience TDD split, and the per-layer
   coverage form. **Deliberately separable**: it is self-contained so a
   quality-role consumer can load it without the authoring sections. Split
-  trigger, stated: if the testing content grows to answer its own task-shaped
-  prompt, or a distinct quality-role agent becomes a real consumer of the
-  testing discipline independently of the authoring discipline, it graduates
-  to its own home.
+  trigger, stated: content graduates to its own home when **a distinct role
+  becomes a real consumer of it independently of the authoring discipline** —
+  and that is the load-bearing half. Answering its own task-shaped prompt is not
+  sufficient on its own: most sections here do that, and splitting on it would
+  leave this skill a stub surrounded by references.
 - **Design-token authority** — per repo, named in the repo's own orientation
   (its CLAUDE.md or design-handoff directory). This skill points; the repo's
   token source is the single authority for every visual value. For
   brand-level prototyping assets, the `haffey-design` skill (Cowork-side) is
   the adjacent authority — same pointer rule.
-- **Public authority, pinned at authoring (2026-07-21), verify currency at
-  adoption:** the Rules of React (react.dev); the TypeScript TSConfig
+- **Public authority, pinned at authoring, verify currency at adoption.**
+  *Pinned 2026-07-21:* the Rules of React (react.dev); the TypeScript TSConfig
   reference; typescript-eslint shared-config guidance; Testing Library's
   guiding principles; WCAG 2.2 (W3C Recommendation, rev. 2024-12-12); the
   OWASP XSS/CSP cheat sheets and browser-storage guidance; the OAuth
-  browser-based-apps BCP; Vite documentation.
+  browser-based-apps BCP; Vite documentation. *Pinned 2026-08-03:* the CSS
+  containment and container-query specifications; WCAG 2.2 Understanding
+  documents for SC 1.4.4, 1.4.10 and 2.5.8; the Web Audio, MediaStream and
+  Permissions specifications; the DOM standard's `AbortController`/`AbortSignal`;
+  Vite's static-asset handling guide.
 
 ## Boundaries with sibling skills
 
