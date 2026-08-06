@@ -1,0 +1,12 @@
+# Pinned dev tooling for the render_cost gate — register §8 item 18, which
+# half-closes item 12 for new code. `scripts/collect_anthropic.py` is
+# deliberately NOT in scope; item 12's other half stays open.
+#
+# Versions are `measured` 2026-08-05 via `pip index versions <package>`, not
+# declared. Re-derive them the same way when bumping — a pin recorded without
+# its method is a pin nobody can refresh.
+ruff==0.16.1
+mypy==2.3.0
+bandit==1.9.4
+pytest==9.1.1
+pytest-cov==7.1.0

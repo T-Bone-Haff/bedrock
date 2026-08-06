@@ -1,0 +1,73 @@
+##############################################################################
+# File: .github/workflows/render-cost.yml
+# Purpose: RBT-64 stage 4b / register §8 item 18. Renders the /cost page from
+#   register.md and publishes it over explicit FTPS. Commits nothing.
+#
+# WHY NOT `on: push` ALONE, which this design specified until 2026-08-05.
+#   Actions does not create a workflow run from a push made with the default
+#   GITHUB_TOKEN — deliberate recursion prevention — so the collector's own
+#   Monday commit fires nothing. A renderer built to a push-only trigger would
+#   have landed green and never run on a Monday: machinery structurally
+#   incapable of succeeding while reporting success, which is the retired Cowork
+#   renderer's failure mode exactly.
+#
+#   MEASURED, not inferred: across 23 commits, `verify` has never run on any of
+#   the three bot commits (cdb9ce3, 2228d41, 16f3e3f), and produced a run seven
+#   seconds after each of twelve human pushes.
+#
+#   So: `workflow_run` on the collector for its own commits, and `push` for hand
+#   edits. The ratified decision — on change, no second cron — is unchanged.
+#
+# Safety: the FTPS credential is supplied via `env:`, never as a command-line
+#   argument (HEB-85 defect 13), and the renderer never logs or writes it.
+##############################################################################
+
+name: render-cost
+
+on:
+  workflow_run:
+    workflows: ["collect-costs"]
+    types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - register.md
+      - 'data/**'
+
+permissions:
+  contents: read
+
+# Never let two renders race for the same remote path; let an in-flight publish
+# finish rather than cancelling it midway through its FTPS transaction.
+concurrency:
+  group: render-cost
+  cancel-in-progress: false
+
+jobs:
+  render:
+    name: render
+    # A failed collection must not publish a page derived from a partial write.
+    # A push carries no workflow_run context, so it is admitted on its own.
+    if: >-
+      github.event_name == 'push' ||
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
+
+      # parse -> render -> self-check -> then connect. No socket opens until a
+      # complete, verified page exists in memory, so a failed render leaves the
+      # previous page up as a structural property rather than as a recovery path.
+      - name: Render and publish
+        env:
+          FTPS_USER: ${{ secrets.FTPS_USER }}
+          FTPS_PASSWORD: ${{ secrets.FTPS_PASSWORD }}
+        run: python3 scripts/render_cost.py --publish --out rendered-cost.html

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Haffey Enterprises — Cost Register</title>
+<!--
+#SLOT:HEAD_COMMENT#
+-->
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../assets/logo-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-page:#05070C; --bg-canvas:#080B14; --bg-surface:#0E1320; --bg-overlay:#1A2236;
+  --fg-1:#F4F7FC; --fg-2:#AEBBD0; --fg-3:#6E7C95; --fg-4:#46526A;
+  --border-subtle:rgba(255,255,255,.07); --border-default:rgba(255,255,255,.11); --border-strong:rgba(255,255,255,.18);
+  --accent:#C81420;
+  /* Series validated dark against surface — lightness band, chroma floor,
+     CVD separation (worst adjacent dE 21.3 protan), normal-vision floor, contrast: all PASS */
+  --s-sub:#2795D6; --s-ctl:#E5484D; --s-unk:#6E7C95;
+  --grid-line:rgba(157,211,240,.05); --grid-size:32px;
+  --grad-accent: linear-gradient(135deg, #E5484D 0%, #C81420 55%, #8E0510 100%);
+  --radius-md:8px; --radius-lg:14px; --radius-pill:999px;
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:24px; --space-6:32px; --space-7:48px; --space-9:64px; --space-9:64px;
+  --dur-fast:120ms; --ease-out:cubic-bezier(.16,1,.3,1);
+  --font-display:'Montserrat',sans-serif; --font-sans:'IBM Plex Sans',sans-serif; --font-mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg-page);color:var(--fg-1);font-family:var(--font-sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:var(--grid-size) var(--grid-size)}
+.wrap{max-width:1140px;margin:0 auto;padding:var(--space-7) var(--space-5) var(--space-9)}
+.mono{font-family:var(--font-mono)}
+.glass{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+       border:1px solid var(--border-default);backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2)}
+.back-link{display:inline-block;font-family:var(--font-mono);font-size:12px;color:var(--fg-3);text-decoration:none;margin-bottom:var(--space-5)}
+.back-link:hover{color:#9DD3F0}
+.eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-3)}
+h1{font-family:var(--font-display);font-weight:800;font-size:34px;letter-spacing:-.02em;line-height:1.15;margin:var(--space-3) 0 var(--space-2)}
+h2{font-family:var(--font-display);font-weight:700;font-size:17px;letter-spacing:-.01em;margin-bottom:var(--space-1)}
+.sub{color:var(--fg-3);font-size:14px;max-width:74ch}
+header{border-bottom:1px solid var(--border-subtle);padding-bottom:var(--space-5);margin-bottom:var(--space-5)}
+.hex{display:inline-block;width:10px;height:11px;background:var(--accent);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);vertical-align:-1px;margin-right:var(--space-2)}
+section{margin-bottom:var(--space-7)}
+.sechead{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-4);flex-wrap:wrap}
+.freshness{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--border-default);border-left:3px solid var(--fg-4);border-radius:var(--radius-md);
+  padding:var(--space-3) var(--space-4);margin-bottom:var(--space-5);color:var(--fg-2)}
+.freshness.amber{border-left-color:#E0A030;color:#F0C070}
+.freshness.red{border-left-color:var(--s-ctl);color:#E5848A;background:rgba(229,72,77,.08)}
+.perimeter{display:flex;gap:var(--space-5);flex-wrap:wrap;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3);margin-bottom:var(--space-6)}
+.perimeter b{color:var(--fg-1);font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:var(--space-4)}
+.tile{border-radius:var(--radius-lg);padding:var(--space-5)}
+.tile .lab{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3);margin-bottom:var(--space-3)}
+.tile .val{font-family:var(--font-display);font-weight:800;font-size:34px;letter-spacing:-.03em;line-height:1}
+.tile .note{color:var(--fg-3);font-size:13px;margin-top:var(--space-3)}
+.tile.hot{border-color:rgba(229,72,77,.5)}
+.chart{border-radius:var(--radius-lg);padding:var(--space-5)}
+.row{display:grid;grid-template-columns:250px 1fr 112px;align-items:center;gap:var(--space-4);padding:7px 0;border-radius:var(--radius-md);transition:background var(--dur-fast) var(--ease-out)}
+.row:hover,.row:focus-visible{background:rgba(157,211,240,.06);outline:none}
+.rlab{font-size:13.5px;color:var(--fg-2);display:flex;align-items:center;gap:var(--space-2);min-width:0}
+.rlab span.nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track{position:relative;height:16px}
+.bar{position:absolute;left:0;top:0;height:16px;border-radius:0 4px 4px 0;box-shadow:0 0 0 2px var(--bg-surface)}
+.bar.sub{background:var(--s-sub)} .bar.ctl{background:var(--s-ctl)}
+.bar.zero{width:3px!important;background:var(--fg-4);border-radius:2px}
+.rval{font-family:var(--font-mono);font-size:13px;text-align:right;color:var(--fg-1);white-space:nowrap}
+.rval.muted{color:var(--fg-3)}
+.chip{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:var(--radius-pill);border:1px solid var(--border-default);color:var(--fg-3);flex:none}
+.chip.est{border-color:rgba(229,72,77,.4);color:#E5848A}
+.chip.pull{border-color:rgba(39,149,214,.6);color:#8CC8EC;background:rgba(39,149,214,.12)}
+.legend{display:flex;gap:var(--space-5);flex-wrap:wrap;margin-bottom:var(--space-4);padding-bottom:var(--space-4);border-bottom:1px solid var(--border-subtle)}
+.lg{display:flex;align-items:center;gap:var(--space-2);font-size:12.5px;color:var(--fg-2)}
+.sw{width:14px;height:10px;border-radius:2px;flex:none}
+.sw.sub{background:var(--s-sub)} .sw.ctl{background:var(--s-ctl)}
+.axis{display:grid;grid-template-columns:250px 1fr 112px;gap:var(--space-4);margin-top:var(--space-3);padding-top:var(--space-3);border-top:1px solid var(--border-subtle)}
+.axis .ticks{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10.5px;color:var(--fg-4)}
+.days{display:flex;align-items:flex-end;gap:3px;height:190px;padding-top:var(--space-4);border-bottom:1px solid var(--border-default)}
+.day{flex:1;position:relative;display:flex;flex-direction:column;justify-content:flex-end;height:100%;cursor:default}
+.day .col{background:var(--s-ctl);border-radius:4px 4px 0 0;min-height:2px;transition:filter var(--dur-fast) var(--ease-out)}
+.day.zero .col{background:var(--fg-4);opacity:.5}
+.day:hover .col{filter:brightness(1.2)}
+.day .peak{position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:11px;color:var(--fg-1);white-space:nowrap}
+.dayticks{display:flex;gap:3px;margin-top:var(--space-2)}
+.dayticks span{flex:1;text-align:center;font-family:var(--font-mono);font-size:9.5px;color:var(--fg-4)}
+.callout{border:1px solid var(--border-default);border-left:3px solid var(--s-ctl);border-radius:var(--radius-md);background:rgba(229,72,77,.08);padding:var(--space-4) var(--space-5);margin-top:var(--space-4)}
+.callout .h{font-family:var(--font-display);font-weight:700;font-size:14px;margin-bottom:var(--space-2)}
+.callout p{color:var(--fg-2);font-size:13.5px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3);font-weight:500;padding:0 var(--space-4) var(--space-3) 0;border-bottom:1px solid var(--border-default)}
+td{padding:var(--space-3) var(--space-4) var(--space-3) 0;border-bottom:1px solid var(--border-subtle);color:var(--fg-2);vertical-align:top}
+td.n{font-family:var(--font-mono);color:var(--fg-4);width:34px}
+td.done,tr.done td{color:var(--fg-4)}
+tbody tr:hover td{background:rgba(157,211,240,.04)}
+.toggle{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid var(--border-default);color:var(--fg-2);padding:6px 12px;border-radius:var(--radius-md);cursor:pointer;transition:all var(--dur-fast) var(--ease-out)}
+.toggle:hover{background:rgba(157,211,240,.08);border-color:var(--border-strong);color:var(--fg-1)}
+.toggle:focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg-page),0 0 0 4px rgba(157,211,240,.65)}
+#tableview{display:none;margin-top:var(--space-4)}
+#tableview.on{display:block}
+.tip{position:fixed;pointer-events:none;background:var(--bg-overlay);border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:var(--space-3);font-size:12.5px;color:var(--fg-1);box-shadow:0 6px 18px rgba(0,0,0,.5);opacity:0;transition:opacity var(--dur-fast) var(--ease-out);z-index:50;max-width:300px}
+.tip.on{opacity:1}
+.tip .t{font-weight:600;margin-bottom:2px}
+.tip .m{font-family:var(--font-mono);font-size:11.5px;color:var(--fg-3)}
+footer{border-top:1px solid var(--border-subtle);padding-top:var(--space-5);color:var(--fg-4);font-size:12.5px;display:flex;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap}
+@media(max-width:760px){.row,.axis{grid-template-columns:150px 1fr 88px;gap:var(--space-3)}h1{font-size:26px}.dayticks span{font-size:8px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back-link" href="../index.html">&larr; haffeyenterprises.com</a>
+
+<header>
+  <div class="eyebrow"><span class="hex"></span>Haffey Enterprises · Cost Register · RBT-64</div>
+  <h1>What we spend to operate</h1>
+  <p class="sub">Every recurring meter, one place. Each figure carries a provenance tag — declared, pulled, measured, or estimated. An unknown line is shown, never omitted: a total that silently drops a meter is the failure this register exists to prevent.</p>
+</header>
+
+<div class="freshness" id="freshness" role="status" aria-live="polite"></div>
+
+<div class="perimeter">
+  <span><b id="p-meters">—</b> metered lines</span>
+  <span><b>#SLOT:GCP_PROJECTS#</b> GCP projects, <b>#SLOT:GCP_BILLED#</b> billed</span>
+  <span><b>#SLOT:BILLING_ACCOUNTS#</b> billing accounts, <b>#SLOT:BILLING_ACTIVE#</b> billing</span>
+  <span><b>#SLOT:UNKNOWN_TAGGED#</b> unknown-tagged cost lines</span>
+  <span>register <b>#SLOT:REGISTER_VERSION#</b></span>
+</div>
+
+<section>
+  <div class="tiles">
+    <div class="tile glass">
+      <div class="lab">Total · #SLOT:SNAPSHOT_MONTH#</div>
+      <div class="val" id="t-total">—</div>
+      <div class="note">Summed at render time from the rows below — the register deliberately stores no total.</div>
+    </div>
+    <div class="tile glass">
+      <div class="lab">Not a guess</div>
+      <div class="val" id="t-verified">—</div>
+      <div class="note"><span id="t-pct">—</span> of spend is declared, measured or pulled.</div>
+    </div>
+    <div class="tile glass hot">
+      <div class="lab">Largest line</div>
+      <div class="val">#SLOT:LARGEST_LINE#</div>
+      <div class="note">#SLOT:LARGEST_LINE_NOTE#</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead">
+    <div><h2>Where it goes — #SLOT:SNAPSHOT_MONTH#</h2><p class="sub">Monthly cost by meter, largest first.</p></div>
+    <button class="toggle" id="tbtn" aria-expanded="false" aria-controls="tableview">Table view</button>
+  </div>
+  <div class="chart glass">
+    <div class="legend">
+      <div class="lg"><span class="sw sub"></span>Subscription — fixed</div>
+      <div class="lg"><span class="sw ctl"></span>Controllable — usage-driven</div>
+    </div>
+    <div id="bars"></div>
+    <div class="axis"><div></div><div class="ticks" id="ticks"></div><div></div></div>
+  </div>
+
+</section>
+
+<section>
+  <div class="sechead"><div><h2>Anthropic API — daily, #SLOT:DAILY_MONTH#</h2><p class="sub">Every dollar of the largest line, by day it was billed. Pulled from the Admin API, through #SLOT:DAILY_THROUGH#.</p></div></div>
+  <div class="chart glass">
+    <div class="days" id="days"></div>
+    <div class="dayticks" id="dayticks"></div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead"><div><h2>Open items</h2><p class="sub">Open items only. Closed items do not appear.</p></div></div>
+  <table>
+    <thead><tr><th>#</th><th>Item</th><th>Blocks</th></tr></thead>
+    <tbody>#SLOT:OPEN_ITEM_ROWS#</tbody>
+  </table>
+</section>
+
+<footer>
+  <div class="mono">REGISTER #SLOT:REGISTER_VERSION# · DATA AS OF #SLOT:DATA_AS_OF# · USD</div>
+  <div class="mono">RENDERED #SLOT:RENDERED_AT# · #SLOT:SOURCE_COMMIT# · Haffey-Enterprises/ops</div>
+</footer>
+</div>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script>
+// Rendered from register.md #SLOT:REGISTER_VERSION# §3 and §5. Monthly dollars.
+const DATA = #SLOT:DATA_ARRAY#;
+const DAILY = #SLOT:DAILY_ARRAY#;
+
+const CLSNAME={sub:"Subscription",ctl:"Controllable"};
+const MAX = Math.max(...DATA.map(d=>d.v));
+const usd = v => "$" + v.toLocaleString(undefined,{maximumFractionDigits:0});
+
+const total = DATA.reduce((s,d)=>s+d.v,0);
+const verified = DATA.filter(d=>d.p!=="estimated").reduce((s,d)=>s+d.v,0);
+document.getElementById("t-total").textContent = usd(total);
+document.getElementById("t-verified").textContent = usd(verified);
+document.getElementById("t-pct").textContent = Math.round(verified/total*100) + "%";
+document.getElementById("t-share").textContent = Math.round(#SLOT:LARGEST_LINE_VALUE#/total*100) + "%";
+document.getElementById("p-meters").textContent = DATA.length;
+
+const tickStep = Math.pow(10, Math.floor(Math.log10(MAX))) / 2;
+const TICKS = []; for (let v = 0; v <= MAX; v += tickStep) TICKS.push(Math.round(v));
+document.getElementById("ticks").innerHTML =
+  TICKS.map(v=>`<span>$${v}</span>`).join("");
+
+const bars=document.getElementById("bars"), tbody=[];
+DATA.forEach(d=>{
+  const row=document.createElement("div"); row.className="row"; row.tabIndex=0;
+  const chip = d.p==="estimated" ? "chip est" : d.p==="pulled" ? "chip pull" : "chip";
+  const zero = d.v===0;
+  const bar = zero ? `<div class="bar zero ${d.cls}"></div>`
+                   : `<div class="bar ${d.cls}" style="width:${d.v/MAX*100}%"></div>`;
+  row.innerHTML=`<div class="rlab"><span class="nm">${d.m}</span><span class="${chip}">${d.p}</span></div>
+                 <div class="track">${bar}</div>
+                 <span class="rval${zero?" muted":""}">$${d.v.toFixed(2)}</span>`;
+  row.addEventListener("mouseenter",e=>showTip(e,d.m,`$${d.v.toFixed(2)}/mo · ${CLSNAME[d.cls]} · ${d.p}`,""));
+  row.addEventListener("mousemove",moveTip);
+  row.addEventListener("mouseleave",hideTip);
+  row.addEventListener("focus",()=>{const r=row.getBoundingClientRect();showTip({clientX:140,clientY:r.top},d.m,`$${d.v.toFixed(2)}/mo · ${CLSNAME[d.cls]} · ${d.p}`,"")});
+  row.addEventListener("blur",hideTip);
+  bars.appendChild(row);
+  tbody.push(`<tr><td>${d.m}</td><td>${CLSNAME[d.cls]}</td><td class="mono">$${d.v.toFixed(2)}</td><td class="mono">${d.p}</td></tr>`);
+});
+
+// The panel spans the WHOLE month. A day the collector's reading does not
+// cover renders empty; a day that billed nothing renders the zero marker. Those
+// are different claims and the page must not merge them — an absent reading is
+// not a measured zero. RUNS is dropped (B2), so the tooltip says only what the
+// data supports.
+const dmax=Math.max(...DAILY.filter(d=>d[1]!==null).map(d=>d[1]));
+const days=document.getElementById("days"), ticks=document.getElementById("dayticks");
+DAILY.forEach(([label,v])=>{
+  const el=document.createElement("div");
+  const uncovered=v===null;
+  el.className="day"+(uncovered?" uncovered":v===0?" zero":"");
+  el.innerHTML=uncovered?"":`${v===dmax?`<div class="peak">$${v.toFixed(0)}</div>`:""}<div class="col" style="height:${v===0?2:Math.max(3,v/dmax*100)}%"></div>`;
+  const body=uncovered?"Not covered by the latest reading.":v===0?"No API spend — no loop run billed this day.":"Billed loop activity.";
+  el.addEventListener("mouseenter",e=>showTip(e,`#SLOT:DAILY_MONTH_KEY#-${label}`,uncovered?"no reading":`$${v.toFixed(2)}`,body));
+  el.addEventListener("mousemove",moveTip);
+  el.addEventListener("mouseleave",hideTip);
+  days.appendChild(el);
+  const t=document.createElement("span");
+  t.textContent = label.endsWith("1")||label.endsWith("5")||label.endsWith("0") ? label.slice(3) : "";
+  ticks.appendChild(t);
+});
+
+const tv=document.createElement("div"); tv.id="tableview";
+tv.innerHTML=`<table><thead><tr><th>Meter</th><th>Class</th><th>$ / mo</th><th>Provenance</th></tr></thead><tbody>${tbody.join("")}</tbody></table>`;
+bars.parentElement.parentElement.appendChild(tv);
+
+const tip=document.getElementById("tip");
+function showTip(e,t,m,body){tip.innerHTML=`<div class="t">${t}</div><div class="m">${m}</div><div style="margin-top:8px;color:var(--fg-2)">${body}</div>`;tip.classList.add("on");moveTip(e)}
+function moveTip(e){const pad=16,w=tip.offsetWidth,h=tip.offsetHeight;let x=e.clientX+pad,y=e.clientY+pad;
+  if(x+w>innerWidth-8)x=e.clientX-w-pad; if(y+h>innerHeight-8)y=e.clientY-h-pad;
+  tip.style.left=x+"px";tip.style.top=y+"px"}
+function hideTip(){tip.classList.remove("on")}
+
+// Freshness is judged on the DATA date and never on the render date: a render
+// timestamp resets on an unchanged re-render and would report a fresh page over
+// stale figures. Three dates appear on this page and only this one is coloured.
+(function(){
+  const el=document.getElementById("freshness");
+  const asOf="#SLOT:DATA_AS_OF#";
+  const days=Math.floor((Date.now()-Date.parse(asOf+"T00:00:00Z"))/86400000);
+  const amber=#SLOT:STALE_AMBER_DAYS#, red=#SLOT:STALE_RED_DAYS#;
+  el.textContent=`Figures as of ${asOf} — ${days} day${days===1?"":"s"} old`
+    + (days>red?" · STALE":days>amber?" · AGEING":"");
+  if(days>red) el.classList.add("red"); else if(days>amber) el.classList.add("amber");
+})();
+
+const btn=document.getElementById("tbtn");
+btn.addEventListener("click",()=>{const on=document.getElementById("tableview").classList.toggle("on");
+  btn.setAttribute("aria-expanded",String(on));btn.textContent=on?"Hide table":"Table view"});
+</script>
+</body>
+</html>
