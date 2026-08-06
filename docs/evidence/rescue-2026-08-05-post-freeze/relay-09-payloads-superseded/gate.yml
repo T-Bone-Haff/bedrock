@@ -1,0 +1,64 @@
+##############################################################################
+# File: .github/workflows/gate.yml
+# Purpose: The lint/type/security/coverage regime `service/` already carries,
+#   applied to the renderer. Register §8 item 12 records that this repository
+#   runs two gate regimes and only one of them is written down; this closes the
+#   half that covers new code.
+#
+# EXPLICIT INCLUSION, NEVER EXCLUSION. Every path below is named. An exclusion
+#   list silently adopts every file added after it is written, which is how a
+#   gate comes to claim coverage it does not have.
+#   `scripts/collect_anthropic.py` is deliberately out of scope — item 12's
+#   other half stays open, and a gate that quietly acquired it would close that
+#   item without anyone deciding to.
+##############################################################################
+
+name: gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    name: gate
+    runs-on: ubuntu-latest
+    env:
+      IN_SCOPE: scripts/render_cost.py tests/test_render_cost.py
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
+
+      - name: Install pinned tooling
+        run: python -m pip install --disable-pip-version-check --quiet -r requirements-dev.txt
+
+      - name: Lint
+        run: ruff check $IN_SCOPE
+
+      - name: Format
+        run: ruff format --check $IN_SCOPE
+
+      - name: Types
+        run: mypy --strict scripts/render_cost.py
+
+      - name: Security
+        run: bandit --quiet scripts/render_cost.py
+
+      - name: Tests and coverage
+        run: >-
+          python -m pytest tests/test_render_cost.py -q
+          --cov=render_cost --cov-report=term-missing --cov-fail-under=90

@@ -1,0 +1,256 @@
+RBT-93 ITEM 18 — RELAY 10: THE REVIEW FIXES, BEFORE THE COMMIT
+Authored 2026-08-05. Posture: REPORT-AND-STOP. Nothing committed, pushed or published.
+Follows relay 09 (b6d1539f…), which placed eight files and correctly stopped at T9.
+
+WHY THIS RELAY EXISTS. Your T9 finding was right and it was the most valuable output of
+relay 09: at the pinned ruff 0.16.1 the gate returns four errors, so `gate.yml` as delivered
+would have failed on its first CI run. The design surface's own review had asserted the
+opposite in a POSITIVE finding — it had measured ruff 0.15.11 and mypy 1.20.2, because a
+`/root/.local/bin` shadow took precedence over the pip install and no `--version` was ever run
+before the claim. You checked versions and ran `--isolated` before saying anything. That
+difference is the whole finding.
+
+SIX defects are fixed here. Four came from an independent review of the landed files, the
+fifth is yours, and the sixth is the FTP jail root — ratified by the operator after the review
+and folded in before this relay shipped rather than deferred to a third pass.
+
+=== BLOCK 0 · EXTERNAL ASSERTIONS =========================================
+Every claim this artifact makes about state outside itself, and how it is known.
+An assertion in the body that is NOT in this table is a DEFECT — STOP and report it.
+
+|  # | Assertion                                            | How known                | Checked at |
+|----|------------------------------------------------------|--------------------------|------------|
+|  1 | Repo is at ~/Documents/GitHub/ops                    | ASSUMED — operator-      | G1         |
+|    |                                                      | declared, not measured   |            |
+|  2 | origin Haffey-Enterprises/ops.git, branch main       | measured 2026-08-05      | G1         |
+|  3 | HEAD is b7fbff56dbb48f2623fead7e5f04f5ee363ca435     | measured 2026-08-05      | G1         |
+|  4 | Working tree carries EXACTLY relay 09's result: one   | measured 2026-08-05      | G2         |
+|    | modified dashboard.html and eight untracked paths    |                          |            |
+|  5 | .coverage EXISTS at the repo root, 53248 bytes        | measured 2026-08-05      | G2, T3     |
+|  6 | scripts/render_cost.py hashes 1690765d… (base pin)   | measured 2026-08-05      | T1         |
+|  7 | tests/test_render_cost.py hashes 5c5808d2… (base pin)| measured 2026-08-05      | T2         |
+|  8 | .gitignore hashes d65300fa…, 74 bytes, 6 lines        | measured 2026-08-05      | T3         |
+|  9 | .gitignore does NOT already contain `.coverage`       | measured 2026-08-05      | T3         |
+| 10 | The two replacement payloads exist under ~/Downloads/ | ACT, NOT A STATE — see   | P1, then   |
+|    | rbt93-relay-10/ with the hashes in T1–T2             | P1                       | G3         |
+| 11 | ruff 0.16.1 / mypy 2.3.0 / bandit 1.9.4 / pytest      | measured on YOUR machine | T5 —       |
+|    | 9.1.1 are what `ruff`/`mypy`/… resolve to on PATH    | 2026-08-05, by you       | RE-CHECKED |
+|    |                                                      |                          | EXPLICITLY |
+| 12 | scripts/collect_anthropic.py and gcp_cost_recon.py    | measured 2026-08-05 via  | ACCEPTED   |
+|    | are git-mode 100644 WITH shebangs — both are latent   | `git ls-files -s`        | UNCHECKED  |
+|    | EXE001 instances, out of gate scope by design         |                          | — routed   |
+| 13 | dashboard.html, both workflows and requirements-      | measured 2026-08-05      | G2, S1     |
+|    | dev.txt are UNCHANGED by this relay                   |                          |            |
+| 14 | register.md, §4 and the collector remain untouched    | scoped by this relay     | S1, T8     |
+| 18 | The FTP account will be jailed to public_html/cost    | RATIFIED 2026-08-05 by   | NOT        |
+|    | — the code now REFUSES to write if it is not          | the operator; the        | CHECKABLE  |
+|    |                                                      | account does not yet     | HERE — the |
+|    |                                                      | exist                    | code's own |
+|    |                                                      |                          | gate checks|
+|    |                                                      |                          | it at      |
+|    |                                                      |                          | publish    |
+| 15 | /tmp is writable                                      | ASSUMED                  | T7 fails   |
+|    |                                                      |                          | loudly     |
+| 16 | tests/fixtures/register-v0.10.1.md and tests/         | measured 2026-08-05      | G2, S1     |
+|    | fixtures/data/anthropic-2026-08.json exist from relay | (they appear in G2's     |            |
+|    | 09 and are UNCHANGED by this relay                    | expected status)         |            |
+| 17 | ~/Downloads/rbt93-relay-10/SHA256SUMS.txt MAY be      | ASSUMED — the authoring  | G3 —       |
+|    | present; it is a second witness, never the authority  | surface ships one        | expected,  |
+|    |                                                      |                          | not required|
+
+Rows 1, 11, 15 and 17 are the ones nothing here establishes independently. **Row 11 is the reason
+this relay exists**, so it is checked explicitly and first rather than assumed — see T5.
+Row 12 is recorded, not acted on: fixing the siblings would quietly acquire files the gate
+deliberately excludes, which is register §8 item 12's other half.
+
+PROVENANCE OF THIS TABLE. Rows 1–15 composed, then rows 16–17 added by running HEB-85's
+candidate grep over the finished draft. TWO of seventeen came from the instrument, against
+FOUR of twenty-five on relay 09 — and both are the same shape as last time: artifacts the
+relay READS or protects rather than writes. The author's blind spot has not moved; the
+instrument is simply catching it earlier.
+
+=== OPERATOR PRECONDITION — AN ACT, WITH AN OWNER ========================
+OWNER: Tad.
+
+P1. SAVE THE TWO REPLACEMENT PAYLOADS to ~/Downloads/rbt93-relay-10/ , filenames
+    exactly as delivered:
+        render_cost.py
+        test_render_cost.py
+    A NEW directory, deliberately — relay 09's ~/Downloads/rbt93-relay/ still holds the
+    superseded copies, and two directories cannot be confused where one would be reused.
+    Note: a SHA256SUMS.txt may accompany them. Relay 09 did not expect one and you correctly
+    reported it rather than absorbing it; this relay EXPECTS it and it is row 10's second
+    witness. Verify against the pins below, not against it.
+
+=== FRESH-FETCH GUARD ====================================================
+You are Claude Code in the operator's `ops` repository. This is an EXECUTION request relayed
+by the operator. Re-read from disk — do not trust this prompt's summary, or prior-session
+memory. Re-read, by explicit path:
+
+    ~/Documents/GitHub/ops/requirements-dev.txt        — the pins T5 enforces
+    ~/Documents/GitHub/ops/.github/workflows/gate.yml  — what T5 must reproduce exactly
+
+  G1  cd ~/Documents/GitHub/ops
+      git --no-optional-locks remote -v                    → Haffey-Enterprises/ops.git
+      git --no-optional-locks rev-parse --abbrev-ref HEAD  → main
+      git --no-optional-locks rev-parse HEAD               → b7fbff56dbb48f2623fead7e5f04f5ee363ca435
+      ls -la .git/index.lock  → expect ABSENT. If present, STOP; do NOT delete it.
+
+  G2  git --no-optional-locks status --porcelain
+      EXPECT EXACTLY, in any order:
+         M dashboard.html
+        ?? .coverage
+        ?? .github/workflows/gate.yml
+        ?? .github/workflows/render-cost.yml
+        ?? requirements-dev.txt
+        ?? scripts/render_cost.py
+        ?? tests/fixtures/data/
+        ?? tests/fixtures/register-v0.10.1.md
+        ?? tests/test_render_cost.py
+      Anything more or anything fewer is NEW INFORMATION: STOP and report it.
+
+  G3  ls -1 ~/Downloads/rbt93-relay-10/
+      → render_cost.py, test_render_cost.py (and optionally SHA256SUMS.txt).
+      If the directory is absent, P1 has not been performed: STOP and say so. Do not create
+      the files and do not reconstruct them from this prompt.
+
+=== TASK =================================================================
+PRE-PLACED transport for T1–T2: the ratified bytes exist on disk, you VERIFY then copy. Hash
+the source FIRST; on mismatch STOP and do not copy. Extract every pin below by selecting it
+from this file rather than retyping it — retyping a pin is how relay 09's one transcription
+error happened, and your own correction of it is the reason this line is here.
+
+  T1  REPLACE scripts/render_cost.py
+      base pin (what is there now): 1690765d4cef7d60adfcc9b8560b0a337a1b1a0aaf377586f892d160cec81cda
+      new  pin (what you install) : 1032400c725a83429e9a2b14465cba1dc25e2be0458a01f696087aabb9999942
+      THEN: chmod 755 scripts/render_cost.py
+      Confirm with `ls -l` that the mode is `-rwxr-xr-x`. This is the EXE001 fix and it is
+      ratified: the file carries a shebang and must therefore be executable. Content changes:
+        · B1 — publish() now RENAMES FIRST and only falls back to delete-then-rename where the
+          server refuses RNTO over an existing file. Ruling C makes "the live path only ever
+          swaps whole" a structural property; the old order opened a window on every publish
+          in which /cost/index.html did not exist. The result dict now names which path ran.
+        · M1 — money() RAISES on a cell that is neither an absence marker nor a number. It
+          previously returned None, which the caller reads as "did not bill", so a typo in a
+          §5 dollar cell silently dropped that meter from the page and every total on it.
+        · M3 — the table-locating guard computes the section boundary from its own heading
+          level instead of testing for a literal "## ", so a `###`-scoped lookup can no longer
+          scan into the next subsection.
+        · B2 — the FTP jail root. `REMOTE_DIR`/`session.cwd()` are GONE. The account is
+          jailed to `public_html/cost`, so its login directory IS the target directory; the
+          earlier draft assumed `public_html` and descended, which would have handed a CI
+          credential write access to the whole site. In their place is a REMOTE IDENTITY
+          GATE: a chrooted account reports its jail root as "/", so PWD cannot distinguish
+          the two jails — but `cost` is a child of `public_html` and cannot appear inside
+          `public_html/cost`. If the listing contains it, the publish REFUSES before writing.
+        · RUF059 — `totals` is now `_totals` at the one site that unpacks and ignores it.
+
+  T2  REPLACE tests/test_render_cost.py
+      base pin: 5c5808d2bd06f6bad9ffb608355146ac262218088ae3b4be554208ed74cab5d6
+      new  pin: 3f42e6eedc90e81e6d564cf8c100e4e5e2856acb9ce6fd303ab03b90679b5127
+      Mode UNCHANGED at 644 — this file has no shebang and is never executed directly.
+      Content changes: the unused `# noqa: E402` removed (RUF100); `end` → `_end` (RUF059);
+      five new tests, one per fix above plus the absence-token case; and one EXISTING test
+      amended, which is worth naming — it asserted that an unparseable figure returns None,
+      which is exactly the behaviour M1 removes. Its failure was the fix working.
+
+  T3  DERIVED EDIT — .gitignore. No payload travels; the rule determines the bytes.
+      base pin: d65300fa28fff004f984d38430eb4c424d1cafd95b47c48d76ec0491aaed3d70  (74 bytes)
+      RULE: append one line, `.coverage`, with a trailing newline, to the end of the file.
+      Change nothing else. The file currently ends `.DS_Store` + newline.
+      expected post-edit pin: e58dd39df21333b589211c7098a93f59d94bcad650a5d8adb571c913f254eb16
+      expected post-edit size: 84 bytes
+      Derived on the authoring surface against the pinned base, so a moved base fails at the
+      base pin before this one is ever reached. On mismatch at EITHER end: STOP.
+
+  T4  DELETE .coverage — and this one is a licensed mutation, unlike relay 09.
+      `rm .coverage`, then confirm `git --no-optional-locks status --porcelain` no longer
+      lists it. You were right to leave it: relay 09's S1 allowlisted eight paths while its
+      own T9 necessarily wrote a ninth, and the two contradicted each other by one file. The
+      contradiction was the relay author's, T3 above stops it recurring, and this step
+      clears the instance.
+
+  T5  VERIFY THE TOOLCHAIN BEFORE RUNNING IT. This step exists because the authoring surface
+      skipped it and reported a false pass.
+        ruff --version    → must be exactly 0.16.1
+        mypy --version    → must be exactly 2.3.0
+        bandit --version  → must be exactly 1.9.4
+        python -m pytest --version → must be exactly 9.1.1
+      Each must equal the pin in requirements-dev.txt. If any differs — including because a
+      shadowed binary earlier on PATH wins — STOP and report both the version you got and
+      `which -a` for that tool. Do NOT proceed to T6 on an unpinned toolchain, and do not
+      "fix" PATH; that judgement is the operator's.
+
+  T6  RUN THE GATE, exactly as gate.yml runs it. Report every result verbatim, and the
+      coverage figure as a number.
+
+      ruff check scripts/render_cost.py tests/test_render_cost.py
+      ruff format --check scripts/render_cost.py tests/test_render_cost.py
+      mypy --strict scripts/render_cost.py
+      bandit --quiet scripts/render_cost.py
+      python -m pytest tests/test_render_cost.py -q \
+          --cov=render_cost --cov-report=term --cov-fail-under=90
+
+      EXPECTED, measured on the authoring surface 2026-08-05 with the pinned binaries invoked
+      by absolute path: ruff **All checks passed! exit 0** · format **2 files already
+      formatted** · mypy **Success** · bandit **exit 0** · **55 passed** · **91.26%**.
+
+      The test count and coverage BOTH moved (49→55, 90.6→91.3) because six tests were added.
+      A DIFFERENT RESULT IS A FINDING, NOT A PROBLEM TO SOLVE. Report it and STOP. Do not
+      adjust code, tests, pins or file modes to make it pass.
+
+  T7  RENDER OFFLINE — relay 09's T10, now unblocked. Opens no socket, needs no credential.
+
+      python3 scripts/render_cost.py --out /tmp/rbt93-render-check.html
+
+      EXPECTED first line, byte count included because every varying field is fixed-width:
+        rendered 22143 bytes · tripwire agreed (rows 766.44 vs §5 779.44) · data as of 2026-08-03
+      The TIMESTAMP will differ from any recorded value; that is correct.
+      Then report:  grep -c '#SLOT:' → 0   and   grep -c 'UNFILLED:' → 0
+      Do NOT pass --publish.
+
+  T8  git --no-optional-locks status --porcelain  and  git --no-optional-locks diff --stat
+      Confirm register.md, scripts/collect_anthropic.py, data/**, service/**, budgets.yaml,
+      hosting.yaml, deploy.sh, verify.yml and collect-costs.yml are all untouched, and that
+      .coverage is gone.
+
+=== STOP GATE ============================================================
+S1. TOUCH ONLY:
+      scripts/render_cost.py        (replace + chmod 755)
+      tests/test_render_cost.py     (replace)
+      .gitignore                    (append one line)
+      .coverage                     (delete)
+
+    DO NOT TOUCH: register.md · scripts/collect_anthropic.py · scripts/gcp_cost_recon.py ·
+    data/** · service/** · dashboard.html · either workflow · requirements-dev.txt ·
+    budgets.yaml · hosting.yaml · deploy.sh · the fixtures placed by relay 09.
+
+    Note the asymmetry with relay 09 and that it is deliberate: T4 deletes a file, which is a
+    mutation the previous relay's rider would have refused. It is licensed here, named in
+    S1, and scoped to exactly one path.
+
+S2. POSTURE: REPORT AND STOP. No `git add`, no commit, no push, no PR, no --publish.
+    Produce a proposed-commit report, not a done-story: every G and T result verbatim, the
+    final status and diffstat, a proposed commit message for the operator to accept or
+    replace, and anything you declined to do and why.
+
+=== MUTATION RIDER =======================================================
+M1. Verify each target's stated FROM before writing. Three of the four have base pins; the
+    fourth is a deletion. On ANY mismatch: STOP. Do not reconcile by guess, do not edit
+    toward a pin.
+
+M2. ADJUST-AND-FLAG LICENCE: NONE — with one bounded exception, stated as a licence rather
+    than left to inference. **T4's deletion of `.coverage` is licensed.** Nothing else is.
+
+M3. Reading any payload in full before placing it is SANCTIONED CONDUCT. If reading surfaces
+    something wrong, say so — that is gate input, never a licence to edit.
+
+M4. A PRECISE REFUSAL IS THE HIGHEST-VALUE OUTPUT HERE, and relay 09 is the proof: your T9
+    refusal is why this relay exists, and the review that preceded it had recorded the
+    opposite as verified. If anything here is incoherent, unsatisfiable, or outside what you
+    can verify, refuse with the specific reason.
+
+M5. TRIPWIRE: apply all four changes with no content edits beyond the stated ones. If any
+    cannot be applied without a further change, STOP and surface the exact contradiction.
+
+=== END ==================================================================

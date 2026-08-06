@@ -1,0 +1,311 @@
+RBT-93 ITEM 18 — RELAY 09: PLACE THE RENDERER, ITS TESTS, AND ITS WORKFLOWS
+Authored 2026-08-05 on the claude.ai design surface. Posture: REPORT-AND-STOP.
+Nothing is committed. Nothing is pushed. Nothing is published by this relay.
+
+=== BLOCK 0 · EXTERNAL ASSERTIONS =========================================
+Every claim this artifact makes about state outside itself, and how it is known.
+An assertion in the body that is NOT in this table is a DEFECT — if you find
+one, STOP and report it.
+
+|  # | Assertion                                          | How known                  | Checked at   |
+|----|----------------------------------------------------|----------------------------|--------------|
+|  1 | Repository is at ~/Documents/GitHub/ops            | ASSUMED — declared by the  | G1           |
+|    |                                                    | operator, not measured     |              |
+|  2 | origin is Haffey-Enterprises/ops.git               | measured 2026-08-05        | G1           |
+|  3 | Branch is main                                     | measured 2026-08-05        | G1           |
+|  4 | HEAD is b7fbff56dbb48f2623fead7e5f04f5ee363ca435   | measured 2026-08-05        | G1           |
+|  5 | Working tree is clean                              | measured 2026-08-05        | G1           |
+|  6 | .git/index.lock is ABSENT. It existed at drafting  | measured 2026-08-05, then  | G5 — expect  |
+|    | and was the design surface's own; the operator     | RE-measured after P1 was   | ABSENT now   |
+|    | cleared it. P1 is DISCHARGED — see P1              | discharged: gone           |              |
+|  7 | No active git hooks in .git/hooks                  | measured 2026-08-05        | G2           |
+|  8 | No commit.template configured                      | measured 2026-08-05        | G2           |
+|  9 | core.autocrlf is unset                             | measured 2026-08-05        | G2           |
+| 10 | dashboard.html on disk hashes b71ca6a8…            | measured 2026-08-05        | G3 (base pin)|
+| 11 | register.md at HEAD hashes 67cc4ace…               | measured 2026-08-05        | T7           |
+| 12 | data/anthropic-2026-08.json at HEAD hashes 3a07986b| measured 2026-08-05        | T8           |
+| 13 | The six payload files exist under ~/Downloads/     | ACT, NOT A STATE — the     | P2 (OPERATOR |
+|    | rbt93-relay/ with the hashes in T1–T6              | operator must save them    | ACT) then G4 |
+| 14 | scripts/collect_anthropic.py is NOT modified       | scoped by this relay       | S1           |
+| 15 | The collector workflow is named exactly            | measured 2026-08-05 from   | T4 content;  |
+|    | "collect-costs"                                    | .github/workflows/         | ACCEPTED     |
+|    |                                                    | collect-costs.yml line 25  | UNCHECKED at |
+|    |                                                    |                            | apply time   |
+| 16 | The `verify` check name is exactly "verify"        | measured 2026-08-05 from   | ACCEPTED     |
+|    |                                                    | verify.yml lines 14/32     | UNCHECKED —  |
+|    |                                                    |                            | not touched  |
+|    |                                                    |                            | by this relay|
+| 17 | actions/checkout SHA 3d3c42e5… is the pin already  | measured 2026-08-05 from   | T4/T5 content|
+|    | used in this repository                            | verify.yml line 36         |              |
+| 18 | actions/setup-python SHA 5fda3b95… likewise        | measured 2026-08-05 from   | T4/T5 content|
+|    |                                                    | verify.yml line 39         |              |
+| 19 | Python 3.11 is available to the executor           | ASSUMED — the workflows    | T9; if       |
+|    |                                                    | pin 3.11, the laptop may   | absent, T9   |
+|    |                                                    | differ                     | STOPS        |
+| 20 | ruff/mypy/bandit/pytest install from PyPI at the   | measured 2026-08-05 via    | T9           |
+|    | pinned versions in requirements-dev.txt            | `pip index versions`       |              |
+| 21 | FTPS_USER / FTPS_PASSWORD secrets are NOT yet set  | ASSUMED — never checked;   | ACCEPTED     |
+|    | in the repository                                  | this relay does not need   | UNCHECKED —  |
+|    |                                                    | them and does not publish  | out of scope |
+| 22 | .github/workflows/verify.yml exists at that path   | measured 2026-08-05 —      | G6           |
+|    | (the guard instructs you to RE-READ it)            | read whole                 |              |
+| 23 | .github/workflows/collect-costs.yml exists at that | measured 2026-08-05 —      | G6           |
+|    | path (the guard instructs you to RE-READ it)       | read whole                 |              |
+| 24 | deploy.sh exists in the repository root            | measured 2026-08-05 via    | G6           |
+|    | (S1 names it in the do-not-touch list)             | `git ls-files`             |              |
+| 25 | /tmp is writable and /tmp/rbt93-render-check.html  | ASSUMED — never measured   | T10 fails    |
+|    | is a safe scratch path                             | on the executor's machine  | loudly if not|
+
+Rows 1, 19, 21 and 25 are the ones nothing establishes. Row 1 is why G1 exists.
+Row 19 STOPS at T9 rather than being assumed away. Row 21 is out of scope
+because this relay never opens a socket — see S1. Row 25 needs no guard: a
+failed write to /tmp raises, it does not pass quietly.
+
+PROVENANCE OF THIS TABLE. Rows 1–21 were composed, then rows 22–25 were added
+by running HEB-85's candidate grep over the finished draft. FOUR of twenty-five
+rows came from the instrument rather than from the author — and the shape of
+those four is the finding: three are the EXISTENCE of authorities the guard
+orders the executor to re-read, and one is a scratch path. An author lists what
+the relay DOES and overlooks what it READS.
+
+=== OPERATOR PRECONDITIONS — ACTS, WITH AN OWNER =========================
+These are ACTS someone must perform, not states you can observe. They are
+numbered here because a precondition that is an act and has no owner is a gate
+that can never be satisfied.
+
+OWNER FOR BOTH: Tad.  ·  P1 DISCHARGED 2026-08-05.  ·  P2 OUTSTANDING.
+
+P1. DISCHARGED — no action required. Recorded rather than deleted, because a
+    precondition that silently vanishes teaches nothing.
+    `~/Documents/GitHub/ops/.git/index.lock` existed at drafting time, zero
+    bytes, created 2026-08-05 ~12:04 local. IT WAS THE DESIGN SURFACE'S OWN: a
+    drafting-time `git status` acquired it through a bridge that structurally
+    cannot delete files, so the surface that took the lock could not release it.
+    The operator cleared it; absence RE-MEASURED before this relay shipped.
+    G5 therefore expects NO lock. If one is present, it is NEW information and
+    not this one — STOP and report it, and do not delete it. A stale lock and a
+    live concurrent operation are indistinguishable from inside, and that
+    judgment is the operator's.
+    This is the THIRD instance of this cause in the program: relay 08's G5
+    records one on 2026-08-04 from the same kind of read. It is a class, not an
+    incident.
+
+P2. SAVE THE SIX PAYLOAD FILES from the Cowork conversation to
+    ~/Downloads/rbt93-relay/ , keeping the filenames exactly as delivered:
+        render_cost.py
+        test_render_cost.py
+        dashboard-slotted.html
+        render-cost.yml
+        gate.yml
+        requirements-dev.txt
+    Delivery puts a file in a conversation; moving it to disk is a human act,
+    and no artifact previously instructed anyone to perform it. That omission
+    is HEB-85 defect 14, and this step exists to close it.
+
+=== FRESH-FETCH GUARD ====================================================
+You are Claude Code working in the operator's `ops` repository. This is an
+EXECUTION request relayed by the operator. Re-read the governing doctrine from
+disk — do NOT trust this prompt's summary of it, and do NOT work from
+prior-session memory.
+
+Re-read, by explicit path, before doing anything else:
+    ~/Documents/GitHub/ops/register.md          — §7 and §8 item 18
+    ~/Documents/GitHub/ops/scripts/collect_anthropic.py — `_locate_table` and
+        `upsert_week_row`; the new renderer's guard posture is modelled on them
+    ~/Documents/GitHub/ops/.github/workflows/verify.yml
+    ~/Documents/GitHub/ops/.github/workflows/collect-costs.yml
+
+IDENTITY GATE. Run each and report the result. On ANY mismatch: STOP and report.
+Do not search for a different clone, and do not substitute.
+
+  G1  cd ~/Documents/GitHub/ops
+      git --no-optional-locks remote -v            → origin Haffey-Enterprises/ops.git
+      git --no-optional-locks rev-parse --abbrev-ref HEAD  → main
+      git --no-optional-locks rev-parse HEAD       → b7fbff56dbb48f2623fead7e5f04f5ee363ca435
+      git --no-optional-locks status --porcelain   → EMPTY
+
+  G2  ls .git/hooks | grep -v '\.sample$'          → no output
+      git --no-optional-locks config --get commit.template  → no output
+      git --no-optional-locks config --get core.autocrlf    → no output
+      If any of these is non-empty, a toolchain can rewrite what you write.
+      STOP and report; do not disable anything yourself.
+
+  G3  shasum -a 256 dashboard.html
+      → b71ca6a8d3a260b693a303d7d3713b9663915f2b1c40169ba568bf25c038c8cb
+      This is the BASE PIN. dashboard.html is REPLACED by this relay. If the
+      hash differs, the file moved after this relay was authored: STOP.
+
+  G4  ls -1 ~/Downloads/rbt93-relay/
+      → the six filenames in P2, and nothing you were not expecting.
+      If the directory is absent, P2 has not been performed: STOP and say so.
+      Do not create the files, and do not reconstruct them from this prompt.
+
+  G5  .git/index.lock — REPORT whether it is present. Do NOT delete it.
+      Its disposition is P1 and belongs to the operator.
+
+  G6  Existence-verify every authority this guard tells you to re-read, and the
+      one file S1 protects that no other check touches. Report each result.
+        test -f .github/workflows/verify.yml        && echo OK
+        test -f .github/workflows/collect-costs.yml && echo OK
+        test -f scripts/collect_anthropic.py        && echo OK
+        test -f register.md                         && echo OK
+        test -f deploy.sh                           && echo OK
+      An instruction to re-read a file that is not there is not a strict
+      instruction — it is an unverifiable one. STOP on any miss.
+
+=== TASK =================================================================
+All six payloads are the PRE-PLACED transport: the ratified bytes already exist
+on disk, so you VERIFY them and then copy them into place. You do not author any
+of this content, and a hash mismatch is never a licence to edit toward the pin.
+
+For T1–T6: hash the file in ~/Downloads/rbt93-relay/ FIRST. If it does not match
+the pin, STOP and report — do not copy it, and do not correct it.
+
+  T1  render_cost.py
+      sha256 1690765d4cef7d60adfcc9b8560b0a337a1b1a0aaf377586f892d160cec81cda
+      → scripts/render_cost.py                       (NEW FILE)
+
+  T2  test_render_cost.py
+      sha256 5c5808d2bd06f6bad9ffb608355146ac262218088ae3b4be554208ed74cab5d6
+      → tests/test_render_cost.py                    (NEW FILE)
+
+  T3  dashboard-slotted.html
+      sha256 396c0f0ac3aae3efc3645bfea6f2feac3e6ae4ace0b0c4ce8f8a32ae45e82db2
+      → dashboard.html                               (REPLACES; base pin G3)
+
+  T4  render-cost.yml
+      sha256 e5c7328ca00e768e26fb47aaab5ce04e5b31958225c27772087b69157a4e1c7d
+      → .github/workflows/render-cost.yml            (NEW FILE)
+
+  T5  gate.yml
+      sha256 4094bd70bc97f3ef7502ae47da61d756805e783cb6c445bfd627d6b5bd8949cf
+      → .github/workflows/gate.yml                   (NEW FILE)
+
+  T6  requirements-dev.txt
+      sha256 3c9e94d2078f36e3a11d01da42cee795ab08a440b50bda219de1c88a5b72e3b8
+      → requirements-dev.txt                         (NEW FILE, repository root)
+
+  After each copy, re-hash the file AT ITS DESTINATION and confirm it still
+  matches. A copy is a tool operation and does more than it says.
+
+T7–T8 are the DERIVED transport: no payload travels, because the bytes already
+exist in git history and reproducing them by hand would be a transcription risk
+for no gain. Create the fixtures by extracting them.
+
+  T7  mkdir -p tests/fixtures
+      git --no-optional-locks show b7fbff5:register.md > tests/fixtures/register-v0.10.1.md
+      shasum -a 256 tests/fixtures/register-v0.10.1.md
+      → 67cc4ace8ecdfc1ec396e85634b155d88ee4c35c86eb537b9e1bf424842147c0
+
+  T8  mkdir -p tests/fixtures/data
+      git --no-optional-locks show b7fbff5:data/anthropic-2026-08.json \
+          > tests/fixtures/data/anthropic-2026-08.json
+      shasum -a 256 tests/fixtures/data/anthropic-2026-08.json
+      → 3a07986b10badd8dabc2ad5dcd52783a7db4aa318432f875af1c7dd28923c55d
+
+  T9  RUN THE GATE, exactly as gate.yml runs it. Report every result, including
+      the coverage percentage as a number.
+
+      python3 -m pip install --disable-pip-version-check --quiet -r requirements-dev.txt
+      ruff check scripts/render_cost.py tests/test_render_cost.py
+      ruff format --check scripts/render_cost.py tests/test_render_cost.py
+      mypy --strict scripts/render_cost.py
+      bandit --quiet scripts/render_cost.py
+      python3 -m pytest tests/test_render_cost.py -q \
+          --cov=render_cost --cov-report=term --cov-fail-under=90
+
+      EXPECTED, measured on the authoring surface 2026-08-05: ruff clean,
+      2 files already formatted, mypy Success, bandit exit 0, 49 passed,
+      coverage 90.38%.
+
+      If Python 3.11 is unavailable (Block 0 row 19), STOP and report the
+      version you have rather than running the gate on a different interpreter.
+
+      A DIFFERENT RESULT IS A FINDING, NOT A PROBLEM TO SOLVE. Report it and
+      STOP. Do not adjust the code, the tests, or the pins to make it pass.
+
+  T10 RENDER THE PAGE OFFLINE. This opens no socket and needs no credential.
+
+      python3 scripts/render_cost.py --out /tmp/rbt93-render-check.html
+
+      EXPECTED first line, MEASURED 2026-08-05 inside a real git repository:
+        rendered 22143 bytes · tripwire agreed (rows 766.44 vs §5 779.44) ·
+        data as of 2026-08-03
+
+      The byte count is deterministic — every varying field is fixed-width: a
+      40-character SHA in the head comment, a 12-character prefix in the footer,
+      and two fixed-format timestamps. It is 22143 and not the 22105 quoted in
+      the session record, because the authoring surface's scratch copy was not a
+      git repository and SOURCE_COMMIT correctly rendered `unknown` there. If
+      you see 22105, you are rendering outside git, which is a finding.
+
+      The TIMESTAMP will differ from any value recorded anywhere. That is
+      correct and is not a mismatch.
+
+      Then confirm and report:
+        grep -c '#SLOT:' /tmp/rbt93-render-check.html      → 0
+        grep -c 'UNFILLED:' /tmp/rbt93-render-check.html   → 0
+
+      Do NOT pass --publish. Publishing is a separate, later act.
+
+  T11 CONFIRM THE COLLECTOR IS UNTOUCHED.
+      git --no-optional-locks status --porcelain
+      scripts/collect_anthropic.py must NOT appear. Neither must register.md,
+      data/**, budgets.yaml, hosting.yaml, deploy.sh, or anything under service/.
+
+=== STOP GATE ============================================================
+S1. TOUCH ONLY these paths. Nothing else, for any reason:
+      scripts/render_cost.py
+      tests/test_render_cost.py
+      tests/fixtures/register-v0.10.1.md
+      tests/fixtures/data/anthropic-2026-08.json
+      dashboard.html
+      .github/workflows/render-cost.yml
+      .github/workflows/gate.yml
+      requirements-dev.txt
+
+    DO NOT TOUCH, under any circumstance this relay did not anticipate:
+      register.md            — it is mid-amendment; v0.10.2 is a separate relay
+      scripts/collect_anthropic.py — item 12's other half stays open, and a
+                               gate that quietly acquired it would close that
+                               item without anyone deciding to
+      data/**                — the collector owns it
+      .github/workflows/verify.yml and collect-costs.yml — read only
+
+S2. POSTURE: REPORT AND STOP.
+    Do NOT `git add`. Do NOT `git commit`. Do NOT `git push`. Do NOT open a PR.
+    Do NOT run the renderer with --publish.
+    The commit is the operator's, and so is the publish.
+
+    Produce a PROPOSED-COMMIT REPORT, not a done-story:
+      - the output of every G, T and S check above, verbatim
+      - `git --no-optional-locks status --porcelain` at the end
+      - `git --no-optional-locks diff --stat` for dashboard.html
+      - a one-line proposed commit message for the operator to accept or replace
+      - anything you declined to do, and why
+
+=== MUTATION RIDER =======================================================
+M1. Verify each target's stated FROM before writing. dashboard.html is the only
+    replacement and its base pin is G3. On ANY mismatch: STOP and report. Do not
+    reconcile by guess, and do not edit toward a pin.
+
+M2. ADJUST-AND-FLAG LICENCE: NONE. There is no class of discrepancy you may
+    correct in this relay. Everything is STOP-and-report.
+
+M3. Reading the full content of any payload before placing it is SANCTIONED
+    CONDUCT, not instruction-creep. If reading it surfaces something that looks
+    wrong — a stale claim, a path that does not exist, a check that cannot pass
+    — say so. That is gate input for the operator, never a licence to edit.
+
+M4. A PRECISE REFUSAL IS THE HIGHEST-VALUE OUTPUT YOU CAN PRODUCE HERE. Across
+    ten prior relays, fourteen defects were found — every one by an executor
+    declining or by a use pass, and not one by a hash. If this relay asks for
+    something incoherent, unsatisfiable as written, or outside what you can
+    verify, refuse with the specific reason. The reason is feedback on the
+    relay's scoping, and it is wanted.
+
+M5. TRIPWIRE, not an absolute: place all eight targets with zero content
+    changes. If any target cannot be placed without a content change, STOP and
+    surface the exact contradiction rather than resolving it.
+
+=== END ==================================================================
