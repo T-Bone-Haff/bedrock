@@ -1,0 +1,358 @@
+RELAY 11 — RBT-93 item 18: fix publish(), fix the day-tick labels, split register item 6
+Authored 2026-08-06 on the claude.ai design surface. Posture: REPORT-AND-STOP.
+Every change below has already been implemented and gate-verified on the authoring
+surface at the pinned toolchain versions. Your job is to place ratified bytes,
+verify both ends of every pin, re-run the gate yourself, and STOP. The commit and
+the push are Tad's.
+
+=== BLOCK 0 · EXTERNAL ASSERTIONS =========================================
+Every claim this artifact makes about state outside itself, and how it is known.
+An assertion in the body that is NOT in this table is a DEFECT — if you find one,
+STOP and report it. Rows were produced by grep over the finished draft, then
+classified by hand; they were not composed from memory.
+
+| #  | Assertion                                                        | How known             | Checked at   |
+|----|------------------------------------------------------------------|-----------------------|--------------|
+| 1  | repo is at ~/Documents/GitHub/ops                                 | assumed               | G1           |
+| 2  | remote is github.com/Haffey-Enterprises/ops.git                   | measured 2026-08-06   | G1           |
+| 3  | branch is main                                                    | measured 2026-08-06   | G1           |
+| 4  | HEAD is bb1cc2204cdd9f871ecabe9c25ec9c285cd5a6fc                   | measured 2026-08-06   | G1           |
+| 5  | working tree is clean                                             | measured 2026-08-06   | G1           |
+| 6  | scripts/render_cost.py at HEAD is 1032400c…                       | measured 2026-08-06   | G2           |
+| 7  | tests/test_render_cost.py at HEAD is 3f42e6ee…                    | measured 2026-08-06   | G2           |
+| 8  | register.md at HEAD is 67cc4ace…                                  | measured 2026-08-06   | G2           |
+| 9  | dashboard.html at HEAD is 396c0f0a…                               | measured 2026-08-06   | G2           |
+| 10 | scripts/render_cost.py is mode 100755 at HEAD                     | measured 2026-08-06   | G2           |
+| 11 | requirements-dev.txt pins ruff 0.16.1 mypy 2.3.0 bandit 1.9.4     | measured 2026-08-06   | G3           |
+|    | pytest 9.1.1 pytest-cov 7.1.0                                     |                       |              |
+| 12 | ~/Downloads/rbt93-relay-11/ holds 3 payloads at stated hashes     | placed by the author  | G4           |
+| 13 | register.md §4 range hashes 3da91298…                             | measured 2026-08-06   | G5, T6       |
+| 14 | dashboard.html holds exactly one `label.slice(3)`                 | measured 2026-08-06   | T4           |
+| 15 | .github/workflows/gate.yml IN_SCOPE names the two gated files     | measured 2026-08-06   | G3           |
+| 16 | python3.11 and pip are available to you                           | ASSUMED — NOT CHECKED | ← see note A |
+| 17 | .github/workflows/render-cost.yml at HEAD is e5c7328c…            | measured 2026-08-06   | S1           |
+| 18 | .github/workflows/gate.yml at HEAD is 4094bd70…                   | measured 2026-08-06   | S1           |
+| 19 | requirements-dev.txt at HEAD is 3c9e94d2…                         | measured 2026-08-06   | S1           |
+| 20 | tests/fixtures/register-v0.10.1.md at HEAD is 67cc4ace…           | measured 2026-08-06   | S1           |
+| 21 | tests/fixtures/data/anthropic-2026-08.json at HEAD is 3a07986b…   | measured 2026-08-06   | S1           |
+| 22 | scripts/collect_anthropic.py is out of the gate's scope           | read from gate.yml    | S1           |
+| 23 | data/anthropic-2026-08.json exists in the working tree            | measured 2026-08-06   | T7           |
+| 24 | the FTPS node is p3plzcpnl506943.prod.phx3.secureserver.net       | measured 2026-08-06   | ← note B     |
+| 25 | haffeyenterprises.com/cost/ is the served page                    | measured 2026-08-06   | ← note B     |
+| 26 | HEB-85's Block 0 spec is in its 2026-08-05 comment thread         | read 2026-08-06       | ← note C     |
+| 27 | /tmp/rbt93-gate does not already exist and is yours to create      | ASSUMED — NOT CHECKED | ← note D     |
+| 28 | /tmp/cost-preview.html is yours to overwrite                       | ASSUMED — NOT CHECKED | ← note D     |
+| 29 | .git/index.lock may or may not exist                              | measured 2026-08-06:  | G1           |
+|    |                                                                   | absent                |              |
+| 30 | the remote file this code publishes is named index.html           | in payload bytes only | ← note B     |
+
+NOTE A — row 16 is accepted unchecked, deliberately, and it is the row this table
+exists to surface. Nothing in this relay establishes that you have python3.11. If
+`python3.11 --version` fails at G3, STOP and report rather than substituting a
+different interpreter: the gate's results are only comparable to the authoring
+surface's on 3.11.
+
+NOTE B — rows 24 and 25 appear only inside payload bytes and in this relay's prose
+about what the code does. NOTHING IN THIS RELAY CONNECTS TO EITHER. No step below
+opens a socket. They are accepted unchecked because they are not preconditions of
+any operation here; they are preconditions of the publish, which is a separate act
+that is not part of this relay.
+
+NOTE C — row 26 is why this relay carries a Block 0 at all. It is cited, not
+relied upon: nothing you do depends on that spec being where it is said to be.
+
+NOTE D — rows 27 and 28 are paths in /tmp that this relay CREATES. They are
+assertions about state outside this artifact in exactly the sense row 4 is, and
+the author did not list either of them until the grep surfaced them. If either
+path already exists and holds something you did not put there, STOP and report
+rather than overwriting it.
+
+NOTE E — two limits of the instrument that produced this table, recorded because
+a table nobody distrusts is decoration.
+
+  (i) The grep's hostname alternative requires TWO dots, so it matched
+      `p3plzcpnl506943.prod.phx3.secureserver.net` and silently missed
+      `haffeyenterprises.com` — a hostname this relay names in prose. A
+      single-label domain is invisible to the instrument that is supposed to
+      make this table exhaustive.
+
+  (ii) Row 16 could not be checked from the authoring surface at all. The only
+      machine that surface can reach is a bridge VM, which is NOT the machine you
+      run on — so a reading there would have been a statement about a different
+      environment reported as one about yours. That is the transport failure this
+      ticket has now recorded four times, and the honest output is "unchecked"
+      rather than a value.
+
+=== FRESH-FETCH GUARD ====================================================
+
+You are Claude Code working in the repository at ~/Documents/GitHub/ops. This is
+an EXECUTION request relayed by Tad. Do NOT trust this prompt's summary of any
+file's contents — read each file from disk and verify it yourself.
+
+Run every check in this block before touching anything. Use read-only forms.
+
+G1 · IDENTITY GATE
+    cd ~/Documents/GitHub/ops
+    git remote -v
+    git rev-parse --abbrev-ref HEAD
+    git rev-parse HEAD
+    git --no-optional-locks status --porcelain
+
+    EXPECT, exactly:
+      remote origin  https://github.com/Haffey-Enterprises/ops.git
+      branch         main
+      HEAD           bb1cc2204cdd9f871ecabe9c25ec9c285cd5a6fc
+      porcelain      EMPTY (no output at all)
+
+    Also check for a stale lock:
+      ls -l .git/index.lock 2>/dev/null || echo "no index.lock"
+    If .git/index.lock exists: STOP AND REPORT IT. Do not delete it. You cannot
+    tell a stale lock from a live concurrent operation and that judgment is Tad's.
+
+G2 · BASE PINS, read from the committed objects rather than from disk
+    git cat-file -p HEAD:scripts/render_cost.py      | shasum -a 256
+    git cat-file -p HEAD:tests/test_render_cost.py   | shasum -a 256
+    git cat-file -p HEAD:register.md                 | shasum -a 256
+    git cat-file -p HEAD:dashboard.html              | shasum -a 256
+    git ls-tree HEAD scripts/render_cost.py
+
+    EXPECT:
+      scripts/render_cost.py     1032400c725a83429e9a2b14465cba1dc25e2be0458a01f696087aabb9999942
+      tests/test_render_cost.py  3f42e6eedc90e81e6d564cf8c100e4e5e2856acb9ce6fd303ab03b90679b5127
+      register.md                67cc4ace8ecdfc1ec396e85634b155d88ee4c35c86eb537b9e1bf424842147c0
+      dashboard.html             396c0f0ac3aae3efc3645bfea6f2feac3e6ae4ace0b0c4ce8f8a32ae45e82db2
+      ls-tree mode on render_cost.py: 100755
+
+    Take the mode from git, never from a file browser or a mounted view — a
+    device bridge masks group and other permission bits and has already produced
+    one false finding on this ticket by doing so.
+
+G3 · TOOLCHAIN, verified before any gate result is believed
+    python3.11 --version
+    python3.11 -m venv /tmp/rbt93-gate && /tmp/rbt93-gate/bin/python -m pip install \
+      --disable-pip-version-check --quiet -r requirements-dev.txt
+    /tmp/rbt93-gate/bin/ruff --version
+    /tmp/rbt93-gate/bin/mypy --version
+    /tmp/rbt93-gate/bin/bandit --version
+    /tmp/rbt93-gate/bin/pytest --version
+    grep -n IN_SCOPE .github/workflows/gate.yml
+
+    EXPECT: ruff 0.16.1 · mypy 2.3.0 · bandit 1.9.4 · pytest 9.1.1, each equal to
+    its pin in requirements-dev.txt, and IN_SCOPE naming exactly
+    `scripts/render_cost.py tests/test_render_cost.py`.
+
+    Use the venv's absolute paths for every gate command in T5. This exists
+    because its absence produced a false POSITIVE on 2026-08-05: a `ruff` on PATH
+    resolved to 0.15.11 against a file pinned to 0.16.1, and the authoring surface
+    reported the gate green when it would have failed in CI.
+
+G4 · PAYLOAD PINS, at the staging directory
+    cd ~/Downloads/rbt93-relay-11 && shasum -a 256 render_cost.py test_render_cost.py register.md
+
+    EXPECT:
+      render_cost.py       deab1a093ade021d05ed006a7dc85afd2f4221d60d8f7a4f94e8f7f5b3002c1c
+      test_render_cost.py  2d3aa2a598c7e8d03559c10454a498d8397bbb44894a22aab164b0266f59bc46
+      register.md          857629bc8e2f7dd1e408981f7a6cf463852b139ffff81df42f71f4a032d06145
+
+    If ~/Downloads/rbt93-relay-11/ does not exist, STOP and report. Do not look
+    for the files elsewhere and do not reconstruct them.
+
+G5 · THE COLLECTOR'S SECTION, before
+    cd ~/Documents/GitHub/ops
+    awk '/^## 4\./{f=1} /^## 5\./{f=0} f' register.md | shasum -a 256
+
+    EXPECT 3da912987a7efac0893038500d884b23f8dc5a54393e441f0a4617afe37caf37.
+    §4 belongs to the collector. It must hash identically before and after
+    everything in this relay.
+
+ON ANY MISMATCH IN G1–G5: STOP AND REPORT. Do not reconcile by guess, do not
+search for a substitute file, do not proceed with the remaining checks.
+
+=== TASK =================================================================
+
+Four targets. Two transports, named per target. Nothing here connects to any
+network endpoint; no step in this relay opens a socket.
+
+T1 · scripts/render_cost.py — TRANSPORT: pre-placed payload, copied into place
+    cp ~/Downloads/rbt93-relay-11/render_cost.py scripts/render_cost.py
+    chmod 755 scripts/render_cost.py
+    shasum -a 256 scripts/render_cost.py
+    ls -l scripts/render_cost.py
+
+    EXPECT deab1a093ade021d05ed006a7dc85afd2f4221d60d8f7a4f94e8f7f5b3002c1c
+    and a mode carrying the owner-execute bit.
+
+    What changed, so you can read the diff rather than trust this list:
+      - a new module-level helper `remote_basename`
+      - the mis-jail guard now takes basenames instead of `str.strip("./")`,
+        and gained a positive half requiring `index.html` to be present
+      - `--capture-existing` failures become PublishError instead of bare ftplib
+      - a pre-rename RETR of the temp file, hash-compared, which aborts BEFORE
+        the rename and deletes the temp file it created
+      - the post-rename read-back is RETAINED and its message reworded
+      - a refused `delete` inside the rename fallback is tolerated
+      - main() now reports the capture and the swap mode
+
+T2 · tests/test_render_cost.py — TRANSPORT: pre-placed payload, copied into place
+    cp ~/Downloads/rbt93-relay-11/test_render_cost.py tests/test_render_cost.py
+    shasum -a 256 tests/test_render_cost.py
+
+    EXPECT 2d3aa2a598c7e8d03559c10454a498d8397bbb44894a22aab164b0266f59bc46
+
+T3 · register.md — TRANSPORT: pre-placed payload, copied into place
+    cp ~/Downloads/rbt93-relay-11/register.md register.md
+    shasum -a 256 register.md
+
+    EXPECT 857629bc8e2f7dd1e408981f7a6cf463852b139ffff81df42f71f4a032d06145
+
+    Exactly three regions differ from the base. Confirm this with
+    `git --no-optional-locks diff --stat register.md` and by reading the diff:
+      1. the header table — Version 0.10.1 -> 0.10.2, As of 2026-08-05 -> 2026-08-06
+      2. §8 — item 6's row is rewritten to carry only its closed half, and a NEW
+         item 19 row is appended after item 18
+      3. the change log — one new 0.10.2 row above the 0.10.1 row
+
+    If the diff touches anything else, STOP AND REPORT.
+
+T4 · dashboard.html — TRANSPORT: derived edit, no payload
+    The rule, and it is the whole change: replace the single occurrence of the
+    token `label.slice(3)` with `label.slice(-2)`. Nothing else on that line or
+    any other line changes.
+
+    First prove the token is unique:
+      grep -c 'label.slice(3)' dashboard.html          # EXPECT exactly 1
+    Then apply it, however you prefer, and verify:
+      grep -n 'label.slice(-2)' dashboard.html         # EXPECT exactly 1, line 250
+      grep -c 'label.slice(3)' dashboard.html          # EXPECT 0
+      shasum -a 256 dashboard.html
+      wc -c dashboard.html
+
+    EXPECT fe2518677ea7d4d11a344a78a2b3e31cdacedc7c6145945b95494f3d000abe88
+    at 18558 bytes. That hash was derived on the authoring surface by applying
+    this exact rule to the pinned base. If your result differs, the rule and your
+    edit disagree — STOP AND REPORT, do not adjust the file to reach the hash.
+
+    Why: the template's day-tick code was written when the daily array carried
+    `"07-01"`, where `slice(3)` yields `"01"`. The renderer emits `"01"`, where
+    `slice(3)` yields the empty string, so every x-axis label on the daily chart
+    renders blank.
+
+T5 · THE GATE, at the verified venv from G3
+    /tmp/rbt93-gate/bin/ruff check scripts/render_cost.py tests/test_render_cost.py
+    /tmp/rbt93-gate/bin/ruff format --check scripts/render_cost.py tests/test_render_cost.py
+    /tmp/rbt93-gate/bin/mypy --strict scripts/render_cost.py
+    /tmp/rbt93-gate/bin/bandit --quiet scripts/render_cost.py
+    /tmp/rbt93-gate/bin/python -m pytest tests/test_render_cost.py -q \
+      --cov=render_cost --cov-report=term-missing --cov-fail-under=90
+
+    EXPECT all clean, 73 tests passed, coverage at or above 92%.
+    The authoring surface measured 92.14% on Python 3.11.15. A different 3.11
+    patch may move the last decimal; a materially different figure is a finding.
+
+T6 · THE COLLECTOR'S SECTION, after
+    awk '/^## 4\./{f=1} /^## 5\./{f=0} f' register.md | shasum -a 256
+    EXPECT 3da912987a7efac0893038500d884b23f8dc5a54393e441f0a4617afe37caf37,
+    identical to G5.
+
+T7 · THE OFFLINE RENDER — the check that matters most, and it opens no socket
+    /tmp/rbt93-gate/bin/python scripts/render_cost.py --repo-root . --out /tmp/cost-preview.html
+
+    `--out` is the default path. It needs no credential and connects to nothing;
+    only `--publish` connects, and this relay never passes it. If FTPS_USER or
+    FTPS_PASSWORD happen to be set in your environment, this command still opens
+    no socket.
+
+    EXPECT a line reading `tripwire agreed (rows 766.44 vs §5 779.44)` and
+    `data as of 2026-08-03`, and a file of roughly 22,100 bytes.
+
+    Then read the rendered result, which is the one property no hash in this
+    relay can reach:
+      grep -c 'UNFILLED:' /tmp/cost-preview.html          # EXPECT 0
+      grep -c '#SLOT:'    /tmp/cost-preview.html          # EXPECT 0
+      grep -c 'CLOSED 2026-08-04' /tmp/cost-preview.html  # EXPECT 0
+      grep -c 'estimate was wrong by four times' /tmp/cost-preview.html  # EXPECT 0
+      grep -o 'REGISTER v0\.[0-9.]*' /tmp/cost-preview.html  # EXPECT REGISTER v0.10.2
+      grep -c 'v0\.10\.2' /tmp/cost-preview.html          # EXPECT 4
+      grep -c 'v0\.10\.1' /tmp/cost-preview.html          # EXPECT 0
+
+    The version is LOWERCASE `v` in the bytes; the page shows it uppercase only
+    because CSS transforms it. An earlier draft of this relay carried
+    `grep -o 'REGISTER V0\.[0-9.]*'`, which matches nothing at all — it was caught
+    by running the command against the rendered payload before shipping, which is
+    the whole reason that rule exists.
+
+    If you can open the file in a browser, do. Two things to look at, both of
+    which are the reason this relay exists:
+      - the daily chart's x-axis carries day numbers (01 05 10 11 15 20 21 25 30 31)
+        rather than being blank
+      - the open-items table contains no row numbered 6, and does contain a row
+        numbered 19
+
+=== STOP GATE ============================================================
+
+Touch only these four paths:
+    scripts/render_cost.py
+    tests/test_render_cost.py
+    register.md
+    dashboard.html
+
+Everything else in the working tree must be byte-identical when you finish.
+Confirm with `git --no-optional-locks status --porcelain` and expect EXACTLY
+four modified paths and no untracked files inside the repository.
+
+/tmp/rbt93-gate and /tmp/cost-preview.html are created by steps above and live
+outside the repository. They are declared here because a relay that instructs a
+command owes the stop gate that command's side effects. Leave them; they are
+Tad's to inspect.
+
+DO NOT: stage anything, commit anything, push anything, create a branch, create a
+PR, or run `git add`. **POSTURE IS REPORT-AND-STOP.** The commit and the push are
+Tad's, and nothing in this relay authorizes you to perform either. There is no
+authorization block in this artifact, and its absence is deliberate rather than an
+omission.
+
+DO NOT touch .github/workflows/render-cost.yml. It still does not pass
+`--capture-existing`, and that is a known, deliberate state recorded for a later
+leg — not a defect for you to fix.
+
+=== MUTATION RIDER =======================================================
+
+Verify each target's stated FROM before editing it, and its stated TO after. On
+ANY mismatch: STOP AND REPORT — do not reconcile by guess and do not edit a file
+to make a hash come out right. A transcription defect is not a licence to edit.
+
+ADJUST-AND-FLAG LICENCE: NONE. There is no class of discrepancy you may resolve
+on your own initiative in this relay. Everything is STOP-on-discrepancy.
+
+Reading the full content or the diff of anything you are about to place is
+sanctioned conduct, not scope creep. Anything it surfaces is input to the report,
+never a licence to edit.
+
+A PRECISE REFUSAL IS THE HIGHEST-VALUE OUTPUT YOU CAN PRODUCE HERE. Across three
+legs of this ticket, every finding you have returned was a mechanically checkable
+claim the authoring surface asserted without running the check — a `--version`
+print, a `grep -c`. The partition has never once overlapped. If a command in this
+relay does not run, if an expectation does not hold, or if an instruction is not
+one scoped act, say so and stop rather than composing a substitute.
+
+If a check returns EMPTY or ZERO where you expected content, treat that as a
+possible instrument failure before treating it as a finding: an empty result can
+mean the probe never reached its subject. Say which you believe it is and why.
+
+=== YOUR REPORT ==========================================================
+
+Report, as data for Tad to verify rather than as a completion narrative:
+
+  1. Every G1–G5 expectation, with the value you actually observed beside it.
+  2. The four `--version` outputs, verbatim.
+  3. The post-write hash of each of the four targets.
+  4. `git --no-optional-locks status --porcelain`, verbatim.
+  5. `git --no-optional-locks diff --stat`, verbatim.
+  6. The full gate output, including the test count and the coverage figure.
+  7. §4's hash before and after.
+  8. The render line from T7 and every grep count from T7.
+  9. What you saw if you opened the rendered page.
+ 10. Any row of Block 0 you believe is wrong, missing, or unchecked.
+ 11. Anything you refused, and why.
+
+Then STOP.

@@ -1,11 +1,12 @@
 # Post-freeze evidence package — manifest
 
-Package: docs/evidence/rescue-2026-08-05-post-freeze/ — 13 content files.
+Package: docs/evidence/rescue-2026-08-05-post-freeze/ — 16 content files.
 
 Rows 1-11 are the five post-freeze evidence items that survived un-versioned
 in ~/Downloads/Rescue/ after the 2026-08-05 corpus freeze and the 2026-08-06
-corpus landing (merge b57979ae). Rows 12-13 were added at the close of the
-RBT-93 item 18 publish leg; see "Addition — 2026-08-06" below.
+corpus landing (merge b57979ae). Rows 12-16 were added at the close of the
+RBT-93 item 18 publish leg and during its wind-down; see the two Addition
+sections below.
 
 NOT part of the frozen commissioning corpus. The V3 commissioning population
 is CORPUS-MANIFEST.md's ten relays in docs/evidence/rescue-2026-08-05/,
@@ -29,11 +30,15 @@ the frozen population is the operator's call.
 | 11 | relay-09-payloads-superseded/test_render_cost.py | 5c5808d2bd06f6bad9ffb608355146ac262218088ae3b4be554208ed74cab5d6 | 20130 |
 | 12 | cost-index-captured-2026-08-06.html | acd3485fdd142323c6fb32db4309dec6144a4bd10e8d8a5cce5ab6e14d9f6a6a | 21400 |
 | 13 | ftp-jail-check.py | 6e0765fbf631f805fe80b92862e776df4294112ac9eec5d467e1e81c2d08f0c7 | 6470 |
+| 14 | RELAY-11-rbt93-item18-publish-fixes.txt | 16d3b87ad5d0f296d4c7c5e4de6b6bfe256223151218f4f94352fb39b9deee2c | 20588 |
+| 15 | RELAY-12-rbt93-item18-tick-axis-amend.txt | 7c203431c8a0ed6d5b067feac12e287d98a44181f07534851f16690dcac78266 | 23661 |
+| 16 | publish-cost.py | 219c5ffdaab740fc53156a6e6fb95daaac88cd933b3a3cd2eb8c15a03cddbf62 | 11482 |
 
 Row 12 carries the same sha256 as row 4. That is not an error — see the
 Addition below, where it is the point.
 
-Row 13 is tracked mode 100755. It is a runnable probe, not a document.
+Rows 13 and 16 are tracked mode 100755. They are runnable scripts, not
+documents.
 
 Descriptions for rows 1-11 live in CORPUS-ADDENDUM-post-freeze-2026-08-05.md
 (authored 2026-08-05 at build-leg close): relays 09/10 are the only artifacts
@@ -109,5 +114,65 @@ against row 4. The content-file count in the opening line was updated behind
 this addition — 11 to 13 — because relay 10's preserved defect in this same
 package is a row added without its count following it.
 
-This manifest is pinned by the landing relay, not by itself. The 2026-08-06
+## Second addition — 2026-08-06 wind-down
+
+Three more files, added when a sweep of the operator's Downloads folder found
+them to be the only copies of artifacts that other committed documents make
+claims about. Rows 1-13 are untouched and their hashes are unchanged.
+
+**Rows 14 and 15 — RELAY-11 and RELAY-12.** Block 0's third and fourth
+trials, 30 and 34 rows. CORPUS-ADDENDUM-post-freeze-2026-08-05.md states that
+relays 09 and 10 "are the only artifacts carrying Block 0's tables." That was
+true when it was written on 2026-08-05 and stopped being true the following
+day. The addendum is not amended, for the reason given in the first Addition;
+the correction lives here.
+
+Both carry results that exist in re-derivable form nowhere else. Relay 12's
+row 2 reads UNSTATEABLE where a draft had carried a fabricated digest, because
+a file cannot state its own hash and inventing a plausible number was easier
+than confronting that. Its provenance paragraph records the trial's real
+finding: the candidate loop's fixed point is COVERAGE, not stability — 51
+candidates, 0 uncovered — arrived at after a termination argument that was
+called "checkable rather than hopeful" and then failed on its first run.
+
+Their payloads are NOT preserved here and do not need to be. Every one of them
+is ops HEAD 02b0933e86ed7c7f6a22903117c5daab3fe6202e, verified by hash before
+this landing. That is exactly the distinction the relay-09 subdirectory exists
+to make: those payloads were preserved because git never held them, and these
+are not, because git does.
+
+**Row 16 — publish-cost.py.** The one-off, operator-run script that performed
+the first publish. Its own header says it is "not part of the repository, not
+committed," which was the right posture while it was a live instrument holding
+a credential path, and is the wrong one now that it is the only record of how
+the single irreversible act in this program was guarded.
+
+It refused at pre-flight on the day it ran, because a parallel session had
+landed the comparator corpus into this repository and moved the loose copies
+aside. No pin catches that and no assertion table catches it: the path was
+true when the script was authored and false when it executed. That refusal is
+the evidence for a class — the world changes between authoring and execution,
+and only a check performed at the moment of use can see it.
+
+Credential handling, since the file is now readable by anyone with the repo:
+getpass into the operator's own process, never in argv, never in shell
+history, never written to a file, never printed, and no verbose flag anywhere
+in the call chain. Every precondition is checked and reported BEFORE the
+prompt, so a refusal costs a keystroke and nothing else.
+
+**Considered and declined.** cost-published-2026-08-06.html, the exact bytes of
+the first publish, is not landed. It is re-derivable: render from ops
+02b0933e86ed7c7f6a22903117c5daab3fe6202e, whose renderer is deterministic
+modulo its own clock stamp. Preserving it would be hoarding rather than
+evidence. Recording that it was considered and declined is the part worth
+keeping.
+
+Verification of rows 14-16 (2026-08-06, deliberation surface, over the device
+bridge): all three hashed after placement and cmp-clean against their sources;
+all three scanned for credential-shaped strings before placement, the only hit
+being the getpass call itself; modes confirmed 100755 for row 16 and 100644
+for rows 14-15; and the content-file count in the opening line re-derived from
+a directory walk, 13 -> 16.
+
+This manifest is pinned by the landing relay, not by itself. Each 2026-08-06
 addition is pinned by the relay that lands it, on the same terms.
