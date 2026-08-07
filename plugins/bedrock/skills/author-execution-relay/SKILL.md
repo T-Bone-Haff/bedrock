@@ -1,6 +1,6 @@
 ---
 name: author-execution-relay
-description: Author an execution relay — the handoff prompt that delegates file and git toil to an executor surface (Claude Code) while keeping every judgment with the operator. Carries the four-block spine (fresh-fetch guard → task → stop gate → mutation rider), posture selection (report-and-STOP vs. gated transaction), premise and pin discipline, adjustment licenses, escape-hatch design, and output discipline. Use whenever drafting the Code relay or handoff — "draft the relay," "hand this to Code," "write the handoff prompt," "relay this for execution" — or any time a deliberation surface is about to hand file or git operations to an executor. Authoring-side only: this skill is consumed at relay-drafting time, and the relay artifact it produces is what governs the executor. Assumes the three-actor working model (deliberation surface / executor / ratifying operator); a different working model is a rebind.
+description: Author an execution relay — the handoff prompt that delegates file and git toil to an executor surface (Claude Code) while keeping every judgment with the operator. Carries the relay spine (Block 0 external assertions → fresh-fetch guard → task → stop gate → mutation rider), claim-provenance discipline (no naked claims), instrument discipline, posture selection (report-and-STOP vs. gated transaction), premise and pin discipline, adjustment licenses, escape-hatch design, and output discipline. Use whenever drafting the Code relay or handoff — "draft the relay," "hand this to Code," "write the handoff prompt" — or a session kickoff or session handoff, or any time a deliberation surface is about to hand file or git operations to an executor. Authoring-side only: this skill is consumed at relay-drafting time, and the relay artifact it produces is what governs the executor. Assumes the three-actor working model (deliberation surface / executor / ratifying operator); a different working model is a rebind.
 ---
 
 # Author an Execution Relay
@@ -9,14 +9,15 @@ An *execution relay* is a prompt artifact handed from a deliberation surface to 
 
 **Binding:** the three-actor working model — a deliberation surface that proposes and adjudicates, an executor (Claude Code) that performs file and git operations, and a ratifying operator whose per-gate go is the operator act. A materially different working model is a rebind, not a line-edit.
 
-**Scope:** authoring-side only. The skill fires when the relay is *drafted*. Executor behavior — stop semantics, licenses, gates — is governed by the relay artifact this skill produces, not by the executor loading this skill. The standing principles the relay instantiates (fresh-fetch over recall, no presumed alignment, ratification as the operator act) are codified in the operator's always-loaded doctrine; this skill does not re-house them — it converts them into artifact structure at the moment of drafting, the same relationship `author-decision-record` has to "don't fabricate."
+**Scope:** authoring-side only. The skill fires when the relay is *drafted* — and equally when a session kickoff or session handoff is drafted, the artifact classes § Claim discipline binds. Executor behavior — stop semantics, licenses, gates — is governed by the relay artifact this skill produces, not by the executor loading this skill. The standing principles the relay instantiates (fresh-fetch over recall, no presumed alignment, ratification as the operator act) are codified in the operator's always-loaded doctrine; this skill does not re-house them — it converts them into artifact structure at the moment of drafting, the same relationship `author-decision-record` has to "don't fabricate."
 
 **The delegation test, before drafting anything:** does this handoff remove the operator's *decision*, or only the operator's *labor*? Only-labor is safe to delegate; the decision never is. A control is real if it survives the operator losing their keyboard — a gate that requires the operator's typing was delegating judgment and keeping toil, exactly backwards.
 
-## The four-block spine
+## The relay spine
 
-Every relay carries four blocks, in this order. The order is load-bearing: the guard precedes the task so verification cannot be skipped by momentum; the rider trails the task so mutation constraints arrive with the mutations in view.
+Every relay opens with Block 0 and carries four blocks after it, in this order. The order is load-bearing: the assertions table precedes the guard because the guard and the executor's checks are what discharge it; the guard precedes the task so verification cannot be skipped by momentum; the rider trails the task so mutation constraints arrive with the mutations in view.
 
+0. **Block 0 — external assertions** — the `EXTERNAL ASSERTIONS` table (§ Claim discipline): every claim the relay makes about state outside itself, its provenance, and where it is checked. An assertion in the body absent from the table is a defect the executor reports.
 1. **Fresh-fetch guard** — the executor re-reads the governing doctrine from disk and never trusts the relay's summary of it or any prior-session memory (prior-art-as-authority is a named failure mode). The guard opens with an **identity gate**: remote, branch, expected files. Mismatch is stop-and-report, never search-and-substitute. The identity gate extends to every authority the guard cites: each doctrine the executor is instructed to re-read is named by explicit path, resolved and existence-verified at drafting time — an alias is an unverified premise. Where the executor's operations run through a tool that takes exclusive locks, the identity gate checks for stale ones and treats any as **STOP-and-report, never delete** — the executor cannot distinguish a stale lock from a live concurrent operation, and that judgment is the operator's.
 2. **Task** — the operation itself, scoped and numbered, with per-item stop points wherever ratification is per-item, and base hashes for anything the relay replaces.
 3. **Stop gate** — what may be touched, what must not be, and the transaction posture (next section). Touch-scope is an allowlist of declared outputs, never a description of intent.
@@ -25,6 +26,11 @@ Every relay carries four blocks, in this order. The order is load-bearing: the g
 A compact skeleton:
 
 ```
+═══ BLOCK 0 — EXTERNAL ASSERTIONS ═══
+| # | Assertion | How known | Checked at |
+<one row per claim about state outside this relay; an assertion in the body
+absent from this table is a defect: report it and STOP>
+
 ═══ FRESH-FETCH GUARD ═══
 You are <executor> working <repo>. This is an EXECUTION request relayed by the
 operator. Re-read the governing doctrine from disk at <named path(s)> — do NOT
@@ -62,13 +68,37 @@ Every relay carries silent premises — which repo, which branch, which version,
 
 - **The identity gate makes repo-identity premises explicit.** Name the remote, the branch, the expected targets; instruct mismatch = stop-and-report. An unstated identity premise meets a frozen archive or the wrong clone silently.
 - **Name every artifact by explicit path, never by alias.** Any reference the executor must resolve — governing doctrine, a skill, a charter, a target file — resolves to an explicit path (or pinned URL) at drafting time, existence-verified by a safe read before the relay fires. An alias ("the vault doctrine," "your CLAUDE.md chain") delegates premise-resolution to executor guesswork, and resolution against the wrong artifact is silent until it isn't.
-- **Pre-state assertions are claims the executor verifies, not context it trusts.** "This file currently says X" is a checkable claim; write it as one.
+- **Pre-state assertions are claims the executor verifies, not context it trusts.** "This file currently says X" is a checkable claim; write it as one. Block 0 (§ Claim discipline) is the table these claims land in.
 - **Operator assertions are claims too.** An instruction that embeds a factual claim — "note that X happened" — owes that claim a fresh verification before any durable write. Transcribing it because the operator said it is prior-art-as-authority wearing a different hat.
 - **Build change-lists from the live tree**, never from a document's description of its own layout — maps drift from the territory they claim.
 - **Fresh-read the tool the relay describes.** A relay's premise can be stale against the very artifact it governs; the author may be working from recall of an older tool state.
 - **A tool operation does more than it says.** Every command a relay's author or executor issues runs through a toolchain with its own mutation paths — hooks, templates, filters, locks, caches, format-on-save. The relay never assumes the operation was only what it named. On the **write** path, verify the artifact the tool stored rather than the input you handed it (§ Pin discipline). On the **read** path, use the form that observes without mutating (below).
 - **Drafting inherits verify-first.** The relay is itself a write against the target repo's process — verify the target's transaction conventions (git topology, ignore rules, which process owns the commit) *before* drafting, exactly as the executor verifies file state before editing. The executor's halt rule is the second line of defense, not the first.
 - **Drafting-time inspection is read-only or it is a mutation.** The verification a relay's author performs against the target is itself a touch. Use the read-only form of every inspection command (`git --no-optional-locks status`, `git log`, `git show`, `git cat-file`) and never a form that takes a lock, refreshes an index, or writes a cache. A drafting surface that cannot release what it acquires leaves the executor a failure the relay never mentions — and the author is the one party guaranteed not to see it.
+
+## Claim discipline (no naked claims)
+
+Every claim an artifact makes about state outside itself carries its provenance: **measured** (the command, where it ran, when), **assumed** (declared, with why the assumption is survivable), **an act with a named owner**, an explicit **UNVERIFIED** flag — or **UNSTATEABLE**, for a claim that cannot state itself in principle (a file's own hash; a value that exists only after the artifact is sealed). UNSTATEABLE is a legal value precisely because a row that wants filling invites a fabricated one; the true value travels beside the artifact, never inside it.
+
+Three rules are this discipline applied to its recurring cases, not additions to it:
+
+- **Platform:** every command the artifact carries states `run on <platform>` or `never run`. Runnability is a property of text paired with a platform, and the pairing is what artifacts silently omit.
+- **Corpus:** every quantified claim ships with the command that recomputes it.
+- **Payload:** every pinned payload is extracted back out of the finished artifact and re-hashed (§ Pin discipline owns the transport forms).
+
+**Block 0 is the table rendering of this discipline:** the relay opens with an `EXTERNAL ASSERTIONS` table — each row a claim, how it is known, and where it is checked — under two closure rules: every act named as done has a named owner, and every claim is checked-or-accepted-with-reason. An assertion in the body absent from the table is a defect the executor reports. This subsumes Premise discipline's claim bullets: a pre-state assertion or an embedded operator claim is a Block 0 row, not a second mechanism. The table's candidate-generation mechanics and stopping rule are the Block 0 spec's concern, not this skill's — the spec's home is HEB-85, its codification pending; the deferral names a home, not a landed artifact.
+
+**Scope:** this discipline binds not only relays but session kickoffs and session handoffs — any artifact handing an executor or successor surface a claim-bearing brief (HEB-85 scope ruling, 2026-08-06).
+
+## Instrument discipline
+
+An instrument is anything whose output is offered as evidence — a check authored into the relay, or one the executor invents mid-transaction. The relay carries this discipline as executor-facing text (the drafter's obligation is to include it), so it binds the inventor of every check, whichever surface invents it. An instrument's output does not count as evidence until three things are stated:
+
+- **Its claim, including what it actually reads.** What a pass asserts, and the input it asserts it from — a check that reads a local tracking ref cannot claim remote identity, and the vacuousness is visible the moment the input is named.
+- **Its population.** What both arms of any comparison range over, asserted by count *before* comparing.
+- **Its third outcome.** What it reports when it could not measure: empty input, unreachable subject, wrong environment.
+
+Two hard rules: **a digest of unverified-nonempty input is a failure, not a value**, and **a suspiciously clean report is a failure signal, not a pass** — a first reading that would indict a durable artifact is re-run before it is reported, and both readings are reported, never only the corrected one.
 
 ## Pin discipline
 
@@ -97,6 +127,11 @@ Separate, explicitly, what the executor may **adjust-and-flag** from what must *
 - **Verbatim payloads are wrap-safe or they are not verbatim.** A payload whose bytes are the deliverable — an append fragment, a commit message, a marker block — is never margin-wrapped by an authoring pass: no line break lands mid-token, and whitespace inside the payload is content, not formatting. Carry such payloads fenced, and where the bytes matter enough to pin, validate with a hash or token-integrity check **over the durable artifact (§ Pin discipline), never over the payload as handed in** — the executor catching a wrapped token at the gate is the *last* line of defense, not the discipline.
 - **An otherwise-verbatim payload MAY carry named fill-slots.** Each slot is explicitly marked (a `<VERSION>`-style token), its fill rule is deterministic and stated in the relay — any surface applying the rule to the pinned base derives the same bytes — and everything outside the slots stays wrap-safe verbatim. An unnamed slot, or one whose fill requires judgment, voids the payload's verbatim status. Verification takes the derived-edit form: the deliberation surface derives the expected post-fill bytes and pins them.
 - **Pin the environment of every exact-match assertion.** Any byte-for-byte check over locale- or environment-sensitive tool output (`sort`, `ls`, glob order, date formatting) pins its environment (`LC_ALL=C`) or drops the exact-match — an unpinned assertion is a false-RED landmine on a different machine.
+- **No transaction closes with a specified use pass unrun.** Where the relay names a use pass — render it, read it, operate it — the executor runs it before close or reports `could not run: <reason>`; silence is neither.
+
+## Calibration
+
+Periodically point a cold, context-free reader at artifacts that already passed this skill's authoring-side checks — and **record every second catch of an already-known defect as data, never dropped as noise**. Deliberate overlap between independent catchers is the only measurement of what the whole system misses; without the recording rule, zero recorded overlap is uninterpretable. Seam: this practice samples relay-class artifacts for authoring-check misses; review-instrument empiricism stays at its home in `design-review-loop`.
 
 ## Drafting posture
 
@@ -105,7 +140,7 @@ Separate, explicitly, what the executor may **adjust-and-flag** from what must *
 
 ## Boundaries with sibling skills
 
-- **Reviewing the landed change** → the `code-review` skill. It also owns narrated-process-is-data and the review-instrument design that enforces it; this skill instantiates that rule on the artifact side, and cites rather than restates it.
+- **Reviewing the landed change** → the `code-review` skill. It also owns narrated-process-is-data and the review-instrument design that enforces it; this skill instantiates that rule on the artifact side, and cites rather than restates it. Review instruments are its territory; this skill's instrument discipline governs the checks a relay carries or an executor invents mid-transaction.
 - **A prompt the code ships** — a charter, a shipped prompt artifact — → the `agent-code` skill; a prompt the operator hands to an executor is this skill's relay. The two partition the prompt-artifact class, and `agent-code` declares the same seam from its side.
 - **Authoring this skill, or any reusable standard** → the `author-standard` skill: membership, sourcing, binding, shape, hardening, and proving all live there.
 - **Authoring a decision record the relay might land** → the `author-decision-record` skill; the relay carries the record, it doesn't author it.
