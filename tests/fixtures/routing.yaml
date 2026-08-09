@@ -1,0 +1,193 @@
+schema_version: 1
+cases:
+  - id: agent-code-positive
+    kind: positive
+    surface: portable-core
+    prompt: Add a bounded tool loop and structured-output parser to our Claude-backed agent service.
+    expected: agent-code
+    excluded: []
+  - id: agent-code-negative
+    kind: negative
+    surface: portable-core
+    prompt: Add a conventional REST endpoint to our FastAPI service; it makes no model calls.
+    expected: application-code
+    excluded: [agent-code]
+  - id: app-delivery-pipeline-positive
+    kind: positive
+    surface: portable-core
+    prompt: Build a GitHub Actions workflow that builds our service image, pushes it, deploys it, and verifies rollout.
+    expected: app-delivery-pipeline
+    excluded: []
+  - id: app-delivery-pipeline-negative
+    kind: negative
+    surface: portable-core
+    prompt: Add protected Terraform plan and apply jobs for our production environment.
+    expected: infrastructure-code
+    excluded: [app-delivery-pipeline]
+  - id: application-code-positive
+    kind: positive
+    surface: portable-core
+    prompt: Scaffold a FastAPI service with configuration, structured logging, auth middleware, and async database access.
+    expected: application-code
+    excluded: []
+  - id: application-code-negative
+    kind: negative
+    surface: portable-core
+    prompt: Implement schema-constrained output recovery around an LLM call.
+    expected: agent-code
+    excluded: [application-code]
+  - id: author-construct-spec-positive
+    kind: positive
+    surface: portable-core
+    prompt: Write an implementation-complete construct spec for the new evaluation harness.
+    expected: author-construct-spec
+    excluded: []
+  - id: author-construct-spec-negative
+    kind: negative
+    surface: portable-core
+    prompt: Draft a product requirements document for a customer-facing billing feature.
+    expected: null
+    excluded: [author-construct-spec]
+  - id: author-decision-record-positive
+    kind: positive
+    surface: portable-core
+    prompt: Record why we selected Pub/Sub over Kafka and choose the correct decision-record type.
+    expected: author-decision-record
+    excluded: []
+  - id: author-decision-record-negative
+    kind: negative
+    surface: portable-core
+    prompt: Review this completed pull request for security and correctness before merge.
+    expected: code-review
+    excluded: [author-decision-record]
+  - id: author-execution-relay-positive
+    kind: positive
+    surface: portable-core
+    prompt: Draft a gated handoff prompt for Code to implement the approved design and stop before committing.
+    expected: author-execution-relay
+    excluded: []
+  - id: author-execution-relay-negative
+    kind: negative
+    surface: portable-core
+    prompt: Implement the approved FastAPI endpoint in this repository now.
+    expected: application-code
+    excluded: [author-execution-relay]
+  - id: author-standard-positive
+    kind: positive
+    surface: portable-core
+    prompt: Turn this ratified authority into a reusable engineering standard and prove it on a consumer.
+    expected: author-standard
+    excluded: []
+  - id: author-standard-negative
+    kind: negative
+    surface: portable-core
+    prompt: Write an ADR that captures why we chose PostgreSQL.
+    expected: author-decision-record
+    excluded: [author-standard]
+  - id: code-review-positive
+    kind: positive
+    surface: portable-core
+    prompt: Review this finished diff and tell me whether it is safe to merge.
+    expected: code-review
+    excluded: []
+  - id: code-review-negative
+    kind: negative
+    surface: portable-core
+    prompt: Drive this ADR and SDD set through a convergence review.
+    expected: design-review-loop
+    excluded: [code-review]
+  - id: debug-positive
+    kind: positive
+    surface: portable-core
+    prompt: This test passes locally but flakes in CI; reproduce it and find the root cause.
+    expected: debug
+    excluded: []
+  - id: debug-negative
+    kind: negative
+    surface: portable-core
+    prompt: Add a planned health-check endpoint to the service.
+    expected: application-code
+    excluded: [debug]
+  - id: design-review-loop-positive
+    kind: positive
+    surface: portable-core
+    prompt: Run the design-review loop over these amended ADRs and determine whether the set converged.
+    expected: design-review-loop
+    excluded: []
+  - id: design-review-loop-negative
+    kind: negative
+    surface: portable-core
+    prompt: Review the implementation diff for correctness before merge.
+    expected: code-review
+    excluded: [design-review-loop]
+  - id: frontend-code-positive
+    kind: positive
+    surface: portable-core
+    prompt: Build an accessible React component with responsive token-based CSS and a permission-gated microphone hook.
+    expected: frontend-code
+    excluded: []
+  - id: frontend-code-negative
+    kind: negative
+    surface: portable-core
+    prompt: Add authentication middleware and an async database adapter to our FastAPI backend.
+    expected: application-code
+    excluded: [frontend-code]
+  - id: infrastructure-code-positive
+    kind: positive
+    surface: portable-core
+    prompt: Create a Terraform module for Cloud SQL with remote state, IAM, and protected plan/apply jobs.
+    expected: infrastructure-code
+    excluded: []
+  - id: infrastructure-code-negative
+    kind: negative
+    surface: portable-core
+    prompt: Build and deploy our application container after the pull-request gates pass.
+    expected: app-delivery-pipeline
+    excluded: [infrastructure-code]
+  - id: testing-positive
+    kind: positive
+    surface: portable-core
+    prompt: Write isolated pytest unit and integration tests for this new FastAPI endpoint.
+    expected: testing
+    excluded: []
+  - id: testing-negative
+    kind: negative
+    surface: portable-core
+    prompt: A previously stable test is now flaky only in CI; diagnose why before changing it.
+    expected: debug
+    excluded: [testing]
+  - id: overlap-review-terraform
+    kind: overlap
+    surface: portable-core
+    prompt: Review this completed Terraform pull request before merge.
+    expected: code-review
+    allowed_alternates: [infrastructure-code]
+    excluded: []
+  - id: overlap-debug-deployment
+    kind: overlap
+    surface: portable-core
+    prompt: Our GitHub Actions deployment started failing yesterday; reproduce and diagnose the failure.
+    expected: debug
+    allowed_alternates: [app-delivery-pipeline]
+    excluded: []
+  - id: overlap-test-agent-output
+    kind: overlap
+    surface: portable-core
+    prompt: Write tests for the structured-output recovery behavior in our LLM client.
+    expected: testing
+    allowed_alternates: [agent-code]
+    excluded: []
+  - id: overlap-adr-model-vendor
+    kind: overlap
+    surface: portable-core
+    prompt: Author the ADR for our decision to change model vendors.
+    expected: author-decision-record
+    allowed_alternates: [agent-code]
+    excluded: []
+  - id: overlap-relay-construct
+    kind: overlap
+    surface: portable-core
+    prompt: Draft the gated Code handoff that implements this already-ratified construct spec.
+    expected: author-execution-relay
+    allowed_alternates: [author-construct-spec]
+    excluded: []

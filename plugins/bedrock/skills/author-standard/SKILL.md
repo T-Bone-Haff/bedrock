@@ -1,6 +1,6 @@
 ---
 name: author-standard
-description: Author — or decide whether to author — a reusable standard: a Claude skill, an engineering convention set, a template, or any artifact meant to govern future work. Carries the sourcing rule (forward-author from established authority, never back-distill from an uncontrolled build), the membership test (task-triggered skill vs. always-on principle), binding declaration, shape and hardening disciplines, the exception ladder, and the proving step (cascade onto a real consumer). Use whenever creating or extending a skill, standard, convention document, checklist, or template; deciding whether something should be a skill; or distilling a body of conventions into reusable artifacts. Authoring a single decision record is the author-decision-record skill; mechanical skill packaging and evals are the generic skill-creator — this skill governs whether to author, from what authority, and how to prove the result.
+description: "Decide whether to create, then author or amend, a reusable standard such as an engineering convention, skill, governing checklist, or template. Use when defining rules for future work, selecting authoritative sources, declaring binding and exceptions, shaping the standard, or proving it on a real consumer. Do not use for a single ADR, DDR, SDD, or construct spec (author-decision-record), an executor handoff, or mechanical skill packaging and routing evals (skill-creator)."
 ---
 
 # Author a Standard

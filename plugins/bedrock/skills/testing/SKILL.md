@@ -1,6 +1,6 @@
 ---
 name: testing
-description: House testing discipline for Python service code — test-driven-development sequence, unit/integration/contract/e2e tests, mocking, fixtures, coverage, and test isolation. Use whenever writing tests, deciding how to test something, adding a test for new behavior, or setting a service's test discipline: "write tests for X", "how should I test this", "what's the coverage requirement", "test this endpoint", or any time you're implementing behavior that should be specified test-first. Assumes pytest on a Python/FastAPI/async stack; on a different stack, treat the conventions as a rebind. Writing the code under test is the application-code skill — this skill is about specifying and verifying its behavior with tests.
+description: "New-test authoring and test strategy only; every existing failing or flaky test routes to debug, never testing, including a CI-only flake. Use this skill when the deliverable is new or changed tests, a test strategy, or coverage for planned Python service behavior under the house pytest discipline: TDD sequencing, unit, integration, contract, and end-to-end tests, fixtures, mocking, isolation, coverage, and nondeterminism controls. Do not use to diagnose an observed test failure, implement production code, or review a finished diff. A different test stack is a rebind."
 ---
 
 # Testing

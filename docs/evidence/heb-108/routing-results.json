@@ -1,0 +1,1226 @@
+{
+  "schema_version": 1,
+  "adapter": "claude-code",
+  "claude_cli_version": "2.1.224 (Claude Code)",
+  "requested_model": "haiku",
+  "resolved_models": [
+    "claude-haiku-4-5-20251001"
+  ],
+  "runs_per_case": 3,
+  "max_budget_usd_per_case_run": 0.03,
+  "timeout_seconds_per_case_run": 120,
+  "passed": 83,
+  "total": 93,
+  "total_cost_usd": 0.451202,
+  "results": [
+    {
+      "case": "agent-code-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "agent-code",
+      "selected": "agent-code",
+      "passed": true,
+      "detail": "The user request is to add a bounded tool loop and structured-output parser to a Claude-backed agent service. This is agent-specific implementation work involving core agent execution patterns and output handling, which falls under the agent-code skill's responsibility for writing and maintaining agent functionality code.",
+      "cost_usd": 0.004569,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "agent-code-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "agent-code",
+      "selected": "agent-code",
+      "passed": true,
+      "detail": "This request involves adding agent-specific functionality (bounded tool loop and structured-output parser) to a Claude-backed agent service. The agent-code skill is designed to handle modifications to agent implementation, orchestration logic, and agent capabilities, which directly applies to implementing tool looping and output parsing mechanisms.",
+      "cost_usd": 0.004139,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "agent-code-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "agent-code",
+      "selected": "agent-code",
+      "passed": true,
+      "detail": "This request involves implementing core agent functionality (bounded tool loop and structured-output parser) for a Claude-backed agent service. The agent-code skill is designed to handle implementation work specific to agent systems and their runtime components.",
+      "cost_usd": 0.004534,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "agent-code-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "The request is to add a conventional REST endpoint to a FastAPI service. This is a core application code development task - implementing new API endpoints is within the domain of the application-code skill.",
+      "cost_usd": 0.005382,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "agent-code-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "Adding a REST endpoint to a FastAPI service is application code development work. The application-code skill handles writing and implementing application logic and API endpoints.",
+      "cost_usd": 0.004352,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "agent-code-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "Adding a REST endpoint to a FastAPI service is application code development work. The application-code skill handles writing and implementing application-level functionality for services.",
+      "cost_usd": 0.004932000000000001,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "app-delivery-pipeline-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "app-delivery-pipeline",
+      "selected": "app-delivery-pipeline",
+      "passed": true,
+      "detail": "The user request is about creating a GitHub Actions workflow for building, pushing, deploying a service image, and verifying rollout. This is a core application delivery pipeline concern that falls within the scope of CI/CD automation and deployment orchestration.",
+      "cost_usd": 0.004823,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "app-delivery-pipeline-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "app-delivery-pipeline",
+      "selected": "app-delivery-pipeline",
+      "passed": true,
+      "detail": "The request is about creating a GitHub Actions workflow for the complete CI/CD pipeline: building a service image, pushing it to a registry, deploying it, and verifying the rollout. The app-delivery-pipeline skill handles application delivery automation including build, push, and deployment workflows.",
+      "cost_usd": 0.0043029999999999995,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "app-delivery-pipeline-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "app-delivery-pipeline",
+      "selected": "app-delivery-pipeline",
+      "passed": true,
+      "detail": "The user request describes a complete CI/CD workflow involving building a container image, pushing it to a registry, deploying it to an environment, and verifying rollout success. This is the core responsibility of the app-delivery-pipeline skill, which handles GitHub Actions workflows and deployment orchestration.",
+      "cost_usd": 0.004718,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "app-delivery-pipeline-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "infrastructure-code",
+      "selected": "infrastructure-code",
+      "passed": true,
+      "detail": "The request is to add protected Terraform plan and apply jobs for production. This is an infrastructure-as-code task involving Terraform configuration and deployment automation, which falls under the infrastructure-code skill's domain.",
+      "cost_usd": 0.004404,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "app-delivery-pipeline-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "infrastructure-code",
+      "selected": "app-delivery-pipeline",
+      "passed": false,
+      "detail": "The request is to add protected Terraform plan and apply jobs for production environment. This is fundamentally about configuring CI/CD pipeline jobs and stages to execute Terraform operations. The app-delivery-pipeline skill handles creation and configuration of delivery pipeline jobs, which is the primary concern here, rather than writing the infrastructure code itself.",
+      "cost_usd": 0.005299,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "app-delivery-pipeline-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "infrastructure-code",
+      "selected": "infrastructure-code",
+      "passed": true,
+      "detail": "The request is about adding protected Terraform plan and apply jobs for production. Terraform is an infrastructure-as-code tool, and configuring infrastructure deployment operations (plan and apply) falls under infrastructure code management and governance.",
+      "cost_usd": 0.004598999999999999,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "application-code-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "The request is for scaffolding a FastAPI service with application-level concerns including configuration, structured logging, auth middleware, and async database access. This is fundamentally an application code generation task, making it the responsibility of the application-code skill.",
+      "cost_usd": 0.0048130000000000004,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "application-code-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "The request is for scaffolding and implementing a FastAPI backend service with standard application-layer concerns (configuration, logging, authentication middleware, and async database access). This falls directly under application code generation and structure, not infrastructure, deployment pipelines, or specialized agent code.",
+      "cost_usd": 0.005303,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "application-code-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "The request is for scaffolding a FastAPI service with configuration, logging, middleware, and database access. This is backend application code generation work, which is the responsibility of the application-code skill. FastAPI service scaffolding involves writing application-level code including service structure, configuration management, and middleware patterns.",
+      "cost_usd": 0.005158,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "application-code-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "agent-code",
+      "selected": "debug",
+      "passed": false,
+      "detail": "The request asks for implementing recovery mechanisms around an LLM call with schema-constrained output. This is fundamentally a debugging and error-handling concern - implementing recovery strategies when output doesn't conform to expected schemas. The debug skill is designed to handle problem-solving and recovery scenarios around system execution.",
+      "cost_usd": 0.0051129999999999995,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "application-code-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "agent-code",
+      "selected": "debug",
+      "passed": false,
+      "detail": "The request is about implementing recovery mechanisms around LLM output handling with schema constraints. The 'debug' skill is the most appropriate choice for handling recovery and error remediation patterns, which aligns with the branch context focusing on recovery and restoration functionality.",
+      "cost_usd": 0.006012999999999999,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "application-code-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "agent-code",
+      "selected": "agent-code",
+      "passed": true,
+      "detail": "The request involves implementing schema-constrained output recovery around an LLM call. This is a core agent-code pattern that deals with structured output handling and resilience mechanisms for LLM interactions, which falls under agent implementation responsibilities rather than general application code, debugging, or architectural concerns.",
+      "cost_usd": 0.005163,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-construct-spec-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "author-construct-spec",
+      "selected": "author-construct-spec",
+      "passed": true,
+      "detail": "The user request is specifically about writing a construct spec. The 'author-construct-spec' skill directly aligns with this request as it handles the authoring and creation of construct specifications.",
+      "cost_usd": 0.004170999999999999,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-construct-spec-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "author-construct-spec",
+      "selected": "author-construct-spec",
+      "passed": true,
+      "detail": "The user request explicitly asks to write a construct spec, and the \"author-construct-spec\" skill is purpose-built for authoring implementation-complete construct specifications.",
+      "cost_usd": 0.003931,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-construct-spec-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "author-construct-spec",
+      "selected": "author-construct-spec",
+      "passed": true,
+      "detail": "The user request explicitly asks to write a \"construct spec,\" which directly matches the author-construct-spec skill's purpose. This skill is designed to handle the creation and authoring of construct specifications.",
+      "cost_usd": 0.003851,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-construct-spec-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": null,
+      "selected": "author-construct-spec",
+      "passed": false,
+      "detail": "A product requirements document is a specification artifact. The author-construct-spec skill is designed for authoring specification and construct documents, making it the appropriate choice for drafting a PRD for a customer-facing billing feature.",
+      "cost_usd": 0.0053739999999999994,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-construct-spec-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": null,
+      "selected": "author-construct-spec",
+      "passed": false,
+      "detail": "The request asks to draft a product requirements document for a feature. The author-construct-spec skill is designed for authoring specifications and requirement documents for specific constructs/features, making it the most appropriate choice for creating a PRD for the billing feature.",
+      "cost_usd": 0.005274,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-construct-spec-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": null,
+      "selected": "author-construct-spec",
+      "passed": false,
+      "detail": "The request asks for drafting a product requirements document (PRD), which is a specification construct. The 'author-construct-spec' skill is designed for creating specification documents and constructs, making it the most appropriate choice for authoring a requirements document for a customer-facing billing feature.",
+      "cost_usd": 0.004808999999999999,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-decision-record-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "author-decision-record",
+      "selected": "author-decision-record",
+      "passed": true,
+      "detail": "The user is requesting to record an architectural decision (Pub/Sub over Kafka) and select the appropriate decision-record type. The 'author-decision-record' skill is specifically designed to handle the creation and documentation of decision records with proper typing and formatting.",
+      "cost_usd": 0.004658,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-decision-record-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "author-decision-record",
+      "selected": "author-decision-record",
+      "passed": true,
+      "detail": "The user is requesting to record a technical decision (selecting Pub/Sub over Kafka) and identify the appropriate decision-record type. This is directly handled by the author-decision-record skill, which specializes in creating and managing decision records with proper categorization and documentation.",
+      "cost_usd": 0.004248,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-decision-record-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "author-decision-record",
+      "selected": "author-decision-record",
+      "passed": true,
+      "detail": "The user request is explicitly about recording a decision (why Pub/Sub was selected over Kafka) and choosing the correct decision-record type. The \"author-decision-record\" skill is designed to handle the authoring and management of architectural decision records.",
+      "cost_usd": 0.004203,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-decision-record-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "code-review",
+      "selected": "code-review",
+      "passed": true,
+      "detail": "The user request is asking for a review of a completed pull request specifically for security and correctness before merge. This directly corresponds to the code-review skill, which handles code review tasks including security and correctness assessments.",
+      "cost_usd": 0.0040290000000000005,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-decision-record-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "code-review",
+      "selected": "code-review",
+      "passed": true,
+      "detail": "The user request asks for reviewing a completed pull request for security and correctness before merge. This is a code review task, which directly matches the code-review skill's purpose.",
+      "cost_usd": 0.004279,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-decision-record-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "code-review",
+      "selected": "code-review",
+      "passed": true,
+      "detail": "The user request asks for a pull request review for security and correctness before merge. The code-review skill is specifically designed to handle code review tasks including security and correctness validation of pull requests.",
+      "cost_usd": 0.0030239999999999998,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-execution-relay-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "author-execution-relay",
+      "selected": "author-execution-relay",
+      "passed": true,
+      "detail": "The request asks for drafting a gated handoff prompt to transition work from the design phase to code implementation. The \"author-execution-relay\" skill is specifically designed for authoring execution relays that manage controlled handoffs and transitions between different work stages, making it the most appropriate choice for this request.",
+      "cost_usd": 0.005478,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-execution-relay-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "author-execution-relay",
+      "selected": "author-execution-relay",
+      "passed": true,
+      "detail": "The request asks to draft a gated handoff prompt for handing off work to implement code. This is fundamentally about authoring an execution relay\u2014a controlled handoff instruction with a gate (stop before committing) that directs the next step in the workflow. The author-execution-relay skill is designed to create such relay instructions that sequence work between agents with specific constraints and checkpoints.",
+      "cost_usd": 0.007388,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-execution-relay-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "author-execution-relay",
+      "selected": "author-execution-relay",
+      "passed": true,
+      "detail": "The request asks for drafting a gated handoff prompt to transition work from design approval into code implementation with a specific gate condition (\"stop before committing\"). This is an execution relay\u2014a controlled handoff between phases with explicit stop points and transition instructions. The author-execution-relay skill is responsible for authoring these relay prompts that govern phase-to-phase work transitions.",
+      "cost_usd": 0.005893,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-execution-relay-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "The user request is to implement a FastAPI endpoint, which is backend application code development. The 'application-code' skill is designed to handle implementation of application-level code including API endpoints. Since the endpoint is already approved (design phase complete), the next phase is implementation, which falls squarely within the application-code skill's domain.",
+      "cost_usd": 0.005482,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-execution-relay-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "The user request is to implement a FastAPI endpoint, which is backend application code implementation. The 'application-code' skill is designed to handle writing and implementing application code, including API endpoints and business logic.",
+      "cost_usd": 0.004422,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-execution-relay-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "The user is requesting implementation of a FastAPI endpoint, which is application code development work. The 'application-code' skill is specifically designed to handle writing, modifying, and implementing application code within the repository.",
+      "cost_usd": 0.004648,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-standard-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "author-standard",
+      "selected": "author-standard",
+      "passed": true,
+      "detail": "The user request explicitly asks to \"turn this ratified authority into a reusable engineering standard,\" which directly aligns with the author-standard skill's domain. The skill is designed to handle the creation and formalization of engineering standards from established authorities or decisions.",
+      "cost_usd": 0.004266,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-standard-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "author-standard",
+      "selected": "author-standard",
+      "passed": true,
+      "detail": "The user request explicitly asks to \"turn this ratified authority into a reusable engineering standard,\" which is the core responsibility of the author-standard skill. This skill handles the creation and formalization of engineering standards from authoritative sources that can be reused across projects and consumers.",
+      "cost_usd": 0.004306,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-standard-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "author-standard",
+      "selected": "author-standard",
+      "passed": true,
+      "detail": "The request asks to \"turn this ratified authority into a reusable engineering standard and prove it on a consumer.\" This is fundamentally about authoring/creating a reusable engineering standard. The 'author-standard' skill is specifically designed to handle the creation and establishment of standards that can be applied across engineering efforts, including validation on consumers.",
+      "cost_usd": 0.004496,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-standard-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "author-decision-record",
+      "selected": "author-decision-record",
+      "passed": true,
+      "detail": "The user request is to write an ADR (Architecture Decision Record). The \"author-decision-record\" skill is explicitly designed to handle the creation and authoring of decision records, making it the appropriate choice for this task.",
+      "cost_usd": 0.003672,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-standard-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "author-decision-record",
+      "selected": "author-decision-record",
+      "passed": true,
+      "detail": "The user request is to write an ADR (Architecture Decision Record) that documents the decision to use PostgreSQL. The 'author-decision-record' skill is specifically designed to handle the authoring of decision records, making it the appropriate choice for this request.",
+      "cost_usd": 0.0041470000000000005,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-standard-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "author-decision-record",
+      "selected": "author-decision-record",
+      "passed": true,
+      "detail": "The user request is to write an ADR (Architecture Decision Record) documenting the choice of PostgreSQL. The 'author-decision-record' skill is specifically designed to handle authoring decision records, making it the most appropriate skill for this task.",
+      "cost_usd": 0.004607000000000001,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "code-review-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "code-review",
+      "selected": "code-review",
+      "passed": true,
+      "detail": "The user is asking for a review of a diff to determine merge safety, which is directly within the scope of the code-review skill that handles code change evaluation and merge readiness assessment.",
+      "cost_usd": 0.003601,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "code-review-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "code-review",
+      "selected": "code-review",
+      "passed": true,
+      "detail": "The user is requesting a review of a code diff to determine if it is safe to merge. This is the core responsibility of the code-review skill, which evaluates code changes for safety, quality, and mergability.",
+      "cost_usd": 0.0036609999999999998,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "code-review-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "code-review",
+      "selected": "code-review",
+      "passed": true,
+      "detail": "The user is requesting a review of a finished diff to determine merge safety. This directly corresponds to the code-review skill, which handles code review activities and merge readiness assessment.",
+      "cost_usd": 0.003541,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "code-review-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "design-review-loop",
+      "selected": "design-review-loop",
+      "passed": true,
+      "detail": "The user is requesting to drive architectural and design documents (ADRs and SDDs) through a convergence review process. The 'design-review-loop' skill explicitly handles design review workflows and is the appropriate choice for managing documents through review cycles and convergence activities.",
+      "cost_usd": 0.005921,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "code-review-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "design-review-loop",
+      "selected": "design-review-loop",
+      "passed": true,
+      "detail": "The user is requesting to drive ADRs (Architecture Decision Records) and SDDs (Software Design Documents) through a convergence review. The design-review-loop skill is responsible for conducting structured design review processes to achieve convergence on design artifacts and decisions.",
+      "cost_usd": 0.005016,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "code-review-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "design-review-loop",
+      "selected": "design-review-loop",
+      "passed": true,
+      "detail": "The user request involves driving Architecture Decision Records (ADRs) and Software Design Documents (SDDs) through a convergence review process. The design-review-loop skill is explicitly designed to handle design review processes and feedback loops, making it the most appropriate choice for managing documents through a formal review cycle.",
+      "cost_usd": 0.005056,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "debug-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "debug",
+      "selected": "debug",
+      "passed": true,
+      "detail": "The user is requesting help reproducing a test failure and finding its root cause - a classic debugging task. While this involves testing, the core work is investigative and diagnostic (reproduction and root cause analysis) rather than test authoring or test infrastructure, which makes the debug skill the best fit.",
+      "cost_usd": 0.005319,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "debug-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "debug",
+      "selected": "testing",
+      "passed": false,
+      "detail": "The user request is about a flaky test that passes locally but fails intermittently in CI. This is a test reliability and debugging issue that falls under the testing skill's domain. The testing skill should handle test reproduction, analysis of test flakiness, and root cause identification for test failures.",
+      "cost_usd": 0.004989,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "debug-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "debug",
+      "selected": "debug",
+      "passed": true,
+      "detail": "The user request involves reproducing a flaky test and finding its root cause - a classic debugging task. The 'debug' skill is designed to handle diagnosis and root cause analysis of issues, making it the most appropriate choice for reproducing and troubleshooting test flakiness in CI environments.",
+      "cost_usd": 0.004334,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "debug-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "Adding a planned health-check endpoint is an application code implementation task. It involves developing a new service endpoint, which falls under the application-code skill's domain of writing and implementing application functionality.",
+      "cost_usd": 0.00481,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "debug-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "Adding a health-check endpoint is an application code implementation task that involves writing and integrating a new endpoint into the service. This falls squarely within the application-code skill's domain of handling service-level code modifications and feature additions.",
+      "cost_usd": 0.004405,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "debug-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "Adding a health-check endpoint is an application-level code implementation task. This involves modifying the service's codebase to create a new endpoint that responds to health checks, which is core application code work.",
+      "cost_usd": 0.00434,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "design-review-loop-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "design-review-loop",
+      "selected": "design-review-loop",
+      "passed": true,
+      "detail": "The user explicitly requests running the design-review loop over amended ADRs and determining convergence. The design-review-loop skill is specifically designed to handle design review processes and convergence analysis.",
+      "cost_usd": 0.004123,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "design-review-loop-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "design-review-loop",
+      "selected": "design-review-loop",
+      "passed": true,
+      "detail": "The user explicitly requests to \"run the design-review loop\" and assess convergence. This directly matches the design-review-loop skill, which is responsible for executing the design review loop process and determining whether specifications have converged.",
+      "cost_usd": 0.004808000000000001,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "design-review-loop-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "design-review-loop",
+      "selected": "design-review-loop",
+      "passed": true,
+      "detail": "The user explicitly requests to \"run the design-review loop\" over amended ADRs. The design-review-loop skill is specifically designed to execute design review loops and assess convergence of architectural decisions.",
+      "cost_usd": 0.0044930000000000005,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "design-review-loop-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "code-review",
+      "selected": "code-review",
+      "passed": true,
+      "detail": "The user request is asking for a review of an implementation diff for correctness before merge, which is directly handled by the code-review skill.",
+      "cost_usd": 0.0036030000000000003,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "design-review-loop-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "code-review",
+      "selected": "code-review",
+      "passed": true,
+      "detail": "The user request asks for a review of implementation diff for correctness before merge, which is the primary responsibility of the code-review skill. This is a direct code review task prior to merging changes.",
+      "cost_usd": 0.003648,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "design-review-loop-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "code-review",
+      "selected": "code-review",
+      "passed": true,
+      "detail": "The user request is asking for a review of an implementation diff for correctness before merge, which is the core responsibility of the code-review skill.",
+      "cost_usd": 0.003703,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "frontend-code-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "frontend-code",
+      "selected": "frontend-code",
+      "passed": true,
+      "detail": "The request is for building a React component with responsive CSS and a custom microphone hook. This is fundamentally a frontend development task involving UI component creation, styling, and client-side hook logic, which falls directly under the frontend-code skill domain.",
+      "cost_usd": 0.00485,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "frontend-code-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "frontend-code",
+      "selected": "frontend-code",
+      "passed": true,
+      "detail": "The request asks to build a React component with responsive CSS styling, accessibility features, and a microphone hook\u2014all core frontend development responsibilities. The frontend-code skill is the appropriate choice for implementing UI components, styling, and client-side functionality.",
+      "cost_usd": 0.005485,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "frontend-code-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "frontend-code",
+      "selected": "frontend-code",
+      "passed": true,
+      "detail": "The request involves building a React component with responsive CSS styling, accessibility features, and a custom microphone hook. This is frontend code development work that falls under the frontend-code skill's domain, which handles UI component implementation, styling, and client-side functionality.",
+      "cost_usd": 0.005125,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "frontend-code-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "The request is to add authentication middleware and an async database adapter to a FastAPI backend. This is backend application code development work, including middleware implementation and data access layer components, which falls under the application-code skill's domain.",
+      "cost_usd": 0.005156,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "frontend-code-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "The user request is about adding authentication middleware and an async database adapter to a FastAPI backend. This is core application-level development work involving backend code changes, making the application-code skill the appropriate handler for implementing these features in the backend application.",
+      "cost_usd": 0.004111,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "frontend-code-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "application-code",
+      "selected": "application-code",
+      "passed": true,
+      "detail": "The user request is to implement authentication middleware and an async database adapter for a FastAPI backend. This is application-level backend code development, which falls directly under the application-code skill's responsibility for writing and implementing application logic and features.",
+      "cost_usd": 0.004851,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "infrastructure-code-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "infrastructure-code",
+      "selected": "infrastructure-code",
+      "passed": true,
+      "detail": "The request involves creating Terraform infrastructure code for Cloud SQL with remote state management, IAM configuration, and deployment protection. This is fundamentally an infrastructure-as-code task focused on writing, managing, and deploying infrastructure modules, which is the responsibility of the infrastructure-code skill.",
+      "cost_usd": 0.004517,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "infrastructure-code-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "infrastructure-code",
+      "selected": "infrastructure-code",
+      "passed": true,
+      "detail": "The user request involves creating a Terraform module for Cloud SQL, which is infrastructure as code. This includes remote state management, IAM configuration, and CI/CD job protection\u2014all core infrastructure-code concerns. While the protected plan/apply jobs involve CI/CD, the primary focus is authoring and configuring infrastructure code artifacts.",
+      "cost_usd": 0.005342,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "infrastructure-code-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "infrastructure-code",
+      "selected": "infrastructure-code",
+      "passed": true,
+      "detail": "The user request is to create a Terraform module for Cloud SQL infrastructure with remote state, IAM, and protected CI/CD jobs. This is infrastructure-as-code work that falls squarely within the infrastructure-code skill's domain.",
+      "cost_usd": 0.004512,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "infrastructure-code-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "app-delivery-pipeline",
+      "selected": "app-delivery-pipeline",
+      "passed": true,
+      "detail": "The user request describes building and deploying an application container after pull-request gates pass, which is a core CI/CD workflow task. The \"app-delivery-pipeline\" skill is specifically designed to handle application build, test, and deployment orchestration.",
+      "cost_usd": 0.004606,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "infrastructure-code-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "app-delivery-pipeline",
+      "selected": "app-delivery-pipeline",
+      "passed": true,
+      "detail": "The request describes building and deploying an application container as part of an automated process triggered after PR gates pass. This is a core responsibility of an application delivery pipeline skill, which handles CI/CD orchestration, container builds, and deployment workflows.",
+      "cost_usd": 0.005976,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "infrastructure-code-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "app-delivery-pipeline",
+      "selected": "app-delivery-pipeline",
+      "passed": true,
+      "detail": "The user request involves building and deploying an application container after pull-request validation gates pass. This is a core application delivery pipeline activity - specifically the continuous integration/continuous deployment (CI/CD) phase that executes after code review gates are satisfied.",
+      "cost_usd": 0.004976,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "testing-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "testing",
+      "selected": "testing",
+      "passed": true,
+      "detail": "The user request is specifically about writing pytest unit and integration tests for a FastAPI endpoint. The 'testing' skill is designed to handle test creation and testing strategies, making it the most appropriate match for this testing-focused task.",
+      "cost_usd": 0.004336,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "testing-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "testing",
+      "selected": "testing",
+      "passed": true,
+      "detail": "The user request is explicitly asking for pytest unit and integration tests to be written. The 'testing' skill is the specialized Bedrock skill designed to handle test authoring, test strategy, and test implementation tasks.",
+      "cost_usd": 0.003771,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "testing-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "testing",
+      "selected": "testing",
+      "passed": true,
+      "detail": "The user request is explicitly asking for writing pytest unit and integration tests for a FastAPI endpoint. This is a testing task that should be handled by the testing skill, which is designed for test authoring and test-related work.",
+      "cost_usd": 0.004866,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "testing-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "debug",
+      "selected": "debug",
+      "passed": true,
+      "detail": "The user request requires diagnosing and troubleshooting why a previously stable test has become flaky specifically in the CI environment. This is a diagnostic investigation task focused on understanding the root cause before making changes, which falls squarely within the debug skill's domain of identifying and resolving issues in code and systems.",
+      "cost_usd": 0.0055060000000000005,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "testing-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "debug",
+      "selected": "debug",
+      "passed": true,
+      "detail": "The user is asking to diagnose why a test is flaky specifically in CI but not elsewhere. This is fundamentally a diagnostic and troubleshooting task focused on understanding the root cause of an intermittent failure in a specific environment before making any changes. The debug skill is designed to handle this investigative work.",
+      "cost_usd": 0.006431000000000001,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "testing-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "debug",
+      "selected": "testing",
+      "passed": false,
+      "detail": "The user request concerns diagnosing a flaky test in CI before making changes to it. This is a testing-specific issue that requires analysis of test behavior and CI environment conditions. The testing skill is the appropriate handler for investigating and addressing test flakiness.",
+      "cost_usd": 0.005171,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-review-terraform",
+      "kind": "overlap",
+      "run": 1,
+      "expected": "code-review",
+      "selected": "infrastructure-code",
+      "passed": true,
+      "detail": "The user is requesting a review of a Terraform pull request. Terraform is Infrastructure as Code (IaC). The infrastructure-code skill is the most appropriate choice as it specifically handles infrastructure code reviews, which directly aligns with reviewing a Terraform PR.",
+      "cost_usd": 0.005213000000000001,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-review-terraform",
+      "kind": "overlap",
+      "run": 2,
+      "expected": "code-review",
+      "selected": "code-review",
+      "passed": true,
+      "detail": "The user is requesting a review of a pull request before merge. The 'code-review' skill is designed to handle code review tasks, including reviewing completed PRs for quality and correctness before merging, regardless of the code type (including Terraform/infrastructure code).",
+      "cost_usd": 0.005098,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-review-terraform",
+      "kind": "overlap",
+      "run": 3,
+      "expected": "code-review",
+      "selected": "code-review",
+      "passed": true,
+      "detail": "The user is requesting a review of a pull request before merge. The code-review skill is designed to handle code review tasks. While the code is Terraform (infrastructure), the primary action requested is a code review, which falls under the code-review skill's responsibility.",
+      "cost_usd": 0.007523,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-debug-deployment",
+      "kind": "overlap",
+      "run": 1,
+      "expected": "debug",
+      "selected": "debug",
+      "passed": true,
+      "detail": "The user request is to reproduce and diagnose a GitHub Actions deployment failure. This is fundamentally a debugging task - reproducing a failure and diagnosing its root cause are core debugging activities. The debug skill is the appropriate choice for troubleshooting and understanding failures.",
+      "cost_usd": 0.005663,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-debug-deployment",
+      "kind": "overlap",
+      "run": 2,
+      "expected": "debug",
+      "selected": "app-delivery-pipeline",
+      "passed": true,
+      "detail": "The user request concerns a GitHub Actions deployment failure, which is directly related to the application delivery pipeline. This skill should handle CI/CD pipeline issues, deployment failures, and their diagnosis.",
+      "cost_usd": 0.005033,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-debug-deployment",
+      "kind": "overlap",
+      "run": 3,
+      "expected": "debug",
+      "selected": "app-delivery-pipeline",
+      "passed": true,
+      "detail": "The user's request involves troubleshooting a GitHub Actions deployment failure. The app-delivery-pipeline skill is designed to handle deployment pipeline issues, CI/CD workflows, and GitHub Actions-related problems. This is the most directly applicable skill for reproducing and diagnosing deployment failures.",
+      "cost_usd": 0.005278,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-test-agent-output",
+      "kind": "overlap",
+      "run": 1,
+      "expected": "testing",
+      "selected": "testing",
+      "passed": true,
+      "detail": "The user request is explicitly asking to \"write tests\" for structured-output recovery behavior. This is a testing task that falls directly within the testing skill's domain - creating and implementing test cases for specific functionality in the LLM client.",
+      "cost_usd": 0.00415,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-test-agent-output",
+      "kind": "overlap",
+      "run": 2,
+      "expected": "testing",
+      "selected": "testing",
+      "passed": true,
+      "detail": "The user request is to write tests for structured-output recovery behavior. This is explicitly a testing task, making the 'testing' skill the appropriate choice for handling test creation and test-related work.",
+      "cost_usd": 0.00422,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-test-agent-output",
+      "kind": "overlap",
+      "run": 3,
+      "expected": "testing",
+      "selected": "testing",
+      "passed": true,
+      "detail": "The user request explicitly asks to \"write tests\" for specific behavior (structured-output recovery). This is a test writing and creation task, which falls directly under the testing skill's responsibility.",
+      "cost_usd": 0.00492,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-adr-model-vendor",
+      "kind": "overlap",
+      "run": 1,
+      "expected": "author-decision-record",
+      "selected": "author-decision-record",
+      "passed": true,
+      "detail": "The user request is to author an ADR (Architecture Decision Record) for a model vendor change decision. The 'author-decision-record' skill is explicitly designed to handle authoring of Architecture Decision Records.",
+      "cost_usd": 0.003812,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-adr-model-vendor",
+      "kind": "overlap",
+      "run": 2,
+      "expected": "author-decision-record",
+      "selected": "author-decision-record",
+      "passed": true,
+      "detail": "The user request is to author an ADR (Architecture Decision Record) documenting a decision to change model vendors. The 'author-decision-record' skill is specifically designed to handle the authoring of decision records.",
+      "cost_usd": 0.004057000000000001,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-adr-model-vendor",
+      "kind": "overlap",
+      "run": 3,
+      "expected": "author-decision-record",
+      "selected": "author-decision-record",
+      "passed": true,
+      "detail": "The user request is to author an ADR (Architecture Decision Record) for a decision to change model vendors. The 'author-decision-record' skill is specifically designed to handle the creation and authoring of architecture decision records.",
+      "cost_usd": 0.003672,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-relay-construct",
+      "kind": "overlap",
+      "run": 1,
+      "expected": "author-execution-relay",
+      "selected": "app-delivery-pipeline",
+      "passed": false,
+      "detail": "The request asks for drafting a \"gated Code handoff\" that implements an approved construct spec. This is fundamentally about code delivery and pipeline management\u2014specifically the controlled handoff of code that implements an already-ratified specification. The app-delivery-pipeline skill handles code handoff and gating mechanisms.",
+      "cost_usd": 0.005667,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-relay-construct",
+      "kind": "overlap",
+      "run": 2,
+      "expected": "author-execution-relay",
+      "selected": "app-delivery-pipeline",
+      "passed": false,
+      "detail": "The request calls for drafting a \"gated Code handoff\" which is a delivery pipeline concept involving controlled passage of code through quality gates. This is the core responsibility of the app-delivery-pipeline skill.",
+      "cost_usd": 0.011021999999999999,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-relay-construct",
+      "kind": "overlap",
+      "run": 3,
+      "expected": "author-execution-relay",
+      "selected": "author-execution-relay",
+      "passed": true,
+      "detail": "The user is requesting to draft a \"gated Code handoff\" that implements an already-ratified construct spec. This is a handoff/orchestration task where a construct specification needs to be executed with gating/control mechanisms. The author-execution-relay skill is designed to handle the creation of execution relays that orchestrate handoffs and implement specifications through controlled transitions.",
+      "cost_usd": 0.008641999999999999,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    }
+  ]
+}
