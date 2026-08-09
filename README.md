@@ -34,3 +34,26 @@ Releases are pushed, not discovered: a bedrock release completes with a push to 
 ## Maintenance
 
 Edit the relevant skill's files directly — the SKILL.md and any bundled `reference/` or `templates/` files; single source of truth per skill. There is no corpus to keep in sync. Releases follow the push discipline in the `author-standard` skill.
+
+### Validation
+
+Install the pinned validation dependency, then run the deterministic and host checks:
+
+```sh
+python3 -m pip install -r validation/requirements.txt
+python3 -m unittest discover -s tests -v
+python3 scripts/validate_plugin.py
+bash scripts/smoke_clean_install.sh
+```
+
+`validate_plugin.py` enforces the 13-skill inventory, strict YAML frontmatter, the 1,024-character description limit, explicit positive and negative routing boundaries, unique names, plugin/marketplace coherence, routing-fixture coverage, and `claude plugin validate --strict`.
+
+Shared routing prompts live in `tests/fixtures/routing.yaml` and are surface-neutral. The Claude Code adapter presents the exact validated name/description catalog to each isolated model session, so the regression measures the metadata routing contract rather than unaided name association, and retains machine-readable results:
+
+```sh
+python3 scripts/run_routing_evals.py \
+  --runs 3 \
+  --output docs/evidence/heb-108/routing-results.json
+```
+
+The live adapter requires Claude authentication and incurs model usage. Pull requests run every case once as a blocking workflow job; branch protection must require `Plugin validation / live-routing`. An authenticated manual workflow run uses three repetitions per case for retained release evidence. Every positive and negative case must select the declared route, every excluded route is a failure, and overlap cases may select only the declared primary or alternate. Each model call is capped at $0.03 and 120 seconds. Deterministic validation and the isolated install/reload smoke test do not require model inference.

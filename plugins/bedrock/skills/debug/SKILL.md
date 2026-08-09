@@ -1,6 +1,6 @@
 ---
 name: debug
-description: Structured debugging — reproduce, hypothesize, falsify, then fix the root cause. Use when something is broken, behaving unexpectedly, failing in one environment but not another, or when an error or stack trace needs diagnosis: "why is this failing", "this works locally but not in CI", "something broke after the deploy", "debug this", "help me figure out what's wrong", "this test is flaky". Drives a falsification-based hypothesis loop instead of guess-and-patch, and fixes root causes rather than masking symptoms. The discipline is language- and stack-agnostic.
+description: "Observed-failure diagnosis only; every existing failing or flaky test routes to debug, never testing, including a test that passes locally but fails intermittently in CI. Use this skill to reproduce errors, stack traces, regressions, and environment-specific failures; form and falsify competing hypotheses; repair root cause; and verify the fix. Do not use for planned recovery or error-handling behavior (use its authoring skill), writing new tests without an observed failure (testing), planned feature implementation, finished-diff review, or incident coordination beyond technical diagnosis."
 ---
 
 # Debug

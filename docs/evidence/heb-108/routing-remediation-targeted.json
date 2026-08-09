@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "adapter": "claude-code",
+  "claude_cli_version": "2.1.224 (Claude Code)",
+  "requested_model": "haiku",
+  "resolved_models": [
+    "claude-haiku-4-5-20251001"
+  ],
+  "runs_per_case": 3,
+  "max_budget_usd_per_case_run": 0.03,
+  "timeout_seconds_per_case_run": 120,
+  "passed": 18,
+  "total": 18,
+  "total_cost_usd": 0.154316,
+  "results": [
+    {
+      "case": "app-delivery-pipeline-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "infrastructure-code",
+      "selected": "infrastructure-code",
+      "passed": true,
+      "detail": "The request explicitly asks to add protected Terraform plan and apply jobs. The infrastructure-code description states: \"Own every Terraform or infrastructure plan/apply workflow, including protected jobs implemented in GitHub Actions; these are infrastructure-code, never app-delivery-pipeline.\" The app-delivery-pipeline skill explicitly excludes \"every Terraform or infrastructure plan/apply job.\" This is unambiguously within infrastructure-code's scope.",
+      "cost_usd": 0.008548,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "app-delivery-pipeline-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "infrastructure-code",
+      "selected": "infrastructure-code",
+      "passed": true,
+      "detail": "The request asks to add Terraform plan and apply jobs, which are explicitly owned by infrastructure-code. The catalog states infrastructure-code owns \"every Terraform or infrastructure plan/apply workflow, including protected jobs implemented in GitHub Actions\" and that these are \"infrastructure-code, never app-delivery-pipeline.\" App-delivery-pipeline explicitly excludes \"every Terraform or infrastructure plan/apply job.\"",
+      "cost_usd": 0.008798,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "app-delivery-pipeline-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "infrastructure-code",
+      "selected": "infrastructure-code",
+      "passed": true,
+      "detail": "The request explicitly asks to add protected Terraform plan and apply jobs. The infrastructure-code skill description states: \"Own every Terraform or infrastructure plan/apply workflow, including protected jobs implemented in GitHub Actions; these are infrastructure-code, never app-delivery-pipeline.\" The app-delivery-pipeline skill explicitly excludes \"every Terraform or infrastructure plan/apply job.\" This request is unambiguously within infrastructure-code's scope.",
+      "cost_usd": 0.008053000000000001,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "application-code-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "agent-code",
+      "selected": "agent-code",
+      "passed": true,
+      "detail": "The request asks to implement schema-constrained output recovery around an LLM call. The agent-code skill explicitly owns \"planned structured-output parsing, salvage, and recovery\" as core behaviors and lists \"schemas\" and \"parse/salvage recovery\" within its scope for code whose central behavior is an LLM call on the house Python stack. This request matches that explicit authorization.",
+      "cost_usd": 0.009322,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "application-code-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "agent-code",
+      "selected": "agent-code",
+      "passed": true,
+      "detail": "Schema-constrained output recovery is explicitly owned by agent-code as part of LLM-call implementation. The routing catalog states: \"planned structured-output parsing, salvage, and recovery route here\" and lists \"parse/salvage recovery\" among the central behaviors under agent-code's scope on the house Python stack.",
+      "cost_usd": 0.008147,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "application-code-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "agent-code",
+      "selected": "agent-code",
+      "passed": true,
+      "detail": "Agent-code explicitly owns planned structured-output parsing, salvage, and recovery around LLM calls on the house Python stack. The request to implement schema-constrained output recovery is directly within its stated scope.",
+      "cost_usd": 0.009212,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-construct-spec-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": null,
+      "selected": null,
+      "passed": true,
+      "detail": "The validated routing catalog explicitly states in author-construct-spec: \"product or feature requirements documents (PRDs) are explicitly outside this skill and have no Bedrock route.\" This request asks for a PRD, which the catalog confirms has no authorized skill ownership.",
+      "cost_usd": 0.008433000000000001,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-construct-spec-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": null,
+      "selected": null,
+      "passed": true,
+      "detail": "Product or feature requirements documents (PRDs) are explicitly outside the Bedrock routing catalog. The author-construct-spec description states: \"product or feature requirements documents (PRDs) are explicitly outside this skill and have no Bedrock route.\" Author-decision-record also explicitly excludes product PRDs. No other skill in the catalog covers PRD authoring.",
+      "cost_usd": 0.009038000000000001,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "author-construct-spec-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": null,
+      "selected": null,
+      "passed": true,
+      "detail": "The author-construct-spec skill description explicitly states: \"product or feature requirements documents (PRDs) are explicitly outside this skill and have no Bedrock route.\" No other skill in the validated catalog authorizes PRD authoring.",
+      "cost_usd": 0.0077480000000000005,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "debug-positive",
+      "kind": "positive",
+      "run": 1,
+      "expected": "debug",
+      "selected": "debug",
+      "passed": true,
+      "detail": "The request describes an observed test failure\u2014specifically a flaky test that passes locally but fails intermittently in CI. The debug skill explicitly owns \"every existing failing or flaky test routes to debug, never testing, including a test that passes locally but fails intermittently in CI.\" The request aligns with debug's scope: reproduce errors, form and falsify competing hypotheses about environment-specific failures, repair root cause, and verify the fix. The testing skill explicitly excludes diagnosing observed test failures and CI-only flakes.",
+      "cost_usd": 0.008787999999999999,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "debug-positive",
+      "kind": "positive",
+      "run": 2,
+      "expected": "debug",
+      "selected": "debug",
+      "passed": true,
+      "detail": "The routing catalog explicitly routes \"every existing failing or flaky test\" to debug, never testing, \"including a test that passes locally but fails intermittently in CI.\" This request describes exactly that scenario: a test with observed CI-only flakiness. The debug skill owns reproducing errors, environment-specific failures, forming hypotheses, and repairing root cause.",
+      "cost_usd": 0.007807999999999999,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "debug-positive",
+      "kind": "positive",
+      "run": 3,
+      "expected": "debug",
+      "selected": "debug",
+      "passed": true,
+      "detail": "The request explicitly describes an observed test failure\u2014a test that passes locally but flakes intermittently in CI. The debug skill description is authoritative: \"every existing failing or flaky test routes to debug, never testing, including a test that passes locally but fails intermittently in CI.\" The work requested (reproduce the failure, form and falsify hypotheses, repair root cause, verify the fix) aligns with the debug scope. Testing is explicitly excluded for flaky tests.",
+      "cost_usd": 0.008053,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "testing-negative",
+      "kind": "negative",
+      "run": 1,
+      "expected": "debug",
+      "selected": "debug",
+      "passed": true,
+      "detail": "The request asks for diagnosis of an observed failure: a previously stable test that is now flaky only in CI. The debug skill explicitly routes \"every existing failing or flaky test\" and specifically includes \"a test that passes locally but fails intermittently in CI\" as a primary use case. The testing skill explicitly excludes this scenario, routing all existing flaky tests to debug instead.",
+      "cost_usd": 0.008455,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "testing-negative",
+      "kind": "negative",
+      "run": 2,
+      "expected": "debug",
+      "selected": "debug",
+      "passed": true,
+      "detail": "The request describes an observed failure: an existing test that is now flaky in CI. The debug skill explicitly owns diagnosis of failing or flaky tests, including CI-only flakes and environment-specific failures. The user is asking to diagnose the root cause before making changes, which is debug's core responsibility. The testing skill explicitly excludes diagnosing observed test failures and CI-only flakes.",
+      "cost_usd": 0.009170000000000001,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "testing-negative",
+      "kind": "negative",
+      "run": 3,
+      "expected": "debug",
+      "selected": "debug",
+      "passed": true,
+      "detail": "The routing catalog explicitly states: \"every existing failing or flaky test routes to debug, never testing, including a test that passes locally but fails intermittently in CI\" and \"a CI-only flake.\" This request describes an existing test exhibiting CI-only flakiness, which is observed-failure diagnosis\u2014debug's core scope. Debug owns reproduction, hypothesis formation, root-cause repair, and verification of such environment-specific failures.",
+      "cost_usd": 0.00788,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-relay-construct",
+      "kind": "overlap",
+      "run": 1,
+      "expected": "author-execution-relay",
+      "selected": "author-execution-relay",
+      "passed": true,
+      "detail": "The request asks to draft a gated Code handoff (executor prompt with delivery gates) that implements a ratified construct spec. author-execution-relay explicitly owns executor prompts and handoffs: \"Executor prompts and handoffs only; every gated instruction sent to Code or another executor routes here\u2026 Use this skill to author an execution relay, implementation handoff, or session kickoff that delegates bounded file and git toil while reserving judgment and per-gate ratification for the operator.\" The description specifically states it applies \"even when either uses GitHub Actions or delivery gates or starts from a construct spec,\" making it the correct choice for a gated handoff originating from a construct spec.",
+      "cost_usd": 0.008401,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-relay-construct",
+      "kind": "overlap",
+      "run": 2,
+      "expected": "author-execution-relay",
+      "selected": "author-execution-relay",
+      "passed": true,
+      "detail": "The request asks to draft a gated Code handoff, which is an executor prompt and implementation handoff sent to Code. The author-execution-relay skill explicitly owns \"Executor prompts and handoffs only; every gated instruction sent to Code or another executor routes here\" and cites \"implementation handoff\" as a primary use case. The construct spec is the input to the handoff; the skill delegates bounded implementation toil to the executor while reserving judgment for the operator.",
+      "cost_usd": 0.008751,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    },
+    {
+      "case": "overlap-relay-construct",
+      "kind": "overlap",
+      "run": 3,
+      "expected": "author-execution-relay",
+      "selected": "author-execution-relay",
+      "passed": true,
+      "detail": "The request asks to draft a gated Code handoff for an already-ratified construct spec. Author-execution-relay explicitly owns executor prompts, implementation handoffs, and every gated instruction sent to Code or another executor. The construct spec is implementation-complete, so the task routes to handoff authoring, not spec authoring or execution.",
+      "cost_usd": 0.009711,
+      "models": [
+        "claude-haiku-4-5-20251001"
+      ]
+    }
+  ]
+}
