@@ -1,7 +1,7 @@
 # Bedrock portable-core migration and compatibility notes
 
-**Status:** PROPOSED
-**Version:** 0.1.0
+**Status:** ACCEPTED
+**Version:** 1.0.0
 **Date:** 2026-08-09
 **Governing principle:** [ADR-001](../adr/ADR-001-portable-core-and-surface-adapter-architecture.md)
 
@@ -9,7 +9,7 @@
 
 ## 1. Current state
 
-The current distributable is a Claude plugin with thirteen skill directories and one package version. The repository has deterministic structure and routing validation plus a clean-install smoke test. It does not yet ship separate Codex/OpenAI or Cursor adapters, a capability registry, an authority registry, independent core/adapter versions, or a generated compatibility matrix.
+The current distributable is a Claude plugin with thirteen skill directories and one package version. The repository has deterministic structure and routing validation, a clean-install smoke test, and a deterministic safety-contract validator with regression fixtures for the initial safety tranche. It does not yet ship separate Codex/OpenAI or Cursor adapters, a capability registry, an authority registry, independent core/adapter versions, or a generated compatibility matrix.
 
 The current skill names are the compatibility anchors for this migration. Existing names and explicit invocations remain valid while content is separated into portable contracts and profiles.
 
@@ -99,4 +99,5 @@ Prompt generations, repeated draws, calibration, replay, cost attribution, run d
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.0.0 | 2026-08-09 | HEB-111 | Accepted after direct audit; reconciled the landed safety baseline without changing the migration contract. |
 | 0.1.0 | 2026-08-09 | HEB-111 | Initial migration, coverage, actor/recipe/kernel compatibility, rebind/package-major rules, and consumer impact. |

@@ -8,8 +8,8 @@
 | Field | Value |
 |---|---|
 | **Document ID** | ADR-001 |
-| **Status** | PROPOSED |
-| **Version** | 0.1.0 |
+| **Status** | ACCEPTED |
+| **Version** | 1.0.0 |
 | **Date** | 2026-08-09 |
 | **Authors** | Tad Haffey (decision owner); Codex (drafting agent) |
 | **Supersedes** | None — first Bedrock architecture principle. |
@@ -98,7 +98,7 @@ Prompt text is advisory unless an executable boundary enforces it. A skill must 
 
 ### 2.6 Safety floor
 
-No profile or adapter may weaken the package safety floor. The floor includes controlled sensitive-content capture, separation of untrusted code from trusted credentials, honest secret/state behavior, token audience and delegation controls, cookie/CSRF coupling, pinned executable dependencies, and evidence-backed artifact buildability. An affected operation is blocked when the safety floor cannot be satisfied.
+No profile or adapter may weaken the package safety floor. The floor includes controlled sensitive-content capture, separation of untrusted code from trusted credentials, honest secret/state behavior, token audience and delegation controls, cookie/cross-site request forgery (CSRF) coupling, pinned executable dependencies, and evidence-backed artifact buildability. An affected operation is blocked when the safety floor cannot be satisfied.
 
 ### 2.7 Versioning and compatibility
 
@@ -209,7 +209,7 @@ Agents could hand prose directly to one another until they collectively judge th
 
 ## 6. Compliance
 
-Compliance is currently partly aspirational. The repository validates current skill structure, routing fixtures, and clean installation, but it does not yet validate the full core/adapter contract.
+Compliance is currently partly aspirational. The repository validates current skill structure, routing fixtures, clean installation, and the bounded safety contract for runtime coherence, secret/state honesty, immutable executable references, credential-free pull-request image builds, and convergence-classification consistency. It does not yet validate the full core/adapter contract.
 
 Conformance will be enforced by:
 
@@ -228,11 +228,14 @@ Until those mechanisms land, changes are checked against this record and the ski
 - [Product coverage map](../architecture/coverage-map.md)
 - [Migration and compatibility notes](../architecture/migration-compatibility.md)
 - [Wave 1 validation evidence](../evidence/heb-108/validation-results.md)
+- [Safety-contract validator](../../scripts/validate_safety.py)
+- [Safety evidence manifest](../../tests/fixtures/safety/manifest.yaml)
 
 ## 8. Change Log
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.0.0 | 2026-08-09 | HEB-111 | Accepted after direct audit; reconciled the landed safety baseline and clarified cold-read terminology. |
 | 0.1.0 | 2026-08-09 | HEB-111 | Initial portable-core, authority, coverage, rebind, orchestration, versioning, and capability-gated adapter architecture draft. |
 
 <!-- STANDING — do not delete. Append new rows at the TOP. 0.X.0 for

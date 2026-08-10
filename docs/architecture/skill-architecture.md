@@ -1,7 +1,7 @@
 # Bedrock skill architecture and routing contract
 
-**Status:** PROPOSED
-**Version:** 0.1.0
+**Status:** ACCEPTED
+**Version:** 1.0.0
 **Date:** 2026-08-09
 **Governing principle:** [ADR-001](../adr/ADR-001-portable-core-and-surface-adapter-architecture.md)
 
@@ -22,8 +22,8 @@ A future identity change requires all of:
 
 | Skill | Primary job | Decision | Portable/profile treatment | Key finding trace |
 |---|---|---|---|---|
-| `agent-code` | Author code whose central behavior is an LLM call or bounded tool loop. | Retain; no rename. | Provider-neutral call, parse, budget, evidence, and tool-loop invariants in core; provider/transport and house Python choices are profiles. | AGT-004, AGT-011, AGT-002 |
-| `app-delivery-pipeline` | Author application-artifact CI/CD, release, deployment, and rollout verification. | Retain; no rename. | Trusted promotion and immutable-artifact invariants in core; branch topology, CI host, and cloud are profiles. | DLV-013, DLV-002, DLV-006 |
+| `agent-code` | Author code whose central behavior is a large language model (LLM) call or bounded tool loop. | Retain; no rename. | Provider-neutral call, parse, budget, evidence, and tool-loop invariants in core; provider/transport and house Python choices are profiles. | AGT-004, AGT-011, AGT-002 |
+| `app-delivery-pipeline` | Author application-artifact continuous integration and continuous delivery (CI/CD), release, deployment, and rollout verification. | Retain; no rename. | Trusted promotion and immutable-artifact invariants in core; branch topology, CI host, and cloud are profiles. | DLV-013, DLV-002, DLV-006 |
 | `application-code` | Author conventional backend service and application behavior. | Retain; no rename. | Service safety and boundary invariants in core; FastAPI, SQLAlchemy, Python, and GCP are the Haffey service profile. | APP-002, APP-016 |
 | `author-construct-spec` | Author an implementation-complete specification for one internal construct. | Retain as a distinct doctype owner. | Portable implementer-complete contract in core; Haffey actor mapping is a profile. Remove hidden sibling dependence through bundled authority or an explicit checked dependency. | ACS-002, ACS-003, ACS-004 |
 | `author-decision-record` | Select, author, amend, and de-drift engineering decision records. | Retain as the decision-record owner. | Portable decision-information and lifecycle contract in core; ADR/DDR/SDD taxonomy and repository homes are the Haffey profile. | ADR-001, ADR-002, ADR-005 |
@@ -33,7 +33,7 @@ A future identity change requires all of:
 | `debug` | Diagnose an observed failure through reproduction and hypothesis falsification. | Retain; no merge with testing. | Diagnostic method, containment, evidence, and closure in core; stack-specific probes are profiles. | DBG family |
 | `design-review-loop` | Review a decision-record set through authority-cited findings, explicit aggregation, and honest decision escalation. | Retain as a compatibility route; supersede its monolithic internal contract. | Portable review and decision-escalation semantics remain in Bedrock. Durable author-review-ratification execution belongs to a versioned SOFIA recipe and kernel. Only a declared runner-backed profile may claim mechanical convergence. | DRL-001, DRL-004–DRL-013 |
 | `frontend-code` | Author browser-facing application behavior. | Retain one routable identity; split its body into a compact core and focused references, not new skills, until measurements justify another route. | Browser safety/accessibility invariants in core; React, Vite, styling, component-library, and prototype choices are profiles. | FRT-002, FRT-005, FRT-017 |
-| `infrastructure-code` | Author infrastructure-as-code and infrastructure plan/apply workflows. | Retain; no rename. | State, identity, plan/apply, recovery, and workload safety in core; Terraform, GCP, Kubernetes, and CI host are profiles. | INF-002, INF-004, INF family |
+| `infrastructure-code` | Author infrastructure as code (IaC) and infrastructure plan/apply workflows. | Retain; no rename. | State, identity, plan/apply, recovery, and workload safety in core; Terraform, GCP, Kubernetes, and CI host are profiles. | INF-002, INF-004, INF family |
 | `testing` | Author new tests, test strategy, fixtures, and planned coverage. | Retain; no merge with debug. | Isolation, evidence, nondeterminism, and test-level contracts in core; pytest and service-stack details are profiles. | TST family, PKG-031, PKG-032 |
 
 The finding scope for each row is its complete stable namespace in the disposition ledger, not only the architecture-driving identifiers shown in the final column: `AGT-001–012`, `DLV-001–013`, `APP-001–019`, `ACS-001–013`, `ADR-001–012`, `REL-001–012`, `STD-001–010`, `REV-001–012`, `DBG-001–010`, `DRL-001–013`, `FRT-001–019`, `INF-001–016`, and `TST-001–014`. Package-wide findings apply through the governing ADR and the authority and coverage boundaries below.
@@ -72,7 +72,7 @@ The catalog distinguishes four layers:
 | SOFIA orchestration kernel | Invocation, durable state, validated transitions, ledger, budgets, retries, scheduling, resumability, and deterministic gates. | The engineering judgment assigned to an actor or the operator. |
 | HEX control plane | Brief decomposition, workflow selection and composition, progress presentation, and asynchronous operator dockets. | Silent ratification, actor-domain authority, or workflow-state mutation outside the kernel contract. |
 
-An actor is not necessarily a persistent agent or a routable skill. LAA, SA, EA, coherence, arbitration, authoring, validation, and landing may be bounded invocations inside a recipe. The visible HEX persona roster is a presentation and delegation surface, not the runtime actor inventory.
+An actor is not necessarily a persistent agent or a routable skill. Lead Application Architect (LAA), Solution Architect (SA), Enterprise Architect (EA), coherence, arbitration, authoring, validation, and landing may be bounded invocations inside a recipe. The visible HEX persona roster is a presentation and delegation surface, not the runtime actor inventory.
 
 The first house recipe is the decision-record lifecycle: deliberate → author → review → correct → operator ratification when required → validate → land. The stance-isolated design-review roster is its review subloop. `agent-loop` is the reference implementation from which reusable kernel seams are extracted only after the running specimen proves them.
 
@@ -112,4 +112,5 @@ This record fixes the mandatory schema, owner boundary, and primary task for eve
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.0.0 | 2026-08-09 | HEB-111 | Accepted after direct audit; expanded cold-read terminology without changing the ratified catalog contract. |
 | 0.1.0 | 2026-08-09 | HEB-111 | Initial inventory, disposition trace, coverage boundary, actor/workflow model, routing, and interaction contract. |

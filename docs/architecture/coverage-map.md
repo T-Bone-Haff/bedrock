@@ -1,7 +1,7 @@
 # Bedrock product coverage map
 
-**Status:** PROPOSED
-**Version:** 0.1.0
+**Status:** ACCEPTED
+**Version:** 1.0.0
 **Date:** 2026-08-09
 **Governing principle:** [ADR-001](../adr/ADR-001-portable-core-and-surface-adapter-architecture.md)
 
@@ -20,7 +20,7 @@ This map states what Bedrock owns, where it supplies only local invariants, and 
 
 The [skill inventory and routing contract](skill-architecture.md) is authoritative for the thirteen skill identities, their primary jobs, and overlap precedence. Together they own:
 
-- LLM-centered, backend, frontend, infrastructure, and delivery implementation;
+- large language model (LLM)-centered, backend, frontend, infrastructure, and delivery implementation;
 - planned testing and observed-failure diagnosis;
 - finished-change and design-record review;
 - decision-record, construct-spec, execution-relay, and reusable-standard authoring; and
@@ -66,4 +66,5 @@ The trigger fires when SOFIA/HEX designs the real multi-agent authority and evid
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 1.0.0 | 2026-08-09 | HEB-111 | Accepted after direct audit; expanded cold-read terminology without changing the ratified coverage boundary. |
 | 0.1.0 | 2026-08-09 | HEB-111 | Initial owned-operation, local-invariant, external-handoff, and deferred-gap coverage map. |
