@@ -1,0 +1,1 @@
+{"schema_version":1,"record_id":"SDD-004","relations":[{"type":"depends-on","target":"ADR-001","state":"provisional","owner":"platform","expires":"2026-09-01"}]}

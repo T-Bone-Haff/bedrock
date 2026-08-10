@@ -4,7 +4,7 @@ samples:
     language: bash
     count: 2
     classification: illustrative
-    owner: HEB-113
+    owner: HEB-115
   - path: plugins/bedrock/skills/application-code/reference/01-code-structure.md
     language: dockerfile
     count: 1
@@ -15,52 +15,52 @@ samples:
     language: python
     count: 6
     classification: illustrative
-    owner: HEB-113
+    owner: HEB-115
   - path: plugins/bedrock/skills/application-code/reference/01-code-structure.md
     language: toml
     count: 1
     classification: illustrative
-    owner: HEB-113
+    owner: HEB-115
   - path: plugins/bedrock/skills/application-code/reference/02-service-patterns.md
     language: python
     count: 14
     classification: illustrative
-    owner: HEB-113
+    owner: HEB-115
   - path: plugins/bedrock/skills/application-code/reference/03-security-and-data.md
     language: python
     count: 5
     classification: illustrative
-    owner: HEB-113
+    owner: HEB-115
   - path: plugins/bedrock/skills/application-code/reference/04-shell-scripts.md
     language: bash
     count: 5
     classification: illustrative
-    owner: HEB-113
+    owner: HEB-115
   - path: plugins/bedrock/skills/design-review-loop/reference/arbiter-classifier.md
     language: json
     count: 1
     classification: illustrative
-    owner: HEB-117
+    owner: HEB-116
   - path: plugins/bedrock/skills/design-review-loop/reference/reviewer-instrument.md
     language: json
     count: 1
     classification: illustrative
-    owner: HEB-117
+    owner: HEB-116
   - path: plugins/bedrock/skills/infrastructure-code/reference/01-module-structure-and-style.md
     language: hcl
     count: 7
     classification: illustrative
-    owner: HEB-115
+    owner: HEB-113
   - path: plugins/bedrock/skills/infrastructure-code/reference/02-gcp-conventions.md
     language: hcl
     count: 6
     classification: illustrative
-    owner: HEB-115
+    owner: HEB-113
   - path: plugins/bedrock/skills/infrastructure-code/reference/03-state-and-environments.md
     language: gitignore
     count: 1
     classification: illustrative
-    owner: HEB-115
+    owner: HEB-113
   - path: plugins/bedrock/skills/infrastructure-code/reference/03-state-and-environments.md
     language: hcl
     count: 1
@@ -71,14 +71,14 @@ samples:
     language: yaml
     count: 1
     classification: illustrative
-    owner: HEB-115
+    owner: HEB-113
   - path: plugins/bedrock/skills/infrastructure-code/reference/05-delivery-pipeline.md
     language: yaml
     count: 1
     classification: illustrative
-    owner: HEB-115
+    owner: HEB-113
   - path: plugins/bedrock/skills/testing/reference/test-authoring.md
     language: python
     count: 6
     classification: illustrative
-    owner: HEB-116
+    owner: HEB-115

@@ -21,8 +21,10 @@ from yaml.constructor import ConstructorError
 from yaml.resolver import BaseResolver
 
 if __package__:
+    from scripts.validate_authoring_contracts import validate_authoring_contracts
     from scripts.validate_safety import validate_safety_contracts
 else:  # Direct execution: python scripts/validate_plugin.py
+    from validate_authoring_contracts import validate_authoring_contracts
     from validate_safety import validate_safety_contracts
 
 
@@ -777,6 +779,7 @@ def validate_repository(
     run_host_cli: bool = True,
     run_safety_checks: bool = True,
     validate_retained_evidence: bool = True,
+    require_authoring_contracts: bool = True,
 ) -> tuple[list[str], dict[str, Any]]:
     errors: list[str] = []
     inventory = validate_skills(root, errors)
@@ -788,6 +791,7 @@ def validate_repository(
     policy_document = load_eval_policy(root, errors)
     if run_safety_checks:
         errors.extend(validate_safety_contracts(root))
+    errors.extend(validate_authoring_contracts(root, required=require_authoring_contracts))
     if run_host_cli:
         run_host_validator(root, errors)
 

@@ -1,0 +1,1 @@
+{"schema_version":1,"profile":"standard","scope":"service diff","checked_surfaces":["correctness"],"gates":[],"findings":[{"id":"B-1","class":"correctness","impact":"high","likelihood":"high","confidence":"high","locus":"app.py:4","evidence":"null dereference","blocking":true}],"verdict":"approve"}

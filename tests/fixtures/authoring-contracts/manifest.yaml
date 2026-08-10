@@ -1,0 +1,11 @@
+schema_version: 1
+schemas:
+  - schema: plugins/bedrock/skills/author-decision-record/reference/record-relations.schema.json
+    valid: tests/fixtures/authoring-contracts/valid/relations.json
+    invalid: tests/fixtures/authoring-contracts/invalid/relations.json
+  - schema: plugins/bedrock/skills/author-execution-relay/reference/relay.schema.json
+    valid: tests/fixtures/authoring-contracts/valid/relay.json
+    invalid: tests/fixtures/authoring-contracts/invalid/relay.json
+  - schema: plugins/bedrock/skills/code-review/reference/review-result.schema.json
+    valid: tests/fixtures/authoring-contracts/valid/review.json
+    invalid: tests/fixtures/authoring-contracts/invalid/review.json

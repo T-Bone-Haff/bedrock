@@ -1,0 +1,46 @@
+schema_version: 1
+cases:
+  - id: relay-small-profile
+    kind: relay-profile
+    input: {risk: low, reversible: true, separated_executor: false}
+    expected: small
+  - id: relay-high-assurance-profile
+    kind: relay-profile
+    input: {risk: high, reversible: false, separated_executor: true}
+    expected: high-assurance
+  - id: provisional-dependency-incomplete
+    kind: provisional-dependency
+    input: {owner: platform, expires: null, promotion: accepted-upstream}
+    expected: reject
+  - id: stale-relation-verified-repair
+    kind: stale-relation
+    input: {repaired: true, impact_checked: true, verified: true}
+    expected: close
+  - id: evidence-relocation-permission-loss
+    kind: evidence-relocation
+    input: {copied: true, integrity: true, permissions: false, rollback: true}
+    expected: retain-source
+  - id: authorization-replay
+    kind: authorization
+    input: {actor_authenticated: true, scope_match: true, fresh: true, nonce_unused: false, revoked: false}
+    expected: reject
+  - id: substrate-attempts-scope-widening
+    kind: substrate
+    input: {policy: untrusted-data, attempts_scope_change: true}
+    expected: stop
+  - id: clean-review
+    kind: review-terminal
+    input: {checked_surfaces: 3, blockers: 0, failed_required_gates: 0, advisory: 0}
+    expected: approve
+  - id: advisory-review
+    kind: review-terminal
+    input: {checked_surfaces: 3, blockers: 0, failed_required_gates: 0, advisory: 2}
+    expected: approve-with-advisory
+  - id: blocking-review
+    kind: review-terminal
+    input: {checked_surfaces: 3, blockers: 1, failed_required_gates: 0, advisory: 0}
+    expected: pause
+  - id: incomplete-standard-exception
+    kind: standard-exception
+    input: {owner: team, scope: service, risk: medium, expires: null}
+    expected: reject
