@@ -64,7 +64,7 @@ CI authenticates to GCP via **Workload Identity Federation** — the runner exch
 
 ```yaml
 - name: Authenticate to GCP
-  uses: google-github-actions/auth@v2
+  uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
   with:
     workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
     service_account: ${{ secrets.GCP_PIPELINE_SA }}

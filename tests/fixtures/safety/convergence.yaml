@@ -1,0 +1,22 @@
+schema_version: 1
+cases:
+  - id: cosmetic-resolvable-does-not-block
+    severity: COSMETIC
+    classification: resolvable
+    status: open
+    expected: CONVERGED
+  - id: cosmetic-decision-bearing-is-invalid
+    severity: COSMETIC
+    classification: decision-bearing
+    status: open
+    expected: INVALID
+  - id: material-decision-bearing-halts
+    severity: MATERIAL
+    classification: decision-bearing
+    status: open
+    expected: HALT_DECISION
+  - id: blocking-resolvable-continues
+    severity: BLOCKING
+    classification: resolvable
+    status: open
+    expected: CONTINUE

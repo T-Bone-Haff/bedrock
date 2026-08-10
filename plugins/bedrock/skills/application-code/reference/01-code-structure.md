@@ -266,18 +266,23 @@ Services build as multi-stage Docker images that run as a non-root user.
 # Builder
 FROM python:3.11-slim AS builder
 WORKDIR /build
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 COPY requirements.txt .
-RUN pip install --require-hashes --no-cache-dir -r requirements.txt
+RUN python -m pip install --require-hashes --no-cache-dir -r requirements.txt
 
 # Runtime
 FROM python:3.11-slim
 RUN useradd --create-home --uid 1000 appuser
 WORKDIR /app
-COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 COPY --chown=appuser:appuser app/ ./app/
 USER appuser
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
 ```
+
+The builder and runtime stages use the same Python image line and exchange the complete virtual environment, including console-script metadata and dependencies. The example does not hardcode a Python minor-version `site-packages` path, and module invocation remains valid even when a package does not expose its console script outside the copied environment.
 
 *Provisioning what runs this image — cluster setup, IAM, networking, deploy automation — is the `infrastructure-code` skill's job, not a code-authoring concern. The seam is the image: this skill builds it; `infrastructure-code` provisions and runs it.*
 
