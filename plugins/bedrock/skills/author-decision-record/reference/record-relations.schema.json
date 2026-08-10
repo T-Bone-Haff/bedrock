@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bedrock.haffey.dev/schemas/record-relations-v1.json",
+  "type": "object",
+  "required": ["schema_version", "record_id", "relations"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": 1},
+    "record_id": {"type": "string", "minLength": 1},
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "target", "state"],
+        "additionalProperties": false,
+        "properties": {
+          "type": {"enum": ["supersedes", "implements", "depends-on", "conditions"]},
+          "target": {"type": "string", "minLength": 1},
+          "state": {"enum": ["current", "provisional", "stale", "retired"]},
+          "version_constraint": {"type": "string"},
+          "owner": {"type": "string"},
+          "expires": {"type": "string", "format": "date"}
+        },
+        "allOf": [
+          {"if": {"properties": {"state": {"const": "provisional"}}}, "then": {"required": ["owner", "expires"]}}
+        ]
+      }
+    }
+  }
+}

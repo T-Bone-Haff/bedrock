@@ -1,144 +1,67 @@
-# Reference: Conformance Checklist
+# Conformance checklist
 
-The concrete checks the SA (Solution Architect) hat runs, the full per-hat question sets, and the disposition disciplines. The method, severity vocabulary, and self-review discipline are in `SKILL.md`.
+Select checks from changed behavior and risk. Each applicable check receives a gate disposition; do not mark the whole section N/A without a reason.
 
-## Contents
+## Base change checks
 
-- [1. Conformance checklist](#1-conformance-checklist)
-- [2. Per-hat question sets](#2-per-hat-question-sets)
-- [3. No-drift confirmations](#3-no-drift-confirmations)
-- [4. Out-of-scope triage](#4-out-of-scope-triage)
-- [5. Retrospective review for pre-standard code](#5-retrospective-review-for-pre-standard-code)
-- [6. Checkers and validators](#6-checkers-and-validators)
+- Scope and diff agree; no undeclared side effects or unrelated files.
+- Public inputs, outputs, errors, and compatibility behavior are explicit.
+- Configuration and secrets use the owning domain contract.
+- Logs, telemetry, and evidence avoid sensitive-content leakage.
+- Tests cover the changed state space, boundary conditions, and credible failures.
+- Relevant lint, format, type, test, build, scan, and deployment checks have dispositions.
+- New dependencies have provenance, maintenance, license, and rollback treatment.
+- Unsupported or deferred cross-cutting assurance is named honestly.
 
----
+## Backend and agent overlays
 
-## 1. Conformance checklist
+For backend code, consult `application-code`; for LLM-centered behavior consult `agent-code`; for planned tests consult `testing`. Check event-loop blocking, boundary validation, error translation, retry budgets, untrusted model/tool data, structured-output framing, tool-loop bounds, and cost/evidence controls only where applicable.
 
-Run this against every change. Each item is a conformance question; the full rule behind it lives in the owning skill's conventions — `application-code` and `testing` for the base items, `agent-code` and `frontend-code` for their sections below — consult those when an item needs adjudication. An item that passes is a candidate **POSITIVE** finding (§3); an item that fails is an **add/fix** finding at the appropriate severity.
+## Frontend overlay
 
-**Structure and style**
-- [ ] Module comment block present on every new file.
-- [ ] Type annotations complete on every function signature; type-check clean.
-- [ ] Docstrings on all public functions, methods, and classes.
-- [ ] Layered import direction respected — no `api → adapters` reach-through, no cross-layer violation.
-- [ ] Naming follows convention (request/response/error models, domain exceptions, modules).
+Consult `frontend-code`. Check accessible names and keyboard paths, focus and motion, browser-permission state, teardown, XSS/URL sinks, credential exposure, generated-contract drift, responsive behavior, real-browser coverage where risk requires it, and dependency/media provenance.
 
-**Behavior and safety**
-- [ ] No hardcoded configuration, URLs, or secrets — config comes from Settings, secrets from the environment.
-- [ ] No synchronous/blocking calls inside `async` functions.
-- [ ] Structured logging used throughout; no `print()` or bare stdlib logging.
-- [ ] Correlation ID propagated on downstream calls.
-- [ ] Audit emitted for data mutations and security events.
-- [ ] Domain exceptions extend the domain base and surface via exception handlers — no scattered status codes, no silent cross-layer swallowing.
-- [ ] Inbound data validated by a Pydantic model at the boundary.
-- [ ] Outbound HTTP goes through the canonical client, not per-call instances.
-- [ ] No Tier 3/4 data in logs; sensitive data classified and handled per tier.
+## Infrastructure overlay
 
-**API**
-- [ ] New endpoints declare full OpenAPI metadata (summary, description, response model, error responses).
-- [ ] Request/response shapes are typed models; a contract test asserts them.
+Consult `infrastructure-code`; do not mirror its complete standard here.
 
-**Tests**
-- [ ] Tests cover the happy path and at least two error scenarios.
-- [ ] Coverage threshold met, honestly — no testable code omitted from measurement.
-- [ ] Behavior was specified test-first where the TDD discipline applies.
+- Terraform plans identify state lineage, configuration revision, provider lockfile, artifact digest, expiry, and stale-plan behavior.
+- Secret values are not materialized into state unless the explicit risk contract permits and protects it.
+- Destructive changes, imports, moved resources, bootstrap, drift, and recovery are addressed when present.
+- Identity, IAM ownership, and executable dependencies are least-privilege and immutable.
+- Kubernetes changes address workload identity, security context, disruption, rollout, storage, backup/restore, and digest identity as applicable.
 
-**Agent code** (when the change touches code whose central act is an LLM call — adjudicate against the `agent-code` conventions)
-- [ ] Prompt changes carry a generation bump and were reviewed as semantic changes — no cosmetic exemption for prompt bytes.
-- [ ] New untrusted-input paths identified and handled — tool results and retrieved content treated as untrusted model input.
-- [ ] Tool-permission scope deltas justified against least-agency; write authority gated, never ambient.
-- [ ] No new LLM judgment on a terminal path — terminal predicates remain mechanical functions over durable state.
-- [ ] New model calls carry the structured-output contract and parse-seam discipline (strict item validation, observable drops, port-boundary identity stamping).
-- [ ] Cost posture intact — cache alignment not silently broken; usage capture present on new call sites.
+## Application-delivery overlay
 
-**Frontend code** (when the change touches frontend code — adjudicate against the `frontend-code` conventions)
-- [ ] Layered import direction respected — no surface imports a concrete client or vendor SDK; seam interfaces consumed via providers.
-- [ ] No hardcoded visual values — color, type, spacing, and motion come from the design tokens; runtime config from the typed config module, no scattered `import.meta.env` reads; media assets referenced through the typed manifest, never by string literal.
-- [ ] Type-check and strict-type-checked lint clean; type escape hatches (`@ts-expect-error`, `as`-casts) carry site justifications.
-- [ ] Prototype-origin code was re-authored at hardening, not lint-fixed — the prototype rode in as design intent, and tests specifying the kept behavior landed with the re-author.
-- [ ] Generated contract types regenerated and drift-checked, never hand-edited; no hand-written mirror of a backend model — vendor-surface declarations (Web Speech, prefixed constructors) are not mirrors, and are declared once in a single types module.
-- [ ] XSS escape hatches reviewed — `dangerouslySetInnerHTML` only over sanitized content, URL props scheme-validated, no eval-class constructs.
-- [ ] No credentials in browser storage; no secrets in client config or the bundle.
-- [ ] Accessibility holds at the floor — semantic elements, accessible names on interactive elements, keyboard path intact, focus managed on navigation and dialog changes, motion respects reduced-motion; target-size findings check 2.5.8's exceptions before demanding a rebuild.
-- [ ] Tests query by role and accessible name; mechanism-layer coverage floor met honestly — exclusions limited to tautologically-assertable code, claimed at the site, with the excluded line count reported; no directory-placement dodges.
-- [ ] New dependency or media-asset adoptions justified — architecture-shaping, recurring-cost, or proprietary-license adoptions are record exceptions.
-- [ ] Surfaces are responsive — a fixed-frame or scaled-to-fit surface carries a record exception naming its 1.4.10 claim; fluid type steps are rem-anchored and within the 2.5× ratio.
-- [ ] Browser media singletons (`AudioContext`, `MediaStream`, `SpeechRecognition`) have one owner reached through a seam, none constructed at point of use; streaming sessions tear down deterministically on stop and on unmount.
-- [ ] Permission-gated device access requested on a user gesture with its outcome modeled as state (unavailable / dismissed / denied / granted); the catch scopes to the permission call; no fallback simulates the unavailable modality.
-- [ ] Time-sequenced work lives in a hook or `lib/` module exposing start and cancel; cancellation settles every promise it created; no hand-rolled cancellation token stands in for `AbortSignal`.
+Consult `app-delivery-pipeline`.
 
-**Process**
-- [ ] All automated gates passed (lint, format, type-check, tests, coverage, security scan).
-- [ ] Data-classification tier documented where the change introduces or moves data.
-- [ ] A decision record was filed if the change adopts a non-standard library or pattern.
-- [ ] Change adds or modifies a checker/validator: the §6 coverage accounting ran.
+- Pull requests prove buildability without granting untrusted code publication or deployment credentials.
+- Promotion reuses an immutable artifact; production mutation is not blindly canceled.
+- Release-event identity, merge queues, rollback, migrations, smoke verification, provenance, and SBOM posture are explicit where applicable.
+- Workflow actions and other executable dependencies are immutable and permissions are minimal.
 
-The checklist is the SA hat's instrument; it does not replace the LAA (Lead Application Architect) and EA (Enterprise Architect) lenses (§2), which the checklist can't capture — scope-fit and posture-fit are judgment, not checkboxes.
+## Risk-triggered overlays
 
----
+Apply each when the diff introduces or changes the named risk:
 
-## 2. Per-hat question sets
+| Trigger | Required review questions |
+|---|---|
+| Migration or data conversion | Forward/backward compatibility, expand/contract order, partial failure, rollback, verification, and owner. |
+| Concurrency or state machine | Atomicity, ordering, races, retries, cancellation, idempotency, and impossible states. |
+| Authentication/authorization | Identity source, audience, scope, confused-deputy paths, revocation, default deny, and audit. |
+| Multi-tenancy | Tenant derivation, isolation at every store/cache/log boundary, cross-tenant tests, and operator access. |
+| Money or irreversible action | Exact arithmetic, duplicate suppression, reconciliation, approval, rollback/compensation, and audit. |
+| Performance or capacity | Workload model, limit, measurement method, backpressure, degradation, and regression threshold. |
+| Deployment ordering | Dependency compatibility, migration order, health versus readiness, partial rollout, and rollback. |
+| Dependency/license | Source, lock/pin, integrity, license obligations, advisories, ownership, and removal path. |
 
-**LAA — Lead Application Architect — what is this change?**
-- Does the change match the scope it claims (ticket, PR description)?
-- Are the things it closes the things that scope actually covered?
-- Is there scope creep — unrelated changes riding along?
-- Are dependencies and side effects declared?
-- Does the title/description match what the diff actually does?
+## Gate treatment
 
-**SA — Solution Architect — how does this change conform?**
-- Does the code follow the conventions? (the §1 checklist)
-- Did all automated gates fire and pass?
-- Are tests at threshold, types clean, cross-references resolving?
-- Is the change correct under edge cases and error paths — not just on the happy path?
+- `passed`: command/evidence and observed subject are named.
+- `failed`: produces or supports a blocking finding when required for safe landing.
+- `not-relevant`: reason names the missing applicability trigger.
+- `unavailable`: reason, risk, owner, and escalation are recorded; a required unavailable gate pauses.
 
-**EA — Enterprise Architect — should this land in this shape, at this time?**
-- Does the change integrate with the broader posture, or pull against it?
-- Is the reversibility appropriate to the risk?
-- Does it commit the project to a position that warrants a decision record first?
-- Is the timing right?
+## Validator changes
 
-Each hat aggregates its findings into a verdict (`proceed` / `proceed-with-changes` / `pause`) per the rule in `SKILL.md`. All three at `proceed` is the approval bar.
-
----
-
-## 3. No-drift confirmations
-
-POSITIVE findings record that a surface was checked and found conformant — "checked the layering, no violations"; "verified secrets come from the environment." They are required, not decorative. A review whose only findings are negatives hasn't shown it verified the clean cases; it's shown it noticed the broken ones. The positive findings are what let a later reviewer (or a future you) trust that an area was actually looked at, rather than re-reviewing it from scratch.
-
-Keep them proportionate — confirm the load-bearing surfaces, not every line. The point is an honest record of what was verified.
-
----
-
-## 4. Out-of-scope triage
-
-Reviews surface things outside their scope. Those don't get fixed in this review and don't get absorbed into its findings — they get **routed**: a backlog item, a tracked note, a pointer to the right venue. Each routed item carries a one-line summary, which finding surfaced it, and a proposed disposition (file new / fold into existing / reject with reason).
-
-The one exception: an out-of-scope finding that is BLOCKING for some other gate that would otherwise miss it — surface that one rather than only routing it, because routing-and-forgetting would let a real defect slip.
-
-The discipline protects the review from sprawling into a rewrite of everything it touches, while making sure nothing real is lost.
-
----
-
-## 5. Retrospective review for pre-standard code
-
-Code written before the conventions were adopted is grandfathered — the review discipline applies to changes from adoption forward, not retroactively across the whole codebase.
-
-The trigger: when pre-standard code receives a **substantive** modification, the change reviews the **whole touched file** against the checklist and three hats, not just the diff — because a substantive touch is the natural moment to bring the file up to standard, and reviewing only the diff leaves the surrounding non-conformance invisible. Trivial touches (typo, formatting, version-string bump) don't trigger it. A file that's completed retrospective review can carry a marker in its module comment block so the next reviewer knows it's already been brought current.
-
----
-
-## 6. Checkers and validators
-
-When the change under review is itself a checker — a validator, a conformance check, a lint rule, a guard — the review runs one additional accounting: **the gap between the check's authority text and its mechanization is either a violation mode or a stated reason. Every silent skip path is unaudited coverage.**
-
-The procedure: enumerate what the check's authority text demands, then account for every case the implementation doesn't flag. Each unflagged case must be one of exactly three things — a **violation mode** (the check fires on it), a **fail-loud** (the check refuses rather than guesses), or a **documented justification** (the skip is deliberate and stated). A case that is none of the three is unaudited coverage — an add/fix finding at the appropriate severity.
-
-Interrogate three seams specifically — the places where coverage silently narrows:
-
-- **Presence assumptions across enforcement-tier lines.** An exemption or precedent valid on one side of an existence-constraint line does not transfer to the other; re-derive it there rather than inheriting it.
-- **Null propagation in negated predicates.** In a three-valued-logic substrate, a negated equality silently drops nulls; every negated predicate over nullable data needs an explicit null ruling.
-- **Parse/merge/union steps upstream of the comparison.** Any many-to-one step before the check runs — parsing that collapses duplicate keys, map-building with last-write-wins, unions that dedupe — can destroy the evidence the check exists to examine. Verify the check sees the data before the collapse, or that the collapse is itself checked.
-
-This is the mechanized twin of "Narrated process is data" (SKILL.md): that rule is about narrative coverage that looks complete and isn't; this one is about a checker's own coverage that looks complete and isn't.
+When reviewing a checker, account for every authority requirement as detected violation, fail-loud behavior, or documented deliberate gap. Inspect presence assumptions, nullable predicates, and parse/merge steps that may destroy evidence before comparison.

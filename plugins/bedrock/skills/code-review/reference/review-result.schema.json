@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bedrock.haffey.dev/schemas/code-review-result-v1.json",
+  "type": "object",
+  "required": ["schema_version", "profile", "scope", "checked_surfaces", "gates", "findings", "verdict"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": 1},
+    "profile": {"enum": ["lightweight", "standard", "high-risk"]},
+    "scope": {"type": "string", "minLength": 1},
+    "checked_surfaces": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "gates": {"type": "array", "items": {"type": "object", "required": ["name", "disposition"], "properties": {"name": {"type": "string"}, "disposition": {"enum": ["passed", "failed", "not-relevant", "unavailable"]}, "reason": {"type": "string"}}, "additionalProperties": false}},
+    "findings": {"type": "array", "items": {"type": "object", "required": ["id", "class", "impact", "likelihood", "confidence", "locus", "evidence", "blocking"], "additionalProperties": false, "properties": {"id": {"type": "string"}, "class": {"enum": ["correctness", "security", "operational", "conformance", "maintainability", "advisory"]}, "impact": {"enum": ["critical", "high", "medium", "low"]}, "likelihood": {"enum": ["high", "medium", "low", "unknown"]}, "confidence": {"enum": ["high", "medium", "low"]}, "exploitability": {"enum": ["high", "medium", "low", "not-applicable", "unknown"]}, "locus": {"type": "string"}, "evidence": {"type": "string"}, "blocking": {"type": "boolean"}}}},
+    "verdict": {"enum": ["approve", "approve-with-advisory", "pause"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"findings": {"contains": {"properties": {"blocking": {"const": true}}, "required": ["blocking"]}}}},
+      "then": {"properties": {"verdict": {"const": "pause"}}}
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+# Machine-readable interaction-contract authority for the five HEB-117 skills.
+# SKILL.md carries a bounded human-readable rendering; this registry is validated
+# with the shipped schemas and behavior fixtures to prevent implicit fields.
+schema_version: 1
+skills:
+  author-construct-spec:
+    task_class: Author or amend an implementer-complete specification for one internal construct.
+    positive_cues: [construct spec, implementer-complete internal mechanism]
+    negative_boundary: Product requirements, reusable standards, executor handoffs, and finished-change review route elsewhere.
+    inputs: [doctype ruling, deliberation substrate, current authorities, target repository facts]
+    outputs: [construct specification, obligation set, evidence and lifecycle state]
+    authority: May shape the specification; the operator owns ambiguous routing, acceptance, and graduation.
+    required_capabilities: [repository-readable durable artifact set]
+    optional_capabilities: [durable tracker]
+    failure_behavior: Stop on ambiguous doctype, missing deliberation, inaccessible authority, or unsafe evidence relocation.
+    evidence: [cold-buildability check, obligation reconciliation, destination verification for copied evidence]
+    lifecycle: proposal -> accepted design -> implemented -> verified -> graduated or retired
+  author-decision-record:
+    task_class: Select, author, amend, or repair an engineering decision record.
+    positive_cues: [ADR, DDR, SDD, decision-record selection]
+    negative_boundary: Direct construct-spec authorship, reusable standards, relays, PR review, and convergence review route elsewhere.
+    inputs: [decision scope, deliberation substrate, current related records, risk-domain assessment]
+    outputs: [decision record, typed relations, lifecycle metadata]
+    authority: May select and shape the record; the operator owns ambiguous routing and acceptance.
+    required_capabilities: [durable artifact home]
+    optional_capabilities: [external tracker, relation-graph validator]
+    failure_behavior: Remain proposed or stop when rationale, relation targets, owners, or provisional-dependency controls are missing.
+    evidence: [cold read, relation validation, stale-reference sweep]
+    lifecycle: proposed -> accepted or accepted-with-conditions -> superseded, rejected, deferred, or retired
+  author-execution-relay:
+    task_class: Author a bounded prompt or handoff for an execution surface.
+    positive_cues: [execution relay, implementation handoff, executor kickoff]
+    negative_boundary: Implementation, shipped prompts, standards, decision records, and finished-change review route elsewhere.
+    inputs: [approved scope, live repository identity, mutation set, authorization profile]
+    outputs: [profiled relay artifact, optional authorization record, optional mutation manifest]
+    authority: May encode already-settled work; it may not create authorization or make operator-reserved decisions.
+    required_capabilities: [fresh readable target state]
+    optional_capabilities: [authenticated approval verifier, mutation-enforcing wrapper, independent verifier]
+    failure_behavior: Downgrade claims to advisory or stop when required enforcement, authorization, identity, or scope evidence is unavailable.
+    evidence: [profile validation, pre-state verification, durable-form verification, gate report]
+    lifecycle: drafted -> authorized when required -> executed -> verified -> expired or revoked
+  author-standard:
+    task_class: Decide whether to create, then author or amend, a reusable standard.
+    positive_cues: [reusable rule, engineering convention, governing skill or template]
+    negative_boundary: One decision record, an executor handoff, mechanical packaging, and finished-change review route elsewhere.
+    inputs: [recognizable repeated task, authority sources, binding, intended consumers]
+    outputs: [scoped standard, provenance record, proving plan, lifecycle metadata]
+    authority: May define reusable guidance within its binding; the operator owns adoption and material exceptions.
+    required_capabilities: [durable source access, at least one representative consumer]
+    optional_capabilities: [generated carrier and drift checker]
+    failure_behavior: Do not publish when membership, authority, binding, provenance, or proving evidence is missing.
+    evidence: [source grading, counterexample, representative consumer, explicit success threshold]
+    lifecycle: proposed -> proving -> adopted -> revised -> deprecated, superseded, rolled back, or retired
+  code-review:
+    task_class: Review a finished change and produce evidence-backed findings and a merge verdict.
+    positive_cues: [review this diff, review this PR, merge readiness]
+    negative_boundary: Authoring, failure diagnosis, test creation, and design-record convergence route elsewhere.
+    inputs: [finished diff, claimed scope, applicable authorities, available gate evidence]
+    outputs: [review result, findings or explicit no-findings result, gate dispositions, merge verdict]
+    authority: May recommend merge disposition; the operator or repository protection performs approval and merge.
+    required_capabilities: [readable diff and applicable authority]
+    optional_capabilities: [independent reviewer, domain overlays, automated gates]
+    failure_behavior: Pause on unresolved blocking findings, missing critical evidence, or unavailable required gates; label unavailable checks honestly.
+    evidence: [checked surfaces, finding loci, gate dispositions, risk-selected profile]
+    lifecycle: scoped -> reviewed -> findings resolved or accepted as debt -> approved, paused, or superseded

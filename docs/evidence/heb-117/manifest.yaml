@@ -1,0 +1,26 @@
+schema_version: 1
+claims:
+  - id: interaction-contracts
+    command: python3 scripts/validate_authoring_contracts.py
+    evidence:
+      - validation/authoring-contracts.yaml
+      - scripts/validate_authoring_contracts.py
+      - tests/test_authoring_contracts.py
+      - tests/fixtures/authoring-contracts/manifest.yaml
+      - tests/fixtures/authoring-contracts/behavior.yaml
+  - id: package-regression
+    command: python3 -m unittest discover -s tests -v
+    evidence:
+      - docs/evidence/heb-117/validation-results.md
+  - id: package-and-host-validation
+    command: python3 scripts/validate_plugin.py
+    evidence:
+      - docs/evidence/heb-117/validation-results.md
+  - id: clean-install
+    command: bash scripts/smoke_clean_install.sh
+    evidence:
+      - docs/evidence/heb-117/validation-results.md
+  - id: direct-review
+    command: direct evidence-cited review; no design-review-loop or convergence claim
+    evidence:
+      - docs/evidence/heb-117/validation-results.md

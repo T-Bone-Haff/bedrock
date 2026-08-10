@@ -151,6 +151,7 @@ class ValidatorTests(unittest.TestCase):
             self.root,
             run_host_cli=False,
             run_safety_checks=False,
+            require_authoring_contracts=False,
         )
         self.assertTrue(any(needle in error for error in errors), errors)
 
@@ -159,6 +160,7 @@ class ValidatorTests(unittest.TestCase):
             self.root,
             run_host_cli=False,
             run_safety_checks=False,
+            require_authoring_contracts=False,
         )
         self.assertEqual([], errors)
         self.assertEqual(13, report["skill_count"])

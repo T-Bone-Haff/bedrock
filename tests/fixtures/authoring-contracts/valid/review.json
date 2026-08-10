@@ -1,0 +1,1 @@
+{"schema_version":1,"profile":"lightweight","scope":"docs-only diff","checked_surfaces":["scope","links"],"gates":[{"name":"tests","disposition":"not-relevant","reason":"docs only"}],"findings":[],"verdict":"approve"}
