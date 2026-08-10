@@ -3,7 +3,7 @@ cases:
   - id: agent-code-positive
     kind: positive
     surface: portable-core
-    prompt: Add a bounded tool loop and structured-output parser to our Claude-backed agent service.
+    prompt: Add a bounded tool loop and structured-output parser to our provider-neutral agent service.
     expected: agent-code
     excluded: []
   - id: agent-code-negative
@@ -111,7 +111,13 @@ cases:
   - id: design-review-loop-positive
     kind: positive
     surface: portable-core
-    prompt: Run the design-review loop over these amended ADRs and determine whether the set converged.
+    prompt: Run a stance-isolated review over these amended ADRs; declare the available profile and make no convergence claim unless its runner actually executes.
+    expected: design-review-loop
+    excluded: []
+  - id: design-review-loop-direct-profile
+    kind: positive
+    surface: portable-core
+    prompt: Perform a direct stance-isolated review of these ADRs and report its limits without claiming convergence.
     expected: design-review-loop
     excluded: []
   - id: design-review-loop-negative

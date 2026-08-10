@@ -1,0 +1,30 @@
+schema_version: 1
+ticket: HEB-116
+baseline_commit: d05a238750cfa43b33d95ffb2704787bcdae732e
+branch: feature/heb-116-wp5d-correct-agent-code-and-design-review-loop-skills
+profile: direct-evidence-cited-audit
+convergence_claim: false
+authority:
+  - docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md
+  - docs/architecture/skill-architecture.md
+  - docs/architecture/migration-compatibility.md
+  - docs/architecture/coverage-map.md
+contracts:
+  - plugins/bedrock/skills/agent-code/SKILL.md
+  - plugins/bedrock/skills/agent-code/reference/agent-execution.schema.json
+  - plugins/bedrock/skills/design-review-loop/SKILL.md
+  - plugins/bedrock/skills/design-review-loop/reference/design-review-result.schema.json
+validators:
+  - scripts/validate_agent_review_contracts.py
+  - scripts/validate_plugin.py
+  - scripts/validate_safety.py
+fixtures:
+  - tests/fixtures/agent-review-contracts/valid/agent-execution.json
+  - tests/fixtures/agent-review-contracts/valid/reviewer-empty.json
+  - tests/fixtures/agent-review-contracts/valid/arbitration.json
+  - tests/fixtures/agent-review-contracts/invalid/ambiguous-salvage.txt
+  - tests/fixtures/agent-review-contracts/invalid/low-confidence-resolvable.json
+limitations:
+  - No design-review-loop self-review was run.
+  - No runner-backed or mechanical-convergence claim is made.
+  - RBT-72 was not treated as accepted or durable authority.

@@ -1,0 +1,29 @@
+schema_version: 1
+schemas:
+  agent_execution: plugins/bedrock/skills/agent-code/reference/agent-execution.schema.json
+  design_review_result: plugins/bedrock/skills/design-review-loop/reference/design-review-result.schema.json
+fixtures:
+  valid:
+    - tests/fixtures/agent-review-contracts/valid/agent-execution.json
+    - tests/fixtures/agent-review-contracts/valid/reviewer-empty.json
+    - tests/fixtures/agent-review-contracts/valid/arbitration.json
+  invalid:
+    - path: tests/fixtures/agent-review-contracts/invalid/ambiguous-salvage.txt
+      expected: ambiguous salvage
+    - path: tests/fixtures/agent-review-contracts/invalid/low-confidence-resolvable.json
+      expected: low-confidence resolvable
+required_contract_markers:
+  plugins/bedrock/skills/agent-code/SKILL.md:
+    - "Never accept “the first parseable payload.”"
+    - "One aggregate execution budget"
+    - "Content capture is off by default."
+  plugins/bedrock/skills/design-review-loop/SKILL.md:
+    - "Direct review"
+    - "Without fresh evidence that the declared runner/profile executed"
+    - "No policy universally dominates."
+forbidden_markers:
+  - "$SOFIA_ROOT"
+  - "~15 real runs"
+  - "salvage the first parseable payload"
+  - "Tie goes to the defect"
+  - "union strictly dominates"

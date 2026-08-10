@@ -224,7 +224,7 @@ def validate_safety_contracts(root: Path) -> list[str]:
     reviewer = _read(root, reviewer_relative, errors)
     _require(
         reviewer,
-        "Never emit a choice requiring operator action as `COSMETIC`",
+        "The `findings` array may be empty.",
         reviewer_relative,
         errors,
     )

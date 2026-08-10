@@ -2,7 +2,7 @@
 
 **Haffey Enterprises engineering skills** — by T-Bone-Haff (Tad Haffey, Haffey Enterprises LLC).
 
-Self-contained Claude skills distilled from the HE-Bedrock governance corpus. They carry the *content* — the engineering standard, the doctype templates, the testing and review disciplines — with none of the self-governance machinery (no kit-versioning, no ledgers, no audit cadences). No skill depends on another skill being loaded; a skill's own depth lives in its bundled `reference/` and `templates/` files (some skills are a single SKILL.md). Where a skill binds to an external substrate — `design-review-loop` runs on the SOFIA `agent-loop` machinery — the binding is declared in the skill itself, never hidden.
+Self-contained Claude skills distilled from the HE-Bedrock governance corpus. They carry the *content* — the engineering standard, the doctype templates, the testing and review disciplines — with none of the private self-governance machinery. No skill depends on another skill being loaded; a skill's own depth lives in its bundled `reference/` and `templates/` files (some skills are a single SKILL.md). Portable actor contracts name optional host profiles without embedding a private runner, tracker, path, or authority corpus.
 
 ## What's in the kit
 
@@ -10,7 +10,7 @@ The kit spans the authoring-through-review lifecycle on the house stacks — ser
 
 ## Stack binding
 
-Bindings are declared per skill, not kit-wide. The service-side skills assume **Python 3.11+ / FastAPI / async SQLAlchemy / GCP / GitHub**; the frontend skill binds **TypeScript / React / Vite** with plain CSS on design tokens; the pipeline skill binds **GitHub Actions + GCP** on the house branch model; reasoning-protocol skills like `debug` and `author-standard` are stack-agnostic, bound to nothing; and `design-review-loop` binds to a substrate rather than a stack — the SOFIA `agent-loop` runner and the ADR/DDR/SDD doctype family, whose change is its rebind. In every case a materially different choice is a **rebind** — a re-derivation of the equivalents — not a line-edit; each skill's own declaration governs.
+Bindings are declared per skill, not kit-wide. The service-side skills assume **Python 3.11+ / FastAPI / async SQLAlchemy / GCP / GitHub**; the frontend skill binds **TypeScript / React / Vite** with plain CSS on design tokens; the pipeline skill binds **GitHub Actions + GCP** on the house branch model; reasoning-protocol skills like `debug` and `author-standard` are stack-agnostic. `agent-code` and `design-review-loop` expose provider/runner-neutral cores plus explicit optional profiles. A profile binds the portable contract without becoming its authority.
 
 ## Install — Claude Code
 

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0.0",
+  "invocation_id": "inv-001",
+  "actor_id": "reviewer-laa",
+  "profile": "direct",
+  "prompt": {"version": "3", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+  "output_schema": {"version": "1.0.0", "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+  "budget": {"max_attempts": 2, "max_tool_iterations": 0, "deadline_ms": 30000, "max_input_tokens": 10000, "max_output_tokens": 2000, "max_spend_micros": 500000, "max_concurrency": 1},
+  "attempts": [{"attempt": 1, "kind": "model", "disposition": "succeeded"}],
+  "parse": {"path": "native", "candidate_count": 1, "response_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"},
+  "usage": {"input_tokens": 900, "output_tokens": 120, "spend_micros": 8000},
+  "terminal_disposition": "succeeded"
+}

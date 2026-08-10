@@ -36,16 +36,6 @@ samples:
     count: 5
     classification: illustrative
     owner: HEB-115
-  - path: plugins/bedrock/skills/design-review-loop/reference/arbiter-classifier.md
-    language: json
-    count: 1
-    classification: illustrative
-    owner: HEB-116
-  - path: plugins/bedrock/skills/design-review-loop/reference/reviewer-instrument.md
-    language: json
-    count: 1
-    classification: illustrative
-    owner: HEB-116
   - path: plugins/bedrock/skills/infrastructure-code/reference/01-module-structure-and-style.md
     language: hcl
     count: 7
