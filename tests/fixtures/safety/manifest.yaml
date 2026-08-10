@@ -1,0 +1,24 @@
+schema_version: 1
+findings:
+  - id: APP-002
+    evidence:
+      - tests.test_safety_integration.ContainerSafetyIntegrationTests.test_runtime_environment_image_starts_and_serves_health
+      - tests.test_safety_contracts.SafetyValidatorNegativeTests.test_python_minor_site_packages_path_fails
+  - id: INF-002
+    evidence:
+      - tests.test_safety_integration.TerraformStateIntegrationTests.test_sensitive_value_materialized_by_terraform_is_present_in_state
+      - tests.test_safety_integration.TerraformStateIntegrationTests.test_runtime_only_secret_value_is_absent_from_state
+      - tests.test_safety_contracts.SafetyValidatorNegativeTests.test_secret_state_denial_fails
+  - id: INF-004
+    evidence:
+      - tests.test_safety_contracts.SafetyValidatorNegativeTests.test_unpinned_action_reference_fails
+  - id: DLV-002
+    evidence:
+      - tests/fixtures/safety/pr-image-build.yml
+      - tests.test_safety_contracts.SafetyValidatorNegativeTests.test_pull_request_push_fails
+  - id: DRL-004
+    evidence:
+      - tests/fixtures/safety/convergence.yaml
+      - tests.test_safety_contracts.SafetyContractTests.test_cosmetic_finding_never_blocks_convergence
+      - tests.test_safety_contracts.SafetyContractTests.test_cosmetic_decision_bearing_combination_is_invalid
+      - tests.test_safety_contracts.SafetyContractTests.test_material_decision_bearing_finding_halts

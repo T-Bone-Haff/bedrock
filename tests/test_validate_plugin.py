@@ -80,11 +80,19 @@ class ValidatorTests(unittest.TestCase):
         )
 
     def assert_has_error(self, needle: str) -> None:
-        errors, _ = validate_repository(self.root, run_host_cli=False)
+        errors, _ = validate_repository(
+            self.root,
+            run_host_cli=False,
+            run_safety_checks=False,
+        )
         self.assertTrue(any(needle in error for error in errors), errors)
 
     def test_valid_fixture_passes(self) -> None:
-        errors, report = validate_repository(self.root, run_host_cli=False)
+        errors, report = validate_repository(
+            self.root,
+            run_host_cli=False,
+            run_safety_checks=False,
+        )
         self.assertEqual([], errors)
         self.assertEqual(13, report["skill_count"])
 

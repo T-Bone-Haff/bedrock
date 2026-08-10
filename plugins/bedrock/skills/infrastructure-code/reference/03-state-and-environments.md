@@ -75,6 +75,8 @@ Each environment directory has its **own backend/state**, its **own `.tfvars`** 
 **State is plaintext.** Marking a variable or output `sensitive = true` keeps it out of plan/apply *output*, but Terraform still writes it to state in the clear. Many resources and data sources (database passwords, generated keys, secret versions) land in state regardless. So:
 
 - **Keep secrets out of state where you can** — reference Secret Manager at runtime rather than materializing the secret value through Terraform.
+- **A Secret Manager data source that reads a secret payload does not keep that payload out of state.** Data-source and provider schema behavior determines what is recorded; assume a value Terraform reads can persist unless state inspection proves otherwise.
+- **Prefer identifier-only configuration.** Pass the secret resource name or version identifier to the workload, then let its runtime identity retrieve the payload directly from Secret Manager.
 - **Treat the whole state file as a secret** — the GCS backend (§1) is the encryption-and-access boundary; that's why bucket access is locked down.
 - **Never commit** `*.tfstate`, `*.tfstate.*` backups, `.terraform.tfstate.lock.info`, the `.terraform/` directory, saved plan files (`-out`), or any `.tfvars` carrying secrets.
 - **Always commit** the `.terraform.lock.hcl` dependency lock (so provider versions are reproducible), all `.tf`, a `.gitignore`, and a `README.md`.
@@ -90,4 +92,4 @@ A starting `.gitignore`:
 *-secret.auto.tfvars
 ```
 
-Secrets that must reach a resource come from Secret Manager via a data source, or from the CI runner's environment — never hardcoded, never in a committed `.tfvars`.
+If Terraform itself must pass a secret payload to a provider or resource, the payload may be written to state whether it comes from a data source, a variable, or the CI environment. Document why runtime retrieval is impossible, inspect the resulting state, minimize its lifetime, and apply the state access and recovery controls above. Never hardcode a payload or commit it in `.tfvars`.

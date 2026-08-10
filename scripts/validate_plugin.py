@@ -15,6 +15,11 @@ from typing import Any
 
 import yaml
 
+if __package__:
+    from scripts.validate_safety import validate_safety_contracts
+else:  # Direct execution: python scripts/validate_plugin.py
+    from validate_safety import validate_safety_contracts
+
 
 EXPECTED_SKILLS = (
     "agent-code",
@@ -272,11 +277,18 @@ def run_host_validator(root: Path, errors: list[str]) -> None:
         _error(errors, "claude plugin validate --strict", detail or f"exited {result.returncode}")
 
 
-def validate_repository(root: Path, *, run_host_cli: bool = True) -> tuple[list[str], dict[str, Any]]:
+def validate_repository(
+    root: Path,
+    *,
+    run_host_cli: bool = True,
+    run_safety_checks: bool = True,
+) -> tuple[list[str], dict[str, Any]]:
     errors: list[str] = []
     inventory = validate_skills(root, errors)
     validate_manifests(root, errors)
     cases = validate_routing(root, inventory, errors)
+    if run_safety_checks:
+        errors.extend(validate_safety_contracts(root))
     if run_host_cli:
         run_host_validator(root, errors)
 
