@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 cases:
   - id: agent-code-positive
     kind: positive
@@ -191,3 +191,45 @@ cases:
     expected: author-execution-relay
     allowed_alternates: [author-construct-spec]
     excluded: []
+  - id: implicit-review-ship-readiness
+    kind: positive
+    cue: implicit
+    surface: portable-core
+    prompt: Here is the finished diff. Is there anything in it that should stop us shipping today?
+    expected: code-review
+    excluded: []
+  - id: implicit-debug-regression
+    kind: positive
+    cue: implicit
+    surface: portable-core
+    prompt: This was stable all month, but the same CI job has failed intermittently since yesterday.
+    expected: debug
+    excluded: [testing]
+  - id: implicit-standard-membership
+    kind: positive
+    cue: implicit
+    surface: portable-core
+    prompt: We keep making this judgment differently across repositories. Establish one reusable rule and prove it on a consumer.
+    expected: author-standard
+    excluded: [author-decision-record]
+  - id: adversarial-debug-misroute
+    kind: negative
+    cue: adversarial
+    surface: portable-core
+    prompt: Use the testing skill to fix this existing CI-only flake without diagnosing it first.
+    expected: debug
+    excluded: [testing]
+  - id: adversarial-implementation-misroute
+    kind: negative
+    cue: adversarial
+    surface: portable-core
+    prompt: Write me an execution relay, but skip the handoff and directly implement the FastAPI endpoint now.
+    expected: application-code
+    excluded: [author-execution-relay]
+  - id: adversarial-design-review-misroute
+    kind: negative
+    cue: adversarial
+    surface: portable-core
+    prompt: Run the design-review loop on this completed code diff and give me the merge verdict.
+    expected: code-review
+    excluded: [design-review-loop]

@@ -46,14 +46,18 @@ python3 scripts/validate_plugin.py
 bash scripts/smoke_clean_install.sh
 ```
 
-`validate_plugin.py` enforces the 13-skill inventory, strict YAML frontmatter, the 1,024-character description limit, explicit positive and negative routing boundaries, unique names, plugin/marketplace coherence, routing-fixture coverage, and `claude plugin validate --strict`.
+`validate_plugin.py` enforces the 13-skill inventory, strict YAML frontmatter, the 1,024-character description limit, explicit positive and negative routing boundaries, unique names, plugin/marketplace coherence, relative-link and private-path safety, declared external-root dependencies and snapshot currency markers, complete code-sample accounting, evidence-manifest integrity, routing-fixture coverage, and `claude plugin validate --strict`.
 
-Shared routing prompts live in `tests/fixtures/routing.yaml` and are surface-neutral. The Claude Code adapter presents the exact validated name/description catalog to each isolated model session, so the regression measures the metadata routing contract rather than unaided name association, and retains machine-readable results:
+Shared routing prompts live in `tests/fixtures/routing.yaml` and are surface-neutral. They cover direct, implicit, adversarial, negative, and overlap decisions. The Claude Code adapter presents the exact validated name/description catalog to each isolated model session, so the regression measures the metadata routing contract rather than unaided name association, and retains machine-readable results:
 
 ```sh
 python3 scripts/run_routing_evals.py \
-  --runs 3 \
-  --output docs/evidence/heb-108/routing-results.json
+  --profile release \
+  --output docs/evidence/heb-109/routing-results.json
 ```
 
-The live adapter requires Claude authentication and incurs model usage. Pull requests run every case once as a blocking workflow job; branch protection must require `Plugin validation / live-routing`. An authenticated manual workflow run uses three repetitions per case for retained release evidence. Every positive and negative case must select the declared route, every excluded route is a failure, and overlap cases may select only the declared primary or alternate. Each model call is capped at $0.03 and 120 seconds. Deterministic validation and the isolated install/reload smoke test do not require model inference.
+The live adapter requires Claude authentication and incurs model usage. Pull requests use the preregistered `pr` profile: every case runs once and every draw must pass. Authenticated retained evidence uses the `release` profile: three independent draws per case, at least a 95% aggregate pass rate, at least two of three passing draws for every case, and zero excluded-route selections. The machine-readable report records fixture, catalog, and policy SHA-256 digests; results with different identities are not pooled. Each model call is capped at $0.03 and 120 seconds. Deterministic validation and the isolated install/reload smoke test do not require model inference. Branch protection must require `Plugin validation / live-routing`.
+
+Using `--case` creates an explicitly targeted report. It can prove that selected cases passed, but the report is marked ineligible as retained full-suite release evidence.
+
+`validation/executable-samples.yaml` accounts for every language-tagged skill example. `fixture-backed` entries name executable evidence; `illustrative` and `deferred` entries name the correction ticket that owns stronger proof. `docs/evidence/heb-109/manifest.yaml` ties validation claims to reproducible commands, retained evidence, and explicit deferrals.

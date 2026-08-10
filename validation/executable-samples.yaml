@@ -1,0 +1,84 @@
+schema_version: 1
+samples:
+  - path: plugins/bedrock/skills/application-code/reference/01-code-structure.md
+    language: bash
+    count: 2
+    classification: illustrative
+    owner: HEB-113
+  - path: plugins/bedrock/skills/application-code/reference/01-code-structure.md
+    language: dockerfile
+    count: 1
+    classification: fixture-backed
+    evidence: [tests/fixtures/safety/python-service/Dockerfile]
+    command: python3 -m unittest tests.test_safety_integration.ContainerSafetyIntegrationTests.test_runtime_environment_image_starts_and_serves_health -v
+  - path: plugins/bedrock/skills/application-code/reference/01-code-structure.md
+    language: python
+    count: 6
+    classification: illustrative
+    owner: HEB-113
+  - path: plugins/bedrock/skills/application-code/reference/01-code-structure.md
+    language: toml
+    count: 1
+    classification: illustrative
+    owner: HEB-113
+  - path: plugins/bedrock/skills/application-code/reference/02-service-patterns.md
+    language: python
+    count: 14
+    classification: illustrative
+    owner: HEB-113
+  - path: plugins/bedrock/skills/application-code/reference/03-security-and-data.md
+    language: python
+    count: 5
+    classification: illustrative
+    owner: HEB-113
+  - path: plugins/bedrock/skills/application-code/reference/04-shell-scripts.md
+    language: bash
+    count: 5
+    classification: illustrative
+    owner: HEB-113
+  - path: plugins/bedrock/skills/design-review-loop/reference/arbiter-classifier.md
+    language: json
+    count: 1
+    classification: illustrative
+    owner: HEB-117
+  - path: plugins/bedrock/skills/design-review-loop/reference/reviewer-instrument.md
+    language: json
+    count: 1
+    classification: illustrative
+    owner: HEB-117
+  - path: plugins/bedrock/skills/infrastructure-code/reference/01-module-structure-and-style.md
+    language: hcl
+    count: 7
+    classification: illustrative
+    owner: HEB-115
+  - path: plugins/bedrock/skills/infrastructure-code/reference/02-gcp-conventions.md
+    language: hcl
+    count: 6
+    classification: illustrative
+    owner: HEB-115
+  - path: plugins/bedrock/skills/infrastructure-code/reference/03-state-and-environments.md
+    language: gitignore
+    count: 1
+    classification: illustrative
+    owner: HEB-115
+  - path: plugins/bedrock/skills/infrastructure-code/reference/03-state-and-environments.md
+    language: hcl
+    count: 1
+    classification: fixture-backed
+    evidence: [tests/fixtures/safety/terraform-state/safe/main.tf]
+    command: python3 -m unittest tests.test_safety_integration.TerraformStateIntegrationTests.test_runtime_only_secret_value_is_absent_from_state -v
+  - path: plugins/bedrock/skills/infrastructure-code/reference/04-kubernetes-and-stateful-workloads.md
+    language: yaml
+    count: 1
+    classification: illustrative
+    owner: HEB-115
+  - path: plugins/bedrock/skills/infrastructure-code/reference/05-delivery-pipeline.md
+    language: yaml
+    count: 1
+    classification: illustrative
+    owner: HEB-115
+  - path: plugins/bedrock/skills/testing/reference/test-authoring.md
+    language: python
+    count: 6
+    classification: illustrative
+    owner: HEB-116

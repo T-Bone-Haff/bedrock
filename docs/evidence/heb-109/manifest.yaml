@@ -1,0 +1,44 @@
+schema_version: 1
+claims:
+  - id: inherited-baseline
+    status: baseline-failure
+    command: python3 scripts/run_routing_evals.py --runs 3 --output docs/evidence/heb-108/routing-results.json
+    evidence:
+      - docs/evidence/heb-108/routing-results.json
+      - docs/evidence/heb-109/baseline.md
+  - id: seeded-package-defects
+    status: verified
+    command: python3 -m unittest tests.test_validate_plugin.ValidatorTests -v
+    evidence:
+      - tests/test_validate_plugin.py
+      - tests/fixtures/package-defects/manifest.yaml
+      - docs/evidence/heb-109/seeded-defects.md
+  - id: deterministic-package-contract
+    status: verified
+    command: python3 scripts/validate_plugin.py
+    evidence:
+      - validation/package-contract.yaml
+      - validation/executable-samples.yaml
+      - docs/evidence/heb-109/metadata-inventory.json
+      - docs/evidence/heb-109/validation-results.md
+  - id: repeated-routing-baseline
+    status: verified
+    command: python3 scripts/run_routing_evals.py --profile release --output docs/evidence/heb-109/routing-results.json
+    evidence:
+      - validation/eval-policy.yaml
+      - docs/evidence/heb-109/routing-results.json
+      - docs/evidence/heb-109/validation-results.md
+  - id: skill-family-executable-remediation
+    status: deferred
+    owner: HEB-113–HEB-117
+    command: python3 scripts/validate_plugin.py
+    evidence:
+      - validation/executable-samples.yaml
+      - docs/evidence/heb-109/baseline.md
+  - id: cold-cross-surface-acceptance
+    status: deferred
+    owner: HEB-119
+    command: python3 scripts/validate_plugin.py
+    evidence:
+      - docs/architecture/migration-compatibility.md
+      - docs/evidence/heb-109/baseline.md
