@@ -28,7 +28,8 @@ Dependency installs use the compiled lockfiles (`requirements.txt` from `require
 
 The image builds **in the Actions runner** — `docker/build-push-action`, building the multi-stage Dockerfile `application-code` defines (reference `01-code-structure.md` §9). The build job:
 
-- runs **after** verify passes (`needs: [verify]`) and only on push to `develop`/`main` — PR runs verify but does not build; an image no one can deploy from a PR is CI minutes spent on ceremony;
+- runs **after** verify passes (`needs: [verify]`) on relevant pull requests and on trusted pushes to `develop`/`main`; pull requests build the same Dockerfile with `push: false`, without registry or cloud authentication, so a non-buildable image blocks merge without exposing credentials or publishing an artifact;
+- permits publishing only from the trusted post-merge path after verification and scan gates pass;
 - **scans the built image** before push (Trivy image scan — the scanner currency ruling is `infrastructure-code`'s delivery-pipeline reference §3, and it applies to images as it applies to config);
 - emits the **image digest** as a job output — the digest, not the tag, is what downstream verification and (when available, spine §2) attestation consume.
 
