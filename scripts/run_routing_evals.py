@@ -4,6 +4,9 @@
 from __future__ import annotations
 
 import argparse
+from collections import defaultdict
+from datetime import datetime, timezone
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -13,9 +16,9 @@ import sys
 from typing import Any
 
 try:
-    from scripts.validate_plugin import load_routing_cases, validate_repository
+    from scripts.validate_plugin import load_eval_policy, load_routing_cases, validate_repository
 except ModuleNotFoundError:  # Direct execution sets scripts/ as sys.path[0].
-    from validate_plugin import load_routing_cases, validate_repository
+    from validate_plugin import load_eval_policy, load_routing_cases, validate_repository
 
 
 OUTPUT_SCHEMA = json.dumps(
@@ -142,27 +145,105 @@ def run_case(
     return passed, selected, str(routed.get("reason", "")), float(cost or 0.0), models
 
 
+def _sha256_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def evaluate_thresholds(results: list[dict[str, Any]], policy: dict[str, Any]) -> dict[str, Any]:
+    """Evaluate aggregate, per-case, and excluded-route gates."""
+    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for result in results:
+        grouped[str(result["case"])].append(result)
+    total = len(results)
+    passed = sum(1 for result in results if result["passed"])
+    overall_rate = passed / total if total else 0.0
+    case_rates = {
+        case: sum(1 for result in rows if result["passed"]) / len(rows)
+        for case, rows in sorted(grouped.items())
+    }
+    excluded_selections = sum(1 for result in results if result.get("selected_excluded"))
+    overall_gate = total > 0 and overall_rate >= policy["minimum_overall_pass_rate"]
+    case_gate = bool(case_rates) and all(
+        rate >= policy["minimum_case_pass_rate"] for rate in case_rates.values()
+    )
+    exclusion_gate = excluded_selections <= policy["excluded_selection_limit"]
+
+    def dimension_rates(field: str) -> dict[str, float]:
+        rows_by_value: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        for result in results:
+            if result.get(field) is not None:
+                rows_by_value[str(result[field])].append(result)
+        return {
+            value: round(sum(1 for row in rows if row["passed"]) / len(rows), 10)
+            for value, rows in sorted(rows_by_value.items())
+        }
+
+    return {
+        "passed": overall_gate and case_gate and exclusion_gate,
+        "overall_pass_rate": round(overall_rate, 10),
+        "minimum_overall_pass_rate": policy["minimum_overall_pass_rate"],
+        "case_pass_rates": case_rates,
+        "minimum_case_pass_rate": policy["minimum_case_pass_rate"],
+        "excluded_selections": excluded_selections,
+        "excluded_selection_limit": policy["excluded_selection_limit"],
+        "pass_rates_by_kind": dimension_rates("kind"),
+        "pass_rates_by_cue": dimension_rates("cue"),
+        "gates": {
+            "overall": overall_gate,
+            "every_case": case_gate,
+            "excluded_selection": exclusion_gate,
+        },
+    }
+
+
 def build_report(
     *,
     model: str,
+    profile: str,
+    policy: dict[str, Any],
     runs: int,
     max_budget_usd: float,
     timeout_seconds: int,
     cli_version: str,
+    fixture_digest: str,
+    catalog_digest: str,
+    policy_digest: str,
     results: list[dict[str, Any]],
+    generated_at: str | None = None,
+    suite_scope: str = "full",
+    planned_case_ids: list[str] | None = None,
 ) -> dict[str, Any]:
+    """Build a versioned report with reproducibility and eligibility metadata."""
+    expected_cases = sorted(planned_case_ids or {str(result["case"]) for result in results})
+    completed_cases = sorted({str(result["case"]) for result in results})
+    complete = completed_cases == expected_cases and len(results) == len(expected_cases) * runs
+    evaluation = evaluate_thresholds(results, policy)
+    evaluation["suite_complete"] = complete
+    evaluation["retained_evidence_eligible"] = suite_scope == "full" and complete and evaluation["passed"]
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "adapter": "claude-code",
+        "profile": profile,
+        "generated_at": generated_at,
+        "suite_scope": suite_scope,
+        "planned_case_ids": expected_cases,
+        "completed_case_ids": completed_cases,
         "claude_cli_version": cli_version,
         "requested_model": model,
         "resolved_models": sorted({name for result in results for name in result["models"]}),
         "runs_per_case": runs,
         "max_budget_usd_per_case_run": max_budget_usd,
         "timeout_seconds_per_case_run": timeout_seconds,
+        "identity": {
+            "fixture_sha256": fixture_digest,
+            "catalog_sha256": catalog_digest,
+            "policy_sha256": policy_digest,
+        },
+        "thresholds": policy,
         "passed": sum(1 for result in results if result["passed"]),
         "total": len(results),
         "total_cost_usd": round(sum(result["cost_usd"] for result in results), 8),
+        "evaluation": evaluation,
         "results": results,
     }
 
@@ -178,7 +259,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--model", default="haiku")
-    parser.add_argument("--runs", type=int, default=3)
+    parser.add_argument("--profile", choices=("pr", "release"), default="release")
+    parser.add_argument("--runs", type=int, help="Must match the preregistered profile; retained for explicit replay.")
     parser.add_argument("--case", action="append", dest="case_ids")
     parser.add_argument("--max-budget-usd", type=float, default=0.03, help="Per-case-run budget ceiling.")
     parser.add_argument("--timeout-seconds", type=int, default=120, help="Per-case-run wall-clock limit.")
@@ -193,18 +275,29 @@ def main() -> int:
     if auth_error:
         print(f"FAIL: {auth_error}", file=sys.stderr)
         return 2
-    if args.runs < 1:
-        parser.error("--runs must be at least 1")
     if args.timeout_seconds < 1:
         parser.error("--timeout-seconds must be at least 1")
 
     fixture_errors: list[str] = []
-    repository_errors, inventory = validate_repository(args.root.resolve(), run_host_cli=False)
+    policy_document = load_eval_policy(args.root.resolve(), fixture_errors)
+    repository_errors, inventory = validate_repository(
+        args.root.resolve(),
+        run_host_cli=False,
+        validate_retained_evidence=False,
+    )
     fixture_errors.extend(repository_errors)
     cases = load_routing_cases(args.root.resolve(), fixture_errors)
     if fixture_errors:
         for error in fixture_errors:
             print(f"FAIL: {error}", file=sys.stderr)
+        return 2
+    policy = policy_document["profiles"][args.profile]
+    runs = policy["runs_per_case"]
+    if args.runs is not None and args.runs != runs:
+        print(
+            f"FAIL: --runs {args.runs} does not match {args.profile!r} profile runs_per_case {runs}",
+            file=sys.stderr,
+        )
         return 2
     if args.case_ids:
         requested = set(args.case_ids)
@@ -216,12 +309,20 @@ def main() -> int:
 
     results: list[dict[str, Any]] = []
     plugin_dir = args.root.resolve() / "plugins" / "bedrock"
+    fixture_digest = _sha256_bytes((args.root.resolve() / "tests/fixtures/routing.yaml").read_bytes())
+    policy_digest = _sha256_bytes((args.root.resolve() / "validation/eval-policy.yaml").read_bytes())
+    catalog_digest = _sha256_bytes(
+        json.dumps(inventory["skills"], sort_keys=True, separators=(",", ":")).encode("utf-8")
+    )
     version_result = subprocess.run(
         [executable, "--version"], capture_output=True, text=True, check=False, timeout=10
     )
     cli_version = version_result.stdout.strip() or "unknown"
+    generated_at = datetime.now(timezone.utc).isoformat()
+    suite_scope = "targeted" if args.case_ids else "full"
+    planned_case_ids = [str(case["id"]) for case in cases]
     for case in cases:
-        for run_number in range(1, args.runs + 1):
+        for run_number in range(1, runs + 1):
             passed, selected, detail, cost_usd, models = run_case(
                 executable,
                 plugin_dir,
@@ -234,9 +335,12 @@ def main() -> int:
             record = {
                 "case": case["id"],
                 "kind": case["kind"],
+                "cue": case.get("cue", "direct"),
+                "surface": case["surface"],
                 "run": run_number,
                 "expected": case.get("expected"),
                 "selected": selected,
+                "selected_excluded": selected in case.get("excluded", []),
                 "passed": passed,
                 "detail": detail,
                 "cost_usd": cost_usd,
@@ -255,25 +359,41 @@ def main() -> int:
                     args.output,
                     build_report(
                         model=args.model,
-                        runs=args.runs,
+                        profile=args.profile,
+                        policy=policy,
+                        runs=runs,
                         max_budget_usd=args.max_budget_usd,
                         timeout_seconds=args.timeout_seconds,
                         cli_version=cli_version,
+                        fixture_digest=fixture_digest,
+                        catalog_digest=catalog_digest,
+                        policy_digest=policy_digest,
                         results=results,
+                        generated_at=generated_at,
+                        suite_scope=suite_scope,
+                        planned_case_ids=planned_case_ids,
                     ),
                 )
 
     report = build_report(
         model=args.model,
-        runs=args.runs,
+        profile=args.profile,
+        policy=policy,
+        runs=runs,
         max_budget_usd=args.max_budget_usd,
         timeout_seconds=args.timeout_seconds,
         cli_version=cli_version,
+        fixture_digest=fixture_digest,
+        catalog_digest=catalog_digest,
+        policy_digest=policy_digest,
         results=results,
+        generated_at=generated_at,
+        suite_scope=suite_scope,
+        planned_case_ids=planned_case_ids,
     )
     if args.output:
         write_report(args.output, report)
-    return 0 if report["passed"] == report["total"] else 1
+    return 0 if report["evaluation"]["passed"] else 1
 
 
 if __name__ == "__main__":

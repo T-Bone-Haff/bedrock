@@ -1,0 +1,25 @@
+schema_version: 1
+external_dependencies:
+  - variable: SOFIA_ROOT
+    purpose: Optional house reference implementation and review-runner binding used by agent-code and design-review-loop.
+    unavailable_behavior: Consumers without the declared runner use the documented emulation or direct profile and may not claim runner-backed convergence.
+    paths:
+      - plugins/bedrock/skills/agent-code/SKILL.md
+      - plugins/bedrock/skills/design-review-loop/SKILL.md
+      - plugins/bedrock/skills/design-review-loop/reference/arbiter-classifier.md
+      - plugins/bedrock/skills/design-review-loop/reference/convergence-machinery.md
+      - plugins/bedrock/skills/design-review-loop/reference/reviewer-instrument.md
+private_path_examples:
+  - path: plugins/bedrock/skills/application-code/reference/04-shell-scripts.md
+    marker: /Users/x/…
+    rationale: Prohibited-path counterexample; the surrounding rule requires repository-relative derivation.
+  - path: plugins/bedrock/skills/application-code/reference/04-shell-scripts.md
+    marker: /tmp/
+    rationale: Prohibited-path counterexample; the surrounding rule requires a lifecycle-safe temporary directory.
+snapshots:
+  - path: plugins/bedrock/skills/design-review-loop/reference/reviewer-instrument.md
+    source_marker: $SOFIA_ROOT/agent-loop/design/antagonist-{LAA,SA,EA}.prompt.md
+    currency_marker: verify against it fresh at time of use
+  - path: plugins/bedrock/skills/design-review-loop/reference/arbiter-classifier.md
+    source_marker: $SOFIA_ROOT/agent-loop/design/arbiter-classifier.prompt.md
+    currency_marker: on divergence

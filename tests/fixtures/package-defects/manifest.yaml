@@ -1,0 +1,47 @@
+schema_version: 1
+defects:
+  - id: missing-relative-link
+    test: test_rejects_missing_relative_markdown_target
+    expected_diagnostic: relative link target does not exist
+  - id: private-absolute-path
+    test: test_rejects_private_absolute_path
+    expected_diagnostic: private absolute path
+  - id: tilde-home-path
+    test: test_rejects_tilde_home_path
+    expected_diagnostic: private absolute path
+  - id: missing-markdown-anchor
+    test: test_rejects_missing_markdown_anchor
+    expected_diagnostic: markdown anchor does not exist
+  - id: cross-skill-relative-link
+    test: test_rejects_cross_skill_relative_link
+    expected_diagnostic: relative link escapes its skill package
+  - id: undeclared-external-root
+    test: test_rejects_undeclared_external_dependency
+    expected_diagnostic: undeclared external dependency
+  - id: stale-snapshot-declaration
+    test: test_rejects_stale_snapshot_declaration
+    expected_diagnostic: snapshot source marker is missing
+  - id: uninventoried-code-sample
+    test: test_rejects_uninventoried_code_fence
+    expected_diagnostic: code sample is absent from executable-samples.yaml
+  - id: fixture-backed-sample-without-command
+    test: test_rejects_fixture_backed_sample_without_command
+    expected_diagnostic: fixture-backed samples require a reproducible command
+  - id: missing-evidence
+    test: test_rejects_missing_evidence_file
+    expected_diagnostic: evidence path does not exist
+  - id: evidence-path-escape
+    test: test_rejects_evidence_path_outside_repository
+    expected_diagnostic: evidence path must be repository-relative
+  - id: invalid-evaluation-threshold
+    test: test_rejects_invalid_eval_threshold
+    expected_diagnostic: minimum_overall_pass_rate must be between 0 and 1
+  - id: invalid-retained-routing-report
+    test: test_rejects_invalid_retained_routing_report
+    expected_diagnostic: routing report schema_version must be 2
+  - id: duplicate-yaml-key-collapse
+    test: test_rejects_duplicate_yaml_key_before_value_collapse
+    expected_diagnostic: duplicate YAML key
+  - id: duplicate-json-key-collapse
+    test: test_rejects_duplicate_json_key_before_value_collapse
+    expected_diagnostic: duplicate JSON key

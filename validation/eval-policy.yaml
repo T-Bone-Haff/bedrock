@@ -1,0 +1,18 @@
+schema_version: 1
+profiles:
+  pr:
+    runs_per_case: 1
+    minimum_overall_pass_rate: 1.0
+    minimum_case_pass_rate: 1.0
+    excluded_selection_limit: 0
+  release:
+    runs_per_case: 3
+    minimum_overall_pass_rate: 0.95
+    minimum_case_pass_rate: 0.6666666666
+    excluded_selection_limit: 0
+interpretation:
+  deterministic_checks: Structural, schema, path, package, inventory, and evidence-manifest checks are reproducible gates.
+  model_checks: Routing results are nondeterministic observations under a pinned adapter, catalog digest, fixture digest, model alias, and run profile.
+  failure_policy: Any excluded selection fails the profile. Other misses are retained and interpreted against both aggregate and per-case thresholds.
+  repetition_policy: Pull requests use one blocking draw per case. Retained release evidence uses three independent draws per case and must satisfy the release profile.
+  drift_policy: A model, CLI, catalog, fixture, policy, or adapter change creates a new baseline; results across different digests are not pooled.
