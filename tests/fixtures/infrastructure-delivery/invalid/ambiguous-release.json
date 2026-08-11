@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "source": {"commit": "1111111111111111111111111111111111111111", "tree": "2222222222222222222222222222222222222222", "lock_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+  "event": {"kind": "batch", "association": "ambiguous", "trusted": true},
+  "version_intent": {"aggregate": "none", "changes": [{"id": "unknown", "intent": "none"}], "override": null},
+  "artifact": {"digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "store": "registry", "built_once": true},
+  "desired_state": {"owner": "direct-deploy", "environment": "production", "mutation_concurrency": "queue"},
+  "provenance": {"sbom": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "builder": "builder", "workflow": "workflow", "inputs": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "attestation": "bundle", "verified": true, "retention": "400d"},
+  "migration": {"strategy": "none", "owner": "release", "compatibility": "n/a", "backup_restore_gate": "n/a", "rollback_limit": "none"}, "authority": {"approved": true, "approver": "prod"},
+  "deployment": {"target": "production", "artifact_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "status": "planned"},
+  "verification": {"artifact_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "endpoint": "GET /", "dependency": "none", "readiness": "ready", "status": "pending"},
+  "rollback": {"previous_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "trigger": "failure", "authority": "release", "schema_compatible": true}
+}

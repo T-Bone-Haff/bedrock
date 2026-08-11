@@ -1,0 +1,8 @@
+{
+  "schema_version": 1, "profile": "unsafe", "tools": {"iac": "Terraform", "cloud": "GCP", "ci": "GitHub Actions", "orchestrator": null},
+  "state": {"backend": "GCS", "locking": "unknown", "sensitive": true, "mutation_concurrency": "queue"},
+  "identity": {"plan": "plan", "apply": "apply", "long_lived_keys": false},
+  "iam": {"default_ownership": "additive", "mixed_ownership": true},
+  "metadata": {"required_keys": [], "unsupported_resource_strategy": "inventory"},
+  "recovery": {"rpo": "24h", "rto": "4h", "restore_tested_at": "2026-08-01T12:00:00Z", "owner": "platform"}
+}

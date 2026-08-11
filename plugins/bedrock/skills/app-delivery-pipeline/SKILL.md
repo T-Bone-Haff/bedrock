@@ -1,36 +1,55 @@
 ---
 name: app-delivery-pipeline
-description: "Application-artifact CI/CD only; exclude every Terraform or infrastructure plan/apply job and every executor relay or handoff, even when either uses GitHub Actions or delivery gates. Use this skill to author or conform PR checks, application image build and push, service deployment, static frontend deployment, previews, release automation, and rollout verification on the house GitHub Actions and GCP stack. Infrastructure-code owns Terraform and infrastructure jobs. Author-execution-relay owns prompts, session handoffs, and gated instructions sent to Code or another executor. Do not use to author application code, tests, or a finished-diff review."
+description: "Application-artifact CI/CD only; exclude every Terraform or infrastructure plan/apply job and every executor relay or handoff, even when either uses GitHub Actions or delivery gates. Use this skill to author or conform portable application build, test, artifact, provenance, promotion, deploy, preview, migration, and rollout workflows, including the static-frontend delivery seam. The Haffey profile binds GitHub Actions and GCP. Do not use for application or frontend behavior, infrastructure mutation, existing failures, or finished-diff review."
 ---
 
 # App Delivery Pipeline
 
-How an application build reaches an environment: the pipeline that runs the authoring skills' gates, builds the deployable artifact, and lands it — safely, keylessly, and with every gate a required check. This is the skill `application-code`, `frontend-code`, and `infrastructure-code` each point at from their own boundary.
+Deliver an application artifact through declared gates and authorities. The portable contract is authoritative; GitHub Actions, GCP, and any branch model are profile choices.
 
-**Binding:** GitHub Actions as the pipeline substrate; GCP as the deployment target; the house branch model (`feature/*` → `develop` → `main`, PR-gated). The two legs bind to their authoring skills — the service leg to `application-code`'s stack and image, the frontend leg to `frontend-code`'s stack and bundle. A different CI host, a different cloud, a different branch model, or a stack leg with no house authoring skill is a **rebind**: re-derive the conventions, don't line-edit these. Within-binding movement — action versions, runner images, a new GCP deploy target — is currency, not rebind.
+## Interaction contract
 
-**Leg selection is by what the repo is,** not by what was asked: a Python service takes the service leg; a Vite SPA takes the frontend leg; both take the spine. A repo hosting both surfaces runs both legs as separate path-filtered workflows.
+- **Inputs:** application source identity; selected delivery profile; authoring-skill gate contract; release intent; environment authority; migration and rollback constraints.
+- **Output:** one built artifact promoted by digest, with release, provenance, deployment, verification, and rollback evidence.
+- **Authority:** PR verification cannot deploy to a protected environment. Promotion requires the profile's trusted event, environment approval, and desired-state authority.
+- **Capabilities:** declare CI, artifact store, signing/attestation, deploy target, preview isolation, browser/synthetic verification, source-map handling, and rollback mechanisms. Never claim unavailable attestation or convergence.
+- **Failure:** fail closed on ambiguous release intent, mutable artifact identity, missing provenance, untrusted credentials, conflicting desired-state writers, unsafe migration ordering, or incomplete post-deploy verification.
+- **Evidence:** retain gates, artifact digest, SBOM, builder/workflow/source identity, inputs, attestation/signature verification, release decision, approvals, deployment, migrations, post-deploy checks, and rollback at the declared retention.
+- **Lifecycle:** record profile/version, supported release-event model, environment and branch/topology binding, adoption state, expiry/review trigger, and rebind/deprecation path.
 
-## Where things are
+## Portable core
 
-| Doing this | Load |
+1. Resolve the operation first. Application build/test/artifact/promotion/deploy belongs here; Terraform and infrastructure plan/apply belong to `infrastructure-code` regardless of workflow host.
+2. Declare a profile conforming to `reference/delivery-profile.schema.json`. Main-only, trunk, release-branch, merge-queue, and batched systems are profiles, not exceptions to one mandatory branch model.
+3. Separate verification concurrency from mutation concurrency. Supersede stale PR verification when safe; serialize or queue environment mutation and never cancel an in-flight deployment merely because a newer revision arrived.
+4. Build once from a trusted source identity. Promote the same content-addressed artifact through environments; labels and tags are pointers, not immutability proof.
+5. Model release events explicitly, including merge commit, squash, queue/batch, revert, direct push, and ambiguous association. Aggregate all change intents; `semver:none` is explicit, auditable, and incompatible conflicts fail closed unless an authorized override is retained.
+6. Emit an application release manifest conforming to `reference/application-release-manifest.schema.json`. Bind source, event, intent, artifact digest, desired-state owner, provenance, migrations, approvals, deployment, verification, and rollback.
+7. Establish a provenance floor: SBOM plus builder, workflow, source, inputs, retention, and verification evidence. State private-repository or platform limits; never substitute a claim for a generated and verified record.
+8. Separate migration ownership and ordering. Prefer expand/contract; state compatibility window, backup/restore gate, execution owner, idempotency/retry behavior, and rollback limits.
+9. Verify behavior after platform rollout: endpoint or synthetic check, dependency/readiness signal, and an explicit rollback decision. Rollout success alone is not application health.
+
+## Haffey profile
+
+The house binding uses SHA-pinned GitHub Actions, least-privilege permissions, GCP Workload Identity Federation, Artifact Registry, protected GitHub Environments, and GCP deployment targets. Select the applicable reference:
+
+| Surface | Reference |
 |---|---|
-| Any pipeline work — workflow anatomy, permissions, concurrency; SHA-pinning and keyless auth posture; the semver-label and branch-name org gates; required status checks; release automation; deploy environments | `reference/01-pipeline-spine.md` |
-| Service pipeline — gate sequence, image build and scan, the **semver+SHA tagging discipline** (homed there), Artifact Registry push, declarative deploy, rollout verification, the Cloud Build scale-out path | `reference/02-python-service-leg.md` |
-| Frontend pipeline — the gate quartet's pipeline home, Vite build, Firebase Hosting keyless posture, preview channels, cache headers, the **CSP header** (homed there), channel mapping | `reference/03-static-frontend-leg.md` |
+| Workflow spine, event/release model, concurrency, identity, provenance | `reference/01-pipeline-spine.md` |
+| Service image, registry, desired state, migrations, rollout | `reference/02-python-service-leg.md` |
+| Static frontend artifact, preview trust, hosting, headers, caching | `reference/03-static-frontend-leg.md` |
 
-Load the spine plus the repo's leg; a conformance check reads all three.
+A different CI host, registry, cloud, deploy target, or topology is a declared profile rebind, not a silent line substitution.
 
-## Boundaries with sibling skills
+## Boundaries
 
-- **The infrastructure delivery pipeline** (`terraform plan/apply`, its gates and scanners) → `infrastructure-code`, whose delivery-pipeline reference §5 draws the bright line: separate workflows, disjoint jobs, path-filtered triggers. Two disciplines are homed there and pointed at from here: SHA-pinning of actions and WIF keyless auth (its §4).
-- **What the gates check** → the authoring skills. `application-code` owns the toolchain and coverage gate the service leg runs; `testing` owns the tests; `frontend-code` owns the gate quartet the frontend leg runs. This skill homes *where gates run and what happens after they pass* — a gate list restated here would be the drift surface the corpus prohibits.
-- **The container image** → `application-code` builds it (Dockerfile, multi-stage, non-root); this skill's service leg builds *in the pipeline*, tags, pushes, and deploys it. The registry it lands in and the cluster it runs on → `infrastructure-code`.
-- **The CSP-readiness of the app** → `frontend-code`; the header itself lands in this skill's frontend leg — the seam declared there, closed here.
-- **Reviewing a finished workflow diff** → `code-review`. **Debugging a red pipeline** → `debug`. **Authoring or amending this standard** → `author-standard`.
+- Terraform and every infrastructure plan/apply job, including protected GitHub Actions jobs → `infrastructure-code`.
+- Application behavior and container definition → `application-code`; this skill runs its declared gates and builds the artifact.
+- Frontend behavior, accessibility, browser gate semantics, and CSP compatibility → `frontend-code`; this skill runs the declared gates and delivers the resulting static artifact.
+- Existing red or flaky pipeline → `debug`.
+- Finished workflow review → `code-review`.
+- Executor prompt/handoff → `author-execution-relay`.
 
-## Authority
+## Minimum completion report
 
-Public authority, pinned at authoring (2026-07-21), verify currency at adoption: GitHub Actions documentation and hardening guidance (workflow syntax, `permissions:`, OIDC, Environments, artifact attestations and their private-repo constraint); the google-github-actions canonical workflows (auth via WIF, Artifact Registry push, `deploy-cloudrun`); Firebase Hosting documentation (channels, `firebase.json` headers and rewrites) — *minus its key-based GitHub integration, rejected on the keyless posture*; Vite build documentation (hashed assets and caching). House substrate: `infrastructure-code`'s delivery-pipeline reference; the boundary and seam declarations in `application-code` and `frontend-code`; SDD-001 §7.2's required-checks constraint as the design-record exemplar.
-
-**Sourcing note:** pre-existing house workflows — HEX's initial `ci.yml`, the SOFIA-legacy pipeline set — are **consumers and reference points, not sources**; they enter only through the proving step, where divergence resolves neuter/promote/demote, surfaced per item.
+Report profile/rebinds, source and release-event identity, aggregated version decision, gate results, artifact digest, SBOM/provenance verification, desired-state owner, approvals, migration outcome, deployment and behavioral checks, rollback status, residual risk, and CI-only gates.

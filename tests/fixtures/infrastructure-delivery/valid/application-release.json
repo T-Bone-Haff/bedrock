@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source": {"commit": "1111111111111111111111111111111111111111", "tree": "2222222222222222222222222222222222222222", "lock_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+  "event": {"kind": "queue", "association": "batch:42 changes:HEB-113,HEB-120", "trusted": true},
+  "version_intent": {"aggregate": "major", "changes": [{"id": "HEB-113", "intent": "major"}, {"id": "HEB-120", "intent": "none"}], "override": null},
+  "artifact": {"digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "store": "us-docker.pkg.dev/example/app", "built_once": true},
+  "desired_state": {"owner": "gitops", "environment": "production", "mutation_concurrency": "queue"},
+  "provenance": {"sbom": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "builder": "github-actions", "workflow": ".github/workflows/release.yml@1111111", "inputs": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "attestation": "bundle:release-42", "verified": true, "retention": "400d"},
+  "migration": {"strategy": "expand-contract", "owner": "release-job", "compatibility": "N and N-1", "backup_restore_gate": "restore test passed", "rollback_limit": "before contract phase"},
+  "authority": {"approved": true, "approver": "production-environment"},
+  "deployment": {"target": "gitops:production/app", "artifact_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "status": "succeeded"},
+  "verification": {"artifact_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "endpoint": "GET /health", "dependency": "database query", "readiness": "ready replicas", "status": "passed"},
+  "rollback": {"previous_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "trigger": "synthetic failure", "authority": "release-manager", "schema_compatible": true}
+}

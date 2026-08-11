@@ -4,14 +4,14 @@
   "description_limit": 1024,
   "routing_schema_version": 2,
   "sample_classifications": {
-    "illustrative": 14,
-    "fixture-backed": 2
+    "illustrative": 5,
+    "fixture-backed": 3
   },
   "skills": [
     {
       "path": "plugins/bedrock/skills/agent-code/SKILL.md",
-      "description": "LLM-call implementation only; planned structured-output parsing, salvage, and recovery route here, never to debug or author-execution-relay. Use this skill to author or conform code whose central behavior is an LLM call on the house Python stack: shipped prompts, schemas, parse/salvage recovery, model transport, tool loops, cost controls, observability, agent security, and MCP servers. Debug owns diagnosis of an observed failure; author-execution-relay owns prompts handed to a coding executor. Do not use for ordinary service code (application-code), tests (testing), finished-diff review (code-review), or multi-agent topology decisions.",
-      "description_length": 643,
+      "description": "LLM-call implementation only, including structured-output parsing, bounded salvage and recovery, model transport, tool loops, budgets, and evidence. Use this skill when an LLM call is the code's central act. Do not use for observed-failure diagnosis (debug), ordinary service code (application-code), executor handoffs (author-execution-relay), or design-record review (design-review-loop).",
+      "description_length": 390,
       "positive_cases": [
         "agent-code-positive",
         "application-code-negative"
@@ -27,14 +27,18 @@
     },
     {
       "path": "plugins/bedrock/skills/app-delivery-pipeline/SKILL.md",
-      "description": "Application-artifact CI/CD only; exclude every Terraform or infrastructure plan/apply job and every executor relay or handoff, even when either uses GitHub Actions or delivery gates. Use this skill to author or conform PR checks, application image build and push, service deployment, static frontend deployment, previews, release automation, and rollout verification on the house GitHub Actions and GCP stack. Infrastructure-code owns Terraform and infrastructure jobs. Author-execution-relay owns prompts, session handoffs, and gated instructions sent to Code or another executor. Do not use to author application code, tests, or a finished-diff review.",
-      "description_length": 654,
+      "description": "Application-artifact CI/CD only; exclude every Terraform or infrastructure plan/apply job and every executor relay or handoff, even when either uses GitHub Actions or delivery gates. Use this skill to author or conform portable application build, test, artifact, provenance, promotion, deploy, preview, migration, and rollout workflows, including the static-frontend delivery seam. The Haffey profile binds GitHub Actions and GCP. Do not use for application or frontend behavior, infrastructure mutation, existing failures, or finished-diff review.",
+      "description_length": 548,
       "positive_cases": [
         "app-delivery-pipeline-positive",
+        "app-delivery-pipeline-main-only-profile",
+        "app-delivery-pipeline-static-seam",
         "infrastructure-code-negative"
       ],
       "negative_cases": [
-        "app-delivery-pipeline-negative"
+        "app-delivery-pipeline-negative",
+        "infrastructure-code-portable-profile",
+        "infrastructure-code-actions-ownership"
       ],
       "overlap_cases": [
         "overlap-debug-deployment"
@@ -43,11 +47,12 @@
     },
     {
       "path": "plugins/bedrock/skills/application-code/SKILL.md",
-      "description": "Author or conform Python service and application code on the house FastAPI and async-SQLAlchemy stack, including APIs, configuration, logging, errors, resilience, security, service structure, integrations, and operational shell scripts. Use when implementing, scaffolding, or restructuring backend application behavior. Do not use when an LLM call is the central behavior (agent-code), when writing tests (testing), for infrastructure or deployment workflows, or for reviewing a finished diff (code-review). A materially different application stack is a rebind.",
-      "description_length": 561,
+      "description": "Author or conform conventional backend service and application behavior, including API boundaries, concurrency, configuration, logging, errors, resilience, security, data handling, containers, and operational shell code. Use for planned implementation or restructuring. Do not use when an LLM call is central (agent-code), for new tests (testing), observed failures or flakes (debug), finished-diff review, infrastructure, or delivery workflows.",
+      "description_length": 445,
       "positive_cases": [
         "agent-code-negative",
         "application-code-positive",
+        "application-code-portable-profile",
         "author-execution-relay-negative",
         "debug-negative",
         "frontend-code-negative",
@@ -56,7 +61,9 @@
       "negative_cases": [
         "application-code-negative"
       ],
-      "overlap_cases": [],
+      "overlap_cases": [
+        "testing-regression-after-diagnosis"
+      ],
       "name": "application-code"
     },
     {
@@ -145,17 +152,21 @@
     },
     {
       "path": "plugins/bedrock/skills/debug/SKILL.md",
-      "description": "Observed-failure diagnosis only; every existing failing or flaky test routes to debug, never testing, including a test that passes locally but fails intermittently in CI. Use this skill to reproduce errors, stack traces, regressions, and environment-specific failures; form and falsify competing hypotheses; repair root cause; and verify the fix. Do not use for planned recovery or error-handling behavior (use its authoring skill), writing new tests without an observed failure (testing), planned feature implementation, finished-diff review, or incident coordination beyond technical diagnosis.",
-      "description_length": 596,
+      "description": "Diagnose an observed error, regression, failure, or flake, including CI-only and environment-specific failures. Use to contain active harm, preserve evidence, reproduce when safe, isolate variables, form and falsify hypotheses, identify cause or report insufficient evidence, and verify an authorized repair. Do not use for planned implementation, new tests without an observed failure, generic error-handling guidance, finished-diff review, or incident command.",
+      "description_length": 462,
       "positive_cases": [
         "debug-positive",
+        "debug-nonreproducible-production",
+        "debug-active-harm",
         "testing-negative",
         "overlap-debug-deployment",
         "implicit-debug-regression",
         "adversarial-debug-misroute"
       ],
       "negative_cases": [
-        "debug-negative"
+        "debug-negative",
+        "testing-risk-strategy",
+        "testing-regression-after-diagnosis"
       ],
       "overlap_cases": [
         "overlap-debug-deployment"
@@ -164,11 +175,12 @@
     },
     {
       "path": "plugins/bedrock/skills/design-review-loop/SKILL.md",
-      "description": "Review an ADR, DDR, or SDD set through stance-isolated findings, cross-record coherence checks, arbitration, and a mechanical convergence gate. Use for review these design records, run the design-review loop, verify an amendment batch, or decide whether a record set is converged. Do not use to author the records (author-decision-record), review a finished code diff (code-review), or conduct a general architecture brainstorm. The current runner and doctype family are bound assumptions; alternatives require rebinding.",
-      "description_length": 521,
+      "description": "Design-record review through stance-isolated findings, cross-record coherence, arbitration, escalation, and profile-honest completion claims. Use this skill to review ADR, DDR, or SDD sets or assess whether an applicable declared review profile completed. Do not use to author records (author-decision-record), review code (code-review), or validate this skill's own correction.",
+      "description_length": 378,
       "positive_cases": [
         "code-review-negative",
-        "design-review-loop-positive"
+        "design-review-loop-positive",
+        "design-review-loop-direct-profile"
       ],
       "negative_cases": [
         "design-review-loop-negative",
@@ -185,6 +197,7 @@
         "frontend-code-positive"
       ],
       "negative_cases": [
+        "app-delivery-pipeline-static-seam",
         "frontend-code-negative"
       ],
       "overlap_cases": [],
@@ -192,13 +205,16 @@
     },
     {
       "path": "plugins/bedrock/skills/infrastructure-code/SKILL.md",
-      "description": "Own every Terraform or infrastructure plan/apply workflow, including protected jobs implemented in GitHub Actions; these are infrastructure-code, never app-delivery-pipeline. Use this skill to author or conform infrastructure-as-code and its delivery pipeline on the house Terraform, GCP, Kubernetes, and GitHub Actions stack: modules, resources, remote state, environments, workload manifests, IAM, and plan/apply gates. Do not use for application code, application image or frontend deployment pipelines, executor handoff prompts, or finished-diff review. A different cloud, IaC tool, CI host, or orchestrator is a rebind.",
-      "description_length": 624,
+      "description": "Own every Terraform or infrastructure plan/apply workflow, including protected jobs implemented in GitHub Actions; these are infrastructure-code, never app-delivery-pipeline. Use this skill to author or conform portable infrastructure-as-code, remote state, identity, workload manifests, recovery controls, and the protected plan/apply pipeline. A different IaC engine or cloud still routes here as a declared profile rebind. The Haffey profile binds Terraform, GCP, Kubernetes, and GitHub Actions. Do not use for application artifact delivery, application or frontend behavior, existing failures, executor handoffs, or finished-diff review.",
+      "description_length": 641,
       "positive_cases": [
         "app-delivery-pipeline-negative",
-        "infrastructure-code-positive"
+        "infrastructure-code-positive",
+        "infrastructure-code-portable-profile",
+        "infrastructure-code-actions-ownership"
       ],
       "negative_cases": [
+        "app-delivery-pipeline-main-only-profile",
         "infrastructure-code-negative"
       ],
       "overlap_cases": [
@@ -208,18 +224,22 @@
     },
     {
       "path": "plugins/bedrock/skills/testing/SKILL.md",
-      "description": "New-test authoring and test strategy only; every existing failing or flaky test routes to debug, never testing, including a CI-only flake. Use this skill when the deliverable is new or changed tests, a test strategy, or coverage for planned Python service behavior under the house pytest discipline: TDD sequencing, unit, integration, contract, and end-to-end tests, fixtures, mocking, isolation, coverage, and nondeterminism controls. Do not use to diagnose an observed test failure, implement production code, or review a finished diff. A different test stack is a rebind.",
-      "description_length": 574,
+      "description": "Author new tests, test strategy, fixtures, and planned coverage. Use for test-first specification of new or changed behavior, risk-based test selection, isolation, contract testing, coverage design, and deterministic or nondeterministic evaluation. Do not use to diagnose any observed failing or flaky test, including CI-only flakes (debug), to implement production behavior, or to review a finished diff. Select a stack profile; a materially different unprofiled test stack is a rebind.",
+      "description_length": 487,
       "positive_cases": [
         "testing-positive",
+        "testing-risk-strategy",
+        "testing-regression-after-diagnosis",
         "overlap-test-agent-output"
       ],
       "negative_cases": [
+        "debug-nonreproducible-production",
         "testing-negative",
         "implicit-debug-regression",
         "adversarial-debug-misroute"
       ],
       "overlap_cases": [
+        "testing-regression-after-diagnosis",
         "overlap-test-agent-output"
       ],
       "name": "testing"

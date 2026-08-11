@@ -1,52 +1,58 @@
 ---
 name: infrastructure-code
-description: "Own every Terraform or infrastructure plan/apply workflow, including protected jobs implemented in GitHub Actions; these are infrastructure-code, never app-delivery-pipeline. Use this skill to author or conform infrastructure-as-code and its delivery pipeline on the house Terraform, GCP, Kubernetes, and GitHub Actions stack: modules, resources, remote state, environments, workload manifests, IAM, and plan/apply gates. Do not use for application code, application image or frontend deployment pipelines, executor handoff prompts, or finished-diff review. A different cloud, IaC tool, CI host, or orchestrator is a rebind."
+description: "Own every Terraform or infrastructure plan/apply workflow, including protected jobs implemented in GitHub Actions; these are infrastructure-code, never app-delivery-pipeline. Use this skill to author or conform portable infrastructure-as-code, remote state, identity, workload manifests, recovery controls, and the protected plan/apply pipeline. A different IaC engine or cloud still routes here as a declared profile rebind. The Haffey profile binds Terraform, GCP, Kubernetes, and GitHub Actions. Do not use for application artifact delivery, application or frontend behavior, existing failures, executor handoffs, or finished-diff review."
 ---
 
 # Infrastructure Code
 
-The engineering conventions for authoring infrastructure-as-code and the pipeline that delivers it. This SKILL.md carries the invariants that apply to *every* piece of infrastructure plus a map into the detailed references; load a reference file for the area you're working in.
+Author infrastructure and its mutation pipeline from an explicit profile. The portable contract is the authority; the Haffey profile is one binding, not a universal prescription.
 
-## Stack binding (read once)
+## Interaction contract
 
-These conventions are written against a specific stack: **Terraform (`hashicorp/google` provider, `~> 6.0`), GCP, GKE + Cloud Run, GitHub Actions driving Cloud Build.** They're portable across projects *on that stack*.
+- **Inputs:** approved infrastructure intent; repository and environment context; selected infrastructure profile; current state lineage; identity, recovery, and risk constraints.
+- **Output:** reviewable infrastructure source plus a plan/apply record whose artifact, authority, state, and evidence are bound end to end.
+- **Authority:** change only infrastructure surfaces the operator placed in scope. A plan approval authorizes only the exact unexpired plan and apply identity that were reviewed.
+- **Capabilities:** declare the available IaC engine, cloud, state backend, CI identity, policy/scanning, orchestrator, artifact store, and recovery tooling. Never imply an unavailable capability.
+- **Failure:** fail closed on ambiguous ownership, stale or mismatched plans, missing authority, state drift, unverified identity, destructive recovery uncertainty, or absent required evidence.
+- **Evidence:** retain source/config/lock identity, plan digest and custody, state lineage/serial, apply identity, policy results, actor/approval, workload digest, and recovery proof at the profile-defined retention.
+- **Lifecycle:** record profile/version, adoption state, expiry or review trigger, migration/rebind notes, and deprecation path.
 
-Infrastructure binds on **more axes than application code**, so a rebind is broader here. A different choice on any of these axes — another IaC tool (Pulumi, OpenTofu, CDK), another cloud (AWS, Azure), another orchestrator (a non-GKE Kubernetes, ECS, Nomad), or another CI host/runner (GitLab CI, Cloud Build standalone) — is a **rebind**, not a small substitution: it means re-deriving the equivalent conventions for that axis, not editing individual lines here. Name the rebind explicitly when you do it. The *disciplines* (pin everything, plan before apply, remote locked state, no secrets in state, least-privilege keyless auth) are stack-independent and survive a rebind; the *resource syntax* does not.
+## Portable core
 
-## The misfit rule
+1. Resolve the operation first. Terraform or infrastructure plan/apply work belongs here even when implemented as a GitHub Actions job.
+2. Declare a profile conforming to `reference/infrastructure-profile.schema.json`; do not infer cloud, tool, branch, or topology from the repository name.
+3. Constrain tool and provider compatibility in source; use the dependency lock as the selected, reviewed resolution. Registry modules use immutable reviewed versions.
+4. Keep state remote where the profile supports it, protect it as sensitive, and record locking behavior honestly. Treat every value Terraform reads as potentially state-resident; a sensitivity flag redacts output but does not keep payloads out of state.
+5. Separate identity from authorization. Prefer short-lived workload identity and least privilege; record whether shared IAM is additive, authoritative, or externally owned before changing it.
+6. Plan before mutation. Protect the plan as a sensitive expiring artifact and bind apply through `reference/infrastructure-apply-manifest.schema.json` to source, configuration, lock, workspace, state lineage/serial, plan digest, actor, approval, and expected artifact digests.
+7. Serialize mutations per state target. Verification may supersede older runs; plan/apply mutation must queue or fail closed, never cancel an in-flight apply to make a newer run win.
+8. Select workload controller, storage, probes, rollout, backup, and recovery from behavior and objectives. Durable storage alone neither requires a StatefulSet nor establishes high availability.
+9. Define RPO/RTO, backup custody, restore validation, rollback limits, and escalation before destructive or stateful change.
+10. Label, tag, and annotate only where the target supports them. Record compensating inventory when it does not.
 
-These are strong defaults, not scripture. Where a convention genuinely doesn't fit the work in front of you, state the exception and why in the code or commit, then proceed — don't silently violate it, and don't contort the work to satisfy a rule that doesn't earn its place here. A recurring misfit is a signal the convention should change, not a thing to keep working around. (House-wide rule, carried verbatim across its carrier skills.)
+## Haffey profile
 
-## Always-apply invariants
+The current house binding is Terraform with reviewed `hashicorp/google` constraints and lock selections, GCP, GCS state, GKE or Cloud Run where justified, and GitHub Actions with GCP Workload Identity Federation. Load the relevant reference:
 
-These hold for every module, manifest, and pipeline you write. If you remember nothing else from the references, hold these:
-
-1. **Format and validate before commit.** `terraform fmt -recursive` and `terraform validate` pass before code reaches version control — wired as a pre-commit hook and re-checked in CI.
-2. **Pin everything.** `required_version` for the Terraform binary, a pinned `version` for every provider, an exact `version` for every registry module. Unpinned dependencies are how infrastructure drifts silently between runs.
-3. **State is remote, locked, and sensitive.** State lives in a GCS backend with locking, never on local disk, and is never committed. Treat the whole state file as a secret; restrict the bucket to the pipeline service account and admins.
-4. **Plan before apply — always.** Generate a plan, review it (or have it reviewed), then apply that saved plan. Never `apply` straight from source, not even locally. The plan is the artifact a human approves; apply executes the approved plan.
-5. **Keep secret payloads out of Terraform whenever possible.** Treat every value Terraform reads as potentially state-resident: `sensitive = true` redacts display but does not prevent storage. Pass secret identifiers to workloads and let their runtime identity retrieve payloads directly. When a provider or resource must receive a payload, document the exception and protect the entire remote state as secret material (`reference/03-state-and-environments.md` §4).
-6. **Environment-specific values carry no defaults.** `project_id`, `region`, and anything that differs per environment have no default, forcing the caller to supply them. Environment-independent values (disk size, retention) get sensible defaults.
-7. **Least-privilege, keyless identity.** Provision narrowly-scoped service accounts; CI authenticates via Workload Identity Federation. Never create, download, or commit a service-account key.
-8. **Additive IAM on shared resources.** Use `google_*_iam_member` (additive), not `google_*_iam_policy` (authoritative) — the authoritative form silently strips Google-managed role bindings.
-9. **Every resource is labeled and headed.** Resources carry `managed_by = "terraform"` and an `environment` label; every `.tf` file and manifest carries the comment-block header (`reference/01-module-structure-and-style.md` §2); every module carries a `README.md`.
-10. **Stateful means StatefulSet.** A workload that needs durable per-replica storage (a database) uses a StatefulSet with persistent volumes, never a Deployment — and provisioning that cluster is this skill's job, not application-code's.
-
-## Where to look
-
-Load the reference for the area you're working in — each is self-contained and cross-links the others where needed.
-
-| You're working on… | Read |
+| Surface | Reference |
 |---|---|
-| Module file layout; naming; HCL formatting; variables/outputs/locals ordering; `count`/`for_each`; the comment-block header; helper scripts; repo structure | `reference/01-module-structure-and-style.md` |
-| Provider config + version pinning; resource naming and labels; environment-conditional hardening; IAM and service accounts; API enablement; the GCP service set (GKE, Cloud Run, Cloud SQL, Firestore, Pub/Sub, Secret Manager, Memorystore, Artifact Registry, networking) | `reference/02-gcp-conventions.md` |
-| Remote state in GCS; locking; state access and hygiene; environment-per-directory layout; `.tfvars`; keeping secrets out of state | `reference/03-state-and-environments.md` |
-| Kubernetes manifests; Deployment vs StatefulSet; persistent volumes; running a stateful database (Neo4j-class) on GKE; headless services; probes; GitOps/manifest discipline | `reference/04-kubernetes-and-stateful-workloads.md` |
-| The infra delivery pipeline — fmt/validate/lint/scan/plan/apply gating, policy checks, drift detection, Workload Identity Federation, keeping the infra pipeline separate from the app pipeline | `reference/05-delivery-pipeline.md` |
+| Terraform shape, dependency resolution, metadata capability | `reference/01-module-structure-and-style.md` |
+| GCP naming, services, identity, IAM ownership, cost controls | `reference/02-gcp-conventions.md` |
+| State, environments, bootstrap, recovery | `reference/03-state-and-environments.md` |
+| Kubernetes/workload controller, storage, probes, delivery seam | `reference/04-kubernetes-and-stateful-workloads.md` |
+| Protected plan/apply, plan custody, apply binding, drift | `reference/05-delivery-pipeline.md` |
 
-## Boundaries with sibling skills
+Changing IaC engine, cloud, state semantics, orchestrator, or CI identity is a documented rebind. Re-derive only the affected profile axes while preserving the portable contract.
 
-- **Writing application/service code** → the `application-code` skill. That skill owns the service's `Dockerfile`, `pyproject` toolchain, and code layout; this skill owns the cluster, networking, IAM, and state the service runs on. The seam is at the image: application-code *builds* the container, infrastructure-code *runs* it.
-- **The application build/test/deploy pipeline** (lint → type → test → image build → service deploy) is a **separate surface** from the infra delivery pipeline (`terraform plan/apply`). This skill covers the latter only; the former is the `app-delivery-pipeline` skill's. Keep app-pipeline YAML and infra-pipeline YAML in separate workflows even when they share a directory (`reference/05-delivery-pipeline.md` §5).
-- **Reviewing a finished diff** → the `code-review` skill. This skill is about *authoring* conformant infrastructure; deciding whether an existing change conforms is a review task.
-- **Tool and topology decisions** (which GitOps tool, cluster topology/HA, whether a workload justifies GKE over Cloud Run, adopting CMEK) are **ADR-homed**, not settled here — see `author-decision-record`. This skill carries the conventions; the enterprise-bound choices are recorded as decisions.
+## Boundaries
+
+- Application image, service, and static-site build/test/deploy/promotion → `app-delivery-pipeline`.
+- Frontend behavior and frontend gate semantics → `frontend-code`; this skill may provision its hosting infrastructure only.
+- Existing failing or flaky pipeline → `debug`.
+- Finished change review → `code-review`.
+- Executor instructions or handoffs → `author-execution-relay`.
+- Enterprise topology choices belong in a decision record; this skill implements the ratified choice.
+
+## Minimum completion report
+
+Report profile and rebinds, exact state target, source/config/lock and plan identities, authority and actor, policy/scanner results, mutation outcome, workload digest, recovery evidence, residual risk, and any CI-only gate.

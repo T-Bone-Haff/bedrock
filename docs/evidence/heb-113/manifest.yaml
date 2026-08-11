@@ -1,0 +1,39 @@
+schema_version: 1
+ticket: HEB-113
+baseline_commit: 1e35b91f4ec073744bdbdb0cf79d8bfa0563b41f
+branch: feature/heb-113-wp5b-correct-infrastructure-code-and-app-delivery-pipeline
+profile: direct-evidence-cited-audit
+convergence_claim: false
+authority:
+  - docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md
+  - docs/architecture/skill-architecture.md
+  - docs/architecture/coverage-map.md
+  - docs/architecture/migration-compatibility.md
+contracts:
+  - plugins/bedrock/skills/infrastructure-code/SKILL.md
+  - plugins/bedrock/skills/infrastructure-code/reference/infrastructure-profile.schema.json
+  - plugins/bedrock/skills/infrastructure-code/reference/infrastructure-apply-manifest.schema.json
+  - plugins/bedrock/skills/app-delivery-pipeline/SKILL.md
+  - plugins/bedrock/skills/app-delivery-pipeline/reference/delivery-profile.schema.json
+  - plugins/bedrock/skills/app-delivery-pipeline/reference/application-release-manifest.schema.json
+validators:
+  - scripts/validate_infrastructure_delivery_contracts.py
+  - scripts/validate_plugin.py
+  - scripts/validate_safety.py
+fixtures:
+  - tests/fixtures/infrastructure-delivery/behavior.yaml
+  - tests/fixtures/infrastructure-delivery/valid/infrastructure-profile.json
+  - tests/fixtures/infrastructure-delivery/valid/infrastructure-apply.json
+  - tests/fixtures/infrastructure-delivery/valid/delivery-profile.json
+  - tests/fixtures/infrastructure-delivery/valid/application-release.json
+  - tests/fixtures/infrastructure-delivery/valid/safe-workload.yaml
+  - tests/fixtures/infrastructure-delivery/invalid/stale-apply.json
+  - tests/fixtures/infrastructure-delivery/invalid/mixed-iam-ownership.json
+  - tests/fixtures/infrastructure-delivery/invalid/ambiguous-release.json
+  - tests/fixtures/infrastructure-delivery/invalid/unsafe-release.json
+  - tests/fixtures/infrastructure-delivery/invalid/mutable-workload.yaml
+limitations:
+  - Direct evidence-cited review only; no runner-backed or mechanical-convergence claim.
+  - Local Docker evidence is unavailable unless a Docker daemon is present; required CI must run it without skipping.
+  - Protected GitHub Environment, WIF, cloud plan/apply, registry provenance, deployment, and hosted static-header behavior require consumer/CI integration; repository fixtures validate their portable contracts.
+  - HEB-114 exclusively owns frontend behavior and frontend-specific validator, fixture, and evidence surfaces.

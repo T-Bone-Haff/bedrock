@@ -1,0 +1,40 @@
+schema_version: 1
+schemas:
+  infrastructure_profile: plugins/bedrock/skills/infrastructure-code/reference/infrastructure-profile.schema.json
+  infrastructure_apply: plugins/bedrock/skills/infrastructure-code/reference/infrastructure-apply-manifest.schema.json
+  delivery_profile: plugins/bedrock/skills/app-delivery-pipeline/reference/delivery-profile.schema.json
+  application_release: plugins/bedrock/skills/app-delivery-pipeline/reference/application-release-manifest.schema.json
+fixtures:
+  valid:
+    - {schema: infrastructure_profile, path: tests/fixtures/infrastructure-delivery/valid/infrastructure-profile.json}
+    - {schema: infrastructure_apply, path: tests/fixtures/infrastructure-delivery/valid/infrastructure-apply.json}
+    - {schema: delivery_profile, path: tests/fixtures/infrastructure-delivery/valid/delivery-profile.json}
+    - {schema: application_release, path: tests/fixtures/infrastructure-delivery/valid/application-release.json}
+  invalid:
+    - {schema: infrastructure_apply, path: tests/fixtures/infrastructure-delivery/invalid/stale-apply.json, expected: stale or mismatched plan}
+    - {schema: infrastructure_profile, path: tests/fixtures/infrastructure-delivery/invalid/mixed-iam-ownership.json, expected: schema}
+    - {schema: application_release, path: tests/fixtures/infrastructure-delivery/invalid/ambiguous-release.json, expected: ambiguous release association}
+    - {schema: application_release, path: tests/fixtures/infrastructure-delivery/invalid/unsafe-release.json, expected: schema}
+behavior: tests/fixtures/infrastructure-delivery/behavior.yaml
+workload_fixtures:
+  valid: tests/fixtures/infrastructure-delivery/valid/safe-workload.yaml
+  invalid: tests/fixtures/infrastructure-delivery/invalid/mutable-workload.yaml
+required_contract_markers:
+  plugins/bedrock/skills/infrastructure-code/SKILL.md:
+    - "Plan before mutation."
+    - "Serialize mutations per state target."
+    - "Durable storage alone neither requires a StatefulSet nor establishes high availability."
+  plugins/bedrock/skills/app-delivery-pipeline/SKILL.md:
+    - "Build once from a trusted source identity."
+    - "`semver:none` is explicit, auditable"
+    - "Rollout success alone is not application health."
+forbidden_markers:
+  - "Pin everything."
+  - "Additive, never authoritative"
+  - "Additive IAM on shared resources"
+  - "Stateful means StatefulSet"
+  - "Regional persistent disks for HA"
+  - "Tags are immutable in practice"
+  - "Exactly one semver"
+  - "just-merged PR"
+  - "cancel-in-progress: true"

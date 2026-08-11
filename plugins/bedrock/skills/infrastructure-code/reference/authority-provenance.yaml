@@ -1,0 +1,14 @@
+schema_version: 1
+contract: infrastructure-code
+portable_authority:
+  - explicit profile and capability declaration
+  - plan identity, custody, expiry, and apply binding
+  - state identity, mutation serialization, recovery, and evidence
+haffey_profile:
+  iac: Terraform
+  cloud: GCP
+  state: GCS
+  orchestrators: [GKE, Cloud Run]
+  ci: GitHub Actions
+  identity: GCP Workload Identity Federation
+adoption_currency_required: true
