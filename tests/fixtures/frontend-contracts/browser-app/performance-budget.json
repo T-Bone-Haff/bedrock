@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "scenario": "fixture initial navigation to interactive heading",
+  "repetitions": 5,
+  "maximum_navigation_ms": 1500,
+  "maximum_compressed_asset_bytes": 120000
+}

@@ -1,0 +1,97 @@
+schema_version: 1
+transaction: HEB-114
+repository: https://github.com/T-Bone-Haff/bedrock.git
+base: 6e57f2b3df7aa5c28eb26dec339a00c91b2e5288
+branch: feature/heb-114-wp5c-correct-frontend-code-skill
+manifest_before: 7.0.0
+manifest_candidate: 8.0.0
+classification: package-major
+status: pre-staging-validation-complete
+retained_evidence:
+  candidate_identity:
+    base_sha: 6e57f2b3df7aa5c28eb26dec339a00c91b2e5288
+    frontend_skill_sha256: 746fbff7e76d802029cb61cf9ecf4e2d6ff46c6cb2625346bcf87b54140eb6d8
+    frontend_profile_fixture_sha256: e2e2b57444bd25e15f13f4b4cd3277f30fc86b83a5dff78c61f3e3753772ec3e
+    frontend_lock_sha256: 780877f5da24708968edc6a231835b583cfa58bcb9f19edc130cdb521ce9306f
+    routing_fixture_sha256: c7a2b41693a553ceabfc9355b36d4d3123bcee4b83c310ecbf49e4004577a311
+    routing_catalog_sha256: fb8111abc3095efb4baf3c9ee6a93e1dad94455ceda54cb0f5a3f065f7fce06e
+    routing_policy_sha256: 4e3aedf467f4d353a9903a31f8dfd3fa9224f01eb449a473051177b5f626b67d
+  files:
+    - baseline.md
+    - validation-results.md
+    - browser-evidence.md
+    - accessibility-evidence.md
+    - security-evidence.md
+    - performance-evidence.md
+    - direct-review.md
+limitations:
+  - No universal WCAG or assistive-technology certification is claimed.
+  - Fixture measurements characterize only the declared local/CI scenarios.
+  - Deployment, rollout, headers, source-map publication, and production verification remain delivery-owned.
+  - The representative Safari and VoiceOver flow passed, but exact audible wording was not captured; broader zoom, contrast, target-size, assistive-technology, and version populations were not manually exercised.
+  - Docker-required integration is unverified locally because the Docker daemon is unavailable; the existing CI population must run it unskipped.
+  - CI execution of the configured three-engine gates remains pending a future pushed candidate; local three-engine execution is retained separately.
+file_claim:
+  shared_modified:
+    - .github/workflows/plugin-validation.yml
+    - docs/evidence/heb-109/metadata-inventory.json
+    - docs/evidence/heb-109/routing-results.json
+    - plugins/bedrock/.claude-plugin/plugin.json
+    - scripts/run_routing_evals.py
+    - scripts/validate_plugin.py
+    - tests/fixtures/routing.yaml
+    - tests/test_routing_adapter.py
+  shared_reread_unchanged:
+    - tests/test_safety_contracts.py
+    - validation/executable-samples.yaml
+  frontend_exclusive:
+    - docs/evidence/heb-114/accessibility-evidence.md
+    - docs/evidence/heb-114/baseline.md
+    - docs/evidence/heb-114/browser-evidence.md
+    - docs/evidence/heb-114/direct-review.md
+    - docs/evidence/heb-114/manifest.yaml
+    - docs/evidence/heb-114/performance-evidence.md
+    - docs/evidence/heb-114/security-evidence.md
+    - docs/evidence/heb-114/validation-results.md
+    - plugins/bedrock/skills/frontend-code/SKILL.md
+    - plugins/bedrock/skills/frontend-code/reference/01-haffey-react-vite-profile.md
+    - plugins/bedrock/skills/frontend-code/reference/02-components-state-and-prototype-promotion.md
+    - plugins/bedrock/skills/frontend-code/reference/03-responsive-accessibility-and-browser-support.md
+    - plugins/bedrock/skills/frontend-code/reference/04-media-permissions-and-runtime-capabilities.md
+    - plugins/bedrock/skills/frontend-code/reference/05-api-data-and-browser-security.md
+    - plugins/bedrock/skills/frontend-code/reference/06-production-readiness.md
+    - plugins/bedrock/skills/frontend-code/reference/authority-provenance.yaml
+    - plugins/bedrock/skills/frontend-code/reference/frontend-evidence.schema.json
+    - plugins/bedrock/skills/frontend-code/reference/frontend-profile.schema.json
+    - plugins/bedrock/skills/frontend-code/reference/testing.md
+    - scripts/validate_frontend_contracts.py
+    - tests/fixtures/frontend-contracts/behavior.yaml
+    - tests/fixtures/frontend-contracts/browser-app/.gitignore
+    - tests/fixtures/frontend-contracts/browser-app/eslint.config.js
+    - tests/fixtures/frontend-contracts/browser-app/index.html
+    - tests/fixtures/frontend-contracts/browser-app/package-lock.json
+    - tests/fixtures/frontend-contracts/browser-app/package.json
+    - tests/fixtures/frontend-contracts/browser-app/performance-budget.json
+    - tests/fixtures/frontend-contracts/browser-app/playwright.config.ts
+    - tests/fixtures/frontend-contracts/browser-app/scripts/check-budget.mjs
+    - tests/fixtures/frontend-contracts/browser-app/src/App.tsx
+    - tests/fixtures/frontend-contracts/browser-app/src/browser-contract.ts
+    - tests/fixtures/frontend-contracts/browser-app/src/main.tsx
+    - tests/fixtures/frontend-contracts/browser-app/src/styles.css
+    - tests/fixtures/frontend-contracts/browser-app/tests/accessibility.spec.ts
+    - tests/fixtures/frontend-contracts/browser-app/tests/browser.spec.ts
+    - tests/fixtures/frontend-contracts/browser-app/tests/component.test.tsx
+    - tests/fixtures/frontend-contracts/browser-app/tests/security.spec.ts
+    - tests/fixtures/frontend-contracts/browser-app/tsconfig.json
+    - tests/fixtures/frontend-contracts/browser-app/vite.config.ts
+    - tests/fixtures/frontend-contracts/browser-app/vitest.config.ts
+    - tests/fixtures/frontend-contracts/invalid/incomplete-accessibility-evidence.json
+    - tests/fixtures/frontend-contracts/invalid/incomplete-browser-security.json
+    - tests/fixtures/frontend-contracts/invalid/permission-outcome-overclaim.json
+    - tests/fixtures/frontend-contracts/invalid/prototype-without-safety-floor.json
+    - tests/fixtures/frontend-contracts/invalid/unbound-api-artifact.json
+    - tests/fixtures/frontend-contracts/invalid/unverified-production-profile.json
+    - tests/fixtures/frontend-contracts/valid/frontend-evidence.json
+    - tests/fixtures/frontend-contracts/valid/frontend-profile.json
+    - tests/test_frontend_contracts.py
+    - validation/frontend-contracts.yaml

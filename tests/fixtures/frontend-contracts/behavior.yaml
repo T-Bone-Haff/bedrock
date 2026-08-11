@@ -1,0 +1,23 @@
+schema_version: 1
+cases:
+  - id: frontend-code-portable-profile
+    expected_owner: frontend-code
+    prompt: Implement accessible browser-facing behavior with Web Components and a declared capability profile rather than React.
+  - id: frontend-code-prototype-promotion
+    expected_owner: frontend-code
+    prompt: Assess whether this prototype can graduate, needs targeted hardening, must be re-authored, or should be disposed.
+  - id: frontend-code-browser-security-readiness
+    expected_owner: frontend-code
+    prompt: Make the application CSP and Trusted-Types ready and validate browser-side URL and data handling without deploying headers.
+  - id: overlap-testing-frontend
+    expected_owner: testing
+    prompt: Author the planned browser, component, accessibility, and performance tests for this new frontend behavior.
+  - id: overlap-debug-frontend
+    expected_owner: debug
+    prompt: A Playwright test intermittently fails in WebKit; reproduce and diagnose the existing failure.
+  - id: overlap-review-frontend
+    expected_owner: code-review
+    prompt: Review this finished React and Vite diff for correctness and frontend conformance.
+  - id: overlap-frontend-backend-enforcement
+    expected_owner: application-code
+    prompt: Enforce CSRF, CORS, authorization, and response compatibility in the backend API used by the frontend.

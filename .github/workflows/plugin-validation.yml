@@ -28,6 +28,12 @@ jobs:
           python-version: "3.13"
           cache: pip
           cache-dependency-path: validation/requirements.txt
+      - name: Set up Node for frontend contract gates
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22.12.0"
+          cache: npm
+          cache-dependency-path: tests/fixtures/frontend-contracts/browser-app/package-lock.json
       - name: Set up Terraform for state-safety fixtures
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
         with:
@@ -35,6 +41,15 @@ jobs:
           terraform_wrapper: false
       - name: Install validation dependencies
         run: python -m pip install -r validation/requirements.txt
+      - name: Install pinned frontend fixture dependencies
+        working-directory: tests/fixtures/frontend-contracts/browser-app
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Audit frontend fixture dependencies
+        working-directory: tests/fixtures/frontend-contracts/browser-app
+        run: npm audit --audit-level=high
+      - name: Install pinned frontend browser engines
+        working-directory: tests/fixtures/frontend-contracts/browser-app
+        run: ./node_modules/.bin/playwright install --with-deps chromium firefox webkit
       - name: Install pinned Claude Code validator
         run: npm install --global @anthropic-ai/claude-code@2.1.226
       - name: Run seeded validator tests
@@ -50,6 +65,27 @@ jobs:
         run: python scripts/validate_safety.py
       - name: Run HEB-113 infrastructure and delivery contract validation
         run: python scripts/validate_infrastructure_delivery_contracts.py
+      - name: Run HEB-114 frontend contract validation
+        run: python scripts/validate_frontend_contracts.py
+      - name: Run HEB-114 frontend deterministic and browser gates
+        working-directory: tests/fixtures/frontend-contracts/browser-app
+        run: >-
+          npm run typecheck &&
+          npm run lint &&
+          npm run unit &&
+          npm run coverage &&
+          npm run build &&
+          npm run budget &&
+          npm run browser
+      - name: Retain HEB-114 frontend gate evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: heb-114-frontend-gate-evidence
+          path: |
+            tests/fixtures/frontend-contracts/browser-app/coverage/coverage-summary.json
+            tests/fixtures/frontend-contracts/browser-app/test-results/results.json
+          if-no-files-found: warn
       - name: Run isolated install and reload smoke test
         run: bash scripts/smoke_clean_install.sh
       - name: Retain deterministic validation inventory
@@ -83,6 +119,8 @@ jobs:
         run: >-
           python scripts/run_routing_evals.py
           --profile ${{ github.event_name == 'pull_request' && 'pr' || 'release' }}
+          --max-budget-usd 0.06
+          --max-total-budget-usd 3.00
           --output docs/evidence/heb-109/routing-results.json
       - name: Retain routing results
         if: always()

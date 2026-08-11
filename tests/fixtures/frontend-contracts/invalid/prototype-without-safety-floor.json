@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "profile_id": "unsafe-prototype",
+  "binding": {},
+  "browser_support": {},
+  "prototype": {"posture": "prototype", "promotion_outcomes": ["graduate"]},
+  "api_contract": {},
+  "accessibility": {},
+  "security": {},
+  "performance": {},
+  "production_capabilities": {},
+  "gates": []
+}

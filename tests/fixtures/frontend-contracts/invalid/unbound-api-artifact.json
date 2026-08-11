@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "profile_id": "unbound-api",
+  "binding": {"framework": "React", "language": "TypeScript", "build_tool": "Vite", "styling": "CSS", "component_system": "bespoke", "test_runner": "Vitest", "browser_automation": "Playwright", "node_engine": ">=22"},
+  "browser_support": {"policy": "declared", "engines": [{"name": "chromium", "minimum": "current"}], "fallback": "unavailable state"},
+  "prototype": {"posture": "prototype", "safety_floor": ["no-secrets-or-production-data", "dependency-license-cost", "accessible-critical-path", "honest-capability-state", "disposal-retention-audience", "no-ambient-production-authority"], "promotion_outcomes": ["graduate", "targeted-hardening", "re-author", "dispose"]},
+  "api_contract": {"spec_artifact": "live /openapi.json", "generator": "openapi-typescript", "runtime_validation": "risk-selected", "compatibility": "unspecified"},
+  "accessibility": {"target": "WCAG", "automated": ["lint"], "manual": ["keyboard"], "assistive_technology": ["screen reader"]},
+  "security": {"concerns": {
+    "xss-dom-sinks": {"status": "required", "owner": "frontend-code", "rationale": "required"}, "trusted-types": {"status": "required", "owner": "frontend-code", "rationale": "required"}, "safe-urls-dom-clobbering": {"status": "required", "owner": "frontend-code", "rationale": "required"}, "csrf-cookie-coupling": {"status": "required", "owner": "application-code", "rationale": "required"}, "cors-handoff": {"status": "required", "owner": "application-code", "rationale": "required"}, "third-party-scripts-sri": {"status": "not-applicable", "owner": "frontend-code", "rationale": "none"}, "service-workers": {"status": "not-applicable", "owner": "frontend-code", "rationale": "none"}, "dependency-install-scripts": {"status": "required", "owner": "frontend-code", "rationale": "required"}, "source-maps": {"status": "required", "owner": "app-delivery-pipeline", "rationale": "required"}, "client-logs-analytics": {"status": "required", "owner": "frontend-code", "rationale": "required"}
+  }},
+  "performance": {"scenarios": ["load"], "metrics": ["time"], "budgets": {"time": 1}, "repetitions": 1, "environment": "fixture"},
+  "production_capabilities": {"routing": {"status": "not-applicable", "owner": "frontend-code", "rationale": "none"}, "forms": {"status": "not-applicable", "owner": "frontend-code", "rationale": "none"}, "internationalization": {"status": "not-applicable", "owner": "frontend-code", "rationale": "none"}, "telemetry": {"status": "not-applicable", "owner": "frontend-code", "rationale": "none"}, "offline-update": {"status": "not-applicable", "owner": "frontend-code", "rationale": "none"}, "ssr-hydration": {"status": "not-applicable", "owner": "frontend-code", "rationale": "none"}, "state-library": {"status": "not-applicable", "owner": "frontend-code", "rationale": "none"}},
+  "gates": [{"id": "install", "command": "npm ci", "decision": "install"}]
+}

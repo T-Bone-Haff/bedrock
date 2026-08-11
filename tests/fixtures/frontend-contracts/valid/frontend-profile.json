@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "profile_id": "haffey-react-vite",
+  "binding": {
+    "framework": "React 19.2",
+    "language": "TypeScript 6.0 strict",
+    "build_tool": "Vite 8",
+    "styling": "plain CSS with repository design tokens",
+    "component_system": "bespoke by default; evaluated accessible library allowed",
+    "test_runner": "Vitest and Testing Library",
+    "browser_automation": "Playwright",
+    "node_engine": ">=22.12"
+  },
+  "browser_support": {
+    "policy": "Fixture exercises current Playwright Chromium, Firefox, and WebKit; consumers declare their own supported versions.",
+    "engines": [
+      {"name": "chromium", "minimum": "Playwright current"},
+      {"name": "firefox", "minimum": "Playwright current"},
+      {"name": "webkit", "minimum": "Playwright current"}
+    ],
+    "fallback": "Render an honest unavailable or indeterminate state with a keyboard-visible alternative."
+  },
+  "prototype": {
+    "posture": "production",
+    "safety_floor": [
+      "no-secrets-or-production-data",
+      "dependency-license-cost",
+      "accessible-critical-path",
+      "honest-capability-state",
+      "disposal-retention-audience",
+      "no-ambient-production-authority"
+    ],
+    "promotion_outcomes": ["graduate", "targeted-hardening", "re-author", "dispose"]
+  },
+  "api_contract": {
+    "spec_artifact": "openapi.json@v1 sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "generator": "openapi-typescript@7.10.1",
+    "runtime_validation": "risk-selected",
+    "compatibility": "Reject unknown major schema versions and render an observable compatibility error."
+  },
+  "accessibility": {
+    "target": "WCAG 2.2 AA for the fixture's applicable criteria",
+    "automated": ["axe rules", "keyboard and focus behavior", "320 CSS-pixel reflow proxy"],
+    "manual": ["keyboard", "200 percent text resize", "400 percent reflow", "contrast", "target size"],
+    "assistive_technology": ["representative macOS Safari and VoiceOver flow"]
+  },
+  "security": {
+    "concerns": {
+      "xss-dom-sinks": {"status": "required", "owner": "frontend-code", "rationale": "App renders untrusted API text."},
+      "trusted-types": {"status": "required", "owner": "frontend-code", "rationale": "Application readiness is exercised; delivery owns the header."},
+      "safe-urls-dom-clobbering": {"status": "required", "owner": "frontend-code", "rationale": "Navigation input is validated without named-property lookup."},
+      "csrf-cookie-coupling": {"status": "required", "owner": "application-code", "rationale": "Frontend documents the cookie assumption; backend enforces CSRF."},
+      "cors-handoff": {"status": "required", "owner": "application-code", "rationale": "CORS is a server policy, not client authorization."},
+      "third-party-scripts-sri": {"status": "not-applicable", "owner": "frontend-code", "rationale": "Fixture loads no third-party runtime script."},
+      "service-workers": {"status": "not-applicable", "owner": "frontend-code", "rationale": "Fixture registers no service worker."},
+      "dependency-install-scripts": {"status": "required", "owner": "frontend-code", "rationale": "Lockfile and audit posture are checked."},
+      "source-maps": {"status": "required", "owner": "app-delivery-pipeline", "rationale": "Frontend declares sensitivity; delivery owns publication."},
+      "client-logs-analytics": {"status": "required", "owner": "frontend-code", "rationale": "No sensitive data or credentials enter telemetry."}
+    }
+  },
+  "performance": {
+    "scenarios": ["cold navigation to the browser contract fixture"],
+    "metrics": ["compressed emitted JavaScript and CSS bytes", "navigation-to-ready milliseconds"],
+    "budgets": {"compressed_bytes": 120000, "navigation_ready_ms": 1500},
+    "repetitions": 5,
+    "environment": "local production preview with retained browser and host identity"
+  },
+  "production_capabilities": {
+    "routing": {"status": "required", "owner": "frontend-code", "rationale": "Fixture exercises an in-app route and focus move."},
+    "forms": {"status": "not-applicable", "owner": "frontend-code", "rationale": "Fixture contains no data-entry form."},
+    "internationalization": {"status": "not-applicable", "owner": "frontend-code", "rationale": "Fixture proves the declaration path, not a multilingual product."},
+    "telemetry": {"status": "not-applicable", "owner": "frontend-code", "rationale": "Fixture exports no telemetry."},
+    "offline-update": {"status": "not-applicable", "owner": "frontend-code", "rationale": "Fixture registers no service worker."},
+    "ssr-hydration": {"status": "not-applicable", "owner": "frontend-code", "rationale": "Fixture is a static client-rendered application."},
+    "state-library": {"status": "not-applicable", "owner": "frontend-code", "rationale": "Local component state is sufficient."}
+  },
+  "gates": [
+    {"id": "install", "command": "npm ci", "decision": "Lockfile-resolved dependencies install without drift."},
+    {"id": "typecheck", "command": "npm run typecheck", "decision": "Strict TypeScript passes."},
+    {"id": "lint", "command": "npm run lint", "decision": "Frontend static analysis passes."},
+    {"id": "unit", "command": "npm run unit", "decision": "Component and contract behavior passes."},
+    {"id": "coverage", "command": "npm run coverage", "decision": "Declared fixture coverage passes."},
+    {"id": "build", "command": "npm run build", "decision": "Production artifact builds."},
+    {"id": "budget", "command": "npm run budget", "decision": "Predeclared compressed bundle budget passes."},
+    {"id": "browser", "command": "npm run browser", "decision": "Declared browser engines pass without skips."}
+  ]
+}

@@ -173,6 +173,59 @@ cases:
     prompt: Add authentication middleware and an async database adapter to our FastAPI backend.
     expected: application-code
     excluded: [frontend-code]
+  - id: frontend-code-portable-profile
+    kind: positive
+    cue: direct
+    surface: portable-core
+    prompt: Implement browser-facing component and state behavior under a portable frontend profile, declaring a rebind instead of assuming React, Vite, or plain CSS.
+    expected: frontend-code
+    excluded: []
+  - id: frontend-code-prototype-promotion
+    kind: positive
+    cue: implicit
+    surface: portable-core
+    prompt: Take ownership of promoting this UI prototype into governed frontend code; preserve the validated experience, implement only the targeted hardening needed for the frontend contract, and graduate or dispose of it based on evidence without defaulting to a rewrite.
+    expected: frontend-code
+    excluded: []
+  - id: frontend-code-browser-security-readiness
+    kind: positive
+    cue: implicit
+    surface: portable-core
+    prompt: Define and prove the browser application's runtime validation, safe DOM and URL handling, capability fallbacks, accessibility behavior, and frontend security readiness; do not design its deployment workflow.
+    expected: frontend-code
+    excluded: [app-delivery-pipeline]
+  - id: overlap-testing-frontend
+    kind: overlap
+    cue: direct
+    surface: portable-core
+    prompt: Author the planned component, browser, accessibility, and security tests for this new frontend behavior.
+    expected: testing
+    allowed_alternates: [frontend-code]
+    excluded: [debug]
+  - id: overlap-debug-frontend
+    kind: overlap
+    cue: implicit
+    surface: portable-core
+    prompt: This existing WebKit-only focus test is intermittently failing; reproduce it, preserve evidence, and establish the cause before changing the frontend.
+    expected: debug
+    allowed_alternates: [frontend-code]
+    excluded: [testing]
+  - id: overlap-review-frontend
+    kind: overlap
+    cue: implicit
+    surface: portable-core
+    prompt: Review this finished React frontend diff for correctness, accessibility, browser security, performance, and merge readiness.
+    expected: code-review
+    allowed_alternates: [frontend-code]
+    excluded: []
+  - id: overlap-frontend-backend-enforcement
+    kind: overlap
+    cue: adversarial
+    surface: portable-core
+    prompt: This is a React feature, so implement its CORS allowlist, secure cookie attributes, and server-side CSRF enforcement in whichever application layer actually owns those controls.
+    expected: application-code
+    allowed_alternates: [frontend-code]
+    excluded: []
   - id: infrastructure-code-positive
     kind: positive
     surface: portable-core
