@@ -1,0 +1,16 @@
+schema_version: 1
+cases:
+  - id: terraform-github-actions
+    expected_owner: infrastructure-code
+  - id: infrastructure-plan-apply
+    expected_owner: infrastructure-code
+  - id: application-image-deploy
+    expected_owner: app-delivery-pipeline
+  - id: static-site-promotion
+    expected_owner: app-delivery-pipeline
+  - id: frontend-gate-semantics
+    expected_owner: frontend-code
+  - id: existing-red-deploy
+    expected_owner: debug
+  - id: finished-workflow-review
+    expected_owner: code-review

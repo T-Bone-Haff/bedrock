@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haffey.example/bedrock/application-release-manifest.schema.json",
+  "title": "Application release manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source", "event", "version_intent", "artifact", "desired_state", "provenance", "migration", "authority", "deployment", "verification", "rollback"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["commit", "tree", "lock_digest"],
+      "properties": {
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "lock_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "event": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "association", "trusted"],
+      "properties": {
+        "kind": {"enum": ["merge", "squash", "queue", "batch", "revert", "direct-push", "manual"]},
+        "association": {"type": "string", "minLength": 1}, "trusted": {"const": true}
+      }
+    },
+    "version_intent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["aggregate", "changes", "override"],
+      "properties": {
+        "aggregate": {"enum": ["major", "minor", "patch", "none"]},
+        "changes": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["id", "intent"],
+            "properties": {"id": {"type": "string", "minLength": 1}, "intent": {"enum": ["major", "minor", "patch", "none"]}}
+          }
+        },
+        "override": {
+          "oneOf": [
+            {"type": "null"},
+            {"type": "object", "additionalProperties": false, "required": ["approved", "approver", "rationale"], "properties": {"approved": {"const": true}, "approver": {"type": "string", "minLength": 1}, "rationale": {"type": "string", "minLength": 1}}}
+          ]
+        }
+      }
+    },
+    "artifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["digest", "store", "built_once"],
+      "properties": {"digest": {"$ref": "#/$defs/digest"}, "store": {"type": "string", "minLength": 1}, "built_once": {"const": true}}
+    },
+    "desired_state": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner", "environment", "mutation_concurrency"],
+      "properties": {"owner": {"enum": ["direct-deploy", "gitops", "external"]}, "environment": {"type": "string", "minLength": 1}, "mutation_concurrency": {"enum": ["queue", "fail_closed"]}}
+    },
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sbom", "builder", "workflow", "inputs", "attestation", "verified", "retention"],
+      "properties": {"sbom": {"$ref": "#/$defs/digest"}, "builder": {"type": "string", "minLength": 1}, "workflow": {"type": "string", "minLength": 1}, "inputs": {"$ref": "#/$defs/digest"}, "attestation": {"type": "string", "minLength": 1}, "verified": {"const": true}, "retention": {"type": "string", "minLength": 1}}
+    },
+    "migration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["strategy", "owner", "compatibility", "backup_restore_gate", "rollback_limit"],
+      "properties": {"strategy": {"enum": ["none", "expand-contract", "forward-only"]}, "owner": {"type": "string", "minLength": 1}, "compatibility": {"type": "string", "minLength": 1}, "backup_restore_gate": {"type": "string", "minLength": 1}, "rollback_limit": {"type": "string", "minLength": 1}}
+    },
+    "authority": {
+      "type": "object", "additionalProperties": false, "required": ["approved", "approver"],
+      "properties": {"approved": {"const": true}, "approver": {"type": "string", "minLength": 1}}
+    },
+    "deployment": {
+      "type": "object", "additionalProperties": false, "required": ["target", "artifact_digest", "status"],
+      "properties": {"target": {"type": "string", "minLength": 1}, "artifact_digest": {"$ref": "#/$defs/digest"}, "status": {"enum": ["planned", "succeeded", "failed"]}}
+    },
+    "verification": {
+      "type": "object", "additionalProperties": false, "required": ["artifact_digest", "endpoint", "dependency", "readiness", "status"],
+      "properties": {"artifact_digest": {"$ref": "#/$defs/digest"}, "endpoint": {"type": "string", "minLength": 1}, "dependency": {"type": "string", "minLength": 1}, "readiness": {"type": "string", "minLength": 1}, "status": {"enum": ["pending", "passed", "failed"]}}
+    },
+    "rollback": {
+      "type": "object", "additionalProperties": false, "required": ["previous_digest", "trigger", "authority", "schema_compatible"],
+      "properties": {"previous_digest": {"$ref": "#/$defs/digest"}, "trigger": {"type": "string", "minLength": 1}, "authority": {"type": "string", "minLength": 1}, "schema_compatible": {"type": "boolean"}}
+    }
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}
+}

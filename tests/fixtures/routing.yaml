@@ -24,6 +24,20 @@ cases:
     prompt: Add protected Terraform plan and apply jobs for our production environment.
     expected: infrastructure-code
     excluded: [app-delivery-pipeline]
+  - id: app-delivery-pipeline-main-only-profile
+    kind: positive
+    cue: direct
+    surface: portable-core
+    prompt: Define a main-only application release profile that builds once, promotes the digest, and serializes production deployment.
+    expected: app-delivery-pipeline
+    excluded: [infrastructure-code]
+  - id: app-delivery-pipeline-static-seam
+    kind: positive
+    cue: implicit
+    surface: portable-core
+    prompt: Run the frontend-owned browser gates, promote the resulting static artifact, configure hosting headers, and verify the production URL.
+    expected: app-delivery-pipeline
+    excluded: [frontend-code]
   - id: application-code-positive
     kind: positive
     surface: portable-core
@@ -171,6 +185,20 @@ cases:
     prompt: Build and deploy our application container after the pull-request gates pass.
     expected: app-delivery-pipeline
     excluded: [infrastructure-code]
+  - id: infrastructure-code-portable-profile
+    kind: positive
+    cue: direct
+    surface: portable-core
+    prompt: Author a Pulumi and AWS infrastructure profile with remote state, short-lived identity, recovery objectives, and a protected plan/apply equivalent.
+    expected: infrastructure-code
+    excluded: [app-delivery-pipeline]
+  - id: infrastructure-code-actions-ownership
+    kind: positive
+    cue: implicit
+    surface: portable-core
+    prompt: Put protected Terraform plan and apply jobs in GitHub Actions with an expiring saved plan and state-bound apply manifest.
+    expected: infrastructure-code
+    excluded: [app-delivery-pipeline]
   - id: testing-positive
     kind: positive
     surface: portable-core

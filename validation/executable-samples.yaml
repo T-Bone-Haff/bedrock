@@ -23,12 +23,7 @@ samples:
     owner: HEB-115
   - path: plugins/bedrock/skills/infrastructure-code/reference/01-module-structure-and-style.md
     language: hcl
-    count: 7
-    classification: illustrative
-    owner: HEB-113
-  - path: plugins/bedrock/skills/infrastructure-code/reference/02-gcp-conventions.md
-    language: hcl
-    count: 6
+    count: 1
     classification: illustrative
     owner: HEB-113
   - path: plugins/bedrock/skills/infrastructure-code/reference/03-state-and-environments.md
@@ -36,19 +31,17 @@ samples:
     count: 1
     classification: illustrative
     owner: HEB-113
-  - path: plugins/bedrock/skills/infrastructure-code/reference/03-state-and-environments.md
-    language: hcl
-    count: 1
-    classification: fixture-backed
-    evidence: [tests/fixtures/safety/terraform-state/safe/main.tf]
-    command: python3 -m unittest tests.test_safety_integration.TerraformStateIntegrationTests.test_runtime_only_secret_value_is_absent_from_state -v
   - path: plugins/bedrock/skills/infrastructure-code/reference/04-kubernetes-and-stateful-workloads.md
     language: yaml
     count: 1
-    classification: illustrative
+    classification: fixture-backed
+    evidence: [tests/fixtures/infrastructure-delivery/valid/safe-workload.yaml]
+    command: python3 scripts/validate_infrastructure_delivery_contracts.py
     owner: HEB-113
   - path: plugins/bedrock/skills/infrastructure-code/reference/05-delivery-pipeline.md
     language: yaml
     count: 1
-    classification: illustrative
+    classification: fixture-backed
+    evidence: [tests/fixtures/safety/manifest.yaml]
+    command: python3 scripts/validate_safety.py
     owner: HEB-113

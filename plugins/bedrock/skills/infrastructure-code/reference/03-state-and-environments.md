@@ -1,95 +1,34 @@
-# Reference: State and Environments
+# State, environment, bootstrap, and recovery profile
 
-How Terraform state is stored, secured, and partitioned, and how environments are laid out so each has its own state. Load this when configuring remote state, standing up a new environment, or deciding how to split state files.
+## State contract
 
-## Contents
+For the Haffey profile, use a protected GCS backend with versioning, uniform access, retention appropriate to recovery objectives, and the backend's actual locking semantics. Never describe a backend as locked without verifying the selected Terraform/backend behavior. Restrict state access, audit it, and treat every state version and saved plan as sensitive.
 
-- [1. Remote state in GCS](#1-remote-state-in-gcs)
-- [2. State as a blast-radius boundary](#2-state-as-a-blast-radius-boundary)
-- [3. Environment-per-directory layout](#3-environment-per-directory-layout)
-- [4. Secrets and state hygiene](#4-secrets-and-state-hygiene)
-
----
-
-## 1. Remote state in GCS
-
-State lives in a GCS backend, never on local disk. The GCS backend locks state automatically (so two runs can't corrupt it) and keeps state — and the sensitive values in it — out of version control.
-
-```hcl
-# backend.tf
-terraform {
-  backend "gcs" {
-    bucket = "myorg-tfstate-prod"
-    prefix = "platform/networking"
-  }
-}
-```
-
-The state bucket has **versioning enabled** (so a corrupt or accidentally-deleted state can be recovered) and **`prevent_destroy`** on the bucket resource itself. Its access is restricted to the **pipeline service account and admins** — state is a sensitive artifact; a read of it is a read of every secret any resource exposed.
-
-The `prefix` partitions multiple state files within one bucket — use it to give each configuration (each blast-radius boundary, §2) its own state object. When you need a value from another state, prefer a provider data source (look the resource up by name/tag) over reading the other state directly; share data, not whole state files.
-
----
-
-## 2. State as a blast-radius boundary
-
-A single state file is a single failure and locking domain: every apply locks all of it, and a bad change can touch anything in it. So **split state by blast radius and approval boundary**, not by whim:
-
-- Foundational infrastructure (org IAM, shared networking, the state bucket itself) is its own state, changed rarely, approved by the platform owner.
-- Each application's infrastructure is its own state.
-- Large stacks split further — networking, data, compute as separate states — so a compute change can't lock or threaten the database.
-
-The rule of thumb: configurations with **different approvers, different change frequency, or different blast radius belong in different state files** (different `prefix`, or different bucket). This also keeps each state small, which keeps plans fast and readable.
-
----
-
-## 3. Environment-per-directory layout
-
-Without HCP Terraform workspaces, the canonical multi-environment layout is **a directory per environment**, each calling the shared modules with environment-specific inputs and its own backend and state:
-
-```
-.
-├── modules/
-│   ├── runtime/
-│   ├── networking/
-│   └── data/
-├── dev/
-│   ├── backend.tf        # prefix = "env/dev"
-│   ├── main.tf           # calls ../modules/* with dev inputs
-│   ├── variables.tf
-│   └── dev.auto.tfvars
-├── staging/
-│   ├── backend.tf        # prefix = "env/staging"
-│   └── ...
-└── prod/
-    ├── backend.tf        # prefix = "env/prod"
-    └── ...
-```
-
-Each environment directory has its **own backend/state**, its **own `.tfvars`** carrying the environment-specific values (the variables that have no default — §5 of `01`), and calls the **same modules** so the environments stay structurally identical and only their inputs differ. Promotion is a code change merged through environments (the delivery flow — `05-delivery-pipeline.md`), not a hand-edit in one place.
-
----
-
-## 4. Secrets and state hygiene
-
-**State is plaintext.** Marking a variable or output `sensitive = true` keeps it out of plan/apply *output*, but Terraform still writes it to state in the clear. Many resources and data sources (database passwords, generated keys, secret versions) land in state regardless. So:
-
-- **Keep secrets out of state where you can** — reference Secret Manager at runtime rather than materializing the secret value through Terraform.
-- **A Secret Manager data source that reads a secret payload does not keep that payload out of state.** Data-source and provider schema behavior determines what is recorded; assume a value Terraform reads can persist unless state inspection proves otherwise.
-- **Prefer identifier-only configuration.** Pass the secret resource name or version identifier to the workload, then let its runtime identity retrieve the payload directly from Secret Manager.
-- **Treat the whole state file as a secret** — the GCS backend (§1) is the encryption-and-access boundary; that's why bucket access is locked down.
-- **Never commit** `*.tfstate`, `*.tfstate.*` backups, `.terraform.tfstate.lock.info`, the `.terraform/` directory, saved plan files (`-out`), or any `.tfvars` carrying secrets.
-- **Always commit** the `.terraform.lock.hcl` dependency lock (so provider versions are reproducible), all `.tf`, a `.gitignore`, and a `README.md`.
-
-A starting `.gitignore`:
+Keep runtime secret payloads out of Terraform when possible: pass secret identifiers and let the workload retrieve values through its runtime identity. `sensitive = true` only redacts display. If a provider must receive a payload, document the exception, affected state, rotation, access, and cleanup.
 
 ```gitignore
 *.tfstate
 *.tfstate.*
-.terraform/
-.terraform.tfstate.lock.info
 *.tfplan
-*-secret.auto.tfvars
+*.tfvars
+.terraform/
 ```
 
-If Terraform itself must pass a secret payload to a provider or resource, the payload may be written to state whether it comes from a data source, a variable, or the CI environment. Document why runtime retrieval is impossible, inspect the resulting state, minimize its lifetime, and apply the state access and recovery controls above. Never hardcode a payload or commit it in `.tfvars`.
+Commit `.terraform.lock.hcl`; do not ignore it.
+
+## Environments and bootstrap
+
+Use an explicit state target per environment/profile and prevent accidental workspace or project substitution. Backend/bootstrap resources have their own lifecycle: initial creation method, import boundary, owners, break-glass procedure, drift checks, and retirement path must be recorded. Bootstrap must not depend circularly on the state it creates.
+
+## Recovery contract
+
+Before destructive or stateful work declare:
+
+- RPO and RTO with accountable owner;
+- backup scope, encryption, retention, and custody;
+- restore procedure and most recent successful restore evidence;
+- state lineage/serial recovery procedure and approval boundary;
+- provider/API failure and partial-apply recovery;
+- rollback impossibilities and escalation trigger.
+
+State versioning is not a database backup. A successful snapshot is not restore proof. Restore drills must validate the recovered service or data behavior.

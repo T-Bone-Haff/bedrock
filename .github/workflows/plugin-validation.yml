@@ -48,6 +48,8 @@ jobs:
           --inventory docs/evidence/heb-109/metadata-inventory.json
       - name: Run HEB-110 safety contract validation
         run: python scripts/validate_safety.py
+      - name: Run HEB-113 infrastructure and delivery contract validation
+        run: python scripts/validate_infrastructure_delivery_contracts.py
       - name: Run isolated install and reload smoke test
         run: bash scripts/smoke_clean_install.sh
       - name: Retain deterministic validation inventory

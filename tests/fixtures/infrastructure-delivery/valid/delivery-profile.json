@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "profile": "haffey-main-only-v1",
+  "ci": "GitHub Actions",
+  "topology": "main-only",
+  "release_events": ["squash", "queue", "revert", "direct-push"],
+  "artifact": {"store": "Artifact Registry", "promote_by_digest": true, "build_once": true},
+  "identity": {"method": "GCP WIF", "long_lived_keys": false},
+  "concurrency": {"verification": "cancel_stale", "mutation": "queue"},
+  "environments": [{"name": "production", "desired_state_owner": "gitops", "approval": "GitHub Environment"}],
+  "provenance": {"sbom": true, "attestation": "SLSA provenance", "verification": "digest and signature", "retention": "400d"},
+  "static_frontend": {"preview_trust": "trusted-isolated", "source_maps": "private", "cache_policy": "immutable hashed assets; revalidate HTML", "headers": ["Content-Security-Policy", "Strict-Transport-Security", "Permissions-Policy", "Referrer-Policy", "X-Content-Type-Options", "frame-ancestors"]}
+}

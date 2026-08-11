@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "profile": "haffey-gcp-v1",
+  "tools": {"iac": "Terraform", "cloud": "GCP", "ci": "GitHub Actions", "orchestrator": "GKE"},
+  "state": {"backend": "GCS", "locking": "verified native backend semantics", "sensitive": true, "mutation_concurrency": "queue"},
+  "identity": {"plan": "wif-plan@example.iam.gserviceaccount.com", "apply": "wif-apply@example.iam.gserviceaccount.com", "long_lived_keys": false},
+  "iam": {"default_ownership": "additive", "mixed_ownership": false},
+  "metadata": {"required_keys": ["environment", "managed_by", "owner"], "unsupported_resource_strategy": "inventory"},
+  "recovery": {"rpo": "24h", "rto": "4h", "restore_tested_at": "2026-08-01T12:00:00Z", "owner": "platform-oncall"}
+}

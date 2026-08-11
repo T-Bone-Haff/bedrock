@@ -24,11 +24,13 @@ if __package__:
     from scripts.validate_agent_review_contracts import validate_agent_review_contracts
     from scripts.validate_application_test_debug_contracts import validate_application_test_debug_contracts
     from scripts.validate_authoring_contracts import validate_authoring_contracts
+    from scripts.validate_infrastructure_delivery_contracts import validate_infrastructure_delivery_contracts
     from scripts.validate_safety import validate_safety_contracts
 else:  # Direct execution: python scripts/validate_plugin.py
     from validate_agent_review_contracts import validate_agent_review_contracts
     from validate_application_test_debug_contracts import validate_application_test_debug_contracts
     from validate_authoring_contracts import validate_authoring_contracts
+    from validate_infrastructure_delivery_contracts import validate_infrastructure_delivery_contracts
     from validate_safety import validate_safety_contracts
 
 
@@ -799,6 +801,9 @@ def validate_repository(
     errors.extend(validate_agent_review_contracts(root, required=require_authoring_contracts))
     errors.extend(
         validate_application_test_debug_contracts(root, required=require_authoring_contracts)
+    )
+    errors.extend(
+        validate_infrastructure_delivery_contracts(root, required=require_authoring_contracts)
     )
     if run_host_cli:
         run_host_validator(root, errors)

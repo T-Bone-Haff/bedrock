@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haffey.example/bedrock/infrastructure-profile.schema.json",
+  "title": "Infrastructure profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "profile", "tools", "state", "identity", "iam", "metadata", "recovery"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "profile": {"type": "string", "minLength": 1},
+    "tools": {
+      "type": "object", "additionalProperties": false,
+      "required": ["iac", "cloud", "ci", "orchestrator"],
+      "properties": {
+        "iac": {"type": "string", "minLength": 1}, "cloud": {"type": "string", "minLength": 1},
+        "ci": {"type": "string", "minLength": 1}, "orchestrator": {"type": ["string", "null"]}
+      }
+    },
+    "state": {
+      "type": "object", "additionalProperties": false,
+      "required": ["backend", "locking", "sensitive", "mutation_concurrency"],
+      "properties": {
+        "backend": {"type": "string", "minLength": 1}, "locking": {"type": "string", "minLength": 1},
+        "sensitive": {"const": true}, "mutation_concurrency": {"enum": ["queue", "fail_closed"]}
+      }
+    },
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["plan", "apply", "long_lived_keys"],
+      "properties": {"plan": {"type": "string", "minLength": 1}, "apply": {"type": "string", "minLength": 1}, "long_lived_keys": {"const": false}}
+    },
+    "iam": {
+      "type": "object", "additionalProperties": false,
+      "required": ["default_ownership", "mixed_ownership"],
+      "properties": {"default_ownership": {"enum": ["additive", "authoritative", "external"]}, "mixed_ownership": {"const": false}}
+    },
+    "metadata": {
+      "type": "object", "additionalProperties": false,
+      "required": ["required_keys", "unsupported_resource_strategy"],
+      "properties": {"required_keys": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}, "unsupported_resource_strategy": {"enum": ["inventory", "naming", "documented_exemption"]}}
+    },
+    "recovery": {
+      "type": "object", "additionalProperties": false,
+      "required": ["rpo", "rto", "restore_tested_at", "owner"],
+      "properties": {"rpo": {"type": "string", "minLength": 1}, "rto": {"type": "string", "minLength": 1}, "restore_tested_at": {"type": "string", "format": "date-time"}, "owner": {"type": "string", "minLength": 1}}
+    }
+  }
+}

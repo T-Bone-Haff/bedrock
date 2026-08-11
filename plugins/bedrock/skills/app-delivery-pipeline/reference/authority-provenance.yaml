@@ -1,0 +1,13 @@
+schema_version: 1
+contract: app-delivery-pipeline
+portable_authority:
+  - trusted event and release-intent association
+  - build-once content-addressed promotion
+  - provenance, desired-state ownership, migrations, verification, rollback
+haffey_profile:
+  ci: GitHub Actions
+  cloud: GCP
+  identity: GCP Workload Identity Federation
+  artifact_store: Artifact Registry or declared static store
+  protection: GitHub Environments
+adoption_currency_required: true

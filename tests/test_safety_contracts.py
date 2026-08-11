@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+import re
 import shutil
 import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.validate_safety import route_safety_case, validate_safety_contracts
 
@@ -92,7 +93,12 @@ class SafetyValidatorNegativeTests(unittest.TestCase):
         )
         text = path.read_text(encoding="utf-8")
         path.write_text(
-            text.replace("7c6bc770dae815cd3e89ee6cdf493a5fab2cc093", "v3"),
+            re.sub(
+                r"(uses:\s*hashicorp/setup-terraform@)[0-9a-f]{40}",
+                r"\1v3",
+                text,
+                count=1,
+            ),
             encoding="utf-8",
         )
 
