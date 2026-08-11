@@ -1,146 +1,54 @@
-# Reference: Security and Data
+# Haffey Python service profile: security and data
 
-Security disciplines, the data-classification model, and authentication/authorization. Load this when handling sensitive data, adding auth to a service, or classifying what a service stores.
+This profile applies the package safety floor to Python/FastAPI services. It does not replace consumer-owned threat modeling, compliance, incident response, or residual-risk acceptance.
 
-## Contents
+## Data contract
 
-- [1. Data classification tiers](#1-data-classification-tiers)
-- [2. Security disciplines](#2-security-disciplines)
-- [3. Authentication](#3-authentication)
-- [4. Authorization (RBAC)](#4-authorization-rbac)
-- [5. Service-to-service authentication](#5-service-to-service-authentication)
+Classify each data category and evidence artifact before handling it. The Haffey tiers are:
 
----
+| Tier | Meaning | Minimum posture |
+|---|---|---|
+| 1 Public | Intended for public disclosure | Integrity and availability appropriate to use |
+| 2 Internal | Non-public operational/business data | Authenticated access and encrypted transport |
+| 3 Confidential | PII, payment/health metadata, sensitive customer data | Encryption at rest, access logging, minimization, controlled retention |
+| 4 Restricted | Credentials, signing keys, highly regulated data | Strong isolation, tightly controlled access/custody, dedicated key/secret systems |
 
-## 1. Data classification tiers
+Operational and audit logs have a Tier-2 ceiling. Use surrogate identifiers; do not place Tier-3/4 content, tokens, complete identity claims, or raw exception payloads in logs.
 
-Every data category a service handles is classified. The tier drives the controls; a service spanning tiers classifies each category separately and applies the highest tier's controls to mixed workflows.
+## Boundary validation
 
-| Tier | Label | Examples | Controls |
-|---|---|---|---|
-| 1 | Public | Product catalog, public docs | None special |
-| 2 | Internal | Order history, preferences, operational metadata | TLS in transit |
-| 3 | Confidential | PII, payment metadata, health data | TLS + encryption at rest + access logged |
-| 4 | Restricted | Credentials, signing keys, regulated data | Audit-logged; hardware-backed key management and zero-trust access at scale |
+Validate request bodies, parameters, headers, correlation values, uploaded names/content, callback URLs, identity claims, and deserialized dependency data with explicit bounds. Pydantic validates structure; authorization and semantic constraints remain application policies.
 
-Document the service's tier in `README.md`.
+## Authentication profiles
 
-**The log-channel ceiling is Tier 2.** Both operational logs and audit logs sit at Tier 2 Internal. Tier 3/4 data MUST NOT land in either channel — use surrogate identifiers (UUIDs) and let the high-tier data live in its classified store.
+Select and document the actual exposure topology rather than assuming a gateway:
 
-```python
-# Prohibited — Tier 3 data in a log
-log.info("user_updated", email="jane.doe@example.com", name="Jane Doe")
+- direct service validation;
+- gateway plus service validation;
+- service-to-service workload identity/mTLS/token validation; or
+- an approved combination.
 
-# Correct — surrogate identifier + audit record of the action, not its content
-log.info("user_updated", user_id="usr-abc123")
-emit_audit(action=AuditAction.DATA_UPDATE, actor_id=current_user.subject,
-           resource_type="user", resource_id="usr-abc123", correlation_id=correlation_id)
-```
+Every profile defines issuer/trust anchor, audience, permitted algorithms, key discovery and caching, rotation/revocation, clock skew, token lifetime, failure behavior, and identity propagation. The service validates the token intended for it even when an upstream gateway authenticated the request.
 
-**Encryption.** Tier 3/4 data is encrypted at rest (managed-store defaults usually suffice — verify they aren't disabled). All service-to-service traffic uses TLS 1.2+; plaintext HTTP between services in production is prohibited. Tier 3 store access is logged.
+Never forward an end-user bearer token blindly. On-behalf-of calls require an explicit delegation/token-exchange contract with target audience, attenuated scopes, actor/subject distinction, lifetime, replay controls, and downstream authorization. Otherwise use the calling workload's identity and carry user context only through a separately governed claim/audit mechanism.
 
----
+## Authorization
 
-## 2. Security disciplines
+Enforce the policy required by the resource:
 
-**Input validation.** All inbound data is validated by a Pydantic model before reaching the service layer. Raw `request.json()` / dict access without a model is prohibited — it loses type safety and validation.
+- role-based permissions;
+- ownership and tenant boundaries;
+- attributes and relationships; and
+- action/resource/environment constraints.
 
-```python
-# Correct
-async def create_item(payload: ItemCreateRequest) -> ApiResponse[ItemResponse]:
-    item = await service.create(payload)
-    ...
+Deny by default, prevent confused-deputy flows, and test cross-tenant/object-reference cases. Decision logs use stable policy IDs, result, and surrogate subject/resource IDs; do not log full role or attribute sets.
 
-# Prohibited
-async def create_item(request: Request) -> dict:
-    body = await request.json()
-    name = body["name"]  # no validation, no type safety
-    ...
-```
+## Secrets and dependencies
 
-**Output encoding.** Responses go through Pydantic response models (and FastAPI's renderers) — not raw string concatenation. Non-JSON paths use the appropriate response class (`PlainTextResponse`, `HTMLResponse`).
+Secrets are not source/config defaults and never appear in responses, ordinary logs, exception strings, images, fixtures, or retained evidence. Define runtime retrieval, rotation, revocation, and failure behavior. A `sensitive` wrapper or environment variable does not by itself provide storage safety.
 
-**Secrets.** Sourced from environment variables / a secret manager; never committed, never in source, logs, errors, or responses. Services consume rotated secrets without code change. (Settings discipline is in the service-patterns reference.)
+Run SAST, secret scanning, dependency/image vulnerability scanning, SBOM/provenance generation, and license checks according to the selected risk profile. Pin executable dependencies and release image bases by immutable identity; updates remain owned and observable.
 
-**Static analysis.** Run `bandit` (SAST) in CI; treat HIGH-severity findings as build failures. A `detect-private-key` pre-commit hook is the minimum secret-scanning gate. Release artifacts can carry a CycloneDX SBOM.
+## Audit delivery
 
----
-
-## 3. Authentication
-
-**Services don't implement their own authentication.** Authentication happens at the API-gateway tier; services validate the JWT bearer token the gateway passes. No login endpoints, password handling, or token issuance inside a service. Author against this gateway-first model even before a gateway is provisioned.
-
-```python
-bearer_scheme = HTTPBearer()
-
-class AuthenticatedUser:
-    def __init__(self, subject: str, roles: list[str], correlation_id: str) -> None:
-        self.subject = subject
-        self.roles = roles
-        self.correlation_id = correlation_id
-
-async def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
-) -> AuthenticatedUser:
-    """Validate JWT and return parsed user claims. Raises 401 if missing/expired/invalid."""
-    try:
-        payload = jwt.decode(
-            credentials.credentials, settings.jwt_public_key,
-            algorithms=["RS256"], audience=settings.jwt_audience,
-        )
-        user = AuthenticatedUser(
-            subject=payload["sub"], roles=payload.get("roles", []),
-            correlation_id=payload.get("correlation_id", "unknown"),
-        )
-        emit_audit(action=AuditAction.AUTH_SUCCESS, actor_id=user.subject,
-                   resource_type="session", resource_id="jwt", correlation_id=user.correlation_id)
-        return user
-    except jwt.ExpiredSignatureError:
-        log.warning("auth_token_expired")
-        raise HTTPException(status_code=401, detail="Token expired")
-    except jwt.InvalidTokenError as exc:
-        log.warning("auth_token_invalid", error=str(exc))
-        raise HTTPException(status_code=401, detail="Invalid token")
-```
-
-**RS256 only** — asymmetric signing, so services validate with the public key and never hold the signing key. HS256 (symmetric) is prohibited for production: it requires a shared secret between identity provider and every service. This needs two Settings fields: `jwt_public_key` and `jwt_audience`.
-
----
-
-## 4. Authorization (RBAC)
-
-Authorization is enforced via a `require_roles()` dependency factory; both grants and denials are audit-logged.
-
-```python
-def require_roles(*required_roles: str) -> Callable:
-    async def role_checker(user: AuthenticatedUser = Depends(get_current_user)) -> AuthenticatedUser:
-        if not any(role in user.roles for role in required_roles):
-            log.warning("authorization_denied", subject=user.subject,
-                        required=list(required_roles), actual=user.roles)
-            emit_audit(action=AuditAction.AUTHZ_DENIED, actor_id=user.subject,
-                       resource_type="route", resource_id="unknown",
-                       correlation_id=user.correlation_id, outcome="failure")
-            raise HTTPException(status_code=403, detail="Insufficient permissions")
-        return user
-    return role_checker
-```
-
-**Role strings come from a central RBAC authority** — services consume canonical names, they don't invent them. Until that authority exists for a project, don't call `require_roles()` with arbitrary strings.
-
-```python
-# Correct — canonical role string
-@router.post("/orders/{id}/approve", dependencies=[Depends(require_roles("order_approver"))])
-async def approve_order(...): ...
-
-# Prohibited — invented role names
-@router.post("/orders/{id}/approve", dependencies=[Depends(require_roles("approver", "admin"))])
-async def approve_order(...): ...
-```
-
----
-
-## 5. Service-to-service authentication
-
-Inter-service calls use short-lived service-account tokens carrying the *calling service's* identity. **Static service-account keys MUST NOT be stored as secrets in staging or production.** Author against this even before the short-lived-token mechanism is provisioned (local dev can use an application-default-credentials placeholder).
-
-When a call acts on a specific user's behalf, the original end-user JWT is propagated in the `Authorization` header; otherwise the call carries the service's own token. End-user identity also flows via the `correlation_id` across the call chain.
+Classify audit event classes as required or advisory. Required audit evidence for a protected mutation is transactionally coupled or durably handed off before success; advisory audit loss may fail open only with metrics, alerts, and declared residual behavior. Apply data minimization, integrity, access, retention, and clock-correlation rules to the audit channel.

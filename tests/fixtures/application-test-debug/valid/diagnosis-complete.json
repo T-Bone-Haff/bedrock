@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "symptom": "CI test fails intermittently",
+  "scope": "parallel database integration tests",
+  "mode": "offline-diagnosis",
+  "timeline": ["2026-08-10T12:00:00Z first observed"],
+  "evidence": [{"source": "retained CI log", "captured_at": "2026-08-10T12:05:00Z", "classification": "internal", "integrity": "sha256:example"}],
+  "hypotheses": [{"iteration": 1, "hypothesis": "workers share database state", "prediction": "failures correlate with overlapping identifiers", "falsifier": "failure with isolated databases", "evidence": "isolated worker databases removed the collision", "disposition": "supported", "unexplained": []}],
+  "containment": null,
+  "conclusion": {"status": "root_cause_identified", "confidence": "high", "statement": "parallel workers shared mutable database state"},
+  "repair": {"authorized": true, "action": "allocate a database per worker"},
+  "verification": ["reproducer green", "20 repeated CI runs without recurrence"],
+  "residual_risk": "observation window is finite",
+  "owner": "service team"
+}

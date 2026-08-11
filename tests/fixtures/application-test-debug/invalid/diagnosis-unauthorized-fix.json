@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "symptom": "timeout",
+  "scope": "production",
+  "mode": "offline-diagnosis",
+  "timeline": ["2026-08-10T14:00:00Z observed"],
+  "evidence": [{"source": "trace", "captured_at": "2026-08-10T14:01:00Z", "classification": "internal", "integrity": "sha256:example"}],
+  "hypotheses": [{"iteration": 1, "hypothesis": "index missing", "prediction": "plan scans table", "falsifier": "indexed plan", "evidence": "plan scans table", "disposition": "supported", "unexplained": []}],
+  "containment": null,
+  "conclusion": {"status": "root_cause_identified", "confidence": "high", "statement": "missing index causes the timeout"},
+  "repair": {"authorized": false, "action": "create index in production"},
+  "verification": [],
+  "residual_risk": "timeout continues",
+  "owner": "database team"
+}

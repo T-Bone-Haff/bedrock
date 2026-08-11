@@ -1,50 +1,68 @@
 ---
 name: testing
-description: "New-test authoring and test strategy only; every existing failing or flaky test routes to debug, never testing, including a CI-only flake. Use this skill when the deliverable is new or changed tests, a test strategy, or coverage for planned Python service behavior under the house pytest discipline: TDD sequencing, unit, integration, contract, and end-to-end tests, fixtures, mocking, isolation, coverage, and nondeterminism controls. Do not use to diagnose an observed test failure, implement production code, or review a finished diff. A different test stack is a rebind."
+description: "Author new tests, test strategy, fixtures, and planned coverage. Use for test-first specification of new or changed behavior, risk-based test selection, isolation, contract testing, coverage design, and deterministic or nondeterministic evaluation. Do not use to diagnose any observed failing or flaky test, including CI-only flakes (debug), to implement production behavior, or to review a finished diff. Select a stack profile; a materially different unprofiled test stack is a rebind."
 ---
 
 # Testing
 
-How service behavior is specified and verified with tests. This SKILL.md carries the test-driven sequence and the invariants that hold for every test; load the reference for worked patterns (layout, mocking, fixtures, contract/integration/container/e2e).
+Portable discipline for specifying planned behavior and evaluating whether it holds. A test-stack profile supplies framework syntax and fixtures; the core owns evidence quality, isolation, and honest gate claims.
 
-## Stack binding (read once)
+## Interaction contract
 
-These conventions are written against **pytest** on the Python/FastAPI/async stack (`pytest`, `pytest-asyncio`, `pytest-cov`, `respx`, `testcontainers`, `httpx`). They're portable across projects on that stack; a different language or test framework is a **rebind** — re-derive the equivalents, don't line-edit.
+**Inputs:** the behavior or risk to test; its owning contract; selected test profile; applicable environments; determinism classification; and the decision the evidence will gate.
 
-## The TDD sequence
+**Output:** tests and/or a schema-valid strategy stating test level, doubles, isolation, coverage rationale, gate status, evidence retention, and limitations.
 
-Code that implements behavior is preceded by a test that specifies its contract:
+**Authority:** this skill may author tests and testing strategy. It does not diagnose an already observed failure, change production behavior, quarantine a flake without the declared owner/expiry contract, or authorize promotion.
 
-1. **Write the failing test** against the intended interface.
-2. **Run it and observe a *meaningful* red** — a real assertion failure that exercises the contract (e.g. "expected 200, got 501"; "expected `ItemNotFoundError`, none raised"), or a not-yet-implemented error raised by the *target* under a behavioral assertion. A syntax/import/collection error is **not** a meaningful red — it means the test couldn't run yet; fix until it executes its assertion, then observe the red.
-3. **Implement the minimum** to go green.
-4. **Refactor** while keeping green.
-5. **Confirm coverage** holds (§ below).
+**Stop or hand off:** an existing failure or intermittent result routes to `debug`; a specification conflict is triaged as implementation defect, specification defect, or intentional versioned break; missing environment or capability evidence produces an explicit unverified result.
 
-Why the observed red matters: writing tests *alongside* the code and running them green without ever seeing them fail proves nothing — the red is what proves the test specifies behavior the code doesn't yet have. Capture it (the failing-test runner output in the commit message, or an explicit note when test and implementation land atomically). The reference has the full meaningful-vs-not-meaningful breakdown.
+## Test-first workflow
 
-**What counts as behavior** (so is test-first): anything with conditional logic, iteration, non-trivial call chains, or external effects — including in-memory adapters, migration scripts, seed loaders, utilities. **Exempt:** empty stubs, type stubs / re-exports, config-only files, fixture data, docs. **Refactors and bug-fixes** don't need a *new* failing test for the refactor itself — but a bug fix needs a reproducing test that fails before the fix lands.
+1. Express the intended observable contract in a test.
+2. Run it before implementation and observe a meaningful failure at the target boundary. Collection/import defects are harness failures, not a meaningful red.
+3. Implement the minimum behavior under the owning authoring skill.
+4. Refactor while the contract remains green.
+5. Run the applicable risk-selected suite and coverage gates.
 
-## Always-apply invariants
+Meaningful-red is a workflow discipline, not mandatory Git-history narration. Durable evidence is the retained regression test plus an inspectable demonstration of the failure mode when the change warrants it. A bug report already containing an observed failure routes through `debug`; its reproducer becomes regression coverage after diagnosis.
 
-1. **Coverage floor is 90% line coverage, enforced in CI** — and you don't game it. The omit list holds only files that are entirely real-infrastructure with no testable logic; in-memory/test-friendly adapters are testable and are **never** omitted.
-2. **Unit tests mock all external dependencies** (DB, HTTP, brokers) — no real network or DB connections in unit tests. Mocks assert they were called as expected.
-3. **AAA structure** (Arrange-Act-Assert) with section comments, and the module comment block on every test file.
-4. **Naming:** `test_<unit>_<scenario>_<expected>` — e.g. `test_get_item_by_id_when_item_not_found_raises_not_found_error`.
-5. **Test isolation:** no test depends on state left by another. Use transaction rollback or fresh fixtures.
-6. **Service-layer tests use the in-memory adapter, not a mocked port** — it preserves the contract the port enforces (the in-memory adapter is part of the application-code layout).
-7. **Disable telemetry export in the test environment before any app import**, by direct assignment — not `setdefault`-style conditional patterns, which a parent-env value silently defeats.
-8. **Every endpoint has a contract test** asserting request/response shape under representative inputs; the typed models are the source of truth.
-9. **Mechanical gates get deterministic tests; judgments get eval harnesses.** An LLM in the system exempts nothing around it from this sequence — the deterministic machinery (parsers, gates, routers, verifiers) is TDD'd and covered as always; the judgment steps themselves are evaluated per `reference/nondeterministic-components.md`.
+## Test taxonomy and doubles
 
-## Where to look
+- **Unit:** one behavioral unit, no real network/process/database. Prefer fakes or in-memory adapters for state/behavior contracts; use mocks when the interaction itself is the contract.
+- **Integration:** real boundaries inside a controlled environment, including application lifecycle, serialization, persistence, or broker behavior.
+- **Contract:** versioned consumer and provider artifacts, publication, ownership, compatibility verification, and migration behavior—not merely a mocked HTTP response.
+- **End to end:** a declared user/system path in a named environment. Each suite explicitly states whether it blocks merge, deployment, promotion, or nothing.
+- **Evaluation:** a versioned instrument for nondeterministic judgment, with dataset/model/prompt/judge identity, sampling, uncertainty, contamination controls, drift, and budget.
 
-Load `reference/test-authoring.md` for the worked patterns: the test-tree layout; the full test-first meaningful-failure rules; coverage and omit discipline; AAA with a worked example; mocking and shared fixtures (`conftest.py`); contract tests (`respx`); integration tests (`httpx.AsyncClient`); containerized dependencies (`testcontainers`); isolation via transaction rollback; and e2e.
+Assert observable state and behavior by default. Interaction assertions are appropriate only when calls, ordering, attempts, or non-occurrence are themselves the contract. A safe refactor that preserves behavior should not require mock choreography changes.
 
-Load `reference/nondeterministic-components.md` when the code under test embeds LLM judgment: the gates-vs-judgments split, recorded-fixture regression, LLM-as-judge with cold calibration, and what meaningful-red means for a judgment.
+## Isolation and fixtures
 
-## Boundary with application-code
+- No test consumes state left by another. Control clocks, randomness, locale, environment, concurrency, and identifiers where they affect outcomes.
+- Lifecycle-aware application fixtures must execute startup and shutdown and prove cleanup on success and failure.
+- Database isolation must cover connections opened by the application, multiple requests, failures, and parallel workers; a transaction on a test-only session is insufficient.
+- External services are replaced or containerized according to test level. Test doubles declare what they simulate and what they cannot prove.
+- Telemetry export is disabled before application import in the Haffey profile; other profiles provide their equivalent.
 
-The **`pyproject.toml` toolchain config** — the `pytest-cov` gate, `asyncio_mode`, the coverage threshold line — lives in the `application-code` skill, because standing it up is part of scaffolding a service. **This skill owns writing the tests and the coverage *discipline*** (what gets measured, the no-omit-cheating rule, the test kinds). If you're scaffolding the harness, that's application-code; if you're writing or shaping tests, you're here.
+## Coverage and risk
 
-**Frontend testing** → the `frontend-code` skill's testing reference — the vitest/Testing Library rebind of this discipline for the TypeScript/React stack; this skill's pytest binding does not gate frontend test work.
+Coverage is a signal, not proof. Each strategy declares justified line and branch thresholds, critical paths/states, allowed exclusions, and any mutation-quality requirement. Equal line coverage may yield different gates when branch, state, mutation, or risk coverage differs. Never exclude testable code merely to pass.
+
+Select advanced methods by risk: property-based, fuzz, mutation, concurrency, migration, performance/load, security, fault-injection, and chaos testing each require an applicability decision and an explicit `not_applicable` rationale when considered but omitted.
+
+## Flakes and quarantine
+
+An observed flake routes immediately to `debug`. Retries may gather evidence or protect a bounded gate only when capped and visible; they do not turn a flake green. Quarantine requires an owner, issue, scope, entry evidence, expiry, restoration criteria, and escalation when the maximum duration is reached.
+
+## Profiles and references
+
+- [Haffey pytest/FastAPI profile](reference/test-authoring.md): pytest layout, lifespan, persistence, contract, container, and E2E patterns.
+- [Nondeterministic evaluation contract](reference/nondeterministic-components.md): deterministic-mechanism/evaluation split and statistical evidence.
+- Machine-readable output: [test strategy schema](reference/test-strategy.schema.json).
+
+Clear naming and structure are required; module revision headers and mandatory Arrange/Act/Assert comments are not.
+
+## Routing boundary
+
+Planned tests and strategy stay here. Observed failures/flakes route to `debug`, even if the requested wording says “use testing.” Production implementation routes to its domain skill. A finished test diff routes to `code-review` for review.

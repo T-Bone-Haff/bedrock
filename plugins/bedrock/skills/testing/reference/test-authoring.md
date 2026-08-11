@@ -1,252 +1,82 @@
-# Reference: Test Authoring
+# Haffey pytest/FastAPI profile
 
-Worked patterns for the test kinds, the test-first verification rules in full, and coverage discipline. The TDD sequence and the always-apply invariants are in `SKILL.md`; this is the detail.
+This is the pytest realization of the portable testing contract for Python/FastAPI/async SQLAlchemy services. It is a profile, not universal Bedrock law.
 
-## Contents
+## Layout and markers
 
-- [1. Test layout](#1-test-layout)
-- [2. Test-first verification — meaningful failure](#2-test-first-verification--meaningful-failure)
-- [3. Coverage discipline](#3-coverage-discipline)
-- [4. AAA structure and naming](#4-aaa-structure-and-naming)
-- [5. Mocking and fixtures](#5-mocking-and-fixtures)
-- [6. Contract tests](#6-contract-tests)
-- [7. Integration tests](#7-integration-tests)
-- [8. Containerized dependencies](#8-containerized-dependencies)
-- [9. Isolation](#9-isolation)
-- [10. E2E](#10-e2e)
-- [11. Telemetry isolation in tests](#11-telemetry-isolation-in-tests)
-
----
-
-## 1. Test layout
-
-Tests live in `tests/` at the service root:
-
-```
+```text
 tests/
-├── __init__.py
-├── conftest.py
-├── unit/          # fast, isolated; external dependencies mocked
-├── integration/   # real FastAPI app via httpx; containerized backends where needed
-├── contract/      # contract tests (§6): provider-side endpoint shape + consumer-side vs mocked providers
-└── e2e/           # full-stack against a deployed environment (advisory)
+  unit/
+  integration/
+  contract/
+  e2e/
+  conftest.py
 ```
 
-- **Unit** — under ~1 second per test on average; externals mocked.
-- **Integration** — exercise the real app via `httpx.AsyncClient`.
-- **Contract** — the §6 contract tests, provider- and consumer-side, homed in their own directory.
-- **E2E** — run against a deployed environment; advisory (non-blocking) in CI.
+Use explicit markers for suites whose environment or gate differs. Names should communicate unit, scenario, and expected outcome. Module revision headers and mandatory Arrange/Act/Assert comments are not required; clear structure is.
 
----
+## Doubles by purpose
 
-## 2. Test-first verification — meaningful failure
+- Pure domain behavior: ordinary values or small fakes.
+- Stateful repository behavior: an in-memory adapter implementing the same contract, where maintaining it earns its cost.
+- Interaction contract: `Mock`/`AsyncMock` and assertions limited to the interaction that is behavior.
+- HTTP dependency: `respx` for consumer behavior; do not label it provider verification.
+- Real persistence/broker boundary: disposable container or isolated service in integration tests.
 
-The TDD sequence (SKILL.md) requires *observing* a failing test before implementing. The failure has to be meaningful — it has to prove the test exercises the contract.
+Mocks do not universally require call assertions. Assert calls only for behavior such as “must not publish,” ordering, attempt budget, audit emission, or exactly-once handoff.
 
-**Qualifies as a meaningful red:**
-- A framework-native assertion failure from the test's intended spec — "expected `200`, got `501`"; "expected exception `X`, none raised".
-- A not-yet-implemented error raised by the **target** function while a behavioral test asserts specific output against it. The stub surface *is* the target surface, so the exception is the meaningful signal — this is the normal stub-test pattern.
+## Lifespan-aware application fixture
 
-**Does NOT qualify** (the test couldn't run its assertion yet — fix and rerun before claiming a red):
-- Syntax errors — the test code is malformed.
-- Import / module-not-found errors — stub the target minimally until the import resolves.
-- Name/attribute errors at collection time — fix until the test collects.
-- Any test-runner collection error — the suite is broken.
-
-**Capture the observation** before implementation lands: put the failing-test runner output under a `Test-first verification:` heading in the failing-test commit, or — when the failing test and its implementation land atomically — state explicitly that the test was run red and show the output before the implementation.
-
-The bar is bounded: one observed meaningful red per behavioral unit before its implementation, not "re-confirm every test fails every time." Refactors are exempt (existing tests define the contract); a bug fix needs a reproducing test that fails before the fix.
-
----
-
-## 3. Coverage discipline
-
-The floor is **90% line coverage, enforced as a CI hard gate**. Two anti-cheating rules make the number honest:
-
-- **No omitting testable code from measurement.** The coverage omit list holds *only* files that are entirely real-infrastructure with no testable implementation. In-memory adapters, env adapters, and other test-friendly implementations are fully testable and are **never** omitted — omitting them is the most common way a green coverage number lies.
-- **No measuring around the gaps.** Passing the threshold by scoping measurement away from untested code defeats the gate.
-
-The `pytest-cov` invocation and the `--cov-fail-under` line live in the service's `pyproject.toml` (set up under the application-code skill); this discipline governs what that gate is allowed to count.
-
----
-
-## 4. AAA structure and naming
-
-Every test file carries the module comment block and follows Arrange-Act-Assert with section comments. Test names are `test_<unit>_<scenario>_<expected>`.
-
-```python
-##############################################################################
-# Module: test_item_service.py
-# Service: inventory-service
-# Author: <author or team>
-# Created: YYYY-MM-DD
-# Revised: YYYY-MM-DD
-# Description: Unit tests for ItemService business logic.
-##############################################################################
-
-import pytest
-from unittest.mock import AsyncMock
-from app.services.item_service import ItemService
-from app.models.responses import ItemResponse
-from app.domain.exceptions import ItemNotFoundError
-
-class TestItemService:
-    @pytest.fixture
-    def mock_repository(self) -> AsyncMock:
-        return AsyncMock()
-
-    @pytest.fixture
-    def service(self, mock_repository: AsyncMock) -> ItemService:
-        return ItemService(repository=mock_repository)
-
-    @pytest.mark.asyncio
-    async def test_get_by_id_when_item_exists_returns_item_response(
-        self, service: ItemService, mock_repository: AsyncMock
-    ) -> None:
-        # Arrange
-        expected = ItemResponse(id="abc-123", name="Widget", owner_id="user-1")
-        mock_repository.find_by_id.return_value = expected
-        # Act
-        result = await service.get_by_id("abc-123")
-        # Assert
-        assert result == expected
-        mock_repository.find_by_id.assert_awaited_once_with("abc-123")
-
-    @pytest.mark.asyncio
-    async def test_get_by_id_when_item_not_found_raises_not_found_error(
-        self, service: ItemService, mock_repository: AsyncMock
-    ) -> None:
-        # Arrange
-        mock_repository.find_by_id.return_value = None
-        # Act / Assert
-        with pytest.raises(ItemNotFoundError):
-            await service.get_by_id("nonexistent-id")
-```
-
----
-
-## 5. Mocking and fixtures
-
-**Mocking policy.** Unit tests mock all external dependencies (DB, HTTP clients, brokers) — no real network or DB connections. Mocks assert they were called with the expected arguments (`assert_awaited_once_with`).
-
-**Service-layer tests use the in-memory adapter, not a mocked port.** The in-memory adapter (a sibling of the production adapter in the application-code layout) preserves the contract the port enforces; mocking the port directly lets the test drift from that contract.
-
-**Shared fixtures** live in `tests/conftest.py`:
+The transport alone does not guarantee lifespan execution. Use an explicit lifespan manager:
 
 ```python
 import pytest
-from httpx import AsyncClient, ASGITransport
-from app.main import app
-
-@pytest.fixture(scope="session")
-def anyio_backend() -> str:
-    return "asyncio"
+from asgi_lifespan import LifespanManager
+from httpx import ASGITransport, AsyncClient
 
 @pytest.fixture
-async def async_client() -> AsyncClient:
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
-        yield client
+async def client(app):
+    async with LifespanManager(app):
+        async with AsyncClient(
+            transport=ASGITransport(app=app), base_url="http://test"
+        ) as value:
+            yield value
 ```
 
----
+Test startup failure and cleanup as well as the happy path. Disable telemetry export through direct environment assignment before importing the application.
 
-## 6. Contract tests
+## Database isolation
 
-Every endpoint has a contract test asserting request/response shape under representative inputs — the typed models are the source of truth, and when implementation and contract diverge, the contract wins.
+A nested transaction on a session owned only by the test does not isolate requests that open different sessions/connections. Use one of these declared patterns and prove it under multiple requests, failures, and parallel workers:
 
-Services consuming *external* APIs maintain consumer-driven contract tests with recorded fixtures, using `respx`:
+- bind application sessions to a test-owned connection and roll back the outer transaction;
+- create a unique database/schema per worker/test and destroy it; or
+- reset/truncate through a controlled fixture when transaction binding is impossible.
 
-```python
-import respx, httpx, pytest
-from app.clients.pricing_client import PricingClient
+Test the actual dependency override/wiring. Verify no committed state remains after both success and exception paths.
 
-@pytest.mark.asyncio
-class TestPricingServiceContract:
-    @respx.mock
-    async def test_get_price_returns_expected_schema(self) -> None:
-        respx.get("https://pricing-service/api/v1/prices/item-123").mock(
-            return_value=httpx.Response(200, json={"item_id": "item-123", "price": 9.99, "currency": "USD"})
-        )
-        client = PricingClient(base_url="https://pricing-service")
-        result = await client.get_price("item-123", correlation_id="test-cid")
-        assert result.item_id == "item-123"
-        assert result.price == 9.99
-```
+## Contract testing
 
----
+Endpoint tests verify the service's OpenAPI/request/response/error model. Cross-service contract tests additionally require:
 
-## 7. Integration tests
+- versioned consumer expectation and provider artifact;
+- an owner and publication location;
+- provider verification against the exact artifact;
+- compatibility policy for additive and breaking changes; and
+- deployment/promotion rules when verification fails.
 
-Integration tests exercise the real FastAPI app via `httpx.AsyncClient`:
+A mocked `respx` response proves consumer handling only. It is not provider compatibility evidence.
 
-```python
-import pytest
-from httpx import AsyncClient
+## E2E and promotion
 
-@pytest.mark.asyncio
-class TestItemEndpoints:
-    async def test_create_item_returns_201_and_item_response(self, async_client: AsyncClient) -> None:
-        payload = {"name": "Widget", "description": "A test widget", "owner_id": "user-1"}
-        response = await async_client.post("/api/v1/items/", json=payload)
-        assert response.status_code == 201
+Each suite declares its gate, such as `merge`, `staging_deploy`, `production_promotion`, or `advisory`. A suite cannot be both required for production promotion and globally non-blocking. Advisory failures remain visible and owned.
 
-    async def test_readyz_returns_503_when_database_unavailable(
-        self, async_client: AsyncClient, monkeypatch
-    ) -> None:
-        async def broken_db():
-            raise Exception("Connection refused")
-        monkeypatch.setattr("app.core.dependencies.get_db", broken_db)
-        response = await async_client.get("/readyz")
-        assert response.status_code == 503
-```
+## Coverage and advanced methods
 
----
+Configure `pytest-cov` line and branch reporting from the schema-valid strategy; do not assume 90%. Critical security, money, tenant, migration, retry, and state-machine paths may require 100% state/branch coverage even when the project-wide threshold is lower.
 
-## 8. Containerized dependencies
+Risk-triggered methods include Hypothesis property tests, fuzzing, mutation testing, concurrency scheduling, migration upgrade/downgrade, performance/load, security probes, fault injection, and chaos. Record the trigger, environment, budget, pass criterion, and `not_applicable` rationale.
 
-Tests needing a real backend use `testcontainers` rather than a shared external instance:
+## Flakes
 
-```python
-import pytest
-from testcontainers.postgres import PostgresContainer
-from sqlalchemy.ext.asyncio import create_async_engine
-
-@pytest.fixture(scope="session")
-async def db_container():
-    with PostgresContainer("postgres:16") as pg:
-        yield pg
-
-@pytest.fixture(scope="session")
-async def db_engine(db_container):
-    engine = create_async_engine(db_container.get_connection_url(driver="asyncpg"))
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    yield engine
-    await engine.dispose()
-```
-
----
-
-## 9. Isolation
-
-No test relies on state left by a previous test. Use transaction rollback for DB isolation:
-
-```python
-@pytest.fixture(autouse=True)
-async def rollback_transaction(db_session: AsyncSession):
-    async with db_session.begin_nested():
-        yield
-        await db_session.rollback()
-```
-
----
-
-## 10. E2E
-
-E2E tests live in `tests/e2e/`, tagged `@pytest.mark.e2e`, and run against a fully deployed environment before a production promotion. They're advisory (non-blocking) in CI — useful signal, not a merge gate.
-
----
-
-## 11. Telemetry isolation in tests
-
-The test environment disables telemetry export (traces, metrics, logs, SDK-level) **before any application import executes**, by **direct assignment** — not `setdefault` or other conditional/inheriting patterns, because a value inherited from the parent environment silently defeats the disable. This is the one sanctioned place for direct environment-variable assignment; application code itself always goes through typed Settings.
+On first observed intermittence, route to `debug`. If quarantine is authorized, mark it visibly with issue, owner, entry/expiry dates, retry cap, affected gate, and exit criteria. A retry pass never erases the failure observation.

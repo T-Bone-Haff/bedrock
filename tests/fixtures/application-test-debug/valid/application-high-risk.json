@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0.0",
+  "stack_profile": "haffey-python-service",
+  "capabilities": ["minimum", "persistence", "outbound", "protected", "durable-work", "high-risk"],
+  "data": {"maximum_tier": 4, "log_ceiling": 2},
+  "runtime": {"concurrency_model": "mixed-bounded", "shutdown_behavior": "drain durable handoffs and cancel bounded work"},
+  "verification": ["cross-tenant authorization", "audit delivery", "container provenance"]
+}

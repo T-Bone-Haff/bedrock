@@ -1,0 +1,37 @@
+schema_version: 1
+ticket: HEB-115
+baseline_commit: 6cc85677b4a70b86d38d445bdcd202ef0f8f49ac
+branch: feature/heb-115-wp5a-correct-application-code-testing-and-debug-skills
+profile: direct-evidence-cited-audit
+convergence_claim: false
+authority:
+  - docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md
+  - docs/architecture/skill-architecture.md
+  - docs/architecture/coverage-map.md
+  - docs/architecture/migration-compatibility.md
+contracts:
+  - plugins/bedrock/skills/application-code/SKILL.md
+  - plugins/bedrock/skills/application-code/reference/application-service-profile.schema.json
+  - plugins/bedrock/skills/testing/SKILL.md
+  - plugins/bedrock/skills/testing/reference/test-strategy.schema.json
+  - plugins/bedrock/skills/debug/SKILL.md
+  - plugins/bedrock/skills/debug/reference/diagnosis-record.schema.json
+validators:
+  - scripts/validate_application_test_debug_contracts.py
+  - scripts/validate_plugin.py
+  - scripts/validate_safety.py
+fixtures:
+  - tests/fixtures/application-test-debug/behavior.yaml
+  - tests/fixtures/application-test-debug/valid/application-minimum.json
+  - tests/fixtures/application-test-debug/valid/application-high-risk.json
+  - tests/fixtures/application-test-debug/valid/test-strategy.json
+  - tests/fixtures/application-test-debug/valid/diagnosis-complete.json
+  - tests/fixtures/application-test-debug/valid/diagnosis-inconclusive.json
+  - tests/fixtures/application-test-debug/invalid/application-undeclared-capability.json
+  - tests/fixtures/application-test-debug/invalid/test-strategy-missing-branch.json
+  - tests/fixtures/application-test-debug/invalid/diagnosis-unsupported-root-cause.json
+  - tests/fixtures/application-test-debug/invalid/diagnosis-unauthorized-fix.json
+limitations:
+  - Direct evidence-cited review only; no runner-backed or mechanical-convergence claim.
+  - Local Docker evidence is unavailable unless a Docker daemon is present; required CI must run it without skipping.
+  - Live routing evidence is retained separately from deterministic routing fixtures and does not convert this direct audit into a mechanical-convergence claim.

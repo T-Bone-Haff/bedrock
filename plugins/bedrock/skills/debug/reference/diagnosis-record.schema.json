@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:haffey:bedrock:diagnosis-record:1.0.0",
+  "title": "Diagnosis record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "symptom", "scope", "mode", "timeline", "evidence", "hypotheses", "containment", "conclusion", "repair", "verification", "residual_risk", "owner"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "symptom": {"type": "string", "minLength": 1},
+    "scope": {"type": "string", "minLength": 1},
+    "mode": {"enum": ["active-harm", "offline-diagnosis"]},
+    "timeline": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "evidence": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["source", "captured_at", "classification", "integrity"],
+        "properties": {
+          "source": {"type": "string", "minLength": 1},
+          "captured_at": {"type": "string", "format": "date-time"},
+          "classification": {"type": "string", "minLength": 1},
+          "integrity": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "hypotheses": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["iteration", "hypothesis", "prediction", "falsifier", "evidence", "disposition", "unexplained"],
+        "properties": {
+          "iteration": {"type": "integer", "minimum": 1},
+          "hypothesis": {"type": "string", "minLength": 1},
+          "prediction": {"type": "string", "minLength": 1},
+          "falsifier": {"type": "string", "minLength": 1},
+          "evidence": {"type": "string", "minLength": 1},
+          "disposition": {"enum": ["supported", "falsified", "unresolved"]},
+          "unexplained": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        }
+      }
+    },
+    "containment": {"type": ["string", "null"]},
+    "conclusion": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "confidence", "statement"],
+      "properties": {
+        "status": {"enum": ["root_cause_identified", "contributing_factors_only", "insufficient_evidence"]},
+        "confidence": {"enum": ["low", "medium", "high"]},
+        "statement": {"type": "string", "minLength": 1}
+      }
+    },
+    "repair": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authorized", "action"],
+      "properties": {
+        "authorized": {"type": "boolean"},
+        "action": {"type": ["string", "null"]}
+      },
+      "allOf": [{"if": {"properties": {"authorized": {"const": false}}}, "then": {"properties": {"action": {"type": "null"}}}}]
+    },
+    "verification": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "residual_risk": {"type": "string", "minLength": 1},
+    "owner": {"type": "string", "minLength": 1}
+  }
+}

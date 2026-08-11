@@ -1,8 +1,8 @@
 schema_version: 1
 samples:
   - path: plugins/bedrock/skills/application-code/reference/01-code-structure.md
-    language: bash
-    count: 2
+    language: text
+    count: 1
     classification: illustrative
     owner: HEB-115
   - path: plugins/bedrock/skills/application-code/reference/01-code-structure.md
@@ -11,29 +11,14 @@ samples:
     classification: fixture-backed
     evidence: [tests/fixtures/safety/python-service/Dockerfile]
     command: python3 -m unittest tests.test_safety_integration.ContainerSafetyIntegrationTests.test_runtime_environment_image_starts_and_serves_health -v
-  - path: plugins/bedrock/skills/application-code/reference/01-code-structure.md
-    language: python
-    count: 6
-    classification: illustrative
-    owner: HEB-115
-  - path: plugins/bedrock/skills/application-code/reference/01-code-structure.md
-    language: toml
+  - path: plugins/bedrock/skills/testing/reference/test-authoring.md
+    language: text
     count: 1
     classification: illustrative
     owner: HEB-115
-  - path: plugins/bedrock/skills/application-code/reference/02-service-patterns.md
+  - path: plugins/bedrock/skills/testing/reference/test-authoring.md
     language: python
-    count: 14
-    classification: illustrative
-    owner: HEB-115
-  - path: plugins/bedrock/skills/application-code/reference/03-security-and-data.md
-    language: python
-    count: 5
-    classification: illustrative
-    owner: HEB-115
-  - path: plugins/bedrock/skills/application-code/reference/04-shell-scripts.md
-    language: bash
-    count: 5
+    count: 1
     classification: illustrative
     owner: HEB-115
   - path: plugins/bedrock/skills/infrastructure-code/reference/01-module-structure-and-style.md
@@ -67,8 +52,3 @@ samples:
     count: 1
     classification: illustrative
     owner: HEB-113
-  - path: plugins/bedrock/skills/testing/reference/test-authoring.md
-    language: python
-    count: 6
-    classification: illustrative
-    owner: HEB-115
