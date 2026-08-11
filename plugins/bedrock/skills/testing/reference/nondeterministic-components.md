@@ -1,38 +1,32 @@
-# Reference: Non-Deterministic Components
+# Nondeterministic evaluation contract
 
-How to test code whose behavior includes LLM judgment. The TDD sequence and the always-apply invariants are in `SKILL.md`; this is the discipline for the components where "run it again" doesn't give the same answer. The governing split is one sentence: **mechanical gates get deterministic tests; judgments get eval harnesses.**
+Mechanical gates receive deterministic tests; judgment distributions receive evaluation. An LLM or stochastic component exempts none of its deterministic parsing, validation, routing, budgeting, identity, or terminal machinery from ordinary tests.
 
-## 1. The split — and what it does not exempt
+## Evaluation identity
 
-Partition the component the way `agent-code`'s execute-vs-reason bright line already requires: judgment steps (LLM calls) vs. mechanism (deterministic code). Then:
+Every retained evaluation report records:
 
-- **Every mechanism is tested exactly as this skill always demands** — TDD sequence, meaningful red, coverage floor, no exceptions. Parsers, admission gates, identity derivation, routers, evidence verifiers: all deterministic, all unit-tested, all at threshold. The presence of an LLM in the system exempts nothing around it — the reference instantiation (the SOFIA agent-loop) holds 100% line+branch coverage on its runner precisely because the runner is mechanism.
-- **Judgment steps get eval harnesses** — the disciplines below. An eval harness is not a weaker unit test; it is a different instrument for a different object: a distribution of behavior rather than a fixed input/output contract.
+- dataset name, version, digest, population, sampling method, sample size, and exclusions;
+- system/model/provider/version, prompt artifact version/digest, decoding parameters, and tool/capability versions;
+- evaluator/judge identity, rubric version, independence relationship, calibration dataset/results, and known error asymmetry;
+- preregistered metrics, thresholds, uncertainty/confidence method, repeated-draw policy, and stop rule;
+- contamination/leakage controls, drift comparison, environment/time, token/spend/latency budgets, and raw-content retention policy; and
+- every failed, null, excluded, or retried run. Retries do not overwrite the original observation.
 
-The classic failure this split prevents: mocking the LLM and calling the system tested (the mechanism was tested; the judgment never was), or conversely treating the whole system as untestable because one step is non-deterministic.
+## Datasets and judgments
 
-## 2. Recorded-fixture regression
+Use representative positives, negatives, boundary cases, adversarial cases, and subgroup/risk slices. Version changes to dataset, prompt, judge, or acceptance policy independently. Do not compare runs as equivalent when a load-bearing identity changed.
 
-Captured real outputs are the cheapest eval substrate you will ever own.
+Human or model judges are instruments, not authority. Calibrate cold against known labels, inspect false-pass and false-fail behavior, prevent self-judging where independence matters, and escalate low-confidence consequential calls. Confidence intervals or another justified uncertainty estimate accompany aggregate rates; one plausible output is not evidence of reliability.
 
-- **Capture verbatim at the seam.** Raw model response bodies, persisted before parsing, become replay fixtures for free — the parse seam, the validators, and the downstream mechanism can all be regression-tested against real emissions at $0 per run.
-- **Replay before you spend.** A captured run answers most what-happened and does-it-still-parse questions without a live call. New live spend is for genuinely emergent questions a fixture cannot answer.
-- **Fixture outcomes are data, not aspiration.** A replay suite asserts what the system *does* with real captured inputs — including the malformed ones. Keep the malformed emissions; they are the regression suite for the tolerance layers.
+## Replays and content safety
 
-## 3. LLM-as-judge, calibrated cold
+Prefer sanitized, consented, policy-permitted recorded fixtures for deterministic replay at the parser/mechanism boundary. Do not persist raw prompts or completions by default. Hash-only or derived fixtures may be appropriate when content classification forbids retention. A replay proves behavior on retained emissions, not current live-model quality.
 
-When a judgment's quality is itself scored by a model (or by hand-rules over model output), the judge earns trust the same way any instrument does — by calibration against known answers, never by plausibility:
+## Meaningful red and change evidence
 
-- **Pre-register the pass criteria before the run.** Criteria committed in advance (in the spec, in git) — so the scoring cannot rationalize whatever happens. When you are both experimenter and audience, hindsight rationalization is the default failure mode.
-- **Score cold, against ground truth.** Judge outputs are hand-audited after the run, against the actual inputs — not live, and not by trusting the judge's own confidence. Low-confidence judgments get individually checked.
-- **Watch the judge's error asymmetry.** A judge on a load-bearing path is biased fail-safe, and the calibration checks that the bias held — a false "pass" from a judge is the silent error; a false "fail" costs one glance.
+For deterministic mechanism, use an ordinary meaningful failing test. For judgment behavior, preregister the criterion and observe the baseline fail before claiming the change corrected it. Re-run the same identified evaluation plus any declared non-regression set. Report uncertainty and spend; do not cherry-pick draws or silently purchase retries until a threshold passes.
 
-The full instrument-operating discipline — how many draws buy recall, positive controls, generation change-control, attribution — lives in `design-review-loop`'s operating-the-instrument reference for the loop family; carry those laws from there when you are operating that class of instrument, and treat their transfer to a new instrument family as a design bet to be proven, not an inheritance.
+## Ownership boundary
 
-## 4. Meaningful red for a judgment
-
-The TDD sequence's observed-red rule has an honest rebind for judgment steps: the "failing test" is a **behavioral eval with a pre-registered pass criterion, observed failing before the charter earns it**. A charter change that claims to fix a behavior owes the same evidence a bug fix owes — the eval that failed before, passing after, on the same fixtures. What does *not* qualify: eyeballing one good output and declaring the behavior present — that is the judgment-world equivalent of a test that never ran red.
-
-## 5. Cost discipline in test design
-
-Eval harnesses spend real tokens. The spend rules apply to test design too: replay captured fixtures before buying live calls; bound live evals to the passes the criterion needs; a deterministic assertion over captured state needs no live event at all.
+`testing` authors the evaluation strategy and evidence contract. `agent-code` supplies model-call implementation constraints. An orchestration kernel may execute repeated draws, budgets, and durable state, but it does not redefine the evaluation's normative pass criteria.

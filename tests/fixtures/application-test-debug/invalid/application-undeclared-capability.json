@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0.0",
+  "stack_profile": "haffey-python-service",
+  "capabilities": ["persistence"],
+  "data": {"maximum_tier": 2, "log_ceiling": 2},
+  "runtime": {"concurrency_model": "async-event-loop", "shutdown_behavior": "close resources"},
+  "verification": ["integration tests"]
+}

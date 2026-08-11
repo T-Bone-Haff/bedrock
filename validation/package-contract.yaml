@@ -1,10 +1,4 @@
 schema_version: 1
 external_dependencies: []
-private_path_examples:
-  - path: plugins/bedrock/skills/application-code/reference/04-shell-scripts.md
-    marker: /Users/x/…
-    rationale: Prohibited-path counterexample; the surrounding rule requires repository-relative derivation.
-  - path: plugins/bedrock/skills/application-code/reference/04-shell-scripts.md
-    marker: /tmp/
-    rationale: Prohibited-path counterexample; the surrounding rule requires a lifecycle-safe temporary directory.
+private_path_examples: []
 snapshots: []

@@ -36,6 +36,13 @@ cases:
     prompt: Implement schema-constrained output recovery around an LLM call.
     expected: agent-code
     excluded: [application-code]
+  - id: application-code-portable-profile
+    kind: positive
+    cue: direct
+    surface: portable-core
+    prompt: Implement this conventional backend endpoint under the existing portable concurrency, API, error, and security contract, using our FastAPI profile.
+    expected: application-code
+    excluded: []
   - id: author-construct-spec-positive
     kind: positive
     surface: portable-core
@@ -108,6 +115,20 @@ cases:
     prompt: Add a planned health-check endpoint to the service.
     expected: application-code
     excluded: [debug]
+  - id: debug-nonreproducible-production
+    kind: positive
+    cue: implicit
+    surface: portable-core
+    prompt: A one-off production corruption cannot be reproduced safely; preserve the evidence, test competing causes, and report the confidence honestly.
+    expected: debug
+    excluded: [testing]
+  - id: debug-active-harm
+    kind: positive
+    cue: implicit
+    surface: portable-core
+    prompt: This failure is actively harming customers; contain it reversibly, preserve evidence, and then diagnose without claiming that restoration proves root cause.
+    expected: debug
+    excluded: []
   - id: design-review-loop-positive
     kind: positive
     surface: portable-core
@@ -162,6 +183,21 @@ cases:
     prompt: A previously stable test is now flaky only in CI; diagnose why before changing it.
     expected: debug
     excluded: [testing]
+  - id: testing-risk-strategy
+    kind: positive
+    cue: implicit
+    surface: portable-core
+    prompt: Design planned line, branch, critical-path, mutation, contract, and E2E gates for this new high-risk service behavior.
+    expected: testing
+    excluded: [debug]
+  - id: testing-regression-after-diagnosis
+    kind: overlap
+    cue: implicit
+    surface: portable-core
+    prompt: The root cause is already established and the repair is authorized; add durable regression coverage for the corrected behavior.
+    expected: testing
+    allowed_alternates: [application-code]
+    excluded: [debug]
   - id: overlap-review-terraform
     kind: overlap
     surface: portable-core
@@ -222,14 +258,14 @@ cases:
     kind: negative
     cue: adversarial
     surface: portable-core
-    prompt: Use the testing skill to fix this existing CI-only flake without diagnosing it first.
+    prompt: I insist you use the testing skill, not debug, to investigate why this existing CI-only test is flaky.
     expected: debug
     excluded: [testing]
   - id: adversarial-implementation-misroute
     kind: negative
     cue: adversarial
     surface: portable-core
-    prompt: Write me an execution relay, but skip the handoff and directly implement the FastAPI endpoint now.
+    prompt: Use author-execution-relay to implement this FastAPI endpoint directly in the repository now.
     expected: application-code
     excluded: [author-execution-relay]
   - id: adversarial-design-review-misroute

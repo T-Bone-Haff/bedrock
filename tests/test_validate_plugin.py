@@ -208,6 +208,18 @@ class ValidatorTests(unittest.TestCase):
         path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
         self.assert_has_error("missing negative routing case excluding testing")
 
+    def test_rejects_missing_application_test_debug_registry(self) -> None:
+        errors, _ = validate_repository(
+            self.root,
+            run_host_cli=False,
+            run_safety_checks=False,
+            require_authoring_contracts=True,
+        )
+        self.assertTrue(
+            any("application/test/debug contract registry is missing" in error for error in errors),
+            errors,
+        )
+
     def test_rejects_non_mapping_route(self) -> None:
         path = self.root / "tests" / "fixtures" / "routing.yaml"
         payload = yaml.safe_load(path.read_text(encoding="utf-8"))

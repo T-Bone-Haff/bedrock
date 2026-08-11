@@ -1,0 +1,20 @@
+schema_version: 1
+cases:
+  - id: planned-test
+    operation: write-new-tests
+    expected_owner: testing
+  - id: observed-failure
+    operation: diagnose-existing-failure
+    expected_owner: debug
+  - id: ci-only-flake
+    operation: diagnose-existing-flake
+    expected_owner: debug
+  - id: authorized-repair
+    operation: implement-authorized-backend-repair
+    expected_owner: application-code
+  - id: unauthorized-repair
+    operation: diagnose-without-fix-authority
+    expected_owner: debug
+  - id: planned-endpoint
+    operation: implement-planned-backend-behavior
+    expected_owner: application-code

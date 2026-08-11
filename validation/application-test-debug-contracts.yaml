@@ -1,0 +1,51 @@
+schema_version: 1
+schemas:
+  application: plugins/bedrock/skills/application-code/reference/application-service-profile.schema.json
+  testing: plugins/bedrock/skills/testing/reference/test-strategy.schema.json
+  debug: plugins/bedrock/skills/debug/reference/diagnosis-record.schema.json
+fixtures:
+  valid:
+    - schema: application
+      path: tests/fixtures/application-test-debug/valid/application-minimum.json
+    - schema: application
+      path: tests/fixtures/application-test-debug/valid/application-high-risk.json
+    - schema: testing
+      path: tests/fixtures/application-test-debug/valid/test-strategy.json
+    - schema: debug
+      path: tests/fixtures/application-test-debug/valid/diagnosis-complete.json
+    - schema: debug
+      path: tests/fixtures/application-test-debug/valid/diagnosis-inconclusive.json
+  invalid:
+    - schema: application
+      path: tests/fixtures/application-test-debug/invalid/application-undeclared-capability.json
+      expected: schema
+    - schema: testing
+      path: tests/fixtures/application-test-debug/invalid/test-strategy-missing-branch.json
+      expected: schema
+    - schema: debug
+      path: tests/fixtures/application-test-debug/invalid/diagnosis-unsupported-root-cause.json
+      expected: unsupported root cause
+    - schema: debug
+      path: tests/fixtures/application-test-debug/invalid/diagnosis-unauthorized-fix.json
+      expected: schema
+behavior: tests/fixtures/application-test-debug/behavior.yaml
+required_contract_markers:
+  plugins/bedrock/skills/application-code/SKILL.md:
+    - "Protect concurrency boundaries."
+    - "An envelope is an opt-in API profile"
+    - "Never blindly forward an end-user token."
+    - "Derive performance objectives."
+  plugins/bedrock/skills/testing/SKILL.md:
+    - "Observed failures/flakes route to `debug`"
+    - "Coverage is a signal, not proof."
+    - "Retries may gather evidence"
+  plugins/bedrock/skills/debug/SKILL.md:
+    - "Reproduction is not an absolute precondition"
+    - "A verified cause does not authorize a fix."
+    - "Stop without guessing"
+forbidden_markers:
+  - "Every HTTP handler is `async def`"
+  - "Coverage floor is **90%"
+  - "Audit failures are always swallowed"
+  - "the original end-user JWT is propagated"
+  - "You can't fix what you can't reproduce"

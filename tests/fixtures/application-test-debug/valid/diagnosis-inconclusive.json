@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "symptom": "one production request returned corrupt output",
+  "scope": "single request; no safe reproduction",
+  "mode": "active-harm",
+  "timeline": ["2026-08-10T13:00:00Z alert", "2026-08-10T13:04:00Z traffic isolated"],
+  "evidence": [{"source": "redacted trace", "captured_at": "2026-08-10T13:03:00Z", "classification": "confidential", "integrity": "sha256:redacted-example"}],
+  "hypotheses": [{"iteration": 1, "hypothesis": "a race corrupted shared state", "prediction": "overlapping requests mutate the same object", "falsifier": "immutable per-request state", "evidence": "instrumentation was absent at the mutation point", "disposition": "unresolved", "unexplained": ["no overlapping-request identity"]}],
+  "containment": "isolated the affected worker and preserved state",
+  "conclusion": {"status": "insufficient_evidence", "confidence": "low", "statement": "available evidence cannot distinguish a race from upstream corruption"},
+  "repair": {"authorized": false, "action": null},
+  "verification": [],
+  "residual_risk": "cause may recur; add bounded instrumentation",
+  "owner": "reliability specialist"
+}

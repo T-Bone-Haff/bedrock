@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:haffey:bedrock:test-strategy:1.0.0",
+  "title": "Test strategy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "subject", "profile", "levels", "coverage", "nondeterminism", "gate"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "subject": {"type": "string", "minLength": 1},
+    "profile": {"type": "string", "minLength": 1},
+    "levels": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["unit", "integration", "contract", "e2e", "evaluation"]}
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["line_threshold", "branch_threshold", "critical_paths", "exclusions"],
+      "properties": {
+        "line_threshold": {"type": "integer", "minimum": 0, "maximum": 100},
+        "branch_threshold": {"type": "integer", "minimum": 0, "maximum": 100},
+        "critical_paths": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "exclusions": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "mutation_threshold": {"type": ["integer", "null"], "minimum": 0, "maximum": 100}
+      }
+    },
+    "nondeterminism": {
+      "enum": ["none", "versioned-evaluation"]
+    },
+    "gate": {"enum": ["merge", "staging-deploy", "production-promotion", "advisory"]}
+  }
+}
