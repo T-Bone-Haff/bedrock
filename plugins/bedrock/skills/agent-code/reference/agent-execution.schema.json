@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bedrock.haffey.dev/schemas/agent-execution.schema.json",
+  "title": "Portable agent execution evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "invocation_id", "actor_id", "profile", "prompt", "output_schema", "budget", "attempts", "parse", "usage", "terminal_disposition"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "invocation_id": {"type": "string", "minLength": 1},
+    "actor_id": {"type": "string", "minLength": 1},
+    "profile": {"type": "string", "minLength": 1},
+    "prompt": {"$ref": "#/$defs/artifact"},
+    "output_schema": {"$ref": "#/$defs/artifact"},
+    "budget": {
+      "type": "object", "additionalProperties": false,
+      "required": ["max_attempts", "max_tool_iterations", "deadline_ms", "max_input_tokens", "max_output_tokens", "max_spend_micros", "max_concurrency"],
+      "properties": {
+        "max_attempts": {"type": "integer", "minimum": 1}, "max_tool_iterations": {"type": "integer", "minimum": 0},
+        "deadline_ms": {"type": "integer", "minimum": 1}, "max_input_tokens": {"type": "integer", "minimum": 0},
+        "max_output_tokens": {"type": "integer", "minimum": 0}, "max_spend_micros": {"type": "integer", "minimum": 0},
+        "max_concurrency": {"type": "integer", "minimum": 1}
+      }
+    },
+    "attempts": {"type": "array", "items": {"type": "object", "required": ["attempt", "kind", "disposition"], "properties": {"attempt": {"type": "integer", "minimum": 1}, "kind": {"enum": ["model", "tool"]}, "disposition": {"type": "string", "minLength": 1}}, "additionalProperties": true}},
+    "parse": {"type": "object", "additionalProperties": false, "required": ["path", "candidate_count", "response_sha256"], "properties": {"path": {"enum": ["native", "whole", "salvaged", "failed"]}, "candidate_count": {"type": "integer", "minimum": 0}, "response_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}},
+    "usage": {"type": "object", "additionalProperties": false, "required": ["input_tokens", "output_tokens", "spend_micros"], "properties": {"input_tokens": {"type": "integer", "minimum": 0}, "output_tokens": {"type": "integer", "minimum": 0}, "spend_micros": {"type": "integer", "minimum": 0}}},
+    "terminal_disposition": {"enum": ["succeeded", "schema_failed", "budget_exhausted", "cancelled", "tool_failed", "transport_failed", "escalated"]}
+  },
+  "$defs": {"artifact": {"type": "object", "additionalProperties": false, "required": ["version", "sha256"], "properties": {"version": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}}
+}

@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "arbitration_result",
+  "finding_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "classification": "resolvable",
+  "authority_locus": "ADR-001 §4",
+  "rationale": "The accepted decision uniquely determines the correction.",
+  "confidence": "high",
+  "input_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+}

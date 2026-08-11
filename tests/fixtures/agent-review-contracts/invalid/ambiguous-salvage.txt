@@ -1,0 +1,4 @@
+Proposed payloads:
+{"classification":"resolvable"}
+or
+{"classification":"decision-bearing"}

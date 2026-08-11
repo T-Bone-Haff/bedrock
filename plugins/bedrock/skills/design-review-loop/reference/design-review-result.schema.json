@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bedrock.haffey.dev/schemas/design-review-result.schema.json",
+  "oneOf": [
+    {"$ref": "#/$defs/reviewer"},
+    {"$ref": "#/$defs/arbitration"}
+  ],
+  "$defs": {
+    "citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "ref"],
+      "properties": {
+        "kind": {"enum": ["canonical", "design-intent", "coherence", "soundness"]},
+        "ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "severity", "targets", "locus", "stance", "claim", "cited_authority", "status", "related_finding_ids"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "severity": {"enum": ["BLOCKING", "MATERIAL", "COSMETIC"]},
+        "targets": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "locus": {"type": "string", "minLength": 1},
+        "stance": {"enum": ["LAA", "SA", "EA", "cross-set"]},
+        "claim": {"type": "string", "minLength": 1},
+        "cited_authority": {"$ref": "#/$defs/citation"},
+        "status": {"enum": ["open", "closed", "escalated", "superseded"]},
+        "related_finding_ids": {"type": "array", "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "uniqueItems": true}
+      }
+    },
+    "reviewer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "kind", "invocation_id", "source", "stance", "findings", "survived_attacks"],
+      "properties": {
+        "schema_version": {"const": "1.0.0"},
+        "kind": {"const": "reviewer_result"},
+        "invocation_id": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1},
+        "stance": {"enum": ["LAA", "SA", "EA", "cross-set"]},
+        "findings": {"type": "array", "items": {"$ref": "#/$defs/finding"}},
+        "survived_attacks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["surface", "cited_authority"],
+            "properties": {
+              "surface": {"type": "string", "minLength": 1},
+              "cited_authority": {"$ref": "#/$defs/citation"}
+            }
+          }
+        }
+      }
+    },
+    "arbitration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "kind", "finding_id", "classification", "authority_locus", "rationale", "confidence", "input_sha256"],
+      "properties": {
+        "schema_version": {"const": "1.0.0"},
+        "kind": {"const": "arbitration_result"},
+        "finding_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "classification": {"enum": ["resolvable", "decision-bearing", "escalated"]},
+        "authority_locus": {"type": ["string", "null"]},
+        "rationale": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "confidence": {"enum": ["high", "medium", "low"]},
+        "input_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"classification": {"const": "resolvable"}}},
+          "then": {"properties": {"authority_locus": {"type": "string", "minLength": 1}, "confidence": {"enum": ["high", "medium"]}}}
+        }
+      ]
+    }
+  }
+}
