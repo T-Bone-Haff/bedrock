@@ -119,6 +119,8 @@ jobs:
         run: >-
           python scripts/run_routing_evals.py
           --profile ${{ github.event_name == 'pull_request' && 'pr' || 'release' }}
+          --max-budget-usd 0.06
+          --max-total-budget-usd 3.00
           --output docs/evidence/heb-109/routing-results.json
       - name: Retain routing results
         if: always()

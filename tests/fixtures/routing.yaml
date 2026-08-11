@@ -184,7 +184,7 @@ cases:
     kind: positive
     cue: implicit
     surface: portable-core
-    prompt: Assess this UI prototype for production promotion and decide whether it can graduate, needs targeted hardening, or should be disposed without demanding a rewrite by default.
+    prompt: Take ownership of promoting this UI prototype into governed frontend code; preserve the validated experience, implement only the targeted hardening needed for the frontend contract, and graduate or dispose of it based on evidence without defaulting to a rewrite.
     expected: frontend-code
     excluded: []
   - id: frontend-code-browser-security-readiness
