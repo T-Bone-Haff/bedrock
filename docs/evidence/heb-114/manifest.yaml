@@ -6,7 +6,32 @@ branch: feature/heb-114-wp5c-correct-frontend-code-skill
 manifest_before: 7.0.0
 manifest_candidate: 8.0.0
 classification: package-major
-status: pre-staging-validation-complete
+status: landed-and-verified
+landing:
+  pull_request: https://github.com/T-Bone-Haff/bedrock/pull/30
+  source_sha: ed5b8338214b834bc78c203a8ccdae6e7e54923c
+  merge_sha: 14ec001b5ca4e9dcf45d1d96a97a696a3027427e
+  github_actions:
+    run_id: 31518930280
+    run_url: https://github.com/T-Bone-Haff/bedrock/actions/runs/31518930280
+    deterministic_job_id: 93870904783
+    deterministic_result: success
+    live_routing_job_id: 93871781057
+    live_routing_result: success
+post_landing_evidence_correction:
+  pull_request: https://github.com/T-Bone-Haff/bedrock/pull/31
+  trigger_run_id: 31525867494
+  failed_live_routing_job_ids:
+    - 93894731882
+    - 93897140083
+  repeated_failure_case: app-delivery-pipeline-static-seam
+  disposition: fixture-specification-defect-repaired
+  repaired_fixture_sha256: d776ecc3b69207d18b3ceafdefba3e57cb670eed3ce7e409347f75fb8db35eb1
+  retained_report_sha256: f7a601bfe672834897ed54d8469f1a94870a3e028207508945a262ccee642c87
+  release_results: 162/162
+  excluded_selections: 0
+  total_cost_usd: 1.458736
+  retained_evidence_eligible: true
 retained_evidence:
   candidate_identity:
     base_sha: 6e57f2b3df7aa5c28eb26dec339a00c91b2e5288
@@ -29,8 +54,8 @@ limitations:
   - Fixture measurements characterize only the declared local/CI scenarios.
   - Deployment, rollout, headers, source-map publication, and production verification remain delivery-owned.
   - The representative Safari and VoiceOver flow passed, but exact audible wording was not captured; broader zoom, contrast, target-size, assistive-technology, and version populations were not manually exercised.
-  - Docker-required integration is unverified locally because the Docker daemon is unavailable; the existing CI population must run it unskipped.
-  - CI execution of the configured three-engine gates remains pending a future pushed candidate; local three-engine execution is retained separately.
+  - Docker-required integration was unavailable locally because the Docker daemon was unavailable; the required CI population ran it successfully without the local skip.
+  - The configured Ubuntu/Node 22.12.0 CI population, including the three-engine frontend gates, passed on the landed source SHA; local three-engine execution is retained separately.
 file_claim:
   shared_modified:
     - .github/workflows/plugin-validation.yml

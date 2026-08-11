@@ -1,6 +1,6 @@
 # HEB-114 browser evidence
 
-Status: **local automated pass; CI execution pending**.
+Status: **local and configured CI automated populations pass**.
 
 The declared automated population is the representative fixture flow in
 Chromium, Firefox, and WebKit: navigation/focus, 320 CSS-pixel reflow,
@@ -19,7 +19,13 @@ engine.
   emitted CSS SHA-256
   `5b978c325c8cec8555d5cd4d1a3c579881966ece826c6cdc4626803522fd4756`.
 
-The configured CI population uses Ubuntu and Node 22.12.0 inside HEB-113's
-existing deterministic job, followed by the existing live-routing job. It has
-not run because no push or pull request is authorized at this stop gate. Local
-WebKit is not a claim about installed Safari.
+The configured CI population used Ubuntu and Node 22.12.0 inside HEB-113's
+existing deterministic job, followed by the existing live-routing job. Both
+jobs passed on source `ed5b8338214b834bc78c203a8ccdae6e7e54923c` in GitHub
+Actions run
+[`31518930280`](https://github.com/T-Bone-Haff/bedrock/actions/runs/31518930280):
+deterministic job `93870904783` and live-routing job `93871781057`. The source
+landed through PR
+[#30](https://github.com/T-Bone-Haff/bedrock/pull/30) as merge
+`14ec001b5ca4e9dcf45d1d96a97a696a3027427e`. Local WebKit is not a claim about
+installed Safari.

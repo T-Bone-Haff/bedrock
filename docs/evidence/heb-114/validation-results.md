@@ -1,8 +1,10 @@
 # HEB-114 validation results
 
-Status: **local deterministic, browser, authenticated routing, and required
-representative Safari/VoiceOver populations pass; local Docker and pushed-CI
-populations remain unverified.** No files were staged.
+Status: **required local and configured CI populations pass.** Docker remained
+unavailable locally, and the required CI population closed that environmental
+gap without the local skip. Source `ed5b8338214b834bc78c203a8ccdae6e7e54923c`
+landed through PR [#30](https://github.com/T-Bone-Haff/bedrock/pull/30) as merge
+`14ec001b5ca4e9dcf45d1d96a97a696a3027427e`.
 
 | Population / command | Input population | Result |
 |---|---|---|
@@ -18,9 +20,9 @@ populations remain unverified.** No files were staged.
 | `npm ci --ignore-scripts` + `npm audit --audit-level=high` | Exact lockfile, runtime and development populations | PASS: clean install; 0 known vulnerabilities after Vite 8.2.1 security update |
 | `typecheck`, `lint`, `unit`, `coverage`, `build`, `budget` | Exact browser fixture | PASS; 5/5 component tests; 100% statements/lines/functions and 97.05% branches for declared source population; 60,556 compressed JS+CSS bytes ≤ 120,000 |
 | `playwright test` | 7 scenarios × Chromium, Firefox, WebKit | PASS: 21/21, zero skips |
-| Release routing adapter | 54 cases × 3 repetitions under `claude-haiku-4-5-20251001`; `$0.06` per-call and `$3.00` aggregate ceilings | PASS: 162/162, zero excluded selections, retained-evidence eligible; cost `$1.438027`; aggregate budget not exhausted |
+| Release routing adapter | 54 cases × 3 repetitions under `claude-haiku-4-5-20251001`; `$0.06` per-call and `$3.00` aggregate ceilings | PASS after the post-landing fixture correction: 162/162, zero excluded selections, retained-evidence eligible; cost `$1.458736`; aggregate budget not exhausted |
 | Manual Safari + VoiceOver | One representative flow on macOS 26.5.2 (25F84), Safari 26.5.2 (21624.2.5.11.8), VoiceOver 10 (993) | PASS: Option-Tab focused `Open details` with a visible VoiceOver ring; Return activated it; accessibility focus moved to the `Details ready` heading. Exact audible wording was not captured. VoiceOver was restored to off. |
-| Configured GitHub Actions frontend gate | Existing deterministic job on Ubuntu/Node 22.12.0 | Prior pushed candidate: deterministic job passed and live routing exposed the prototype-promotion ambiguity; repaired candidate awaits push and must rerun both jobs |
+| Configured GitHub Actions population | Existing deterministic job on Ubuntu/Node 22.12.0 followed by live routing | PASS: run [`31518930280`](https://github.com/T-Bone-Haff/bedrock/actions/runs/31518930280); deterministic job `93870904783` and live-routing job `93871781057` both succeeded on the landed source |
 
 The first full routing observation under fixture digest
 `040186db609cbb15e86fd2ac09683dc5695a34fc6a2256b2cfd0c1901b94c6ef`
@@ -48,12 +50,26 @@ operation. Three fixture-only rewrites failed to stabilize that boundary and
 were discarded. The authorized adapter repair now treats named-skill
 preferences as untrusted routing input, while preserving `null` for operations
 that no catalog description authorizes. The unchanged adversarial case passed
-3/3 targeted and again 3/3 in the fresh complete population. The retained
-report uses fixture digest
-`c7a2b41693a553ceabfc9355b36d4d3123bcee4b83c310ecbf49e4004577a311`,
-the same catalog and policy digests cited above, and records the enforced
-per-call and aggregate budget ceilings. Diagnostic and targeted observations
-remain outside retained evidence.
+3/3 targeted and again 3/3 in the fresh complete population. The original
+landing report used fixture digest
+`c7a2b41693a553ceabfc9355b36d4d3123bcee4b83c310ecbf49e4004577a311`.
+
+During the post-landing evidence PR, two consecutive PR-profile observations
+selected `author-execution-relay` for `app-delivery-pipeline-static-seam`. The
+imperative fixture wording asked to run delivery operations and was therefore
+indistinguishable from an executor handoff despite expecting delivery-workflow
+authorship. The fixture now asks to define the static-frontend delivery
+workflow while preserving the same frontend, artifact, header, and production
+verification seam. A fresh full release population passed 162/162 with zero
+excluded selections and cost `$1.458736`. The current retained report uses
+fixture digest
+`d776ecc3b69207d18b3ceafdefba3e57cb670eed3ce7e409347f75fb8db35eb1`,
+catalog digest
+`fb8111abc3095efb4baf3c9ee6a93e1dad94455ceda54cb0f5a3f065f7fce06e`,
+and policy digest
+`4e3aedf467f4d353a9903a31f8dfd3fa9224f01eb449a473051177b5f626b67d`.
+Failed PR observations and unavailable local authentication attempts were not
+pooled into retained evidence.
 
 `git diff --check` and workflow YAML parsing pass. A changed-surface secret scan
 found no embedded credential; the workflow's secret expression is an expected
