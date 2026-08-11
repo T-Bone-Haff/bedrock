@@ -1,0 +1,69 @@
+schema_version: 1
+ticket: HEB-118
+baseline_commit: e3073d11aca23d88b32fcdb7f342cd90bab439e8
+baseline_manifest_version: 8.0.0
+candidate_version_source: plugins/bedrock/.claude-plugin/plugin.json#/version
+release_state: candidate
+release_authority: HEB-119
+finding_reconciliation:
+  - {id: PKG-001, status: upstream-verified, owner: HEB-108, evidence: [docs/evidence/heb-108/validation-results.md]}
+  - {id: PKG-002, status: upstream-verified, owner: HEB-108, evidence: [docs/evidence/heb-108/validation-results.md]}
+  - {id: PKG-003, status: upstream-verified, owner: HEB-109, evidence: [docs/evidence/heb-109/validation-results.md]}
+  - {id: PKG-004, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/README.md, plugins/bedrock/CHANGELOG.md]}
+  - {id: PKG-005, status: heb-118-implemented, owner: HEB-118, evidence: [LICENSE, plugins/bedrock/LICENSE]}
+  - {id: PKG-006, status: heb-118-implemented, owner: HEB-118, evidence: [SECURITY.md, plugins/bedrock/governance/POLICIES.md, plugins/bedrock/governance/COMPATIBILITY.md]}
+  - {id: PKG-007, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/.claude-plugin/plugin.json, .claude-plugin/marketplace.json]}
+  - {id: PKG-008, status: heb-118-implemented, owner: HEB-118, evidence: [docs/repository-orientation.md, CLAUDE.md, .gitignore]}
+  - {id: PKG-009, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/registry.yaml, plugins/bedrock/governance/COMPATIBILITY.md]}
+  - {id: PKG-010, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/README.md, plugins/bedrock/governance/POLICIES.md]}
+  - {id: PKG-011, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/registry.yaml, docs/evidence/heb-118/manifest.yaml]}
+  - {id: PKG-012, status: heb-118-implemented, owner: HEB-118, evidence: [validation/package-contract.yaml, plugins/bedrock/governance/registry.yaml]}
+  - {id: PKG-013, status: upstream-verified, owner: HEB-109, evidence: [docs/evidence/heb-109/routing-results.json]}
+  - {id: PKG-014, status: upstream-verified, owner: HEB-109, evidence: [scripts/validate_plugin.py, tests/fixtures/package-defects/manifest.yaml]}
+  - {id: PKG-015, status: upstream-verified, owner: HEB-109, evidence: [tests/fixtures/application-test-debug/behavior.yaml, tests/fixtures/infrastructure-delivery/behavior.yaml, tests/fixtures/frontend-contracts/behavior.yaml]}
+  - {id: PKG-016, status: upstream-verified, owner: HEB-109, evidence: [validation/executable-samples.yaml]}
+  - {id: PKG-017, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/release-evidence.schema.json, plugins/bedrock/governance/release-evidence.template.yaml]}
+  - {id: PKG-018, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/vocabulary.yaml, plugins/bedrock/governance/release-evidence.schema.json]}
+  - {id: PKG-019, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/authority-inventory.yaml, scripts/validate_package_governance.py]}
+  - {id: PKG-020, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/registry.yaml, plugins/bedrock/governance/README.md]}
+  - {id: PKG-021, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/registry.yaml, tests/test_package_governance.py]}
+  - {id: PKG-022, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/registry.yaml, docs/architecture/skill-architecture.md]}
+  - {id: PKG-023, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/registry.yaml, docs/evidence/heb-118/context-budget.json, scripts/validate_package_governance.py]}
+  - {id: PKG-024, status: upstream-verified, owner: HEB-108/HEB-111, evidence: [docs/evidence/heb-108/metadata-inventory.json, docs/architecture/skill-architecture.md]}
+  - {id: PKG-025, status: upstream-verified, owner: HEB-108/HEB-111, evidence: [tests/fixtures/routing.yaml, docs/architecture/skill-architecture.md]}
+  - {id: PKG-026, status: heb-118-implemented, owner: HEB-117/HEB-118, evidence: [plugins/bedrock/governance/QUICKSTART.md, plugins/bedrock/governance/registry.yaml]}
+  - {id: PKG-027, status: upstream-verified, owner: HEB-117, evidence: [docs/evidence/heb-117/validation-results.md]}
+  - {id: PKG-028, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/QUICKSTART.md]}
+  - {id: PKG-029, status: upstream-verified, owner: HEB-117, evidence: [docs/evidence/heb-117/validation-results.md]}
+  - {id: PKG-030, status: upstream-verified, owner: HEB-111, evidence: [docs/architecture/coverage-map.md]}
+  - {id: PKG-031, status: upstream-verified, owner: HEB-114, evidence: [docs/evidence/heb-114/accessibility-evidence.md, docs/evidence/heb-114/browser-evidence.md]}
+  - {id: PKG-032, status: upstream-verified, owner: HEB-116, evidence: [docs/evidence/heb-116/validation-results.md, validation/agent-review-contracts.yaml]}
+  - {id: PKG-033, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/REBINDING.md]}
+  - {id: PKG-034, status: upstream-verified, owner: HEB-110, evidence: [scripts/validate_safety.py, tests/fixtures/safety/manifest.yaml]}
+  - {id: PKG-035, status: upstream-verified, owner: HEB-110, evidence: [scripts/validate_safety.py, tests/fixtures/safety/pr-image-build.yml]}
+  - {id: PKG-036, status: upstream-verified, owner: HEB-110, evidence: [tests/fixtures/safety/terraform-state/safe/main.tf, tests/test_safety_integration.py]}
+  - {id: PKG-037, status: upstream-verified, owner: HEB-110/HEB-114, evidence: [scripts/validate_safety.py, plugins/bedrock/skills/frontend-code/reference/05-api-data-and-browser-security.md]}
+  - {id: PKG-038, status: upstream-verified, owner: HEB-110/HEB-115, evidence: [scripts/validate_safety.py, plugins/bedrock/skills/application-code/reference/03-security-and-data.md]}
+  - {id: PKG-039, status: heb-118-implemented, owner: HEB-118, evidence: [plugins/bedrock/governance/THREAT-MODEL.md]}
+claims:
+  - id: deterministic-package-governance
+    status: locally-verified
+    command: python3 scripts/validate_package_governance.py
+    evidence: [scripts/validate_package_governance.py, tests/test_package_governance.py]
+  - id: integrated-package-validation
+    status: locally-verified
+    command: python3 scripts/validate_plugin.py
+    evidence: [scripts/validate_plugin.py, .github/workflows/plugin-validation.yml]
+  - id: release-gate-fails-closed
+    status: locally-verified
+    command: python3 scripts/validate_package_governance.py --release
+    expected: fails without operator-supplied release evidence and a completed rollout ledger; final closure also verifies the immutable tag
+    evidence: [tests/test_package_governance.py, plugins/bedrock/governance/README.md]
+  - id: direct-review
+    status: locally-verified
+    command: evidence-cited standard direct review
+    evidence: [docs/evidence/heb-118/direct-review.md, docs/evidence/heb-118/validation-results.md]
+limitations:
+  - HEB-119 cold acceptance and the release decision are intentionally pending.
+  - No consumer tag, GitHub release, or rollout ledger may be created by HEB-118.
+  - Hosted Claude.ai does not expose a stable semantic host version.

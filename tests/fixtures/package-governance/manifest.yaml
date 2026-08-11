@@ -1,0 +1,14 @@
+schema_version: 1
+defects:
+  - {id: manifest-license-drift, test: test_rejects_manifest_metadata_drift, expected_diagnostic: "license must equal 'MIT'"}
+  - {id: competing-version-authority, test: test_rejects_marketplace_authority_drift, expected_diagnostic: must not duplicate the manifest version authority}
+  - {id: installed-license-drift, test: test_rejects_license_carrier_drift, expected_diagnostic: license must match repository license exactly}
+  - {id: orphaned-skill-lifecycle, test: test_rejects_orphaned_skill_lifecycle, expected_diagnostic: owner is required}
+  - {id: retirement-without-migration, test: test_rejects_retired_skill_without_migration, expected_diagnostic: non-active skill requires migration treatment}
+  - {id: incomplete-consumer-enumeration, test: test_rejects_incomplete_consumer_enumeration, expected_diagnostic: must contain claude-ai and claude-code exactly}
+  - {id: vocabulary-schema-drift, test: test_rejects_vocabulary_schema_drift, expected_diagnostic: gate_status must match the governing schema enum exactly}
+  - {id: uncontrolled-duplicate-authority, test: test_rejects_uncontrolled_duplicate_authority, expected_diagnostic: every repetition requires an allowed classification and drift control}
+  - {id: stale-context-measurement, test: test_rejects_stale_context_measurement, expected_diagnostic: catalog description measurement is stale}
+  - {id: missing-package-finding, test: test_rejects_missing_package_finding, expected_diagnostic: must contain PKG-001 through PKG-039 exactly once}
+  - {id: missing-governance-link, test: test_rejects_missing_governance_link, expected_diagnostic: package-governance link target does not exist}
+  - {id: release-before-acceptance, test: test_release_mode_fails_closed_before_acceptance, expected_diagnostic: release mode requires --release-evidence}

@@ -1,0 +1,10 @@
+schema_version: 1
+skill_status: [active, deprecated, retired]
+release_state: [candidate, released, withdrawn]
+gate_status: [passed, failed, not_relevant, unavailable]
+migration_classification: [none, compatible, breaking]
+release_decision: [pending, proceed, conditional_proceed, pause]
+rollout_status: [pending, complete, failed, rolled_back]
+surface_status: [pending, verified, failed, waived]
+authority_classification: [authority, generated-carrier, contextual-restatement]
+assurance_profile: [direct, multi-perspective, runner-backed]

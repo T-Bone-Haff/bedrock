@@ -35,6 +35,29 @@ serialized = json.dumps(installed)
 if "bedrock@bedrock" not in serialized:
     raise SystemExit("clean-install smoke failed: bedrock@bedrock is absent from plugin list")
 
+matches = [row for row in installed if row.get("id") == "bedrock@bedrock"]
+if len(matches) != 1:
+    raise SystemExit("clean-install smoke failed: expected one bedrock installation record")
+record = matches[0]
+install_path = Path(record.get("installPath", "")).resolve()
+if not install_path.is_relative_to((root / "config").resolve()):
+    raise SystemExit("clean-install smoke failed: install path escaped isolated configuration")
+required = (
+    ".claude-plugin/plugin.json",
+    "LICENSE",
+    "CHANGELOG.md",
+    "governance/README.md",
+    "governance/registry.yaml",
+    "governance/release-evidence.schema.json",
+    "governance/rollout-ledger.schema.json",
+)
+missing = [relative for relative in required if not (install_path / relative).is_file()]
+if missing:
+    raise SystemExit(f"clean-install smoke failed: installed governance files are missing: {missing}")
+manifest = json.loads((install_path / ".claude-plugin/plugin.json").read_text(encoding="utf-8"))
+if manifest.get("version") != record.get("version"):
+    raise SystemExit("clean-install smoke failed: installed record and manifest versions differ")
+
 for filename in ("details-first.txt", "details-reloaded.txt"):
     text = (root / filename).read_text(encoding="utf-8")
     if "Skills (13)" not in text:
@@ -45,5 +68,5 @@ reloaded = (root / "details-reloaded.txt").read_text(encoding="utf-8")
 if first != reloaded:
     raise SystemExit("clean-install smoke failed: component inventory changed after reload")
 
-print("PASS: isolated install and reload discovered bedrock@bedrock with 13 skills")
+print("PASS: isolated install and reload discovered bedrock@bedrock with 13 skills and packaged governance")
 PY

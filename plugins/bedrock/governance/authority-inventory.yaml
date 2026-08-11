@@ -1,0 +1,58 @@
+schema_version: 1
+concepts:
+  - concept: current package version
+    authority: plugins/bedrock/.claude-plugin/plugin.json#/version
+    repetitions:
+      - {path: plugins/bedrock/CHANGELOG.md, classification: contextual-restatement, drift_control: package-governance validator requires the current candidate identity}
+      - {path: release tag, classification: generated-carrier, drift_control: "release-mode validator requires v{manifest_version} at HEAD"}
+  - concept: repository license
+    authority: LICENSE
+    repetitions:
+      - {path: plugins/bedrock/LICENSE, classification: generated-carrier, drift_control: byte-for-byte validator equality}
+      - {path: plugins/bedrock/.claude-plugin/plugin.json#/license, classification: generated-carrier, drift_control: manifest and marketplace metadata equality}
+  - concept: skill semantics
+    authority: "plugins/bedrock/skills/{skill}/SKILL.md"
+    repetitions:
+      - {path: "plugins/bedrock/skills/{skill}/reference/", classification: contextual-restatement, drift_control: relative-package and domain-contract validators}
+      - {path: "plugins/bedrock/skills/{skill}/templates/", classification: contextual-restatement, drift_control: schema and behavior fixtures}
+  - concept: skill lifecycle
+    authority: plugins/bedrock/governance/registry.yaml#/skills
+    repetitions:
+      - {path: plugins/bedrock/governance/COMPATIBILITY.md, classification: contextual-restatement, drift_control: package-governance validator}
+  - concept: routing precedence
+    authority: docs/architecture/skill-architecture.md#/3-routing-precedence
+    repetitions:
+      - {path: tests/fixtures/routing.yaml, classification: generated-carrier, drift_control: deterministic fixture coverage and retained routing evaluation}
+      - {path: plugins/bedrock/governance/QUICKSTART.md, classification: contextual-restatement, drift_control: package-governance validator and shared routing fixtures}
+  - concept: safety floor
+    authority: docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md#/26-safety-floor
+    repetitions:
+      - {path: tests/fixtures/safety/manifest.yaml, classification: generated-carrier, drift_control: HEB-110 safety validator}
+      - {path: domain skill security guidance, classification: contextual-restatement, drift_control: domain contract validators}
+  - concept: package lifecycle
+    authority: plugins/bedrock/governance/README.md
+    repetitions:
+      - {path: README.md, classification: contextual-restatement, drift_control: package-governance validator}
+      - {path: CLAUDE.md, classification: contextual-restatement, drift_control: orientation marker validation}
+      - {path: plugins/bedrock/governance/release-evidence.template.yaml, classification: generated-carrier, drift_control: JSON Schema validation at release}
+      - {path: plugins/bedrock/governance/rollout-ledger.template.yaml, classification: generated-carrier, drift_control: JSON Schema validation at release}
+  - concept: repository orientation
+    authority: docs/repository-orientation.md
+    repetitions:
+      - {path: CLAUDE.md, classification: contextual-restatement, drift_control: package-governance orientation validation}
+      - {path: local root AGENTS.md, classification: contextual-restatement, drift_control: ignored local file; never staged or packaged}
+  - concept: infrastructure versus application delivery ownership
+    authority: docs/architecture/skill-architecture.md#/3-routing-precedence
+    repetitions:
+      - {path: plugins/bedrock/skills/infrastructure-code/SKILL.md, classification: contextual-restatement, drift_control: infrastructure and delivery contract validator}
+      - {path: plugins/bedrock/skills/app-delivery-pipeline/SKILL.md, classification: contextual-restatement, drift_control: infrastructure and delivery contract validator}
+  - concept: evaluation thresholds
+    authority: validation/eval-policy.yaml
+    repetitions:
+      - {path: README.md, classification: contextual-restatement, drift_control: deterministic policy and report validator}
+      - {path: docs/evidence/heb-109/routing-results.json, classification: generated-carrier, drift_control: report identity and eligibility validation}
+  - concept: shared lifecycle vocabulary
+    authority: plugins/bedrock/governance/vocabulary.yaml
+    repetitions:
+      - {path: plugins/bedrock/governance/release-evidence.schema.json, classification: generated-carrier, drift_control: package-governance vocabulary parity validation}
+      - {path: plugins/bedrock/governance/rollout-ledger.schema.json, classification: generated-carrier, drift_control: package-governance vocabulary parity validation}

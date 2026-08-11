@@ -26,6 +26,7 @@ if __package__:
     from scripts.validate_authoring_contracts import validate_authoring_contracts
     from scripts.validate_frontend_contracts import validate_frontend_contracts
     from scripts.validate_infrastructure_delivery_contracts import validate_infrastructure_delivery_contracts
+    from scripts.validate_package_governance import validate_package_governance
     from scripts.validate_safety import validate_safety_contracts
 else:  # Direct execution: python scripts/validate_plugin.py
     from validate_agent_review_contracts import validate_agent_review_contracts
@@ -33,6 +34,7 @@ else:  # Direct execution: python scripts/validate_plugin.py
     from validate_authoring_contracts import validate_authoring_contracts
     from validate_frontend_contracts import validate_frontend_contracts
     from validate_infrastructure_delivery_contracts import validate_infrastructure_delivery_contracts
+    from validate_package_governance import validate_package_governance
     from validate_safety import validate_safety_contracts
 
 
@@ -788,11 +790,14 @@ def validate_repository(
     run_safety_checks: bool = True,
     validate_retained_evidence: bool = True,
     require_authoring_contracts: bool = True,
+    require_package_governance: bool = True,
 ) -> tuple[list[str], dict[str, Any]]:
     errors: list[str] = []
     inventory = validate_skills(root, errors)
     validate_manifests(root, errors)
     validate_package_contract(root, errors)
+    if require_package_governance:
+        errors.extend(validate_package_governance(root))
     cases = validate_routing(root, inventory, errors)
     sample_summary = validate_sample_inventory(root, errors)
     validate_evidence_manifest(root, errors)

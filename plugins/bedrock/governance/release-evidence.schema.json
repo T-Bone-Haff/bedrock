@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/T-Bone-Haff/bedrock/schemas/release-evidence.schema.json",
+  "title": "Bedrock release evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "manifest_version",
+    "source_commit",
+    "manifest_sha256",
+    "findings",
+    "changed_surfaces",
+    "migration",
+    "gates",
+    "limitations",
+    "decision"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "manifest_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "findings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assigned", "closed", "evidence"],
+      "properties": {
+        "assigned": {"type": "integer", "minimum": 0},
+        "closed": {"type": "integer", "minimum": 0},
+        "evidence": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    },
+    "changed_surfaces": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "migration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "rationale", "notes"],
+      "properties": {
+        "classification": {"enum": ["none", "compatible", "breaking"]},
+        "rationale": {"type": "string", "minLength": 1},
+        "notes": {"type": ["string", "null"]}
+      }
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status", "evidence"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "status": {"enum": ["passed", "failed", "not_relevant", "unavailable"]},
+          "evidence": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "authority", "recorded_at"],
+      "properties": {
+        "status": {"enum": ["pending", "proceed", "conditional_proceed", "pause"]},
+        "authority": {"type": "string", "minLength": 1},
+        "recorded_at": {"type": ["string", "null"], "format": "date-time"}
+      }
+    }
+  }
+}

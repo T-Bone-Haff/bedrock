@@ -16,7 +16,14 @@
       },
       "source": "./plugins/bedrock",
       "category": "development",
-      "homepage": "https://github.com/T-Bone-Haff/bedrock"
+      "homepage": "https://github.com/T-Bone-Haff/bedrock",
+      "repository": "https://github.com/T-Bone-Haff/bedrock",
+      "license": "MIT",
+      "keywords": [
+        "engineering",
+        "skills",
+        "governance"
+      ]
     }
   ]
 }
