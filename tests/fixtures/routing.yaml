@@ -35,7 +35,7 @@ cases:
     kind: positive
     cue: implicit
     surface: portable-core
-    prompt: Run the frontend-owned browser gates, promote the resulting static artifact, configure hosting headers, and verify the production URL.
+    prompt: Define a static-frontend delivery workflow that runs the frontend-owned browser gates, promotes the resulting artifact, configures hosting headers, and verifies the production URL.
     expected: app-delivery-pipeline
     excluded: [frontend-code]
   - id: application-code-positive

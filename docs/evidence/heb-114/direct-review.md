@@ -23,6 +23,7 @@ permissions, evidence-retention, failure-isolation, and topology overlays.
 | HEB114-DR-007 | EA | Resolved downstream gate | The pre-push review required the configured Ubuntu/Node 22.12.0 browser population, retained artifact upload, and live-routing job to pass before merge. | GitHub Actions run `31518930280` passed deterministic job `93870904783` and live-routing job `93871781057` on the landed source. |
 | HEB114-DR-008 | EA | Resolved environmental evidence | The 82-test suite passed locally with one Docker integration skipped because the daemon was unavailable; Terraform-required integration passed locally. | The existing Docker integration ran successfully without the local skip in deterministic CI job `93870904783`; no frontend code or workflow-topology defect was present. |
 | HEB114-DR-009 | EA | Resolved evaluation | The first pushed candidate's review-shaped prototype-promotion prompt selected `code-review` in one PR draw. A later full release observation also showed that a conflicting named-skill preference could yield `null` even when another catalog entry authorized the underlying operation. | Rephrased prototype promotion as an operation-first frontend request. Kept the pre-existing adversarial fixture unchanged and repaired the adapter contract so user skill preferences cannot override catalog ownership or erase an otherwise authorized operation. Targeted probes passed 3/3; a fresh full population passed 162/162 with zero excluded selections. Added `$0.06` per-call and `$3.00` aggregate budget enforcement without changing workflow topology. |
+| HEB114-DR-010 | EA | Resolved evaluation evidence | PR #31's live-routing gate selected `author-execution-relay` for `app-delivery-pipeline-static-seam` in two consecutive unchanged observations. The imperative fixture wording requested execution of bounded delivery operations while expecting delivery-workflow authorship. | Rephrased only the fixture to request definition of the static-frontend delivery workflow, preserving delivery ownership and the frontend handoff. A fresh full release population passed 162/162 with zero excluded selections; no skill, package, workflow, or version surface changed. |
 
 ## Gate dispositions
 
@@ -37,7 +38,7 @@ permissions, evidence-retention, failure-isolation, and topology overlays.
 | Dependency install and full/runtime advisory audits | Passed: exact lockfile, zero known vulnerabilities |
 | Type, lint, component, coverage, build, and bundle budget | Passed |
 | Chromium, Firefox, and WebKit browser/security/accessibility/performance population | Passed: 21/21, zero skips |
-| Release routing evaluation | Passed: 162/162, zero excluded, candidate identities match; `$1.438027` under enforced `$3.00` aggregate ceiling |
+| Release routing evaluation | Passed after the post-landing fixture correction: 162/162, zero excluded, current identities match; `$1.458736` under enforced `$3.00` aggregate ceiling |
 | Manual Safari + VoiceOver representative flow | Passed with exact identity and limitations retained |
 | Pushed GitHub Actions population | Passed on source `ed5b8338214b834bc78c203a8ccdae6e7e54923c`: run `31518930280`, deterministic job `93870904783`, live-routing job `93871781057` |
 
