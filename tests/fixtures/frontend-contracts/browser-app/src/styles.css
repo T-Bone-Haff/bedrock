@@ -1,0 +1,47 @@
+:root {
+  color: #17233c;
+  background: #f4f6fb;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+* { box-sizing: border-box; }
+
+body { margin: 0; }
+
+main {
+  width: min(100% - 2rem, 64rem);
+  margin-inline: auto;
+  padding-block: 2rem;
+}
+
+.hero { margin-block-end: 2rem; }
+.eyebrow { color: #354f96; font-weight: 700; }
+h1, h2 { line-height: 1.15; }
+
+.card-shell {
+  --card-accent: #3159b8;
+  container-type: inline-size;
+  padding: 1.25rem;
+  border: 0.25rem solid var(--card-accent);
+  border-radius: 0.75rem;
+  background: white;
+}
+
+@container (min-width: 30rem) {
+  .card-shell { padding: 2rem; }
+}
+
+section + section { margin-block-start: 2rem; }
+button, a { font: inherit; }
+button { min-block-size: 2.75rem; padding-inline: 1rem; }
+
+:focus-visible { outline: 0.2rem solid #d03801; outline-offset: 0.2rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
+}
+
+@media (forced-colors: active) {
+  .card-shell { border-color: CanvasText; }
+}

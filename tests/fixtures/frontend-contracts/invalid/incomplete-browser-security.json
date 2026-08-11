@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "profile_id": "incomplete-security",
+  "binding": {},
+  "browser_support": {},
+  "prototype": {},
+  "api_contract": {},
+  "accessibility": {},
+  "security": {"concerns": {"xss-dom-sinks": {"status": "required", "owner": "frontend-code", "rationale": "only one concern was considered"}}},
+  "performance": {},
+  "production_capabilities": {},
+  "gates": []
+}

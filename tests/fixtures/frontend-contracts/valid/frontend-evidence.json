@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "profile_id": "haffey-react-vite",
+  "candidate": {
+    "source": "fixture-candidate",
+    "build_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "profile_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "environments": [
+    {"id": "fixture-ci", "os": "Ubuntu fixture", "browser": "Playwright engines", "browser_version": "locked by package", "tools": {"node": "22", "playwright": "locked"}},
+    {"id": "fixture-manual", "os": "macOS fixture", "browser": "Safari", "browser_version": "recorded-at-run", "tools": {"voiceover": "recorded-at-run"}}
+  ],
+  "gates": [
+    {"id": "deterministic", "status": "pass", "evidence": "fixture-only example", "limitations": ["This schema fixture is not release evidence."]}
+  ],
+  "browser_runs": [
+    {"engine": "chromium", "version": "locked", "status": "pass", "scenarios": ["fixture behavior"], "evidence": "fixture-only example", "limitations": []},
+    {"engine": "firefox", "version": "locked", "status": "pass", "scenarios": ["fixture behavior"], "evidence": "fixture-only example", "limitations": []},
+    {"engine": "webkit", "version": "locked", "status": "pass", "scenarios": ["fixture behavior"], "evidence": "fixture-only example", "limitations": []}
+  ],
+  "manual_accessibility": {
+    "status": "pass",
+    "os": "macOS",
+    "os_version": "recorded-at-run",
+    "browser": "Safari",
+    "browser_version": "recorded-at-run",
+    "assistive_technology": "VoiceOver",
+    "assistive_technology_version": "recorded-at-run",
+    "flow": ["Navigate the representative fixture and operate the capability control."],
+    "observations": ["Fixture-only shape example; release evidence must record real observations."],
+    "limitations": ["This schema fixture is not a certification or release result."],
+    "evidence": "fixture-only example"
+  },
+  "performance": {
+    "status": "pass",
+    "scenario": "fixture schema example",
+    "environment": "fixture",
+    "budget_declared_before_measurement": true,
+    "measurements": [1, 1, 1, 1, 1],
+    "evidence": "fixture-only example"
+  },
+  "limitations": ["This valid fixture proves schema shape only."]
+}

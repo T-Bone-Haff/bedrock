@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "profile_id": "incomplete-evidence",
+  "candidate": {"source": "x", "build_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "profile_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+  "environments": [{"id": "x", "os": "x", "browser": "x", "browser_version": "x", "tools": {"x": "x"}}],
+  "gates": [{"id": "x", "status": "pass", "evidence": "x", "limitations": []}],
+  "browser_runs": [{"engine": "chromium", "version": "x", "status": "pass", "scenarios": ["x"], "evidence": "x"}],
+  "manual_accessibility": {"status": "pass", "browser": "Safari", "assistive_technology": "VoiceOver"},
+  "performance": {"status": "pass", "scenario": "x", "environment": "x", "budget_declared_before_measurement": true, "measurements": [1], "evidence": "x"},
+  "limitations": []
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "profile_id": "permission-overclaim",
+  "binding": {},
+  "browser_support": {},
+  "prototype": {},
+  "api_contract": {},
+  "accessibility": {},
+  "security": {},
+  "performance": {},
+  "production_capabilities": {},
+  "gates": [],
+  "permission_outcomes": ["dismissed", "denied", "granted"]
+}

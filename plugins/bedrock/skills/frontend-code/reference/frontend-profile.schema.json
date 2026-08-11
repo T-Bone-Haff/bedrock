@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bedrock.haffey.dev/schemas/frontend-profile.schema.json",
+  "title": "Bedrock frontend profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "binding",
+    "browser_support",
+    "prototype",
+    "api_contract",
+    "accessibility",
+    "security",
+    "performance",
+    "production_capabilities",
+    "gates"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "profile_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["framework", "language", "build_tool", "styling", "component_system", "test_runner", "browser_automation", "node_engine"],
+      "properties": {
+        "framework": {"type": "string", "minLength": 1},
+        "language": {"type": "string", "minLength": 1},
+        "build_tool": {"type": "string", "minLength": 1},
+        "styling": {"type": "string", "minLength": 1},
+        "component_system": {"type": "string", "minLength": 1},
+        "test_runner": {"type": "string", "minLength": 1},
+        "browser_automation": {"type": "string", "minLength": 1},
+        "node_engine": {"type": "string", "minLength": 1}
+      }
+    },
+    "browser_support": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy", "engines", "fallback"],
+      "properties": {
+        "policy": {"type": "string", "minLength": 1},
+        "engines": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "minimum"],
+            "properties": {
+              "name": {"enum": ["chromium", "firefox", "webkit", "safari", "edge", "other"]},
+              "minimum": {"type": "string", "minLength": 1}
+            }
+          }
+        },
+        "fallback": {"type": "string", "minLength": 1}
+      }
+    },
+    "prototype": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["posture", "safety_floor", "promotion_outcomes"],
+      "properties": {
+        "posture": {"enum": ["none", "prototype", "promotion-candidate", "production"]},
+        "safety_floor": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["no-secrets-or-production-data", "dependency-license-cost", "accessible-critical-path", "honest-capability-state", "disposal-retention-audience", "no-ambient-production-authority"]},
+          "allOf": [{"minItems": 6}, {"maxItems": 6}]
+        },
+        "promotion_outcomes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["graduate", "targeted-hardening", "re-author", "dispose"]},
+          "allOf": [{"minItems": 4}, {"maxItems": 4}]
+        }
+      }
+    },
+    "api_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spec_artifact", "generator", "runtime_validation", "compatibility"],
+      "properties": {
+        "spec_artifact": {"type": "string", "minLength": 1},
+        "generator": {"type": "string", "minLength": 1},
+        "runtime_validation": {"enum": ["required", "risk-selected", "not-applicable"]},
+        "compatibility": {"type": "string", "minLength": 1}
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target", "automated", "manual", "assistive_technology"],
+      "properties": {
+        "target": {"type": "string", "minLength": 1},
+        "automated": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "manual": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "assistive_technology": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["concerns"],
+      "properties": {
+        "concerns": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["xss-dom-sinks", "trusted-types", "safe-urls-dom-clobbering", "csrf-cookie-coupling", "cors-handoff", "third-party-scripts-sri", "service-workers", "dependency-install-scripts", "source-maps", "client-logs-analytics"],
+          "properties": {
+            "xss-dom-sinks": {"$ref": "#/$defs/disposition"},
+            "trusted-types": {"$ref": "#/$defs/disposition"},
+            "safe-urls-dom-clobbering": {"$ref": "#/$defs/disposition"},
+            "csrf-cookie-coupling": {"$ref": "#/$defs/disposition"},
+            "cors-handoff": {"$ref": "#/$defs/disposition"},
+            "third-party-scripts-sri": {"$ref": "#/$defs/disposition"},
+            "service-workers": {"$ref": "#/$defs/disposition"},
+            "dependency-install-scripts": {"$ref": "#/$defs/disposition"},
+            "source-maps": {"$ref": "#/$defs/disposition"},
+            "client-logs-analytics": {"$ref": "#/$defs/disposition"}
+          }
+        }
+      }
+    },
+    "performance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scenarios", "metrics", "budgets", "repetitions", "environment"],
+      "properties": {
+        "scenarios": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "metrics": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "budgets": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "number", "exclusiveMinimum": 0}},
+        "repetitions": {"type": "integer", "minimum": 1},
+        "environment": {"type": "string", "minLength": 1}
+      }
+    },
+    "production_capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["routing", "forms", "internationalization", "telemetry", "offline-update", "ssr-hydration", "state-library"],
+      "properties": {
+        "routing": {"$ref": "#/$defs/disposition"},
+        "forms": {"$ref": "#/$defs/disposition"},
+        "internationalization": {"$ref": "#/$defs/disposition"},
+        "telemetry": {"$ref": "#/$defs/disposition"},
+        "offline-update": {"$ref": "#/$defs/disposition"},
+        "ssr-hydration": {"$ref": "#/$defs/disposition"},
+        "state-library": {"$ref": "#/$defs/disposition"}
+      }
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "command", "decision"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+          "command": {"type": "string", "minLength": 1},
+          "decision": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "disposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "owner", "rationale"],
+      "properties": {
+        "status": {"enum": ["required", "not-applicable", "unverified"]},
+        "owner": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

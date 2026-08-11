@@ -1,0 +1,50 @@
+schema_version: 1
+schemas:
+  frontend_profile: plugins/bedrock/skills/frontend-code/reference/frontend-profile.schema.json
+  frontend_evidence: plugins/bedrock/skills/frontend-code/reference/frontend-evidence.schema.json
+fixtures:
+  valid:
+    - {schema: frontend_profile, path: tests/fixtures/frontend-contracts/valid/frontend-profile.json}
+    - {schema: frontend_evidence, path: tests/fixtures/frontend-contracts/valid/frontend-evidence.json}
+  invalid:
+    - {schema: frontend_profile, path: tests/fixtures/frontend-contracts/invalid/prototype-without-safety-floor.json, expected: schema}
+    - {schema: frontend_profile, path: tests/fixtures/frontend-contracts/invalid/permission-outcome-overclaim.json, expected: schema}
+    - {schema: frontend_profile, path: tests/fixtures/frontend-contracts/invalid/unbound-api-artifact.json, expected: immutable API artifact}
+    - {schema: frontend_profile, path: tests/fixtures/frontend-contracts/invalid/incomplete-browser-security.json, expected: schema}
+    - {schema: frontend_evidence, path: tests/fixtures/frontend-contracts/invalid/incomplete-accessibility-evidence.json, expected: schema}
+    - {schema: frontend_profile, path: tests/fixtures/frontend-contracts/invalid/unverified-production-profile.json, expected: production profile cannot leave required concern unverified}
+behavior: tests/fixtures/frontend-contracts/behavior.yaml
+browser_app: tests/fixtures/frontend-contracts/browser-app
+required_gate_ids: [typecheck, lint, unit, coverage, build, budget, browser]
+required_contract_markers:
+  plugins/bedrock/skills/frontend-code/SKILL.md:
+    - "Choose primitives by semantics."
+    - "Generated types and contract drift checks reduce authoring drift but do not validate bytes received at runtime."
+    - "Automation alone never proves conformance."
+  plugins/bedrock/skills/frontend-code/reference/02-components-state-and-prototype-promotion.md:
+    - "graduate"
+    - "targeted hardening"
+    - "dispose"
+  plugins/bedrock/skills/frontend-code/reference/03-responsive-accessibility-and-browser-support.md:
+    - "custom properties work normally in declarations"
+    - "do not treat any CSS formula or ratio as proof"
+  plugins/bedrock/skills/frontend-code/reference/04-media-permissions-and-runtime-capabilities.md:
+    - "reading a missing property does not itself throw"
+    - "never invent user intent"
+    - "Do not universalize one live session."
+  plugins/bedrock/skills/frontend-code/reference/05-api-data-and-browser-security.md:
+    - "Generated types do not validate runtime bytes."
+    - "CORS as backend policy"
+  plugins/bedrock/skills/frontend-code/reference/06-production-readiness.md:
+    - "A synthetic score or bundle size alone is not a universal performance claim."
+forbidden_markers:
+  - "no conventions gate at all"
+  - "Hardening is re-authoring"
+  - "Every visual value"
+  - "custom properties do not resolve inside container queries"
+  - "max ≤ 2.5 × min"
+  - "property access throws"
+  - "dismissed, **denied**, **granted**"
+  - "Exactly one live session"
+  - "contract-trusted"
+  - "E2e is not governed here"

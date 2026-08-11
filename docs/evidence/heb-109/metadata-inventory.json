@@ -37,6 +37,7 @@
       ],
       "negative_cases": [
         "app-delivery-pipeline-negative",
+        "frontend-code-browser-security-readiness",
         "infrastructure-code-portable-profile",
         "infrastructure-code-actions-ownership"
       ],
@@ -56,12 +57,14 @@
         "author-execution-relay-negative",
         "debug-negative",
         "frontend-code-negative",
+        "overlap-frontend-backend-enforcement",
         "adversarial-implementation-misroute"
       ],
       "negative_cases": [
         "application-code-negative"
       ],
       "overlap_cases": [
+        "overlap-frontend-backend-enforcement",
         "testing-regression-after-diagnosis"
       ],
       "name": "application-code"
@@ -138,6 +141,7 @@
         "author-decision-record-negative",
         "code-review-positive",
         "design-review-loop-negative",
+        "overlap-review-frontend",
         "overlap-review-terraform",
         "implicit-review-ship-readiness",
         "adversarial-design-review-misroute"
@@ -146,6 +150,7 @@
         "code-review-negative"
       ],
       "overlap_cases": [
+        "overlap-review-frontend",
         "overlap-review-terraform"
       ],
       "name": "code-review"
@@ -158,6 +163,7 @@
         "debug-positive",
         "debug-nonreproducible-production",
         "debug-active-harm",
+        "overlap-debug-frontend",
         "testing-negative",
         "overlap-debug-deployment",
         "implicit-debug-regression",
@@ -165,10 +171,12 @@
       ],
       "negative_cases": [
         "debug-negative",
+        "overlap-testing-frontend",
         "testing-risk-strategy",
         "testing-regression-after-diagnosis"
       ],
       "overlap_cases": [
+        "overlap-debug-frontend",
         "overlap-debug-deployment"
       ],
       "name": "debug"
@@ -191,16 +199,24 @@
     },
     {
       "path": "plugins/bedrock/skills/frontend-code/SKILL.md",
-      "description": "Author or conform frontend code on the house TypeScript, React, Vite, and plain-CSS stack, including components, hooks, responsive layout, design-token use, API clients, browser permissions and media, accessibility, security, testing, and prototype hardening. Use when implementing or structuring browser-facing application behavior. Do not use for backend services (application-code), build/deploy workflows (app-delivery-pipeline), or reviewing a finished diff (code-review). A materially different framework or styling architecture is a rebind.",
-      "description_length": 547,
+      "description": "Author or conform browser-facing application behavior under a portable frontend contract, then bind it to a declared stack profile. Use for components, state and data seams, responsive and accessible interaction, browser capabilities and media, client security, performance obligations, or prototype promotion. Do not use for backend enforcement (application-code), planned test strategy alone (testing), an observed failure (debug), delivery or hosting machinery (app-delivery-pipeline), or a finished-diff review (code-review).",
+      "description_length": 529,
       "positive_cases": [
-        "frontend-code-positive"
+        "frontend-code-positive",
+        "frontend-code-portable-profile",
+        "frontend-code-prototype-promotion",
+        "frontend-code-browser-security-readiness"
       ],
       "negative_cases": [
         "app-delivery-pipeline-static-seam",
         "frontend-code-negative"
       ],
-      "overlap_cases": [],
+      "overlap_cases": [
+        "overlap-testing-frontend",
+        "overlap-debug-frontend",
+        "overlap-review-frontend",
+        "overlap-frontend-backend-enforcement"
+      ],
       "name": "frontend-code"
     },
     {
@@ -227,6 +243,7 @@
       "description": "Author new tests, test strategy, fixtures, and planned coverage. Use for test-first specification of new or changed behavior, risk-based test selection, isolation, contract testing, coverage design, and deterministic or nondeterministic evaluation. Do not use to diagnose any observed failing or flaky test, including CI-only flakes (debug), to implement production behavior, or to review a finished diff. Select a stack profile; a materially different unprofiled test stack is a rebind.",
       "description_length": 487,
       "positive_cases": [
+        "overlap-testing-frontend",
         "testing-positive",
         "testing-risk-strategy",
         "testing-regression-after-diagnosis",
@@ -234,11 +251,13 @@
       ],
       "negative_cases": [
         "debug-nonreproducible-production",
+        "overlap-debug-frontend",
         "testing-negative",
         "implicit-debug-regression",
         "adversarial-debug-misroute"
       ],
       "overlap_cases": [
+        "overlap-testing-frontend",
         "testing-regression-after-diagnosis",
         "overlap-test-agent-output"
       ],
