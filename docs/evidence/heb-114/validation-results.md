@@ -1,8 +1,10 @@
 # HEB-114 validation results
 
-Status: **local deterministic, browser, authenticated routing, and required
-representative Safari/VoiceOver populations pass; local Docker and pushed-CI
-populations remain unverified.** No files were staged.
+Status: **required local and configured CI populations pass.** Docker remained
+unavailable locally, and the required CI population closed that environmental
+gap without the local skip. Source `ed5b8338214b834bc78c203a8ccdae6e7e54923c`
+landed through PR [#30](https://github.com/T-Bone-Haff/bedrock/pull/30) as merge
+`14ec001b5ca4e9dcf45d1d96a97a696a3027427e`.
 
 | Population / command | Input population | Result |
 |---|---|---|
@@ -20,7 +22,7 @@ populations remain unverified.** No files were staged.
 | `playwright test` | 7 scenarios × Chromium, Firefox, WebKit | PASS: 21/21, zero skips |
 | Release routing adapter | 54 cases × 3 repetitions under `claude-haiku-4-5-20251001`; `$0.06` per-call and `$3.00` aggregate ceilings | PASS: 162/162, zero excluded selections, retained-evidence eligible; cost `$1.438027`; aggregate budget not exhausted |
 | Manual Safari + VoiceOver | One representative flow on macOS 26.5.2 (25F84), Safari 26.5.2 (21624.2.5.11.8), VoiceOver 10 (993) | PASS: Option-Tab focused `Open details` with a visible VoiceOver ring; Return activated it; accessibility focus moved to the `Details ready` heading. Exact audible wording was not captured. VoiceOver was restored to off. |
-| Configured GitHub Actions frontend gate | Existing deterministic job on Ubuntu/Node 22.12.0 | Prior pushed candidate: deterministic job passed and live routing exposed the prototype-promotion ambiguity; repaired candidate awaits push and must rerun both jobs |
+| Configured GitHub Actions population | Existing deterministic job on Ubuntu/Node 22.12.0 followed by live routing | PASS: run [`31518930280`](https://github.com/T-Bone-Haff/bedrock/actions/runs/31518930280); deterministic job `93870904783` and live-routing job `93871781057` both succeeded on the landed source |
 
 The first full routing observation under fixture digest
 `040186db609cbb15e86fd2ac09683dc5695a34fc6a2256b2cfd0c1901b94c6ef`

@@ -6,7 +6,18 @@ branch: feature/heb-114-wp5c-correct-frontend-code-skill
 manifest_before: 7.0.0
 manifest_candidate: 8.0.0
 classification: package-major
-status: pre-staging-validation-complete
+status: landed-and-verified
+landing:
+  pull_request: https://github.com/T-Bone-Haff/bedrock/pull/30
+  source_sha: ed5b8338214b834bc78c203a8ccdae6e7e54923c
+  merge_sha: 14ec001b5ca4e9dcf45d1d96a97a696a3027427e
+  github_actions:
+    run_id: 31518930280
+    run_url: https://github.com/T-Bone-Haff/bedrock/actions/runs/31518930280
+    deterministic_job_id: 93870904783
+    deterministic_result: success
+    live_routing_job_id: 93871781057
+    live_routing_result: success
 retained_evidence:
   candidate_identity:
     base_sha: 6e57f2b3df7aa5c28eb26dec339a00c91b2e5288
@@ -29,8 +40,8 @@ limitations:
   - Fixture measurements characterize only the declared local/CI scenarios.
   - Deployment, rollout, headers, source-map publication, and production verification remain delivery-owned.
   - The representative Safari and VoiceOver flow passed, but exact audible wording was not captured; broader zoom, contrast, target-size, assistive-technology, and version populations were not manually exercised.
-  - Docker-required integration is unverified locally because the Docker daemon is unavailable; the existing CI population must run it unskipped.
-  - CI execution of the configured three-engine gates remains pending a future pushed candidate; local three-engine execution is retained separately.
+  - Docker-required integration was unavailable locally because the Docker daemon was unavailable; the required CI population ran it successfully without the local skip.
+  - The configured Ubuntu/Node 22.12.0 CI population, including the three-engine frontend gates, passed on the landed source SHA; local three-engine execution is retained separately.
 file_claim:
   shared_modified:
     - .github/workflows/plugin-validation.yml
