@@ -29,7 +29,30 @@ Install through the plugin marketplace: Settings → Customize → Plugins → A
 
 ## Staying current
 
-Releases are pushed, not discovered: a bedrock release completes with a push to its enumerated consumer surfaces, recorded on that release's rollout ledger — a per-release ticket in the HE-Bedrock tracker (pattern: "bedrock X.Y.Z cascade — consumer-surface rollout ledger"). The enumeration lives there, not here. Marketplace installs stay current via marketplace refresh + plugin update; live sessions need a restart to load the new version. Any snapshot a consumer keeps anyway — a vendored authority file, a pinned copy — must verify currency at time-of-use against the *current* release, not against whatever baseline it was vendored from.
+Distribution behavior differs by surface. Claude.ai/Cowork loads a pushed
+marketplace version in the next new session. Claude Code requires marketplace
+refresh/update, plugin update, and a new session. Neither path requires copying
+the skill corpus into consumer repositories.
+
+A release completes only after cold acceptance, an immutable tag and GitHub
+release matching the manifest, and verification of every enumerated consumer
+surface. The operational rollout ledger may live in the HE-Bedrock tracker, but
+it conforms to the installed schema and cannot replace the package's
+load-bearing lifecycle rules. See the [package lifecycle](plugins/bedrock/governance/README.md),
+[compatibility matrix](plugins/bedrock/governance/COMPATIBILITY.md), and
+[security/support policies](plugins/bedrock/governance/POLICIES.md).
+
+Any snapshot a consumer keeps anyway — a vendored authority file or pinned copy
+— must verify currency at time-of-use against the current release, not against
+the baseline it was copied from.
+
+## Quickstart and profile rebinding
+
+The [routing quickstart](plugins/bedrock/governance/QUICKSTART.md) gives explicit,
+implicit, overlap, and non-trigger examples. The
+[worked rebind specimen](plugins/bedrock/governance/REBINDING.md) demonstrates
+how a non-house stack preserves portable invariants without silently becoming a
+supported profile.
 
 ## Maintenance
 
@@ -43,10 +66,18 @@ Install the pinned validation dependency, then run the deterministic and host ch
 python3 -m pip install -r validation/requirements.txt
 python3 -m unittest discover -s tests -v
 python3 scripts/validate_plugin.py
+python3 scripts/validate_package_governance.py
 bash scripts/smoke_clean_install.sh
 ```
 
-`validate_plugin.py` enforces the 13-skill inventory, strict YAML frontmatter, the 1,024-character description limit, explicit positive and negative routing boundaries, unique names, plugin/marketplace coherence, relative-link and private-path safety, declared external-root dependencies and snapshot currency markers, complete code-sample accounting, evidence-manifest integrity, routing-fixture coverage, and `claude plugin validate --strict`.
+`validate_plugin.py` enforces the 13-skill inventory, strict YAML frontmatter, the 1,024-character description limit, explicit positive and negative routing boundaries, unique names, plugin/marketplace coherence, package lifecycle and policy contracts, relative-link and private-path safety, declared external-root dependencies and snapshot currency markers, complete code-sample accounting, evidence-manifest integrity, routing-fixture coverage, and `claude plugin validate --strict`.
+
+`validate_package_governance.py` separately exposes the package gate for seeded
+tests and release automation. Its default mode validates a candidate. Its
+`--release` mode additionally requires paths to operator-supplied, schema-valid
+release evidence and a completed consumer-surface rollout ledger, and proves
+both against the immutable tag. It is a final release-closure check, not a
+pre-HEB-119 candidate gate.
 
 Shared routing prompts live in `tests/fixtures/routing.yaml` and are surface-neutral. They cover direct, implicit, adversarial, negative, and overlap decisions. The Claude Code adapter presents the exact validated name/description catalog to each isolated model session, so the regression measures the metadata routing contract rather than unaided name association, and retains machine-readable results:
 

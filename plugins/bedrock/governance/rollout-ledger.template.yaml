@@ -1,0 +1,24 @@
+schema_version: 1
+manifest_version: MANIFEST_VERSION
+release_tag: vMANIFEST_VERSION
+source_commit: SOURCE_COMMIT_SHA
+surfaces:
+  - id: claude-ai
+    expected_action: Push marketplace release and open a new session.
+    expected_identity: MANIFEST_VERSION and 13 skills
+    status: pending
+    evidence: null
+    owner: RELEASE_OWNER
+    waiver: null
+  - id: claude-code
+    expected_action: Refresh or update marketplace, update plugin, and open a new session.
+    expected_identity: MANIFEST_VERSION and 13 skills
+    status: pending
+    evidence: null
+    owner: RELEASE_OWNER
+    waiver: null
+rollback:
+  triggered: false
+  last_accepted_tag: null
+  evidence: null
+status: pending

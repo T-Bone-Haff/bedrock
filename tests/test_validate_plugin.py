@@ -152,6 +152,7 @@ class ValidatorTests(unittest.TestCase):
             run_host_cli=False,
             run_safety_checks=False,
             require_authoring_contracts=False,
+            require_package_governance=False,
         )
         self.assertTrue(any(needle in error for error in errors), errors)
 
@@ -161,6 +162,7 @@ class ValidatorTests(unittest.TestCase):
             run_host_cli=False,
             run_safety_checks=False,
             require_authoring_contracts=False,
+            require_package_governance=False,
         )
         self.assertEqual([], errors)
         self.assertEqual(13, report["skill_count"])
@@ -214,6 +216,7 @@ class ValidatorTests(unittest.TestCase):
             run_host_cli=False,
             run_safety_checks=False,
             require_authoring_contracts=True,
+            require_package_governance=False,
         )
         self.assertTrue(
             any("application/test/debug contract registry is missing" in error for error in errors),

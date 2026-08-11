@@ -61,6 +61,8 @@ jobs:
         run: >-
           python scripts/validate_plugin.py
           --inventory docs/evidence/heb-109/metadata-inventory.json
+      - name: Run HEB-118 package-governance validation
+        run: python scripts/validate_package_governance.py
       - name: Run HEB-110 safety contract validation
         run: python scripts/validate_safety.py
       - name: Run HEB-113 infrastructure and delivery contract validation

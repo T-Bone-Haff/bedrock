@@ -1,10 +1,9 @@
 # CLAUDE.md — bedrock
 
-Repo-root orientation for Claude (auto-loaded by Claude Code). This file is
-**context, not conventions** — what this repo is, its layout, and how changes
-land. The engineering conventions are this repo's *product*: they live in the
-plugin's skills (`plugins/bedrock/skills/`), which trigger on their own; this
-file does not mirror them. Keep this file lean; prune as it grows.
+Repo-root orientation carrier for Claude (auto-loaded by Claude Code). The
+tracked, host-neutral authority is [`docs/repository-orientation.md`](docs/repository-orientation.md).
+This file is **context, not conventions** and does not mirror the engineering
+standards in `plugins/bedrock/skills/`.
 
 ## What this is
 
@@ -26,6 +25,10 @@ no other surface states a version number.
 - `docs/session-archive/` — historical session records; read-only context,
   never authority
 - `README.md` — the install, staying-current, and maintenance surface
+- `plugins/bedrock/governance/` — installed lifecycle, compatibility, policy,
+  threat-model, quickstart, rebind, registry, and release-evidence contracts
+- root `AGENTS.md`, when present, is ignored local Codex context. It is not a
+  tracked package or repository authority and must not be staged implicitly
 
 ## Branch model and commit authority
 
@@ -40,6 +43,11 @@ landing, never pre-claimed.
 
 - Releases follow the push discipline in the `author-standard` skill; each
   release's consumer-surface enumeration lives on its rollout ledger (a
-  per-release ticket in the HE-Bedrock tracker), not in this repo.
+  per-release ticket in the HE-Bedrock tracker) and conforms to the installed
+  rollout-ledger schema. Tracker state is operational evidence, not installed
+  contract authority.
 - A skill-content change lands with the plugin.json version bump in the same
   transaction.
+- A manifest version on `main` remains a candidate until HEB-119 cold acceptance
+  returns an explicit proceed decision. Only then may the matching immutable tag
+  and GitHub release be created.

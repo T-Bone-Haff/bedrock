@@ -1,0 +1,45 @@
+schema_version: 1
+manifest_version: MANIFEST_VERSION
+source_commit: SOURCE_COMMIT_SHA
+manifest_sha256: MANIFEST_SHA256
+findings:
+  assigned: 0
+  closed: 0
+  evidence:
+    - REPOSITORY_RELATIVE_EVIDENCE
+changed_surfaces:
+  - REPOSITORY_RELATIVE_SURFACE
+migration:
+  classification: none
+  rationale: REQUIRED_RATIONALE
+  notes: null
+gates:
+  - id: deterministic
+    status: unavailable
+    evidence: REQUIRED_EVIDENCE_OR_ESCALATION
+  - id: strict-host
+    status: unavailable
+    evidence: REQUIRED_EVIDENCE_OR_ESCALATION
+  - id: isolated-install
+    status: unavailable
+    evidence: REQUIRED_EVIDENCE_OR_ESCALATION
+  - id: routing
+    status: unavailable
+    evidence: REQUIRED_EVIDENCE_OR_ESCALATION
+  - id: review
+    status: unavailable
+    evidence: REQUIRED_EVIDENCE_OR_ESCALATION
+  - id: migration
+    status: unavailable
+    evidence: REQUIRED_EVIDENCE_OR_ESCALATION
+  - id: cold-acceptance
+    status: unavailable
+    evidence: REQUIRED_EVIDENCE_OR_ESCALATION
+  - id: github-release
+    status: unavailable
+    evidence: REQUIRED_EVIDENCE_OR_ESCALATION
+limitations: []
+decision:
+  status: pending
+  authority: HEB-119 operator release gate
+  recorded_at: null

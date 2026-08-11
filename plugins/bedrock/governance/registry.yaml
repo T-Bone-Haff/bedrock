@@ -1,0 +1,115 @@
+schema_version: 1
+version_authority: plugins/bedrock/.claude-plugin/plugin.json#/version
+release_tag_pattern: v{manifest_version}
+release_state_source: Immutable tag plus schema-valid release evidence and rollout ledger; the packaged candidate does not self-ratify.
+contracts:
+  portable_core: 1.0.0
+  claude_adapter: 1.0.0
+  prompt_generation_format: 1.0.0
+authorities:
+  - id: package-version
+    owner: plugins/bedrock/.claude-plugin/plugin.json#/version
+    carriers: []
+  - id: portable-architecture
+    owner: docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md
+    carriers:
+      - docs/architecture/skill-architecture.md
+      - docs/architecture/coverage-map.md
+      - docs/architecture/migration-compatibility.md
+  - id: skill-semantics
+    owner: plugins/bedrock/skills/{skill}/SKILL.md
+    carriers:
+      - plugins/bedrock/skills/{skill}/reference/
+      - plugins/bedrock/skills/{skill}/templates/
+  - id: routing-catalog
+    owner: plugins/bedrock/skills/{skill}/SKILL.md#/description
+    carriers:
+      - tests/fixtures/routing.yaml
+      - docs/evidence/heb-109/metadata-inventory.json
+  - id: evaluation-policy
+    owner: validation/eval-policy.yaml
+    carriers:
+      - docs/evidence/heb-109/routing-results.json
+  - id: package-lifecycle
+    owner: plugins/bedrock/governance/README.md
+    carriers:
+      - plugins/bedrock/governance/registry.yaml
+      - plugins/bedrock/governance/vocabulary.yaml
+      - plugins/bedrock/governance/authority-inventory.yaml
+      - plugins/bedrock/governance/release-evidence.schema.json
+      - plugins/bedrock/governance/rollout-ledger.schema.json
+precedence:
+  - portable safety floor
+  - portable normative contract
+  - selected profile
+  - contextual restatement
+  - example
+conflict_behavior: Stop before execution, name the competing authorities and missing discriminator, and obtain operator disposition.
+capabilities:
+  - id: claude-code-plugin-host
+    required_for: Claude Code installation, discovery, and update
+    version: ">=2.1.226"
+    detection: claude --version and claude plugin validate --strict
+    unavailable_behavior: Installation and Claude Code compatibility remain unverified; use another verified surface or stop.
+  - id: claude-ai-plugin-host
+    required_for: Claude.ai and Cowork marketplace loading
+    version: hosted-service
+    detection: marketplace install followed by a new-session skill inventory
+    unavailable_behavior: Claude.ai compatibility remains unverified; do not infer it from Claude Code evidence.
+  - id: sofia-runner
+    required_for: runner-backed convergence only
+    version: external-unimplemented
+    detection: declared versioned kernel capability and recipe binding
+    unavailable_behavior: Use direct or multi-perspective review without claiming mechanical convergence, or stop if runner-backed proof is required.
+external_dependencies: []
+consumer_surfaces:
+  - id: claude-ai
+    propagation: Marketplace pushes auto-load for the next new session.
+    verification: Open a new session and verify the intended manifest identity and 13-skill inventory.
+  - id: claude-code
+    propagation: Refresh or update the marketplace, update the plugin, and start a new session.
+    verification: Inspect plugin details and verify the intended manifest identity and 13-skill inventory after reload.
+budgets:
+  description_max_characters: 1024
+  catalog_description_max_characters: 8192
+  skill_entrypoint_max_words: 1200
+  rationale: Catalog and entrypoint limits preserve approximately 20–25 percent headroom over the measured HEB-118 baseline while preventing an unreviewed return to the audited corpus size.
+  over_budget_behavior: Block the candidate unless measured routing and completion evidence ratifies a revised budget.
+prompt_generation:
+  format_version_source: registry.contracts.prompt_generation_format
+  required_provenance:
+    - generator identity and version
+    - source contract identity and version
+    - source digest
+    - generation timestamp
+  package_semver_effect: Prompt wording alone does not require a package major when routing, authority, interaction, evidence, and safety semantics remain compatible.
+release_gates:
+  - reconciled finding register
+  - deterministic package and domain validators
+  - unit and required integration tests
+  - strict host validation
+  - isolated install and reload
+  - full retained routing evaluation
+  - compatibility and migration disposition
+  - direct evidence-cited review
+  - operator-ratified gate decision
+  - cold acceptance under HEB-119
+skills:
+  - {name: agent-code, owner: Tad Haffey - Haffey Enterprises, reviewer: agent and model-systems reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+  - {name: app-delivery-pipeline, owner: Tad Haffey - Haffey Enterprises, reviewer: application-delivery reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+  - {name: application-code, owner: Tad Haffey - Haffey Enterprises, reviewer: application reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+  - {name: author-construct-spec, owner: Tad Haffey - Haffey Enterprises, reviewer: standards reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+  - {name: author-decision-record, owner: Tad Haffey - Haffey Enterprises, reviewer: architecture reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+  - {name: author-execution-relay, owner: Tad Haffey - Haffey Enterprises, reviewer: execution-governance reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+  - {name: author-standard, owner: Tad Haffey - Haffey Enterprises, reviewer: standards reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+  - {name: code-review, owner: Tad Haffey - Haffey Enterprises, reviewer: review-governance reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+  - {name: debug, owner: Tad Haffey - Haffey Enterprises, reviewer: diagnosis reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+  - {name: design-review-loop, owner: Tad Haffey - Haffey Enterprises, reviewer: design-governance reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+  - {name: frontend-code, owner: Tad Haffey - Haffey Enterprises, reviewer: frontend reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+  - {name: infrastructure-code, owner: Tad Haffey - Haffey Enterprises, reviewer: infrastructure reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+  - {name: testing, owner: Tad Haffey - Haffey Enterprises, reviewer: testing reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+sources:
+  - {id: adr-001, type: ratified-architecture, location: docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md, applicability: package architecture and versioning}
+  - {id: claude-plugin-reference, type: vendor-documentation, location: "https://code.claude.com/docs/en/plugins-reference", accessed: 2026-08-11, applicability: manifest metadata, packaging, and update behavior}
+  - {id: semantic-versioning, type: public-standard, location: "https://semver.org/spec/v2.0.0.html", accessed: 2026-08-11, applicability: package version classification}
+  - {id: mit-license, type: ratified-license, location: LICENSE, applicability: copying, modification, and redistribution}
