@@ -5,15 +5,17 @@ from __future__ import annotations
 
 import argparse
 from collections import defaultdict
+from dataclasses import dataclass
 from datetime import datetime, timezone
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import shutil
 import subprocess
 import sys
-from typing import Any
+from typing import Any, Callable, Mapping
 
 try:
     from scripts.validate_plugin import load_eval_policy, load_routing_cases, validate_repository
@@ -32,6 +34,80 @@ OUTPUT_SCHEMA = json.dumps(
         "additionalProperties": False,
     }
 )
+
+FAILURE_DIAGNOSTICS = {
+    "authentication_failure": (
+        "Claude adapter authentication failed on the --bare --print execution path; "
+        "provide a valid ANTHROPIC_API_KEY"
+    ),
+    "api_access_failure": "Claude API access is unavailable on the --bare --print execution path",
+    "transport_failure": "Claude adapter transport failed before a valid model response",
+    "model_failure": "Claude adapter returned a model/runtime failure instead of a routing result",
+}
+
+
+@dataclass(frozen=True)
+class InvocationResult:
+    classification: str
+    passed: bool | None
+    selected: str | None
+    detail: str
+    cost_usd: float
+    models: list[str]
+
+    @classmethod
+    def route(
+        cls,
+        passed: bool,
+        selected: str | None,
+        detail: str,
+        cost_usd: float,
+        models: list[str],
+    ) -> InvocationResult:
+        return cls("route_result", passed, selected, detail, cost_usd, models)
+
+    @classmethod
+    def failure(
+        cls,
+        classification: str,
+        cost_usd: float = 0.0,
+        models: list[str] | None = None,
+    ) -> InvocationResult:
+        return cls(
+            classification,
+            None,
+            None,
+            FAILURE_DIAGNOSTICS[classification],
+            cost_usd,
+            models or [],
+        )
+
+    def as_failure_evidence(self) -> dict[str, Any]:
+        if self.classification == "route_result":
+            raise ValueError("a valid route result is not failure evidence")
+        return {
+            "classification": self.classification,
+            "diagnostic": self.detail,
+            "cost_usd": self.cost_usd,
+            "resolved_models": self.models,
+        }
+
+
+@dataclass(frozen=True)
+class MatrixFailure:
+    case: str
+    run: int
+    classification: str
+    diagnostic: str
+    cost_usd: float
+    models: list[str]
+
+
+@dataclass(frozen=True)
+class MatrixExecution:
+    results: list[dict[str, Any]]
+    failure: MatrixFailure | None = None
+    budget_exhausted: bool = False
 
 
 def _parse_result(stdout: str) -> dict[str, Any]:
@@ -57,29 +133,87 @@ def _extract_usage(payload: str) -> tuple[float, list[str]]:
         return 0.0, []
     if not isinstance(envelope, dict):
         return 0.0, []
-    cost = float(envelope.get("total_cost_usd", 0.0) or 0.0)
+    try:
+        cost = float(envelope.get("total_cost_usd", 0.0) or 0.0)
+    except (TypeError, ValueError):
+        cost = 0.0
+    if not math.isfinite(cost) or cost < 0:
+        cost = 0.0
     model_usage = envelope.get("modelUsage", {})
     models = sorted(model_usage) if isinstance(model_usage, dict) else []
     return cost, models
 
 
-def check_authentication(executable: str) -> str | None:
-    environment = os.environ.copy()
-    environment.pop("CLAUDECODE", None)
-    result = subprocess.run(
-        [executable, "auth", "status"],
-        env=environment,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    try:
-        status = json.loads(result.stdout)
-    except json.JSONDecodeError:
-        return "could not determine Claude authentication status"
-    if status.get("loggedIn") or environment.get("ANTHROPIC_API_KEY"):
+def check_authentication(environment: Mapping[str, str] | None = None) -> str | None:
+    """Validate the credential source that the adapter's --bare path can read."""
+    active_environment = os.environ if environment is None else environment
+    if active_environment.get("ANTHROPIC_API_KEY"):
         return None
-    return "Claude routing adapter is not authenticated; run `claude /login` or provide ANTHROPIC_API_KEY"
+    return (
+        "Claude routing adapter requires ANTHROPIC_API_KEY because --bare does not read "
+        "Claude subscription/OAuth or keychain authentication"
+    )
+
+
+def _flatten_failure_text(value: Any) -> list[str]:
+    if isinstance(value, dict):
+        return [item for nested in value.values() for item in _flatten_failure_text(nested)]
+    if isinstance(value, list):
+        return [item for nested in value for item in _flatten_failure_text(nested)]
+    return [value] if isinstance(value, str) else []
+
+
+def _classify_invocation_failure(stdout: str, stderr: str, returncode: int) -> str:
+    """Classify untrusted CLI failure output without returning or retaining it."""
+    fragments: list[str] = []
+    for payload in (stdout, stderr):
+        try:
+            fragments.extend(_flatten_failure_text(json.loads(payload)))
+        except json.JSONDecodeError:
+            fragments.append(payload)
+    normalized = " ".join(fragments).casefold()
+    if any(
+        marker in normalized
+        for marker in (
+            "not logged in",
+            "authentication_error",
+            "authentication error",
+            "invalid x-api-key",
+            "invalid api key",
+            "api key is invalid",
+            "unauthorized",
+        )
+    ):
+        return "authentication_failure"
+    if any(
+        marker in normalized
+        for marker in (
+            "permission_error",
+            "permission denied",
+            "forbidden",
+            "credit balance",
+            "billing",
+            "rate_limit_error",
+            "rate limit",
+            "api access",
+        )
+    ):
+        return "api_access_failure"
+    if any(
+        marker in normalized
+        for marker in (
+            "connection reset",
+            "connection refused",
+            "timed out",
+            "timeout",
+            "network error",
+            "dns",
+            "service unavailable",
+            "econn",
+        )
+    ):
+        return "transport_failure"
+    return "model_failure" if returncode == 0 or normalized else "transport_failure"
 
 
 def build_routing_prompt(case: dict[str, Any], skills: list[dict[str, Any]]) -> str:
@@ -109,7 +243,7 @@ def run_case(
     model: str,
     max_budget_usd: float,
     timeout_seconds: int,
-) -> tuple[bool, str | None, str, float, list[str]]:
+) -> InvocationResult:
     prompt = build_routing_prompt(case, skills)
     environment = os.environ.copy()
     environment.pop("CLAUDECODE", None)
@@ -142,17 +276,24 @@ def run_case(
             timeout=timeout_seconds,
         )
     except subprocess.TimeoutExpired:
-        return False, None, f"routing process exceeded {timeout_seconds} seconds", 0.0, []
+        return InvocationResult.failure("transport_failure")
     if result.returncode != 0:
-        detail = (result.stderr or result.stdout).strip()
         cost, models = _extract_usage(result.stdout)
         if not models and cost == 0.0:
             cost, models = _extract_usage(result.stderr)
-        return False, None, detail, cost, models
+        return InvocationResult.failure(
+            _classify_invocation_failure(result.stdout, result.stderr, result.returncode),
+            cost,
+            models,
+        )
     try:
         routed = _parse_result(result.stdout)
     except (json.JSONDecodeError, ValueError) as exc:
-        return False, None, str(exc), 0.0, []
+        del exc
+        cost, models = _extract_usage(result.stdout)
+        return InvocationResult.failure(
+            _classify_invocation_failure(result.stdout, result.stderr, 0), cost, models
+        )
     selected = routed.get("skill")
     expected = case.get("expected")
     alternates = case.get("allowed_alternates", [])
@@ -160,7 +301,61 @@ def run_case(
     if selected in case.get("excluded", []):
         passed = False
     cost, models = _extract_usage(result.stdout)
-    return passed, selected, str(routed.get("reason", "")), cost, models
+    return InvocationResult.route(passed, selected, str(routed.get("reason", "")), cost, models)
+
+
+def execute_case_matrix(
+    cases: list[dict[str, Any]],
+    *,
+    runs: int,
+    max_budget_usd: float,
+    max_total_budget_usd: float | None,
+    invoke: Callable[[dict[str, Any], int, float], InvocationResult],
+    on_result: Callable[[list[dict[str, Any]], dict[str, Any]], None] | None = None,
+) -> MatrixExecution:
+    """Execute until completion, budget exhaustion, or the first non-routing failure."""
+    results: list[dict[str, Any]] = []
+    for case in cases:
+        for run_number in range(1, runs + 1):
+            spent_usd = sum(result["cost_usd"] for result in results)
+            remaining_usd = (
+                max_total_budget_usd - spent_usd
+                if max_total_budget_usd is not None
+                else max_budget_usd
+            )
+            if remaining_usd <= 0:
+                return MatrixExecution(results=results, budget_exhausted=True)
+            outcome = invoke(case, run_number, min(max_budget_usd, remaining_usd))
+            if outcome.classification != "route_result":
+                return MatrixExecution(
+                    results=results,
+                    failure=MatrixFailure(
+                        case=str(case["id"]),
+                        run=run_number,
+                        classification=outcome.classification,
+                        diagnostic=outcome.detail,
+                        cost_usd=outcome.cost_usd,
+                        models=outcome.models,
+                    ),
+                )
+            record = {
+                "case": case["id"],
+                "kind": case["kind"],
+                "cue": case.get("cue", "direct"),
+                "surface": case["surface"],
+                "run": run_number,
+                "expected": case.get("expected"),
+                "selected": outcome.selected,
+                "selected_excluded": outcome.selected in case.get("excluded", []),
+                "passed": outcome.passed,
+                "detail": outcome.detail,
+                "cost_usd": outcome.cost_usd,
+                "models": outcome.models,
+            }
+            results.append(record)
+            if on_result is not None:
+                on_result(results, record)
+    return MatrixExecution(results=results)
 
 
 def _sha256_bytes(value: bytes) -> str:
@@ -274,6 +469,45 @@ def build_report(
     }
 
 
+def build_failure_report(
+    *,
+    model: str,
+    profile: str,
+    cli_version: str,
+    fixture_digest: str,
+    catalog_digest: str,
+    policy_digest: str,
+    generated_at: str,
+    completed_case_runs: int,
+    failure: MatrixFailure,
+) -> dict[str, Any]:
+    """Build sanitized non-evaluation evidence for a terminal adapter failure."""
+    return {
+        "schema_version": 1,
+        "adapter": "claude-code",
+        "status": "failed",
+        "phase": "preflight" if completed_case_runs == 0 else "evaluation",
+        "generated_at": generated_at,
+        "profile": profile,
+        "claude_cli_version": cli_version,
+        "requested_model": model,
+        "identity": {
+            "fixture_sha256": fixture_digest,
+            "catalog_sha256": catalog_digest,
+            "policy_sha256": policy_digest,
+        },
+        "completed_case_runs": completed_case_runs,
+        "failure": {
+            "classification": failure.classification,
+            "diagnostic": failure.diagnostic,
+            "case": failure.case,
+            "run": failure.run,
+            "cost_usd": failure.cost_usd,
+            "resolved_models": failure.models,
+        },
+    }
+
+
 def write_report(path: Path, report: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
@@ -297,10 +531,6 @@ def main() -> int:
     executable = shutil.which("claude")
     if executable is None:
         print("FAIL: Claude Code CLI is required for the Claude routing adapter", file=sys.stderr)
-        return 2
-    auth_error = check_authentication(executable)
-    if auth_error:
-        print(f"FAIL: {auth_error}", file=sys.stderr)
         return 2
     if args.timeout_seconds < 1:
         parser.error("--timeout-seconds must be at least 1")
@@ -338,7 +568,6 @@ def main() -> int:
             print(f"FAIL: unknown case ids: {sorted(missing)}", file=sys.stderr)
             return 2
 
-    results: list[dict[str, Any]] = []
     plugin_dir = args.root.resolve() / "plugins" / "bedrock"
     fixture_digest = _sha256_bytes((args.root.resolve() / "tests/fixtures/routing.yaml").read_bytes())
     policy_digest = _sha256_bytes((args.root.resolve() / "validation/eval-policy.yaml").read_bytes())
@@ -352,74 +581,112 @@ def main() -> int:
     generated_at = datetime.now(timezone.utc).isoformat()
     suite_scope = "targeted" if args.case_ids else "full"
     planned_case_ids = [str(case["id"]) for case in cases]
-    budget_exhausted = False
-    for case in cases:
-        for run_number in range(1, runs + 1):
-            spent_usd = sum(result["cost_usd"] for result in results)
-            remaining_usd = (
-                args.max_total_budget_usd - spent_usd
-                if args.max_total_budget_usd is not None
-                else args.max_budget_usd
+    auth_error = check_authentication()
+    if auth_error:
+        failure = MatrixFailure(
+            case="preflight",
+            run=0,
+            classification="authentication_failure",
+            diagnostic=auth_error,
+            cost_usd=0.0,
+            models=[],
+        )
+        print(f"FAIL [authentication_failure]: {auth_error}", file=sys.stderr)
+        if args.output:
+            write_report(
+                args.output,
+                build_failure_report(
+                    model=args.model,
+                    profile=args.profile,
+                    cli_version=cli_version,
+                    fixture_digest=fixture_digest,
+                    catalog_digest=catalog_digest,
+                    policy_digest=policy_digest,
+                    generated_at=generated_at,
+                    completed_case_runs=0,
+                    failure=failure,
+                ),
             )
-            if remaining_usd <= 0:
-                budget_exhausted = True
-                print("FAIL: aggregate suite budget exhausted", file=sys.stderr, flush=True)
-                break
-            passed, selected, detail, cost_usd, models = run_case(
-                executable,
-                plugin_dir,
-                case,
-                inventory["skills"],
-                args.model,
-                min(args.max_budget_usd, remaining_usd),
-                args.timeout_seconds,
+        return 2
+
+    def invoke(case: dict[str, Any], run_number: int, budget_usd: float) -> InvocationResult:
+        del run_number
+        return run_case(
+            executable,
+            plugin_dir,
+            case,
+            inventory["skills"],
+            args.model,
+            budget_usd,
+            args.timeout_seconds,
+        )
+
+    def retain_result(results: list[dict[str, Any]], record: dict[str, Any]) -> None:
+        print(
+            f"{'PASS' if record['passed'] else 'FAIL'} {record['case']} run={record['run']} "
+            f"expected={record['expected']!r} selected={record['selected']!r}",
+            flush=True,
+        )
+        if not record["passed"]:
+            print(f"  detail: {record['detail']}", flush=True)
+        if args.output:
+            write_report(
+                args.output,
+                build_report(
+                    model=args.model,
+                    profile=args.profile,
+                    policy=policy,
+                    runs=runs,
+                    max_budget_usd=args.max_budget_usd,
+                    timeout_seconds=args.timeout_seconds,
+                    cli_version=cli_version,
+                    fixture_digest=fixture_digest,
+                    catalog_digest=catalog_digest,
+                    policy_digest=policy_digest,
+                    results=results,
+                    generated_at=generated_at,
+                    suite_scope=suite_scope,
+                    planned_case_ids=planned_case_ids,
+                    max_total_budget_usd=args.max_total_budget_usd,
+                ),
             )
-            record = {
-                "case": case["id"],
-                "kind": case["kind"],
-                "cue": case.get("cue", "direct"),
-                "surface": case["surface"],
-                "run": run_number,
-                "expected": case.get("expected"),
-                "selected": selected,
-                "selected_excluded": selected in case.get("excluded", []),
-                "passed": passed,
-                "detail": detail,
-                "cost_usd": cost_usd,
-                "models": models,
-            }
-            results.append(record)
-            print(
-                f"{'PASS' if passed else 'FAIL'} {case['id']} run={run_number} "
-                f"expected={case.get('expected')!r} selected={selected!r}",
-                flush=True,
+
+    execution = execute_case_matrix(
+        cases,
+        runs=runs,
+        max_budget_usd=args.max_budget_usd,
+        max_total_budget_usd=args.max_total_budget_usd,
+        invoke=invoke,
+        on_result=retain_result,
+    )
+    if execution.failure is not None:
+        print(
+            f"FAIL [{execution.failure.classification}] case={execution.failure.case} "
+            f"run={execution.failure.run}: {execution.failure.diagnostic}",
+            file=sys.stderr,
+            flush=True,
+        )
+        if args.output:
+            write_report(
+                args.output,
+                build_failure_report(
+                    model=args.model,
+                    profile=args.profile,
+                    cli_version=cli_version,
+                    fixture_digest=fixture_digest,
+                    catalog_digest=catalog_digest,
+                    policy_digest=policy_digest,
+                    generated_at=generated_at,
+                    completed_case_runs=len(execution.results),
+                    failure=execution.failure,
+                ),
             )
-            if not passed:
-                print(f"  detail: {detail}", flush=True)
-            if args.output:
-                write_report(
-                    args.output,
-                    build_report(
-                        model=args.model,
-                        profile=args.profile,
-                        policy=policy,
-                        runs=runs,
-                        max_budget_usd=args.max_budget_usd,
-                        timeout_seconds=args.timeout_seconds,
-                        cli_version=cli_version,
-                        fixture_digest=fixture_digest,
-                        catalog_digest=catalog_digest,
-                        policy_digest=policy_digest,
-                        results=results,
-                        generated_at=generated_at,
-                        suite_scope=suite_scope,
-                        planned_case_ids=planned_case_ids,
-                        max_total_budget_usd=args.max_total_budget_usd,
-                        budget_exhausted=budget_exhausted,
-                    ),
-                )
-        if budget_exhausted:
-            break
+        return 2
+    if execution.budget_exhausted:
+        print("FAIL: aggregate suite budget exhausted", file=sys.stderr, flush=True)
+
+    results = execution.results
+    budget_exhausted = execution.budget_exhausted
 
     report = build_report(
         model=args.model,

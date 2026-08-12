@@ -87,7 +87,23 @@ python3 scripts/run_routing_evals.py \
   --output docs/evidence/heb-109/routing-results.json
 ```
 
-The live adapter requires Claude authentication and incurs model usage. Pull requests use the preregistered `pr` profile: every case runs once and every draw must pass. Authenticated retained evidence uses the `release` profile: three independent draws per case, at least a 95% aggregate pass rate, at least two of three passing draws for every case, and zero excluded-route selections. The machine-readable report records fixture, catalog, and policy SHA-256 digests; results with different identities are not pooled. Each model call is capped at $0.03 and 120 seconds. Deterministic validation and the isolated install/reload smoke test do not require model inference. Branch protection must require `Plugin validation / live-routing`.
+The live adapter requires `ANTHROPIC_API_KEY` and incurs model usage. Its
+`claude --bare --print` execution path intentionally does not read Claude
+subscription/OAuth or keychain authentication, so `claude auth status` is not
+an adapter preflight. The harness first checks for the API-key credential source;
+the first real case invocation then validates that credential and the exact
+adapter execution path without adding a separate model call. Any authentication,
+API-access, transport, or model failure aborts the remaining matrix immediately
+and writes sanitized failure evidence instead of counting the failure as a
+routing miss. Pull requests use the preregistered `pr` profile: every case runs
+once and every draw must pass. Authenticated retained evidence uses the `release`
+profile: three independent draws per case, at least a 95% aggregate pass rate, at
+least two of three passing draws for every case, and zero excluded-route
+selections. The machine-readable report records fixture, catalog, and policy
+SHA-256 digests; results with different identities are not pooled. Each model
+call is capped at $0.03 and 120 seconds. Deterministic validation and the isolated
+install/reload smoke test do not require model inference. Branch protection must
+require `Plugin validation / live-routing`.
 
 Using `--case` creates an explicitly targeted report. It can prove that selected cases passed, but the report is marked ineligible as retained full-suite release evidence.
 
