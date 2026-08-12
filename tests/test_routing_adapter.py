@@ -1,18 +1,182 @@
 from __future__ import annotations
 
 import json
+import os
 import unittest
+from unittest.mock import patch
 
 from scripts.run_routing_evals import (
+    InvocationResult,
+    MatrixFailure,
+    _classify_invocation_failure,
     _extract_usage,
     _parse_result,
+    build_failure_report,
     build_report,
     build_routing_prompt,
+    check_authentication,
+    execute_case_matrix,
     evaluate_thresholds,
+    run_case,
 )
 
 
 class RoutingAdapterResultTests(unittest.TestCase):
+    def test_api_key_authentication_satisfies_bare_adapter_contract(self) -> None:
+        self.assertIsNone(check_authentication({"ANTHROPIC_API_KEY": "test-secret"}))
+
+    def test_subscription_status_does_not_satisfy_bare_adapter_contract(self) -> None:
+        with patch.dict(os.environ, {}, clear=True):
+            self.assertIn("ANTHROPIC_API_KEY", check_authentication())
+
+    def test_successful_auth_status_cannot_mask_not_logged_in_invocation(self) -> None:
+        completed = unittest.mock.Mock(
+            returncode=1,
+            stdout=json.dumps({"subtype": "error", "result": "Not logged in"}),
+            stderr="",
+        )
+        with patch(
+            "scripts.run_routing_evals.subprocess.run", return_value=completed
+        ) as run:
+            result = run_case(
+                "/usr/local/bin/claude",
+                unittest.mock.Mock(),
+                {"prompt": "route", "expected": "debug", "kind": "direct"},
+                [],
+                "haiku",
+                0.03,
+                120,
+            )
+            command = run.call_args.args[0]
+
+        self.assertEqual("authentication_failure", result.classification)
+        self.assertIsNone(result.passed)
+        self.assertEqual(["--bare", "--print"], command[1:3])
+        self.assertNotIn("auth", command)
+
+    def test_typed_authentication_failure_after_evaluation_begins_fails_fast(self) -> None:
+        calls: list[str] = []
+
+        def invoke(case: dict[str, object], _run: int, _budget: float) -> InvocationResult:
+            calls.append(str(case["id"]))
+            if case["id"] == "b":
+                return InvocationResult.failure("authentication_failure")
+            return InvocationResult.route(True, "debug", "correct", 0.0, [])
+
+        execution = execute_case_matrix(
+            [
+                {"id": "a", "kind": "direct", "surface": "shared", "expected": "debug"},
+                {"id": "b", "kind": "direct", "surface": "shared", "expected": "debug"},
+                {"id": "c", "kind": "direct", "surface": "shared", "expected": "debug"},
+            ],
+            runs=2,
+            max_budget_usd=0.03,
+            max_total_budget_usd=None,
+            invoke=invoke,
+        )
+
+        self.assertEqual(["a", "a", "b"], calls)
+        self.assertEqual("authentication_failure", execution.failure.classification)
+        self.assertEqual(2, len(execution.results))
+
+    def test_transport_failure_is_not_a_route_miss(self) -> None:
+        classification = _classify_invocation_failure("", "connection reset by peer", 1)
+        self.assertEqual("transport_failure", classification)
+
+    def test_api_access_failure_is_not_a_route_miss(self) -> None:
+        classification = _classify_invocation_failure(
+            json.dumps({"type": "permission_error", "message": "forbidden"}), "", 1
+        )
+        self.assertEqual("api_access_failure", classification)
+
+    def test_typed_model_failure_is_not_a_route_miss(self) -> None:
+        completed = unittest.mock.Mock(
+            returncode=0,
+            stdout=json.dumps({"subtype": "error_max_budget_usd", "total_cost_usd": 0.03}),
+            stderr="",
+        )
+        with patch("scripts.run_routing_evals.subprocess.run", return_value=completed):
+            result = run_case(
+                "/usr/local/bin/claude",
+                unittest.mock.Mock(),
+                {"prompt": "route", "expected": "debug", "kind": "direct"},
+                [],
+                "haiku",
+                0.03,
+                120,
+            )
+
+        self.assertEqual("model_failure", result.classification)
+        self.assertIsNone(result.passed)
+
+    def test_genuine_wrong_route_remains_an_evaluation_miss(self) -> None:
+        completed = unittest.mock.Mock(
+            returncode=0,
+            stdout=json.dumps(
+                {
+                    "structured_output": {"skill": "testing", "reason": "valid but wrong"},
+                    "total_cost_usd": 0.01,
+                }
+            ),
+            stderr="",
+        )
+        with patch("scripts.run_routing_evals.subprocess.run", return_value=completed):
+            result = run_case(
+                "/usr/local/bin/claude",
+                unittest.mock.Mock(),
+                {"prompt": "route", "expected": "debug", "kind": "direct"},
+                [],
+                "haiku",
+                0.03,
+                120,
+            )
+
+        self.assertEqual("route_result", result.classification)
+        self.assertFalse(result.passed)
+        self.assertEqual("testing", result.selected)
+
+    def test_failure_diagnostic_does_not_retain_secret_output(self) -> None:
+        secret = "sk-ant-secret-material"
+        completed = unittest.mock.Mock(
+            returncode=1,
+            stdout=json.dumps({"subtype": "authentication_error", "message": secret}),
+            stderr=f"invalid x-api-key {secret}",
+        )
+        with patch("scripts.run_routing_evals.subprocess.run", return_value=completed):
+            result = run_case(
+                "/usr/local/bin/claude",
+                unittest.mock.Mock(),
+                {"prompt": secret, "expected": "debug", "kind": "direct"},
+                [],
+                "haiku",
+                0.03,
+                120,
+            )
+
+        failure = MatrixFailure(
+            case="case-a",
+            run=1,
+            classification=result.classification,
+            diagnostic=result.detail,
+            cost_usd=result.cost_usd,
+            models=result.models,
+        )
+        retained = json.dumps(
+            build_failure_report(
+                model="haiku",
+                profile="pr",
+                cli_version="2.1.226",
+                fixture_digest="fixture",
+                catalog_digest="catalog",
+                policy_digest="policy",
+                generated_at="2026-08-11T00:00:00+00:00",
+                completed_case_runs=0,
+                failure=failure,
+            )
+        )
+        self.assertNotIn(secret, retained)
+        self.assertEqual("authentication_failure", result.classification)
+
     def test_reads_structured_output(self) -> None:
         payload = {"structured_output": {"skill": "debug", "reason": "failure diagnosis"}}
         self.assertEqual(payload["structured_output"], _parse_result(json.dumps(payload)))
@@ -37,6 +201,13 @@ class RoutingAdapterResultTests(unittest.TestCase):
 
     def test_unstructured_failure_has_no_claimed_usage(self) -> None:
         self.assertEqual((0.0, []), _extract_usage("transport failed"))
+
+    def test_malformed_failure_usage_cannot_mask_terminal_classification(self) -> None:
+        payload = json.dumps(
+            {"subtype": "authentication_error", "total_cost_usd": "not-a-number"}
+        )
+        self.assertEqual((0.0, []), _extract_usage(payload))
+        self.assertEqual("authentication_failure", _classify_invocation_failure(payload, "", 1))
 
     def test_prompt_embeds_authoritative_catalog_and_request(self) -> None:
         prompt = build_routing_prompt(
