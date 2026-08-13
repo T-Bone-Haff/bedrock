@@ -1,8 +1,8 @@
 # Bedrock skill architecture and routing contract
 
 **Status:** ACCEPTED
-**Version:** 1.0.0
-**Date:** 2026-08-09
+**Version:** 2.0.0
+**Date:** 2026-08-12
 **Governing principle:** [ADR-001](../adr/ADR-001-portable-core-and-surface-adapter-architecture.md)
 
 This record is the catalog-level contract for the current Bedrock skills. It assigns one primary job to each skill, records the Wave 2 retain/merge/split/rename/remove decision, defines overlap precedence, and separates routable actor contracts from the workflows that compose them. The contract is self-contained; its finding identifiers trace to the [HEB-106 disposition ledger](https://linear.app/t-bone-haff-sofia/document/heb-106-finding-register-and-disposition-ledger-4f6f1f1f0e2d) for audit history, not interpretation.
@@ -31,7 +31,7 @@ A future identity change requires all of:
 | `author-standard` | Decide whether to create and then author a reusable standard. | Retain; no merge with decision records. | Authority, exception, proof, and lifecycle invariants in core; local artifact homes and rollout mechanics are profiles. | STD-002, STD-006, STD-007 |
 | `code-review` | Review a finished change and produce evidence-backed findings and a merge verdict. | Retain; no merge with design review. | Review mechanics and result schema in core; domain authoring skills provide applicable overlays without mirrored doctrine. | REV-009, REV-011, PKG-029 |
 | `debug` | Diagnose an observed failure through reproduction and hypothesis falsification. | Retain; no merge with testing. | Diagnostic method, containment, evidence, and closure in core; stack-specific probes are profiles. | DBG family |
-| `design-review-loop` | Review a decision-record set through authority-cited findings, explicit aggregation, and honest decision escalation. | Retain as a compatibility route; supersede its monolithic internal contract. | Portable review and decision-escalation semantics remain in Bedrock. Durable author-review-ratification execution belongs to a versioned SOFIA recipe and kernel. Only a declared runner-backed profile may claim mechanical convergence. | DRL-001, DRL-004–DRL-013 |
+| `design-review-loop` | Review a decision-record set through authority-cited findings, explicit aggregation, and honest decision escalation. | Retain as a compatibility route; supersede its monolithic internal contract. | Portable review and decision-escalation semantics remain in Bedrock. Products own lifecycle composition and execution. Only a declared runner-backed profile may claim mechanical convergence. | DRL-001, DRL-004–DRL-013 |
 | `frontend-code` | Author browser-facing application behavior. | Retain one routable identity; split its body into a compact core and focused references, not new skills, until measurements justify another route. | Browser safety/accessibility invariants in core; React, Vite, styling, component-library, and prototype choices are profiles. | FRT-002, FRT-005, FRT-017 |
 | `infrastructure-code` | Author infrastructure as code (IaC) and infrastructure plan/apply workflows. | Retain; no rename. | State, identity, plan/apply, recovery, and workload safety in core; Terraform, GCP, Kubernetes, and CI host are profiles. | INF-002, INF-004, INF family |
 | `testing` | Author new tests, test strategy, fixtures, and planned coverage. | Retain; no merge with debug. | Isolation, evidence, nondeterminism, and test-level contracts in core; pytest and service-stack details are profiles. | TST family, PKG-031, PKG-032 |
@@ -61,22 +61,21 @@ Routing selects the requested operation before the subject domain. The primary s
 
 If a request genuinely spans operations, it is decomposed into ordered outputs with one owner per output. If the discriminator is missing, the system asks for that discriminator or stops; it does not select by whichever description is broadest.
 
-## 4. Actor and workflow composition
+## 4. Actor contracts and product composition
 
-The catalog distinguishes four layers:
+The catalog distinguishes Bedrock contracts from product-owned composition and execution:
 
 | Layer | Owns | Does not own |
 |---|---|---|
 | Bedrock actor contract | One bounded reasoning operation, its authority, inputs, outputs, evidence, refusal, and escalation behavior. | Durable workflow state, scheduling, or cross-workflow composition. |
-| Workflow recipe | Actor roster, state transitions, artifact and authority references, operator gates, completion predicate, and assurance profiles. | Actor-domain doctrine or runtime mechanism. |
-| SOFIA orchestration kernel | Invocation, durable state, validated transitions, ledger, budgets, retries, scheduling, resumability, and deterministic gates. | The engineering judgment assigned to an actor or the operator. |
-| HEX control plane | Brief decomposition, workflow selection and composition, progress presentation, and asynchronous operator dockets. | Silent ratification, actor-domain authority, or workflow-state mutation outside the kernel contract. |
+| Product orchestration | Workflow meaning, policy, actor roster, authority, state transitions, operational posture, product-specific composition, and any runtime mechanism. | Bedrock actor-domain doctrine or operator authority. |
+| Promoted reusable seam | A bounded contract, schema, primitive, template, or evidence convention admitted to Bedrock after product evidence. | A universal workflow model or the originating product's private assumptions. |
 
-An actor is not necessarily a persistent agent or a routable skill. Lead Application Architect (LAA), Solution Architect (SA), Enterprise Architect (EA), coherence, arbitration, authoring, validation, and landing may be bounded invocations inside a recipe. The visible HEX persona roster is a presentation and delegation surface, not the runtime actor inventory.
+An actor is not necessarily a persistent agent or a routable skill. A product may bind Lead Application Architect (LAA), Solution Architect (SA), Enterprise Architect (EA), coherence, arbitration, authoring, validation, and landing as bounded invocations under its own policy. Bedrock supplies only the selected reusable contracts; the product owns the roster and lifecycle meaning.
 
-The first house recipe is the decision-record lifecycle: deliberate → author → review → correct → operator ratification when required → validate → land. The stance-isolated design-review roster is its review subloop. `agent-loop` is the reference implementation from which reusable kernel seams are extracted only after the running specimen proves them.
+Current product implementations are incubators and evidence sources. Their product-specific lifecycles and runtimes are not Bedrock contracts. Candidate mechanics may be extracted only after real-product evidence supports promotion; no universal orchestration kernel or DSL is presumed.
 
-Agents exchange validated artifacts and transition proposals through the kernel. Free-form inter-agent conversation is not authoritative state. The operator receives decision and release dockets but is not required to relay routine feedback between actors.
+Products may use bounded, validated command/result seams between controllers and actors. Capability is separate from decision authority: invocation grants and tool permissions exist outside prompts and models. Authorized agents may delegate under product-enforced fanout, depth, budget, tool, data, and authority limits; delegation does not amplify authority.
 
 ## 5. Common interaction contract
 
@@ -100,9 +99,9 @@ This record fixes the mandatory schema, owner boundary, and primary task for eve
 ## 6. Authority and coverage boundaries
 
 - Skill bodies own task-local semantics; shared package schemas own mechanically identical vocabulary.
-- Domain skills own domain rules; review actors and workflow recipes point to them or load versioned contracts as overlays.
-- Workflow recipes own composition semantics; orchestration kernels own durable execution and may not invent actor judgments.
-- Control planes own workflow selection and operator interaction, not ratification or domain semantics.
+- Domain skills own domain rules; product actors and controllers point to them or load versioned contracts as overlays.
+- Products own composition semantics and durable execution; their controllers may not invent Bedrock actor judgments or operator authority.
+- Bedrock does not prescribe a universal recipe, orchestration kernel, control plane, or DSL.
 - Adapter manifests own host registration and capability mapping, never portable engineering semantics.
 - Project orientation files own repository-local operating context, never the plugin's skill roster, version, or duplicated doctrine.
 - Tracker records own work status and deliberation history, never installed-consumer contract or rationale.
@@ -112,5 +111,6 @@ This record fixes the mandatory schema, owner boundary, and primary task for eve
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 2.0.0 | 2026-08-12 | HEB-126 | Accepted major product-orchestration ownership correction and promotion boundary. |
 | 1.0.0 | 2026-08-09 | HEB-111 | Accepted after direct audit; expanded cold-read terminology without changing the ratified catalog contract. |
 | 0.1.0 | 2026-08-09 | HEB-111 | Initial inventory, disposition trace, coverage boundary, actor/workflow model, routing, and interaction contract. |

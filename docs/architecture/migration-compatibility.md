@@ -1,8 +1,8 @@
 # Bedrock portable-core migration and compatibility notes
 
 **Status:** ACCEPTED
-**Version:** 1.0.0
-**Date:** 2026-08-09
+**Version:** 2.0.0
+**Date:** 2026-08-12
 **Governing principle:** [ADR-001](../adr/ADR-001-portable-core-and-surface-adapter-architecture.md)
 
 **Coverage boundary:** [Bedrock product coverage map](coverage-map.md)
@@ -21,8 +21,8 @@ The generated compatibility manifest will identify:
 |---|---|
 | Core contract version | Version of portable skill identity, routing, authority, input/output/evidence, and safety semantics. |
 | Actor contract version | Version of the bounded operation a recipe invokes, including its authority and result schema. |
-| Workflow recipe version | Version of actor bindings, transitions, artifacts, operator gates, assurance profiles, and completion semantics. |
-| Kernel capability and version | Durable-execution features and version required by the recipe. |
+| Product workflow binding | Product-owned identity for actor bindings, transitions, artifacts, operator gates, assurance profiles, and completion semantics. |
+| Product execution capability | Product-owned durable-execution features required by its workflow binding. |
 | Adapter name and version | Version of one host's registration, capability mapping, enhancements, permissions, and degraded behavior. |
 | Package version | Version of the distributable aggregate. |
 | Generator format version | Version of generated carrier structure, independent of prompt wording and package identity. |
@@ -37,14 +37,15 @@ Compatibility is asserted only for combinations present in the generated matrix 
 
 1. Accept the portable-core architecture and catalog decisions.
 2. Define machine-readable skill, authority, dependency, capability, and compatibility schemas.
-3. Define workflow-recipe and kernel-capability schemas separately from skill and actor contracts.
-4. Classify existing clauses as portable invariant, actor contract, workflow recipe, kernel policy/mechanism, Haffey profile, host adapter, contextual carrier, or defect.
-5. Correct the skill clusters in the ratified dependency order, populating and verifying every skill's interaction-contract fields before its cluster gate, without changing public names unless the architecture is amended.
-6. Split `design-review-loop`'s portable review semantics from SOFIA's decision-record lifecycle recipe and runner machinery while preserving explicit-invocation compatibility.
-7. Add Codex/OpenAI, Claude, and Cursor adapters with explicit capability gates and generated-or-checked carriers.
-8. Run shared structural, routing, behavior, degraded-mode, permission, reference, output, recipe-transition, and kernel-resumption fixtures across supported hosts.
-9. Build a release candidate only after package governance is complete.
-10. Perform cold acceptance and make an explicit consumer release decision.
+3. Ratify the separate promotion governance standard before any candidate reusable component is admitted to Bedrock; until then, candidate mechanics remain product-owned.
+4. Define reusable actor and bounded command/result schemas separately from product-owned workflow and execution contracts.
+5. Classify existing clauses as portable invariant, actor contract, product orchestration, candidate reusable mechanic, Haffey profile, host adapter, contextual carrier, or defect.
+6. Correct the skill clusters in the ratified dependency order, populating and verifying every skill's interaction-contract fields before its cluster gate, without changing public names unless the architecture is amended.
+7. Split `design-review-loop`'s portable review semantics from product-owned lifecycle and runner machinery while preserving explicit-invocation compatibility.
+8. Add Codex/OpenAI, Claude, and Cursor adapters with explicit capability gates and generated-or-checked carriers.
+9. Run shared structural, routing, behavior, degraded-mode, permission, reference, and output fixtures across supported hosts; products separately prove their transitions and recovery.
+10. Build a release candidate only after package governance is complete.
+11. Perform cold acceptance and make an explicit consumer release decision.
 
 No migration step authorizes a consumer release by itself.
 
@@ -70,26 +71,26 @@ Generated prompts and host carriers record the generator format version, source 
 
 Generated files are not independent authority. They are reproduced from or checked against their declared source, and drift blocks compatibility evidence.
 
-## 6. Design-review and decision-record workflow transition
+## 6. Design-review and product-workflow transition
 
 The `design-review-loop` name remains a compatibility anchor during Wave 2. Its internal monolith is separated without claiming that the capability is retired:
 
 1. Bedrock retains the portable review, finding, decision-escalation, and assurance-profile contracts.
-2. The SOFIA decision-record lifecycle recipe composes deliberation, authoring, review, correction, operator ratification, validation, and landing actors.
-3. The SOFIA kernel owns durable state, invocation, evidence, budgets, retries, resumability, and deterministic transitions.
-4. `agent-loop` remains the first reference implementation and proving specimen; reusable kernel primitives are extracted from observed needs rather than generalized from naming alone.
-5. HEX selects and composes workflows and presents asynchronous operator dockets without becoming a second authority for actor or recipe semantics.
+2. Each product owns its lifecycle meaning, actor roster, authority, transitions, and operational posture.
+3. Product controllers own invocation, durable state, evidence, budgets, retries, resumability, and deterministic transitions for their workflows.
+4. Existing product implementations are incubators and evidence sources; reusable candidates are extracted only after evidence and are not promoted wholesale.
+5. Product orchestration and operator-interaction designs are not decided by Bedrock.
 
-Direct review and multi-perspective review remain supported lower-assurance profiles. Existing consumers without the SOFIA kernel are not silently upgraded to runner-backed convergence, and they may not claim it. A future rename or split of the public skill identity requires routing and migration evidence under the governing ADR.
+Direct review and multi-perspective review remain supported lower-assurance profiles. Existing consumers without a declared runner are not silently upgraded to runner-backed convergence, and they may not claim it. A future rename or split of the public skill identity requires routing and migration evidence under the governing ADR.
 
-Prompt generations, repeated draws, calibration, replay, cost attribution, run dispositions, and cold instrument audits move to the SOFIA recipe/kernel operating surface unless a rule is independently established as a portable actor safety or evidence invariant. `agent-code` and `testing` govern implementation and evaluation discipline; they do not become runtime owners.
+Prompt generations, repeated draws, calibration, replay, cost attribution, run dispositions, and cold instrument audits belong to the product operating surface unless a rule is independently established and promoted as a portable actor safety or evidence invariant. `agent-code` and `testing` govern implementation and evaluation discipline; they do not become runtime owners.
 
 ## 7. Current consumer impact
 
 - No skill is removed, renamed, or merged in the proposed Wave 2 contract.
-- Existing `design-review-loop` invocations remain valid while its portable actor contract and SOFIA execution binding are separated.
+- Existing `design-review-loop` invocations remain valid while its portable actor contract and product execution bindings are separated.
 - The Claude plugin remains the only implemented distribution surface until adapters land.
-- SOFIA and HEX are designated house orchestration consumers, not hidden requirements of every Bedrock installation.
+- Products may consume Bedrock contracts, but none receives a Bedrock-assigned orchestration role.
 - Claims of Codex/OpenAI or Cursor support remain future and conditional until their adapter and cold-acceptance evidence exist.
 - The existing package version is not retroactively treated as a core-contract or adapter version.
 - The next package version is derived at landing; this record does not pre-claim it.
@@ -99,5 +100,6 @@ Prompt generations, repeated draws, calibration, replay, cost attribution, run d
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 2.0.0 | 2026-08-12 | HEB-126 | Accepted major migration repair for product-owned orchestration and evidence-driven promotion. |
 | 1.0.0 | 2026-08-09 | HEB-111 | Accepted after direct audit; reconciled the landed safety baseline without changing the migration contract. |
 | 0.1.0 | 2026-08-09 | HEB-111 | Initial migration, coverage, actor/recipe/kernel compatibility, rebind/package-major rules, and consumer impact. |

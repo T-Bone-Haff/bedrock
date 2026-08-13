@@ -1,8 +1,8 @@
 # Bedrock product coverage map
 
 **Status:** ACCEPTED
-**Version:** 1.0.0
-**Date:** 2026-08-09
+**Version:** 2.0.0
+**Date:** 2026-08-12
 **Governing principle:** [ADR-001](../adr/ADR-001-portable-core-and-surface-adapter-architecture.md)
 
 This map states what Bedrock owns, where it supplies only local invariants, and where a consumer must provide another capability. An uncovered domain is an explicit product boundary; it is never covered by selecting the nearest broad skill.
@@ -26,7 +26,7 @@ The [skill inventory and routing contract](skill-architecture.md) is authoritati
 - decision-record, construct-spec, execution-relay, and reusable-standard authoring; and
 - the task-local evidence, escalation, refusal, and safety obligations declared by those contracts.
 
-Durable multi-actor workflow execution is not a fourteenth Bedrock skill. It is a declared SOFIA capability under the actor/recipe/kernel/control-plane boundary in the governing ADR.
+Durable multi-actor workflow execution is not a fourteenth Bedrock skill. It is product-owned orchestration. Bedrock may later own selected reusable seams that pass evidence-driven promotion, but it does not presume a universal runtime.
 
 ## 3. Cross-cutting domains and handoffs
 
@@ -44,16 +44,16 @@ Durable multi-actor workflow execution is not a fourteenth Bedrock skill. It is 
 
 ## 4. Security and compliance specialization trigger
 
-[HEB-120](https://linear.app/t-bone-haff-sofia/issue/HEB-120/explore-bedrock-securitycompliance-ownership-for-sofia-agents) holds the future ownership question for the proposed Aegis security and Themis governance/compliance roles. They are candidate SOFIA actors, not current Bedrock or runtime authorities.
+[HEB-120](https://linear.app/t-bone-haff-sofia/issue/HEB-120/explore-bedrock-securitycompliance-ownership-for-sofia-agents) holds historical work on the proposed Aegis security and Themis governance/compliance roles. They are candidate product actors, not current Bedrock or cross-product runtime authorities.
 
 Until that decision is ratified:
 
 - domain skills keep their local safety invariants;
 - cross-cutting assurance remains an explicit deferred gap or external handoff;
-- no adapter, recipe, or control plane may silently assign blocking authority to Aegis or Themis; and
+- no adapter or product controller may silently assign blocking authority to Aegis or Themis; and
 - the Bedrock recovery and acceptance sequence does not depend on resolving their future design.
 
-The trigger fires when SOFIA/HEX designs the real multi-agent authority and evidence contract, when a concrete Bedrock boundary cannot otherwise be resolved safely, or by explicit operator election.
+The trigger fires when a product designs a real multi-agent authority and evidence contract, when a concrete Bedrock boundary cannot otherwise be resolved safely, or by explicit operator election.
 
 ## 5. Routing and compatibility consequences
 
@@ -66,5 +66,6 @@ The trigger fires when SOFIA/HEX designs the real multi-agent authority and evid
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 2.0.0 | 2026-08-12 | HEB-126 | Accepted major correction: durable multi-actor execution is product-owned rather than a Bedrock runtime capability. |
 | 1.0.0 | 2026-08-09 | HEB-111 | Accepted after direct audit; expanded cold-read terminology without changing the ratified coverage boundary. |
 | 0.1.0 | 2026-08-09 | HEB-111 | Initial owned-operation, local-invariant, external-handoff, and deferred-gap coverage map. |

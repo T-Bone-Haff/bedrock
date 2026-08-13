@@ -1,0 +1,6 @@
+# Reviewed post-correction authoritative file set
+# Both decision-bearing findings have operator dispositions; see ratification-docket.md.
+e8f1e551568169a8de3bc5e3a21aabad9e09bc74c8689afa738685eafea7084e  docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md
+358796951a4948b84c0df685b12addb0ff1982811ec5458c5ab6259a4586f0fe  docs/architecture/skill-architecture.md
+84f37db62e25f8e75a93388b1613221b4080eaea79dfe37667766fde1d14e9a2  docs/architecture/coverage-map.md
+749bce288ec69c87d468fbf59b711288294bc2d629af0378407d3c81deaac22a  docs/architecture/migration-compatibility.md
