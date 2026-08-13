@@ -1,18 +1,23 @@
 # File: docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md
 # Author: Tad Haffey — Executive Architect, Haffey Enterprises LLC; Codex — drafting agent
 # Created: 2026-08-09
-# Description: ADR-001 — Portable core, orchestration, and surface adapter architecture. Bedrock separates portable actor contracts from workflow execution and host integrations.
+# Description: ADR-001 — Portable core and surface adapter architecture. Bedrock supplies reusable engineering contracts while products own orchestration and workflow meaning.
 
-# ADR-001: Bedrock uses portable actor contracts with capability-gated orchestration and surface adapters
+# ADR-001: Bedrock uses portable actor contracts with product-owned orchestration and surface adapters
 
 | Field | Value |
 |---|---|
 | **Document ID** | ADR-001 |
-| **Status** | ACCEPTED |
-| **Version** | 1.0.0 |
-| **Date** | 2026-08-09 |
+| **Status** | ACCEPTED — operator-approved 2026-08-12 |
+| **Version** | 2.0.0 |
+| **Date** | 2026-08-12 |
 | **Authors** | Tad Haffey (decision owner); Codex (drafting agent) |
 | **Supersedes** | None — first Bedrock architecture principle. |
+| **Revision policy** | Semantic; registry and compatibility consumers interpret contract identity. |
+| **Verification state** | Multi-perspective review completed against the frozen pre-correction substrate; resolvable defects and both operator-disposed findings are corrected in the documentation-authority transaction. Operator ratified the reviewed revision on 2026-08-12. Shipped-plugin conformance is tracked separately by HEB-128. No runner-backed convergence claim. |
+| **Review trigger** | Product evidence supports promotion of a reusable component; an ownership boundary becomes ambiguous; or a Bedrock contract would prescribe product workflow meaning. |
+| **Successor** | None. |
+| **Retirement treatment** | Amend in place while the portable-core principle remains valid; supersede only if that principle itself is replaced. |
 
 ---
 
@@ -20,11 +25,13 @@
 
 Bedrock currently ships thirteen skills through a Claude plugin manifest. The skill bodies mix portable engineering invariants, Haffey-specific operating choices, host assumptions, and references to capabilities that are not present in the distributable package. Some skills assume sibling skills or private execution machinery, while package prose claims self-containment. Routing is validated for the current catalog, but the package does not yet define a cross-host capability, authority, dependency, output, or lifecycle contract.
 
-Bedrock must settle those boundaries before substantive skill rewrites. Otherwise each correction can independently choose what is portable, what is house policy, what a host must provide, which artifact wins on conflict, and whether a skill describes one reasoning act or an entire durable workflow. The existing design-review machinery exposes that last ambiguity: a review method has grown into an executable author-review-ratification loop and is intended to become the first orchestration specimen for SOFIA and HEX. This record ends that architectural indecision without discarding the specimen.
+Bedrock must settle those boundaries before substantive skill rewrites. Otherwise each correction can independently choose what is portable, what is house policy, what a host must provide, which artifact wins on conflict, and whether a skill describes one reasoning act or an entire durable workflow. The existing design-review machinery exposes that last ambiguity: portable review semantics and product-specific lifecycle execution have been conflated. Product pressure-testing across discover/decide, build/operate, publish/engage, and measure/learn workflows showed that the common need is a promotion boundary, not a universal Bedrock workflow model.
 
 ## 2. Decision
 
-Bedrock is a versioned, Agent Skills-compatible portable skill corpus whose actor and governance semantics are owned by a host-neutral core, composed by separately versioned workflow recipes, executed by capability-gated orchestration kernels, and exposed through thin surface adapters.
+Bedrock is a versioned, Agent Skills-compatible engineering commons. It owns selected reusable actor contracts, schemas, primitives, standards, templates, and evidence conventions; products own orchestration and may reconsume Bedrock components through explicit, capability-gated seams and thin surface adapters.
+
+The governing principle is **product-owned orchestration with evidence-driven extraction and promotion of reusable components into Bedrock**. Promotion criteria and their proving process belong to a separate governance standard; this ADR establishes the ownership boundary but does not silently create that standard.
 
 ### 2.1 Product responsibility
 
@@ -37,7 +44,7 @@ The portable core owns:
 - bundled relative resources, fixtures, and contract-critical rationale; and
 - lifecycle status and compatibility requirements for each skill.
 
-The portable core does not own host authentication, user-interface behavior, repository permissions, runtime agent topology, durable workflow state, scheduling, retries, command registration, hook installation, or marketplace transport. Those concerns belong to orchestration kernels, workflow recipes, surface adapters, or other declared external capabilities.
+The portable core does not own host authentication, user-interface behavior, repository permissions, product workflow meaning or policy, product actor rosters or authority, product state transitions or operational posture, product-specific composition, durable workflow state, scheduling, retries, command registration, hook installation, or marketplace transport. Those concerns belong to the product or to other declared external capabilities.
 
 Bedrock does not claim complete ownership of every engineering or operational domain. A coverage map names owned capabilities, explicit handoffs, and unowned or deferred domains. An absent owner is reported as a gap rather than covered by implication.
 
@@ -110,25 +117,25 @@ The distributable package takes a major version when it includes a portable-core
 
 Prompt-generation format has its own version and provenance. Generated carriers record generator version, source contract version, and source digest. Regeneration alone does not redefine the portable contract; a generated-format incompatibility is versioned at the affected generator or adapter boundary.
 
-### 2.8 Actor, recipe, kernel, and control-plane boundary
+### 2.8 Actor contract and product-orchestration boundary
 
 Bedrock skills define bounded task and actor contracts. An actor contract states the reasoning responsibility, authority, inputs, outputs, evidence, refusal, and escalation behavior for one operation. A routable skill may supply one actor contract or coordinate a bounded manual operation, but its prose is not a durable workflow engine.
 
-A workflow recipe composes actor contracts into a versioned state machine. The recipe owns the permitted transitions, artifact and authority references, admission rules, completion predicate, operator gates, and assurance profiles for that workflow. A recipe may reference Bedrock contracts, but it may not copy them into a second normative authority.
+Each product owns its workflow meaning, policy, actor or agent roster, authority assignments, state transitions, operational posture, and product-specific composition. A product controller may invoke Bedrock contracts through bounded, versioned command/result seams, but Bedrock does not prescribe a universal orchestration kernel, workflow recipe model, control plane, or domain-specific language. Reusable execution mechanics remain product-owned unless and until they are promoted under a separately ratified governance standard.
 
-An orchestration kernel owns durable execution: workflow state, actor invocation, validated structured transitions, event and evidence persistence, budgets, retries, scheduling, resumability, and deterministic gate evaluation. Actors propose drafts, findings, classifications, and actions; the kernel admits outputs and advances state. Free-form conversation among agents is not the workflow state or the transition mechanism.
+Capability and decision authority are separate. A model, prompt, skill, tool, or runtime capability does not acquire authority merely because it can perform an action. Invocation grants, tool permissions, budget limits, and approval rights are established and enforced outside prompts and models by the owning product or operator.
 
-A control plane selects and composes workflows, presents their state, and carries operator decisions back to a halted workflow. Within the Haffey architecture, SOFIA is the orchestration-kernel and workflow-recipe owner, `agent-loop` is the first reference implementation evolving through the decision-record lifecycle, and HEX is the control plane that selects, composes, observes, and operates SOFIA workflows.
+Under product policy, an authorized agent may delegate to bounded sub-agents, including parallel specialists. The product declares and enforces the permitted fanout, depth, aggregate budget, tools, data access, and decision authority; delegation cannot amplify the delegator's authority. Bedrock may supply reusable contracts or evidence conventions for such delegation only after promotion.
 
-The first reference workflow covers the decision-record lifecycle rather than review alone: deliberate, author, review, correct, ratify when a new decision is required, validate, and land. Stance-isolated design review remains a subloop. The operator is the authority for unresolved decisions and release gates, not the courier of routine artifacts and feedback between actors.
+Existing product implementations and records are preserved as evidence and input for evaluating useful candidates; they are not Bedrock runtime designs to promote wholesale, and the preserved material creates no compatibility obligation.
 
 Three assurance profiles preserve proportionality:
 
 1. direct review performs one authority-cited adversarial read and does not claim mechanical convergence;
-2. multi-perspective review runs isolated review actors and an explicit aggregation policy but does not claim durable convergence without the kernel; and
-3. runner-backed convergence uses a declared recipe and executable kernel and is the only profile that may emit a mechanically established convergence result.
+2. multi-perspective review runs isolated review actors and an explicit aggregation policy but does not claim durable or mechanical convergence; and
+3. runner-backed convergence uses a declared, versioned runner and is the only profile that may emit a mechanically established convergence result when every applicable gate executes successfully.
 
-The SOFIA and HEX roles do not make either system a hidden dependency of Bedrock's portable core. A consumer without the required kernel capability may use a supported lower-assurance profile or fail before execution; it may not emulate runner-backed success.
+No product runtime is a hidden dependency of Bedrock's portable core. A consumer without a runner capability may use a supported lower-assurance profile or fail before execution; it may not emulate runner-backed success.
 
 ### 2.9 Rebinding contract
 
@@ -147,7 +154,7 @@ A different configuration within an existing profile is not a rebind. A document
 
 The portable-core boundary lets one engineering contract survive host changes while keeping host-native affordances honest. It prevents the weakest host from limiting every surface and prevents the richest host from silently becoming the product definition. Capability gates turn missing integrations into inspectable states instead of hidden assumptions.
 
-Separating actor, recipe, kernel, control-plane, adapter, and package authority also makes correction tractable. A house stack choice can change without reopening a provider-neutral safety invariant; a workflow can change scheduling or model allocation without silently changing an actor contract; a host manifest can evolve without rewriting skill semantics; and a conflict can be traced to one owner. Stable skill names preserve the routing behavior already demonstrated while content and execution machinery are reorganized behind those identities.
+Separating Bedrock contracts from product orchestration and adapter/package authority makes correction tractable. A product can change workflow meaning, scheduling, model allocation, or runtime topology without silently changing a reusable actor contract; a host manifest can evolve without rewriting skill semantics; and a conflict can be traced to one owner. Stable skill names preserve the routing behavior already demonstrated while products remain free to compose them differently.
 
 ## 4. Alternatives Considered
 
@@ -175,6 +182,10 @@ The skill could own reviewer and author prompts, durable state, arbitration, con
 
 Agents could hand prose directly to one another until they collectively judge the work complete. This was rejected because conversation would become unversioned workflow state, completion would return to model judgment, failures would not resume deterministically, and the operator would have no durable decision or evidence seam.
 
+### 4.7 Prescribe one reusable orchestration kernel from Bedrock
+
+Bedrock could standardize a common recipe, kernel, and control-plane architecture before products implement their workflows. This was rejected because the four pressure-tested loop families carry different meanings, authorities, states, and operating postures. Premature standardization would turn an engineering commons into a control plane and encode one product's assumptions as shared contract. Products may still extract bounded reusable mechanics after evidence.
+
 ## 5. Consequences
 
 ### 5.1 Positive
@@ -183,16 +194,16 @@ Agents could hand prose directly to one another until they collectively judge th
 - Host-native features remain available without becoming undeclared requirements.
 - Missing capabilities and conflicts have deterministic failure behavior.
 - Skill corrections can separate portable invariants from Haffey profiles.
-- SOFIA can reuse one durable kernel across multiple workflow recipes while `agent-loop` remains a concrete proving specimen.
-- HEX can remove routine operator relay without absorbing the domain authority of the actors it dispatches.
+- Products can evolve orchestration independently while reusing stable Bedrock contracts.
+- Products can use their implementations to produce promotion evidence without making current product architecture a Bedrock obligation.
 - Compatibility, evidence, and release decisions become mechanically inspectable.
 
 ### 5.2 Constraints imposed
 
 - Adapters cannot carry independent normative copies of the core.
 - A private runner or tracker cannot load-bear on an installed skill's contract unless it is a declared, versioned, capability-gated dependency with exact unavailable behavior.
-- Actor, recipe, kernel, control-plane, and adapter contracts cannot silently absorb one another's authority.
-- Model allocation, draw count, retry, and budget changes are run-profile or kernel-policy changes unless they alter actor or recipe semantics.
+- Bedrock contracts, product orchestration, and adapter contracts cannot silently absorb one another's authority.
+- Product policy owns model allocation, draw count, retry, delegation, and budgets unless a promoted Bedrock contract explicitly governs a reusable seam.
 - The operator remains the authority for unresolved decisions and release gates even when workflow execution is unattended.
 - New top-level skills require routing and context evidence, not taxonomy preference.
 - Claims of enforcement, convergence, safety, or completion require evidence from the declared capability path.
@@ -202,10 +213,18 @@ Agents could hand prose directly to one another until they collectively judge th
 
 - The adapter boundary may become ceremonial if no schema or parity check enforces it. The signal is an adapter-only normative clause or unexplained cross-host output difference.
 - Stable skill names may preserve a poor boundary. Routing confusion and context-cost measurements are the revisit signal.
-- Generalizing the kernel from one specimen may encode decision-record assumptions as universal workflow law. A second workflow family that cannot use a purported kernel primitive is the revisit signal.
-- Recipe and actor versions may drift. A workflow whose pinned actor contracts cannot be resolved or whose semantics changed incompatibly is not executable.
+- Product teams may duplicate mechanics before a promotion case reaches the separately governed promotion gate. Accumulated product evidence is the revisit signal; the separate governance standard decides whether promotion proceeds.
+- Product bindings and Bedrock actor versions may drift. A product whose pinned contracts cannot be resolved or whose semantics changed incompatibly must stop or migrate explicitly.
 - Capability declarations may become stale. A host-version mismatch or undeclared degraded path blocks release evidence.
 - Layering can increase navigation cost. Cold-task completion time and unresolved-reference failures are the revisit signal.
+
+### 5.4 Risk domains
+
+- **Security:** no new execution capability, permission, identity, or authorization grant is created by this ownership correction. The existing safety floor remains applicable, so no additional security decision is required here.
+- **Privacy:** this decision does not change data collection, processing, retention, disclosure, or residency. No additional privacy decision is applicable.
+- **Compliance:** this decision does not change a regulated scope, control mapping, waiver, or accountable sign-off. No additional compliance decision is applicable.
+- **Cost:** this decision establishes no runtime, service, resource allocation, or spending policy. Reuse economics belong to the separate promotion standard, so no additional cost decision is applicable here.
+- **Operations:** product bindings can drift from Bedrock contract versions in the same way consumers can drift from any shared library. Explicit version identities, compatibility declarations, migration treatment, release evidence, and cold acceptance are the applicable controls; unresolved or unsupported combinations fail closed.
 
 ## 6. Compliance
 
@@ -214,13 +233,15 @@ Compliance is currently partly aspirational. The repository validates current sk
 Conformance will be enforced by:
 
 - a machine-readable skill, authority, dependency, capability, and compatibility registry;
-- versioned workflow-recipe and actor-binding schemas with deterministic transition validation;
+- versioned reusable actor and bounded command/result schemas; product-owned transition validation remains outside Bedrock unless later promoted;
 - generated-or-checked adapter carriers;
 - shared positive, negative, overlap, degraded-mode, and unavailable-capability fixtures;
 - duplicate-authority, path, package, and vocabulary drift checks; and
 - cold acceptance on every supported surface before release.
 
 Until those mechanisms land, changes are checked against this record and the skill architecture record during design review. A claim that depends on an unimplemented mechanism remains conditional.
+
+The ADR and its repository architecture carriers are documentation authority and do not ship in the plugin. The distributable package remains on its existing portable-core and package identities until the separately tracked HEB-128 implementation changes shipped bytes, derives the required package major from the then-live manifest, and passes its release gates. Until that implementation lands, package compatibility claims describe the shipped 1.0 core rather than conformance to this accepted 2.0 architecture.
 
 ## 7. Cross-References
 
@@ -231,10 +252,15 @@ Until those mechanisms land, changes are checked against this record and the ski
 - [Safety-contract validator](../../scripts/validate_safety.py)
 - [Safety evidence manifest](../../tests/fixtures/safety/manifest.yaml)
 
-## 8. Change Log
+## 8. Typed Relations
+
+No typed decision-record relations apply. The architecture documents above are current-state carriers of ADR-001, not independent decision records and not `implements` relations. This amendment does not supersede version 1.0.0; it revises the same accepted record after ratification.
+
+## 9. Change Log
 
 | Version | Date | Ticket | Change |
 |---|---|---|---|
+| 2.0.0 | 2026-08-12 | HEB-126 | Accepted major amendment: product-owned orchestration and evidence-driven Bedrock promotion boundary. |
 | 1.0.0 | 2026-08-09 | HEB-111 | Accepted after direct audit; reconciled the landed safety baseline and clarified cold-read terminology. |
 | 0.1.0 | 2026-08-09 | HEB-111 | Initial portable-core, authority, coverage, rebind, orchestration, versioning, and capability-gated adapter architecture draft. |
 

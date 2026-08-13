@@ -1,0 +1,32 @@
+# Profile: multi-perspective review
+# Frozen: 2026-08-12 America/New_York
+# Baseline commit: 348b65a56d417d943aacddd4f9d35394ecebb01e
+# Temporary freeze root: /tmp/bedrock-adr001-freeze.LRIfdS
+# Each reviewer receives only this frozen bundle and its one stance charter.
+02e4dc3c583e565326d3c6b5f25c6e0c9975da4bcb581c9454d1630012d612b2  ./authorities/installed/author-decision-record/lifecycle-and-relations.md
+0439cb095f182b4564922a9b99d315e25a7971d64d3146a64e9f86b15844001b  ./baseline/docs/architecture/coverage-map.md
+04de631eebfa9209332582ad96bd9969fdbaf2f186013be6626b1cbe9abed11a  ./draft/plugins/bedrock/skills/design-review-loop/reference/haffey-sofia-profile.md
+262c6ad9f18f0007ca5b4cf08565628bfb588b255112c48a1205eff6e2a5c7dc  ./baseline/docs/architecture/skill-architecture.md
+29a8ebcf854d4ae21cf0a8be8750f7e47675a1d3fe6410576bae4c8158958b0e  ./draft/docs/architecture/coverage-map.md
+2d8985e9c0ff3c48c9d4141c0a79dfa7b19ec8de76fd819699ca8b3df5e7e4ba  ./authorities/repository/repository-orientation.md
+41526871d0547b51932cab1756c37f2f763cae9c3e525414e475ffcc860e7564  ./baseline/plugins/bedrock/governance/COMPATIBILITY.md
+46de87aa649642b56603ee55d8fee423acc3adfe33ceae52e80d3a2be8e2e22e  ./authorities/installed/author-decision-record/adr-template.md
+4bf37e548d568c312d6e46c524bbf4912da32a3318b7e787462d2177cfd16d7b  ./authorities/installed/design-review-loop/arbiter-classifier.md
+4ec2a26f5a7cc847f92bb9880bddc3c771d069ce341da55e67649cd4c9901b49  ./draft/evidence/review-profile.md
+662cdf2a82d329131609fe3905c8e3a566a2fb7b9e8df0f960347d78819267a7  ./draft/docs/architecture/migration-compatibility.md
+6b1e9225e9c3c1b9437f2c7401a331e59a03933016f2e520a3c24fcc6a188b8b  ./authorities/installed/author-decision-record/SKILL.md
+6b6e28e9e672fbd5e80572a8ed346d0d6f7c47ef7031156e67a33fa48ddb0942  ./authorities/repository/CLAUDE.md
+7e43e216955464f3acd6bc1723ef00ec661243e0c71dd1b21f3be5cf851ee7cc  ./authorities/repository/original-recovered-request-input-not-authority.txt
+884eabc38dd3b47a6042801fe22c24ef4854a2b9a15d01a8b98ffda9a365a958  ./authorities/installed/author-decision-record/record-relations.schema.json
+897e8aaaf235c0a3e6d1ea4cca3757a9c3e575f599c9bf0948d32bd6bdae803a  ./baseline/plugins/bedrock/governance/registry.yaml
+91ce13015341e4a82be34abdd2420a486b39c69c4373129b7934f8d3f353c288  ./authorities/installed/design-review-loop/reviewer-instrument.md
+94c2baaabedc011294fb9bbddba1742cdbd1697752a7bb5bc5a06dcfe6efc24c  ./draft/plugins/bedrock/governance/registry.yaml
+9c116703c0ecc61eeed00bafe2d1cae93e7a8bcf5a647897558a66ef0b0ce931  ./draft/docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md
+ae08bc2281a6ca0c71b549e498484224e6193257a9b822c6e22685101e495648  ./draft/evidence/ratified-intent.md
+b06184563fdb593d8a6d99e37336dff99f04667eed70d002ca4fe6d635dbc226  ./authorities/installed/design-review-loop/design-review-result.schema.json
+b102582935e18872cfe177bdd59e115293a98b36a1550f2e5ced54c5406d4f36  ./draft/plugins/bedrock/governance/COMPATIBILITY.md
+b676cfcae0162d732b9b750bca93c381589a8d163245cbf3c1c46569b1630736  ./baseline/docs/architecture/migration-compatibility.md
+ca0d13fc0be1ada09b0afb2217365c8c87b03e8a28531c2229ee2c3c1f081d31  ./authorities/installed/design-review-loop/SKILL.md
+d9ee322912991170b61b9bc0e4c1068f53e85f809d0f45f8be94ede67cb46a96  ./baseline/docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md
+e7b75892f07373441233a4fa8684458e2b0c4431ef108355257d68b93a9a43d7  ./draft/docs/architecture/skill-architecture.md
+ee0994f2de6fe7f9d1711bbf6627ed8354826c946108811e5dd9b3efbda27d12  ./baseline/plugins/bedrock/skills/design-review-loop/reference/haffey-sofia-profile.md
