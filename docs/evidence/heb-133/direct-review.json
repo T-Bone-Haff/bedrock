@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "profile": "standard",
+  "scope": "HEB-133 instrument-authoring skill, template, deterministic contract, live-audit, evidence, and 8.3.0 candidate changes",
+  "checked_surfaces": [
+    "ratified HEB-133 placement and HEB-131/HEB-137 boundaries",
+    "author-execution-relay skill and all three relay templates",
+    "design-review reviewer-instrument and author-standard counterfactual rule",
+    "authoring-contract evaluator, positive/negative/adversarial fixtures, and mutation tests",
+    "Gate I reconstructed consumer proof and its stated evidence limit",
+    "HEB-136 live rule-trigger audit and HEB-118 context budget",
+    "plugin version, changelog, package validation, strict host behavior, and isolated install",
+    "git diff scope, neighboring-ticket exclusions, and next-work order"
+  ],
+  "gates": [
+    {
+      "name": "Ratified scope and placement",
+      "disposition": "passed",
+      "reason": "The diff implements the ratified carrier placement, leaves relay.schema.json at v1, and does not absorb HEB-131 or HEB-137."
+    },
+    {
+      "name": "Deterministic and package proof",
+      "disposition": "passed",
+      "reason": "Focused contracts, full suite, live audit, package governance, strict pinned-host validation, and isolated install are green."
+    },
+    {
+      "name": "Representative consumer proof",
+      "disposition": "passed",
+      "reason": "The fixture reconstructs the retained Gate I reject/accept boundary and explicitly avoids claiming unavailable rev1 bytes or spelling."
+    },
+    {
+      "name": "Local Docker integration",
+      "disposition": "not-relevant",
+      "reason": "Docker is unavailable locally, and HEB-133 changes no container, runtime, infrastructure, or container-validation boundary; repository CI still runs the standing gate before merge."
+    },
+    {
+      "name": "PR-profile live routing",
+      "disposition": "passed",
+      "reason": "After explicit API-egress approval, the complete preregistered population passed 54/54 with every case at 1.0, zero exclusions, and all policy gates true."
+    },
+    {
+      "name": "Release and rollout",
+      "disposition": "not-relevant",
+      "reason": "8.3.0 is a candidate only; release and combined consumer rollout remain separately gated after landing."
+    }
+  ],
+  "findings": [],
+  "verdict": "approve"
+}

@@ -60,6 +60,40 @@ def evaluate_behavior_case(case: dict[str, Any]) -> str:
         return "approve-with-advisory" if data.get("advisory") else "approve"
     if kind == "standard-exception":
         return "accept" if all(data.get(field) for field in ("owner", "scope", "risk", "expires")) else "reject"
+    if kind == "consumer-demand":
+        allowed = data.get("accepted_values", [])
+        demanded = data.get("demanded_value")
+        return "accept" if data.get("consumer_read_whole") and demanded in allowed else "reject"
+    if kind == "instrument-demand":
+        required = (
+            "consumer_read_whole",
+            "taxonomy_verbatim",
+            "verdict_pins_complete",
+            "structural_instrument",
+            "dry_run_passed",
+            "unavailable_declared",
+            "report_field_declared",
+        )
+        return "accept" if all(data.get(field) for field in required) else "reject"
+    if kind == "touch-derivation":
+        edit_loci = set(data.get("edit_loci", []))
+        touch_set = set(data.get("touch_set", []))
+        settled_support = set(data.get("settled_support", []))
+        reconciled = edit_loci <= touch_set <= edit_loci | settled_support
+        return "accept" if edit_loci and reconciled else "reject"
+    if kind == "custody-reachability":
+        required = ("permissions_checked", "code_paths_checked", "actor_flows_checked")
+        if not all(data.get(field) for field in required):
+            return "incomplete"
+        return "reachable" if data.get("production_reference_found") else "unreachable"
+    if kind == "premise-falsification":
+        if not data.get("control_executed"):
+            return "unavailable"
+        confirmed = data.get("premise_supported") and data.get("contrary_control_refused")
+        return "confirmed" if confirmed else "falsified"
+    if kind == "success-as-absence":
+        proved = data.get("empty_result") and data.get("counterfactual_executed") and data.get("counterfactual_detected")
+        return "proved" if proved else "unproved"
     if kind == "rule-trigger":
         trigger_class = data.get("trigger_class")
         frequency = data.get("frequency")
@@ -156,6 +190,36 @@ def validate_authoring_contracts(root: Path, *, required: bool = True) -> list[s
             for fragment in trigger_contract:
                 if fragment not in skill_text:
                     errors.append(f"{skill_path}: rule-trigger contract is missing {fragment!r}")
+            if "counterfactual" not in skill_text or "absence" not in skill_text:
+                errors.append(f"{skill_path}: success-as-absence contract is missing")
+        if name == "author-execution-relay":
+            instrument_contract = (
+                "## Build the execution instrument",
+                "outcome taxonomy verbatim",
+                "Dry-run",
+                "custody",
+                "reachability",
+                "edit-locus rows",
+                "falsification control",
+                "confirmed",
+                "falsified",
+                "unavailable",
+            )
+            for fragment in instrument_contract:
+                if fragment not in skill_text:
+                    errors.append(f"{skill_path}: execution-instrument contract is missing {fragment!r}")
+
+    relay_templates = root / "plugins/bedrock/skills/author-execution-relay/templates"
+    for path in relay_templates.glob("*.md"):
+        text = path.read_text(encoding="utf-8")
+        for fragment in ("instrument contract", "Verdict-bearing inputs/pins", "Structural instrument"):
+            if fragment.lower() not in text.lower():
+                errors.append(f"{path}: relay instrument template is missing {fragment!r}")
+    reviewer_instrument = root / "plugins/bedrock/skills/design-review-loop/reference/reviewer-instrument.md"
+    reviewer_text = reviewer_instrument.read_text(encoding="utf-8")
+    for fragment in ("## Author the charge from its consumer", "outcome taxonomy verbatim", "Falsification control"):
+        if fragment.lower() not in reviewer_text.lower():
+            errors.append(f"{reviewer_instrument}: review-charge instrument is missing {fragment!r}")
 
     manifest_path = root / "tests" / "fixtures" / "authoring-contracts" / "manifest.yaml"
     try:

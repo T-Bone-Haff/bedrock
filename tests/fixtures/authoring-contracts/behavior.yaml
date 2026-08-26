@@ -98,3 +98,63 @@ cases:
       enforcement: none
       disposition: pending
     expected: reject
+  - id: rbt-114-gate-i-reconstructed-rev1
+    kind: consumer-demand
+    input:
+      consumer_read_whole: false
+      demanded_value: nonconforming-head
+      accepted_values: [feature/rbt-114-v1.1-chain]
+    expected: reject
+  - id: rbt-114-gate-i-reconstructed-rev2
+    kind: consumer-demand
+    input:
+      consumer_read_whole: true
+      demanded_value: feature/rbt-114-v1.1-chain
+      accepted_values: [feature/rbt-114-v1.1-chain]
+    expected: accept
+  - id: complete-relay-instrument-demand
+    kind: instrument-demand
+    input: {consumer_read_whole: true, taxonomy_verbatim: true, verdict_pins_complete: true, structural_instrument: true, dry_run_passed: true, unavailable_declared: true, report_field_declared: true}
+    expected: accept
+  - id: summarized-review-charge-rejected
+    kind: instrument-demand
+    input: {consumer_read_whole: true, taxonomy_verbatim: false, verdict_pins_complete: true, structural_instrument: true, dry_run_passed: true, unavailable_declared: true, report_field_declared: true}
+    expected: reject
+  - id: touch-set-derived-from-edit-loci
+    kind: touch-derivation
+    input:
+      edit_loci: [skill.md, template.md]
+      touch_set: [skill.md, template.md, fixture.yaml]
+      settled_support: [fixture.yaml]
+    expected: accept
+  - id: touch-set-omits-edit-locus
+    kind: touch-derivation
+    input:
+      edit_loci: [skill.md, template.md]
+      touch_set: [skill.md]
+      settled_support: []
+    expected: reject
+  - id: permissions-alone-do-not-prove-unreachability
+    kind: custody-reachability
+    input: {permissions_checked: true, code_paths_checked: false, actor_flows_checked: false, production_reference_found: false}
+    expected: incomplete
+  - id: reachability-structurally-excluded
+    kind: custody-reachability
+    input: {permissions_checked: true, code_paths_checked: true, actor_flows_checked: true, production_reference_found: false}
+    expected: unreachable
+  - id: premise-refusal-control-confirms
+    kind: premise-falsification
+    input: {control_executed: true, premise_supported: true, contrary_control_refused: true}
+    expected: confirmed
+  - id: premise-control-that-misses-falsifies
+    kind: premise-falsification
+    input: {control_executed: true, premise_supported: true, contrary_control_refused: false}
+    expected: falsified
+  - id: quiet-result-without-counterfactual
+    kind: success-as-absence
+    input: {empty_result: true, counterfactual_executed: false, counterfactual_detected: false}
+    expected: unproved
+  - id: absence-with-detecting-counterfactual
+    kind: success-as-absence
+    input: {empty_result: true, counterfactual_executed: true, counterfactual_detected: true}
+    expected: proved

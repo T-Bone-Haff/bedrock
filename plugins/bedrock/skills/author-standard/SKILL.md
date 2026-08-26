@@ -85,6 +85,8 @@ Declare a risk-proportionate proving profile before adoption. At minimum name:
 
 When a consumer diverges, choose explicitly: fix the consumer, promote a validated missing rule, or retract an overclaim. Check the standard's rules for joint satisfiability before granting an exception.
 
+When success is the absence of a finding, failure, reference, or event, the proving profile includes a counterfactual that creates the forbidden condition and demonstrates that the named instrument detects it. An empty result without that detection control proves only that the run was quiet, not that the population or detector was effective.
+
 ## Boundaries
 
 - Decision-record instances → `author-decision-record` (construct specs then route to `author-construct-spec`).

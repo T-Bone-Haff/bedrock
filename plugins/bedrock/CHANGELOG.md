@@ -3,6 +3,16 @@
 The package manifest is the sole authority for the current version. This file
 records candidate and released changes; a version heading is not release proof.
 
+## 8.3.0 — instrument-authoring candidate
+
+- Derive relay demands and review charges from their consuming instruments,
+  preserving accepted grammar and outcome taxonomies verbatim.
+- Add author-time satisfiability, structural measurement, verdict-bearing pins,
+  custody/reachability separation, edit-locus-derived touch sets, and premise
+  falsification to relay and review-charge authoring.
+- Require counterfactual detector proof when a standard defines success as an
+  absence, with deterministic positive, negative, and adversarial cases.
+
 ## 8.2.0 — rule-trigger reliability candidate
 
 - Require every reusable rule to name and classify its firing event,
