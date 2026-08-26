@@ -2,6 +2,18 @@
 
 Invoke each required stance independently with the same frozen substrate hashes and no visibility into other current-pass outputs. The host—not the model—stamps `source`, `stance`, `invocation_id`, and profile provenance.
 
+## Author the charge from its consumer
+
+Before issuing a review charge, read the result schema, parser, verifier, orchestration wrapper, and any accepted charge template whole. Record their identities, instantiate a proven template before narrowing it, and carry the consumer's field grammar and outcome taxonomy verbatim. Dry-run one charge through the actual parse-and-verification seam before spending the review round.
+
+Complete one row per demanded property or load-bearing premise. Pin only substrate and auxiliary files whose bytes can change the verdict.
+
+| Demand | Verdict-bearing inputs/pins | Population | Structural measurement | Falsification control | Outcomes / unavailable | Report field |
+|---|---|---|---|---|---|---|
+| <property or premise> | <pins> | <population or n/a> | <schema/API/parser/structural command> | <contrary input and expected refusal> | <verbatim tokens; unavailable behavior> | <field> |
+
+Text-shaped evidence is valid only for a text property. Use the owning parser, API, schema validator, or structural command for identities, ancestry, sets, and typed fields. Report each premise as `confirmed`, `falsified`, or `unavailable`; a falsified or unavailable premise blocks any verdict that depends on it.
+
 ## Shared contract
 
 The system charter names exactly one stance and says:

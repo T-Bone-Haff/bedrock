@@ -1,0 +1,40 @@
+schema_version: 1
+ticket: HEB-133
+status: adopted
+rules:
+  - id: HEB133-TRG-001
+    carrier: plugins/bedrock/skills/author-execution-relay/SKILL.md
+    event: a relay demand or verification property is authored
+    class: workflow-event
+    frequency: high
+    salience: high
+    enforcement: required instrument table plus deterministic carrier validation
+    expected_failure: the relay demands a value or output its consumer rejects
+    disposition: converted-to-instrument
+  - id: HEB133-TRG-002
+    carrier: plugins/bedrock/skills/author-execution-relay/SKILL.md
+    event: the relay touch allowlist is authored
+    class: workflow-event
+    frequency: medium
+    salience: high
+    enforcement: bidirectional edit-locus reconciliation in the template and behavior fixtures
+    expected_failure: a settled edit is omitted or an unsettled mutation is authorized
+    disposition: converted-to-instrument
+  - id: HEB133-TRG-003
+    carrier: plugins/bedrock/skills/design-review-loop/reference/reviewer-instrument.md
+    event: a review charge is authored
+    class: workflow-event
+    frequency: medium
+    salience: high
+    enforcement: charge instrument table, parser dry-run, and contrary-input control
+    expected_failure: the charge emits an unparseable result or silently validates a false premise
+    disposition: converted-to-instrument
+  - id: HEB133-TRG-004
+    carrier: plugins/bedrock/skills/author-standard/SKILL.md
+    event: a proving profile defines success as absence
+    class: workflow-event
+    frequency: low
+    salience: high
+    enforcement: required counterfactual in the proving profile and deterministic fixture
+    expected_failure: a quiet but ineffective detector is mistaken for proof
+    disposition: converted-to-instrument

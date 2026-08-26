@@ -75,6 +75,16 @@ class AuthoringContractTests(unittest.TestCase):
             with self.subTest(case=case["id"]):
                 self.assertEqual(case["expected"], evaluate_behavior_case(case))
 
+    def test_relay_instrument_contract_is_required(self) -> None:
+        path = self.root / "plugins/bedrock/skills/author-execution-relay/SKILL.md"
+        path.write_text(path.read_text(encoding="utf-8").replace("## Build the execution instrument", "## Missing"), encoding="utf-8")
+        self.assert_error("execution-instrument contract is missing")
+
+    def test_reviewer_charge_instrument_is_required(self) -> None:
+        path = self.root / "plugins/bedrock/skills/design-review-loop/reference/reviewer-instrument.md"
+        path.write_text(path.read_text(encoding="utf-8").replace("Falsification control", "Control"), encoding="utf-8")
+        self.assert_error("review-charge instrument is missing")
+
 
 if __name__ == "__main__":
     unittest.main()

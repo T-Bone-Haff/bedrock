@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "captured_at": "2026-08-26",
-  "source_commit_baseline": "a16515034f1b3ee661b36858d53ac45d45feca1d",
+  "source_commit_baseline": "74e146bb94cf73ea126cdf92659f451f783b08d8",
   "measurement": {
     "catalog_description_characters": 6824,
-    "skill_entrypoint_words": 9922,
+    "skill_entrypoint_words": 10252,
     "projected_always_on_tokens": 1785,
     "host_measurement": "claude 2.1.226 plugin details bedrock@bedrock",
     "routing_population": "162/162 with 0 excluded selections"
@@ -15,8 +15,8 @@
     {"name": "application-code", "description_characters": 445, "entrypoint_words": 860},
     {"name": "author-construct-spec", "description_characters": 641, "entrypoint_words": 670},
     {"name": "author-decision-record", "description_characters": 721, "entrypoint_words": 624},
-    {"name": "author-execution-relay", "description_characters": 586, "entrypoint_words": 616},
-    {"name": "author-standard", "description_characters": 476, "entrypoint_words": 889},
+    {"name": "author-execution-relay", "description_characters": 586, "entrypoint_words": 893},
+    {"name": "author-standard", "description_characters": 476, "entrypoint_words": 942},
     {"name": "code-review", "description_characters": 520, "entrypoint_words": 578},
     {"name": "debug", "description_characters": 462, "entrypoint_words": 759},
     {"name": "design-review-loop", "description_characters": 378, "entrypoint_words": 831},

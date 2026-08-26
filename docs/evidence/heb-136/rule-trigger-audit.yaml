@@ -18,6 +18,12 @@ counting_basis:
   limit: >-
     The semantic-unit count proves deterministic screen coverage, not an atomic
     normative-rule count or infallible semantic classification.
+  last_refreshed_at: 2026-08-26 ET
+  last_refresh: >-
+    HEB-133 amended six existing Markdown carriers. Each amended carrier was
+    re-read whole; every added rule fires on relay, charge, touch-set, premise,
+    or proving-profile construction and is bound to a required instrument.
+    No internal-state-triggered rule was added, so the finding set remains empty.
 scope:
   markdown_root: plugins/bedrock/skills
   expected_markdown_carriers: 55
@@ -172,7 +178,7 @@ scope:
 findings: []
 counts:
   carriers_examined: 55
-  semantic_units_screened: 992
+  semantic_units_screened: 1018
   internal_state_rules: 0
   converted_to_instrument: 0
   external_detector: 0
