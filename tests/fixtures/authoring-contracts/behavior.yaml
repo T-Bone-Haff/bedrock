@@ -44,3 +44,57 @@ cases:
     kind: standard-exception
     input: {owner: team, scope: service, risk: medium, expires: null}
     expected: reject
+  - id: salient-workflow-rule
+    kind: rule-trigger
+    input: {trigger_class: workflow-event, frequency: low, salience: high, enforcement: discipline, disposition: workflow-discipline}
+    expected: ship
+  - id: high-frequency-low-salience-workflow-rule
+    kind: rule-trigger
+    input: {trigger_class: workflow-event, frequency: high, salience: low, enforcement: discipline, disposition: workflow-discipline}
+    expected: strengthen
+  - id: undispositioned-internal-state-rule
+    kind: rule-trigger
+    input: {trigger_class: internal-state, frequency: high, salience: low, enforcement: none, disposition: pending}
+    expected: reject
+  - id: instrumented-internal-state-rule
+    kind: rule-trigger
+    input: {trigger_class: internal-state, frequency: high, salience: low, enforcement: instrument, disposition: converted-to-instrument}
+    expected: ship-instrumented
+  - id: externally-detected-internal-state-rule
+    kind: rule-trigger
+    input: {trigger_class: internal-state, frequency: high, salience: low, enforcement: external-detector, disposition: external-detector}
+    expected: ship-instrumented
+  - id: known-weak-internal-state-rule
+    kind: rule-trigger
+    input: {trigger_class: internal-state, frequency: medium, salience: medium, enforcement: discipline, disposition: known-weak}
+    expected: ship-known-weak
+  - id: rbt-114-structural-instrument-original
+    kind: rule-trigger
+    input:
+      rule: Use the structural instrument rather than a text match when measuring a property.
+      trigger_class: internal-state
+      frequency: high
+      salience: low
+      enforcement: discipline
+      disposition: pending
+    expected: reject
+  - id: rbt-114-structural-instrument-converted
+    kind: rule-trigger
+    input:
+      rule: At each named property measurement, select the structural instrument from the per-property table.
+      trigger_class: workflow-event
+      frequency: high
+      salience: low
+      enforcement: instrument
+      disposition: converted-to-instrument
+    expected: ship
+  - id: forceful-wording-without-workflow-binding
+    kind: rule-trigger
+    input:
+      rule: Always be extremely careful to verify current authority.
+      trigger_class: internal-state
+      frequency: high
+      salience: low
+      enforcement: none
+      disposition: pending
+    expected: reject

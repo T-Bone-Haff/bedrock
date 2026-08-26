@@ -1,0 +1,40 @@
+schema_version: 1
+claims:
+  - id: proving-profile-preregistered
+    status: verified
+    command: direct whole-read reconciliation of HEB-136, RBT-122, HEB-133, and author-standard
+    evidence:
+      - docs/evidence/heb-136/baseline.md
+      - docs/evidence/heb-136/proving-profile.md
+  - id: inventory-contract
+    status: verified
+    command: python3 scripts/validate_rule_trigger_audit.py
+    evidence:
+      - docs/evidence/heb-136/rule-trigger-audit.yaml
+      - scripts/validate_rule_trigger_audit.py
+      - tests/test_rule_trigger_audit.py
+      - docs/evidence/heb-136/validation-results.md
+  - id: complete-audit
+    status: verified
+    command: python3 scripts/validate_rule_trigger_audit.py --require-complete
+    evidence:
+      - docs/evidence/heb-136/rule-trigger-audit.yaml
+      - docs/evidence/heb-136/validation-results.md
+  - id: representative-consumer-proof
+    status: verified
+    command: /tmp/heb136-validation-venv/bin/python -m unittest tests.test_authoring_contracts -v
+    evidence:
+      - docs/evidence/heb-136/rbt-114-consumer-proof.md
+      - tests/fixtures/authoring-contracts/behavior.yaml
+      - scripts/validate_authoring_contracts.py
+  - id: package-regression
+    status: verified
+    command: python3 -m unittest discover -s tests -v under the repository-pinned Claude CLI
+    evidence:
+      - docs/evidence/heb-136/validation-results.md
+  - id: direct-review
+    status: verified
+    command: standard-profile direct diff review after final green package gates
+    evidence:
+      - docs/evidence/heb-136/direct-review.json
+      - docs/evidence/heb-136/validation-results.md

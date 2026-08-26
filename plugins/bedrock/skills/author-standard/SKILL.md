@@ -10,11 +10,11 @@ A standard is a reusable artifact that governs future work. This skill decides w
 ## Interaction contract
 
 - **Inputs:** a recognizable repeated task, durable authority sources, the intended binding, and representative consumers.
-- **Output:** a scoped standard with provenance, exceptions, proving criteria, and lifecycle metadata.
+- **Output:** a scoped standard with provenance, rule-trigger dispositions, exceptions, proving criteria, and lifecycle metadata.
 - **Authority:** the author may define guidance within the declared binding; the operator owns adoption and material exceptions.
 - **Capabilities:** durable source access and one representative consumer are required. Generated carriers and drift checks are optional but must be declared when used.
-- **Failure:** do not publish when membership, authority, binding, provenance, or proving evidence is missing.
-- **Evidence:** source grading, counterexamples, consumer results, and an explicit success threshold.
+- **Failure:** do not publish when membership, authority, binding, provenance, a rule-trigger disposition, or proving evidence is missing.
+- **Evidence:** source grading, trigger evaluation, counterexamples, consumer results, and an explicit success threshold.
 - **Lifecycle:** proposed → proving → adopted → revised → deprecated, superseded, rolled back, or retired. See [lifecycle and provenance](reference/lifecycle-and-provenance.md).
 
 ## Membership and scope
@@ -28,6 +28,31 @@ Declare the binding—stack, toolchain, audience, authority corpus, and runtime 
 Author from established authority plus exercised judgment. Operational systems, incidents, and successful code are admissible evidence when triangulated, provenance-bearing, reviewed, and accompanied by counterevidence; a single uncontrolled output is not canon.
 
 Every normative claim has section- or claim-level provenance: source identity, version or access date, evidence type and grade, applicability, conflicts, and the author's explicit judgment where sources do not settle the rule. Unsupported authority language is a defect, not a stylistic omission.
+
+## Rule triggers and reliability
+
+For every normative rule, name the event that fires it, classify that trigger,
+estimate its firing frequency and salience, name its enforcement, and state the
+expected failure and reliability disposition. Strong wording is not
+enforcement.
+
+- A **workflow-event** trigger is an observable step such as reaching a gate,
+  producing an artifact, selecting a profile, running a named command, or
+  handling a runtime signal. Discipline may carry it only when its frequency
+  and salience make attention credible. A high-frequency, low-salience rule
+  requires stronger enforcement or a known-weak disposition.
+- An **internal-state** trigger depends on the actor noticing a belief,
+  assumption, memory, confidence state, or method choice that the workflow
+  does not otherwise expose. Discipline alone is not reliable coverage. Before
+  adoption, either convert the rule to an instrument bound to a workflow
+  event, give it an external detector, or ship it as `known-weak` with the
+  expected failure named.
+
+Do not delete a load-bearing rule merely because its trigger is weak. Preserve
+the intent through an instrument or detector when proportionate; otherwise
+label the limitation so the rule's presence cannot be mistaken for coverage.
+Importance does not offset firing frequency: a rule that must fire on hundreds
+of low-salience acts is not made reliable by stronger emphasis.
 
 ## Inline or reference
 
@@ -53,6 +78,8 @@ Declare a risk-proportionate proving profile before adoption. At minimum name:
 - a counterexample or adversarial case;
 - the representative consumer;
 - deterministic checks and judgment evaluations separately;
+- trigger-test cases covering a workflow event, an undispositioned internal
+  state, and each disposition the standard permits;
 - success, failure, and unavailable-evidence thresholds; and
 - retained evidence and its reproduction path.
 

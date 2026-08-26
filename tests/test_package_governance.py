@@ -113,6 +113,9 @@ class PackageGovernanceTests(unittest.TestCase):
         self.assertTrue(any("requires --release-evidence" in error for error in errors), errors)
 
     def test_release_mode_accepts_external_evidence_after_immutable_tag(self) -> None:
+        manifest_path = self.root / "plugins/bedrock/.claude-plugin/plugin.json"
+        manifest_version = json.loads(manifest_path.read_text(encoding="utf-8"))["version"]
+        release_tag = f"v{manifest_version}"
         subprocess.run(["git", "init", "-q"], cwd=self.root, check=True)
         subprocess.run(["git", "config", "user.name", "Bedrock Test"], cwd=self.root, check=True)
         subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=self.root, check=True)
@@ -121,10 +124,8 @@ class PackageGovernanceTests(unittest.TestCase):
         source_commit = subprocess.run(
             ["git", "rev-parse", "HEAD"], cwd=self.root, check=True, capture_output=True, text=True
         ).stdout.strip()
-        subprocess.run(["git", "tag", "-am", "release", "v8.1.0"], cwd=self.root, check=True)
-        manifest_digest = hashlib.sha256(
-            (self.root / "plugins/bedrock/.claude-plugin/plugin.json").read_bytes()
-        ).hexdigest()
+        subprocess.run(["git", "tag", "-am", "release", release_tag], cwd=self.root, check=True)
+        manifest_digest = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
         gate_ids = (
             "deterministic",
             "strict-host",
@@ -137,7 +138,7 @@ class PackageGovernanceTests(unittest.TestCase):
         )
         evidence = {
             "schema_version": 1,
-            "manifest_version": "8.1.0",
+            "manifest_version": manifest_version,
             "source_commit": source_commit,
             "manifest_sha256": manifest_digest,
             "findings": {"assigned": 39, "closed": 39, "evidence": ["HEB-118"]},
@@ -153,14 +154,14 @@ class PackageGovernanceTests(unittest.TestCase):
         }
         rollout = {
             "schema_version": 1,
-            "manifest_version": "8.1.0",
-            "release_tag": "v8.1.0",
+            "manifest_version": manifest_version,
+            "release_tag": release_tag,
             "source_commit": source_commit,
             "surfaces": [
                 {
                     "id": surface,
                     "expected_action": "verify",
-                    "expected_identity": "8.1.0 and 13 skills",
+                    "expected_identity": f"{manifest_version} and 13 skills",
                     "status": "verified",
                     "evidence": surface,
                     "owner": "operator",

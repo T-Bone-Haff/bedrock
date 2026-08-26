@@ -3,6 +3,16 @@
 The package manifest is the sole authority for the current version. This file
 records candidate and released changes; a version heading is not release proof.
 
+## 8.2.0 — rule-trigger reliability candidate
+
+- Require every reusable rule to name and classify its firing event,
+  frequency, salience, enforcement, expected failure, and reliability
+  disposition.
+- Reject internal-state-triggered rules without an instrument, external
+  detector, or explicit known-weak disposition.
+- Add deterministic trigger-test behavior cases and retain the whole-corpus
+  HEB-136 sweep evidence.
+
 ## 8.1.0 — package-governance candidate, pending HEB-119 acceptance
 
 - Add enforceable lifecycle, compatibility, migration, rollback, support,
