@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "profile": "standard",
+  "scope": "HEB-136 author-standard trigger contract, whole-corpus audit instrument and evidence, package-version candidate, and regression updates",
+  "checked_surfaces": [
+    "scope and diff against the ratified HEB-136 amendment and sweep boundary",
+    "author-standard trigger semantics and authoring-contract behavior fixtures",
+    "audit population, semantic-unit derivation, finding schema, fail-loud behavior, and strict completion",
+    "representative RBT-114 consumer proof and retained evidence claims",
+    "plugin version, changelog, context-budget evidence, and package-governance compatibility",
+    "final pinned-host unit, plugin, governance, authoring, audit, and whitespace gates"
+  ],
+  "gates": [
+    {
+      "name": "scope and authority",
+      "disposition": "passed",
+      "reason": "The final diff is confined to the ratified author-standard amendment, sweep proof, tests, validators, and required package-version surfaces."
+    },
+    {
+      "name": "trigger-contract correctness",
+      "disposition": "passed",
+      "reason": "Direct review separated enforcement from disposition and added the omitted external-detector case before the final green run."
+    },
+    {
+      "name": "audit-validator correctness",
+      "disposition": "passed",
+      "reason": "The validator derives live populations and counts, rejects malformed or unresolved findings, accepts a proved empty finding set, and retains a multi-digit ordered-unit regression."
+    },
+    {
+      "name": "package regression",
+      "disposition": "passed",
+      "reason": "The repository-pinned Claude CLI run passed 118 tests with one Docker integration skipped; plugin, governance, authoring, strict audit, and diff-check gates passed."
+    },
+    {
+      "name": "container integration",
+      "disposition": "not-relevant",
+      "reason": "Docker is unavailable locally, and HEB-136 changes no container, runtime, infrastructure, or container-validation boundary."
+    },
+    {
+      "name": "security and privacy overlay",
+      "disposition": "not-relevant",
+      "reason": "The change introduces no credentials, user data, authorization behavior, network transport, or sensitive-content handling."
+    },
+    {
+      "name": "dependency and deployment overlays",
+      "disposition": "not-relevant",
+      "reason": "The change adds no dependency and performs no deployment or infrastructure mutation."
+    }
+  ],
+  "findings": [],
+  "verdict": "approve"
+}

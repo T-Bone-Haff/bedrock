@@ -44,12 +44,12 @@ skills:
     positive_cues: [reusable rule, engineering convention, governing skill or template]
     negative_boundary: One decision record, an executor handoff, mechanical packaging, and finished-change review route elsewhere.
     inputs: [recognizable repeated task, authority sources, binding, intended consumers]
-    outputs: [scoped standard, provenance record, proving plan, lifecycle metadata]
+    outputs: [scoped standard, provenance record, rule-trigger dispositions, proving plan, lifecycle metadata]
     authority: May define reusable guidance within its binding; the operator owns adoption and material exceptions.
     required_capabilities: [durable source access, at least one representative consumer]
     optional_capabilities: [generated carrier and drift checker]
-    failure_behavior: Do not publish when membership, authority, binding, provenance, or proving evidence is missing.
-    evidence: [source grading, counterexample, representative consumer, explicit success threshold]
+    failure_behavior: Do not publish when membership, authority, binding, provenance, a rule-trigger disposition, or proving evidence is missing.
+    evidence: [source grading, trigger evaluation, counterexample, representative consumer, explicit success threshold]
     lifecycle: proposed -> proving -> adopted -> revised -> deprecated, superseded, rolled back, or retired
   code-review:
     task_class: Review a finished change and produce evidence-backed findings and a merge verdict.

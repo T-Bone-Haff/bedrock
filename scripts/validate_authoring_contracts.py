@@ -60,6 +60,32 @@ def evaluate_behavior_case(case: dict[str, Any]) -> str:
         return "approve-with-advisory" if data.get("advisory") else "approve"
     if kind == "standard-exception":
         return "accept" if all(data.get(field) for field in ("owner", "scope", "risk", "expires")) else "reject"
+    if kind == "rule-trigger":
+        trigger_class = data.get("trigger_class")
+        frequency = data.get("frequency")
+        salience = data.get("salience")
+        enforcement = data.get("enforcement")
+        disposition = data.get("disposition")
+        if trigger_class == "internal-state":
+            if enforcement == "instrument" and disposition == "converted-to-instrument":
+                return "ship-instrumented"
+            if enforcement == "external-detector" and disposition == "external-detector":
+                return "ship-instrumented"
+            if disposition == "known-weak":
+                return "ship-known-weak"
+            return "reject"
+        if trigger_class == "workflow-event":
+            if disposition == "known-weak":
+                return "ship-known-weak"
+            if frequency == "high" and salience == "low" and enforcement == "discipline":
+                return "strengthen"
+            valid_pair = (enforcement, disposition) in {
+                ("discipline", "workflow-discipline"),
+                ("instrument", "converted-to-instrument"),
+                ("external-detector", "external-detector"),
+            }
+            return "ship" if valid_pair else "reject"
+        return "reject"
     return "unknown"
 
 
@@ -115,6 +141,21 @@ def validate_authoring_contracts(root: Path, *, required: bool = True) -> list[s
         for label in ("Inputs", "Output", "Authority", "Capabilities", "Failure", "Evidence", "Lifecycle"):
             if f"**{label}:**" not in skill_text:
                 errors.append(f"{skill_path}: interaction contract is missing {label}")
+        if name == "author-standard":
+            trigger_contract = (
+                "## Rule triggers and reliability",
+                "workflow-event",
+                "internal-state",
+                "frequency",
+                "salience",
+                "instrument",
+                "external detector",
+                "known-weak",
+                "expected failure",
+            )
+            for fragment in trigger_contract:
+                if fragment not in skill_text:
+                    errors.append(f"{skill_path}: rule-trigger contract is missing {fragment!r}")
 
     manifest_path = root / "tests" / "fixtures" / "authoring-contracts" / "manifest.yaml"
     try:
