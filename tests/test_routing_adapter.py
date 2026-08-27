@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import json
 import os
+from pathlib import Path
 import unittest
 from unittest.mock import patch
 
 from scripts.run_routing_evals import (
+    DEFAULT_MAX_BUDGET_USD,
     InvocationResult,
     MatrixFailure,
+    _build_parser,
     _classify_invocation_failure,
     _extract_usage,
     _parse_result,
@@ -22,6 +25,17 @@ from scripts.run_routing_evals import (
 
 
 class RoutingAdapterResultTests(unittest.TestCase):
+    def test_default_call_budget_matches_documented_contract(self) -> None:
+        readme = (Path(__file__).resolve().parents[1] / "README.md").read_text(encoding="utf-8")
+        normalized_readme = " ".join(readme.split())
+        documented_contract = (
+            f"Each model call is capped at ${DEFAULT_MAX_BUDGET_USD:.2f} and 120 seconds."
+        )
+
+        self.assertEqual(0.04, DEFAULT_MAX_BUDGET_USD)
+        self.assertEqual(DEFAULT_MAX_BUDGET_USD, _build_parser().parse_args([]).max_budget_usd)
+        self.assertEqual(1, normalized_readme.count(documented_contract))
+
     def test_api_key_authentication_satisfies_bare_adapter_contract(self) -> None:
         self.assertIsNone(check_authentication({"ANTHROPIC_API_KEY": "test-secret"}))
 

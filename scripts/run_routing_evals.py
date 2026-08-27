@@ -35,6 +35,8 @@ OUTPUT_SCHEMA = json.dumps(
     }
 )
 
+DEFAULT_MAX_BUDGET_USD = 0.04
+
 FAILURE_DIAGNOSTICS = {
     "authentication_failure": (
         "Claude adapter authentication failed on the --bare --print execution path; "
@@ -515,17 +517,27 @@ def write_report(path: Path, report: dict[str, Any]) -> None:
     temporary.replace(path)
 
 
-def main() -> int:
+def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--model", default="haiku")
     parser.add_argument("--profile", choices=("pr", "release"), default="release")
     parser.add_argument("--runs", type=int, help="Must match the preregistered profile; retained for explicit replay.")
     parser.add_argument("--case", action="append", dest="case_ids")
-    parser.add_argument("--max-budget-usd", type=float, default=0.03, help="Per-case-run budget ceiling.")
+    parser.add_argument(
+        "--max-budget-usd",
+        type=float,
+        default=DEFAULT_MAX_BUDGET_USD,
+        help="Per-case-run budget ceiling.",
+    )
     parser.add_argument("--max-total-budget-usd", type=float, help="Aggregate suite budget ceiling.")
     parser.add_argument("--timeout-seconds", type=int, default=120, help="Per-case-run wall-clock limit.")
     parser.add_argument("--output", type=Path)
+    return parser
+
+
+def main() -> int:
+    parser = _build_parser()
     args = parser.parse_args()
 
     executable = shutil.which("claude")
