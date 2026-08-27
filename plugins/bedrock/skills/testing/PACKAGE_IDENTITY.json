@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "generated-carrier",
+  "package": "bedrock",
+  "manifest_version": "8.4.0",
+  "version_authority": ".claude-plugin/plugin.json#/version",
+  "manifest_sha256": "a933dc194d4eb5e4e42bac7be906d8f050641ab4d7a3fa0895a687750cd3d137",
+  "generator": {
+    "id": "scripts/sync_package_identity.py",
+    "version": "1.0.0"
+  },
+  "contracts": {
+    "claude_adapter": "1.1.0"
+  }
+}

@@ -3,6 +3,15 @@
 The package manifest is the sole authority for the current version. This file
 records candidate and released changes; a version heading is not release proof.
 
+## 8.4.0 — consumer-visible identity candidate
+
+- Add a generated, byte-identical package identity carrier to every skill so a
+  skill-only host can expose the authoritative manifest version and digest.
+- Add deterministic generation, drift rejection, installed-package parity, and
+  malformed, missing, stale, divergent, and contract-mutation coverage.
+- Advance the Claude adapter contract to 1.1.0 for the compatible identity
+  carrier surface; cold acceptance and rollout remain external gates.
+
 ## 8.3.0 — instrument-authoring candidate
 
 - Derive relay demands and review charges from their consuming instruments,

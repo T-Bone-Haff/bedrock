@@ -11,4 +11,10 @@ defects:
   - {id: stale-context-measurement, test: test_rejects_stale_context_measurement, expected_diagnostic: catalog description measurement is stale}
   - {id: missing-package-finding, test: test_rejects_missing_package_finding, expected_diagnostic: must contain PKG-001 through PKG-039 exactly once}
   - {id: missing-governance-link, test: test_rejects_missing_governance_link, expected_diagnostic: package-governance link target does not exist}
+  - {id: missing-package-identity-carrier, test: test_rejects_missing_package_identity_carrier, expected_diagnostic: package identity carrier is missing}
+  - {id: malformed-package-identity-carrier, test: test_rejects_malformed_package_identity_carrier, expected_diagnostic: package identity carrier is not valid JSON}
+  - {id: stale-package-identity-version, test: test_rejects_stale_package_identity_version, expected_diagnostic: package identity carrier does not match the manifest authority}
+  - {id: stale-package-identity-digest, test: test_rejects_stale_package_identity_digest, expected_diagnostic: package identity carrier does not match the manifest authority}
+  - {id: divergent-package-identity-copy, test: test_rejects_divergent_package_identity_copy, expected_diagnostic: package identity carriers must be byte-identical}
+  - {id: package-identity-contract-drift, test: test_rejects_package_identity_contract_drift, expected_diagnostic: package identity carrier does not match the manifest authority}
   - {id: release-before-acceptance, test: test_release_mode_fails_closed_before_acceptance, expected_diagnostic: release mode requires --release-evidence}

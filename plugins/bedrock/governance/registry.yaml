@@ -4,12 +4,13 @@ release_tag_pattern: v{manifest_version}
 release_state_source: Immutable tag plus schema-valid release evidence and rollout ledger; the packaged candidate does not self-ratify.
 contracts:
   portable_core: 1.0.0
-  claude_adapter: 1.0.0
+  claude_adapter: 1.1.0
   prompt_generation_format: 1.0.0
 authorities:
   - id: package-version
     owner: plugins/bedrock/.claude-plugin/plugin.json#/version
-    carriers: []
+    carriers:
+      - plugins/bedrock/skills/{skill}/PACKAGE_IDENTITY.json
   - id: portable-architecture
     owner: docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md
     carriers:
@@ -54,7 +55,7 @@ capabilities:
   - id: claude-ai-plugin-host
     required_for: Claude.ai and Cowork marketplace loading
     version: hosted-service
-    detection: marketplace install followed by a new-session skill inventory
+    detection: marketplace install followed by a new-session skill inventory and direct inspection of a generated PACKAGE_IDENTITY.json carrier
     unavailable_behavior: Claude.ai compatibility remains unverified; do not infer it from Claude Code evidence.
   - id: sofia-runner
     required_for: runner-backed convergence only
@@ -65,7 +66,7 @@ external_dependencies: []
 consumer_surfaces:
   - id: claude-ai
     propagation: Marketplace pushes auto-load for the next new session.
-    verification: Open a new session and verify the intended manifest identity and 13-skill inventory.
+    verification: Open a new session, read one loaded PACKAGE_IDENTITY.json carrier directly, and verify its intended manifest identity, digest, and 13-skill inventory.
   - id: claude-code
     propagation: Refresh or update the marketplace, update the plugin, and start a new session.
     verification: Inspect plugin details and verify the intended manifest identity and 13-skill inventory after reload.

@@ -26,7 +26,9 @@ python3 - "$smoke_root" <<'PY'
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
+import re
 import sys
 
 root = Path(sys.argv[1])
@@ -58,6 +60,32 @@ manifest = json.loads((install_path / ".claude-plugin/plugin.json").read_text(en
 if manifest.get("version") != record.get("version"):
     raise SystemExit("clean-install smoke failed: installed record and manifest versions differ")
 
+registry_text = (install_path / "governance/registry.yaml").read_text(encoding="utf-8")
+adapter_match = re.search(r"^  claude_adapter: ([0-9]+\.[0-9]+\.[0-9]+)$", registry_text, re.MULTILINE)
+if adapter_match is None:
+    raise SystemExit("clean-install smoke failed: Claude adapter contract is unavailable")
+expected_identity = {
+    "schema_version": 1,
+    "classification": "generated-carrier",
+    "package": manifest["name"],
+    "manifest_version": manifest["version"],
+    "version_authority": ".claude-plugin/plugin.json#/version",
+    "manifest_sha256": hashlib.sha256((install_path / ".claude-plugin/plugin.json").read_bytes()).hexdigest(),
+    "generator": {
+        "id": "scripts/sync_package_identity.py",
+        "version": "1.0.0",
+    },
+    "contracts": {
+        "claude_adapter": adapter_match.group(1),
+    },
+}
+expected_identity_bytes = (json.dumps(expected_identity, indent=2) + "\n").encode("utf-8")
+carrier_paths = sorted((install_path / "skills").glob("*/PACKAGE_IDENTITY.json"))
+if len(carrier_paths) != 13:
+    raise SystemExit(f"clean-install smoke failed: expected 13 package identity carriers, found {len(carrier_paths)}")
+if any(path.read_bytes() != expected_identity_bytes for path in carrier_paths):
+    raise SystemExit("clean-install smoke failed: installed package identity carrier drift")
+
 for filename in ("details-first.txt", "details-reloaded.txt"):
     text = (root / filename).read_text(encoding="utf-8")
     if "Skills (13)" not in text:
@@ -68,5 +96,5 @@ reloaded = (root / "details-reloaded.txt").read_text(encoding="utf-8")
 if first != reloaded:
     raise SystemExit("clean-install smoke failed: component inventory changed after reload")
 
-print("PASS: isolated install and reload discovered bedrock@bedrock with 13 skills and packaged governance")
+print("PASS: isolated install and reload discovered bedrock@bedrock with 13 skills, identity carriers, and packaged governance")
 PY

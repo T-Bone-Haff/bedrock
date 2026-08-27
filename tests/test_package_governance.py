@@ -32,6 +32,34 @@ class PackageGovernanceTests(unittest.TestCase):
         errors = validate_package_governance(self.root)
         self.assertTrue(any(needle in error for error in errors), errors)
 
+    def write_package_identity_carriers(self) -> list[Path]:
+        manifest_path = self.root / "plugins/bedrock/.claude-plugin/plugin.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        registry = yaml.safe_load(
+            (self.root / "plugins/bedrock/governance/registry.yaml").read_text(encoding="utf-8")
+        )
+        payload = {
+            "schema_version": 1,
+            "classification": "generated-carrier",
+            "package": manifest["name"],
+            "manifest_version": manifest["version"],
+            "version_authority": ".claude-plugin/plugin.json#/version",
+            "manifest_sha256": hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+            "generator": {
+                "id": "scripts/sync_package_identity.py",
+                "version": "1.0.0",
+            },
+            "contracts": {
+                "claude_adapter": registry["contracts"]["claude_adapter"],
+            },
+        }
+        encoded = json.dumps(payload, indent=2) + "\n"
+        paths = sorted((self.root / "plugins/bedrock/skills").glob("*/SKILL.md"))
+        carrier_paths = [path.with_name("PACKAGE_IDENTITY.json") for path in paths]
+        for path in carrier_paths:
+            path.write_text(encoded, encoding="utf-8")
+        return carrier_paths
+
     def test_repository_package_governance_passes(self) -> None:
         self.assertEqual([], validate_package_governance(self.root))
 
@@ -107,6 +135,58 @@ class PackageGovernanceTests(unittest.TestCase):
         path = self.root / "plugins/bedrock/governance/QUICKSTART.md"
         path.write_text(path.read_text(encoding="utf-8") + "\n[missing](missing.md)\n", encoding="utf-8")
         self.assert_has_error("package-governance link target does not exist")
+
+    def test_rejects_missing_package_identity_carrier(self) -> None:
+        carrier_paths = self.write_package_identity_carriers()
+        carrier_paths[0].unlink()
+        self.assert_has_error("package identity carrier is missing")
+
+    def test_rejects_malformed_package_identity_carrier(self) -> None:
+        carrier_paths = self.write_package_identity_carriers()
+        carrier_paths[0].write_text("{not-json}\n", encoding="utf-8")
+        self.assert_has_error("package identity carrier is not valid JSON")
+
+    def test_rejects_stale_package_identity_version(self) -> None:
+        carrier_paths = self.write_package_identity_carriers()
+        payload = json.loads(carrier_paths[0].read_text(encoding="utf-8"))
+        payload["manifest_version"] = "0.0.0"
+        carrier_paths[0].write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+        self.assert_has_error("package identity carrier does not match the manifest authority")
+
+    def test_rejects_stale_package_identity_digest(self) -> None:
+        carrier_paths = self.write_package_identity_carriers()
+        payload = json.loads(carrier_paths[0].read_text(encoding="utf-8"))
+        payload["manifest_sha256"] = "0" * 64
+        carrier_paths[0].write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+        self.assert_has_error("package identity carrier does not match the manifest authority")
+
+    def test_rejects_divergent_package_identity_copy(self) -> None:
+        carrier_paths = self.write_package_identity_carriers()
+        carrier_paths[0].write_text(
+            carrier_paths[0].read_text(encoding="utf-8").replace("  \"package\"", "    \"package\""),
+            encoding="utf-8",
+        )
+        self.assert_has_error("package identity carriers must be byte-identical")
+
+    def test_rejects_package_identity_contract_drift(self) -> None:
+        mutations = {
+            "package": "not-bedrock",
+            "version_authority": "wrong#/version",
+            "generator.id": "wrong-generator",
+            "generator.version": "9.9.9",
+            "contracts.claude_adapter": "9.9.9",
+        }
+        for field, replacement in mutations.items():
+            with self.subTest(field=field):
+                carrier_paths = self.write_package_identity_carriers()
+                payload = json.loads(carrier_paths[0].read_text(encoding="utf-8"))
+                target = payload
+                parts = field.split(".")
+                for part in parts[:-1]:
+                    target = target[part]
+                target[parts[-1]] = replacement
+                carrier_paths[0].write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+                self.assert_has_error("package identity carrier does not match the manifest authority")
 
     def test_release_mode_fails_closed_before_acceptance(self) -> None:
         errors = validate_package_governance(self.root, release=True)

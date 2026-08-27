@@ -6,6 +6,15 @@ packaging, releasing, and rolling back Bedrock. The package manifest at
 version. Changelogs, tags, marketplace records, evidence, and rollout ledgers
 are checked carriers; none may independently select a version.
 
+Each skill directory also carries a generated `PACKAGE_IDENTITY.json`. This
+ordinary visible file lets a skill-only consumer surface report package
+identity without inventing a second authority. Every copy is byte-identical,
+names the manifest pointer and digest, and is regenerated from the manifest and
+registry by `scripts/sync_package_identity.py`. Consumers may verify the root
+manifest directly when the host exposes it; otherwise they read a generated
+skill carrier. If neither is visible, package identity remains unavailable and
+must not be inferred from skill content.
+
 ## Candidate and release states
 
 A manifest version on a branch or on `main` is a **candidate** until cold
@@ -79,9 +88,11 @@ in this package. Final closure runs `validate_package_governance.py --release`
 with exported release-evidence and rollout-ledger files. The validator proves
 their identities match the immutable tag; the files do not have to be committed
 at that tag and the tag is never moved after rollout. Claude.ai propagation is
-verified in a new session after the marketplace push. Claude Code requires
-marketplace refresh/update, plugin update, and a new session. Neither surface
-requires copying skill folders into consumer repositories.
+verified in a new session after the marketplace push by reading a loaded
+identity carrier and enumerating the skills. Claude Code requires marketplace
+refresh/update, plugin update, and a new session, then direct manifest and
+carrier parity checks. Neither surface requires copying skill folders into
+consumer repositories.
 
 ## Compatibility and migration
 
