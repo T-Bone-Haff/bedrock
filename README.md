@@ -101,7 +101,7 @@ profile: three independent draws per case, at least a 95% aggregate pass rate, a
 least two of three passing draws for every case, and zero excluded-route
 selections. The machine-readable report records fixture, catalog, and policy
 SHA-256 digests; results with different identities are not pooled. Each model
-call is capped at $0.03 and 120 seconds. Deterministic validation and the isolated
+call is capped at $0.04 and 120 seconds. Deterministic validation and the isolated
 install/reload smoke test do not require model inference. Branch protection must
 require `Plugin validation / live-routing`.
 
