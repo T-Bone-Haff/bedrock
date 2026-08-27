@@ -46,6 +46,10 @@ Any snapshot a consumer keeps anyway — a vendored authority file or pinned cop
 — must verify currency at time-of-use against the current release, not against
 the baseline it was copied from.
 
+On hosts that expose only skill-local files, each skill's generated
+`PACKAGE_IDENTITY.json` provides that verification surface. It repeats the
+manifest identity and digest without becoming a second version authority.
+
 ## Quickstart and profile rebinding
 
 The [routing quickstart](plugins/bedrock/governance/QUICKSTART.md) gives explicit,
@@ -56,7 +60,12 @@ supported profile.
 
 ## Maintenance
 
-Edit the relevant skill's files directly — the SKILL.md and any bundled `reference/` or `templates/` files; single source of truth per skill. There is no corpus to keep in sync. Releases follow the push discipline in the `author-standard` skill.
+Edit the relevant skill's authored files directly — the SKILL.md and any bundled
+`reference/` or `templates/` files; single source of truth per skill. Do not
+hand-edit `PACKAGE_IDENTITY.json`: after a manifest or Claude-adapter identity
+change, regenerate all 13 copies with
+`python3 scripts/sync_package_identity.py --write`. Releases follow the push
+discipline in the `author-standard` skill.
 
 ### Validation
 
@@ -65,6 +74,7 @@ Install the pinned validation dependency, then run the deterministic and host ch
 ```sh
 python3 -m pip install -r validation/requirements.txt
 python3 -m unittest discover -s tests -v
+python3 scripts/sync_package_identity.py --check
 python3 scripts/validate_plugin.py
 python3 scripts/validate_package_governance.py
 bash scripts/smoke_clean_install.sh
@@ -78,6 +88,10 @@ tests and release automation. Its default mode validates a candidate. Its
 release evidence and a completed consumer-surface rollout ledger, and proves
 both against the immutable tag. It is a final release-closure check, not a
 pre-HEB-119 candidate gate.
+
+`sync_package_identity.py --check` proves the 13 skill-local identity carriers
+are byte-identical, canonical generations of the manifest and registry
+authorities. The package-governance validator enforces the same contract.
 
 Shared routing prompts live in `tests/fixtures/routing.yaml` and are surface-neutral. They cover direct, implicit, adversarial, negative, and overlap decisions. The Claude Code adapter presents the exact validated name/description catalog to each isolated model session, so the regression measures the metadata routing contract rather than unaided name association, and retains machine-readable results:
 

@@ -18,6 +18,11 @@ from jsonschema import Draft202012Validator
 from jsonschema.exceptions import SchemaError, ValidationError
 import yaml
 
+if __package__:
+    from .sync_package_identity import carrier_paths, expected_carrier_bytes, expected_carrier_payload
+else:
+    from sync_package_identity import carrier_paths, expected_carrier_bytes, expected_carrier_payload
+
 
 EXPECTED_SKILLS = {
     "agent-code",
@@ -72,6 +77,7 @@ FINAL_RELEASE_GATES = {
     "cold-acceptance",
     "github-release",
 }
+PACKAGE_IDENTITY_CARRIER = "plugins/bedrock/skills/{skill}/PACKAGE_IDENTITY.json"
 
 
 def _error(errors: list[str], location: Path | str, message: str) -> None:
@@ -191,6 +197,16 @@ def _validate_registry(root: Path, errors: list[str]) -> dict[str, Any] | None:
     for key in ("authorities", "precedence", "capabilities", "consumer_surfaces", "release_gates", "sources"):
         if not isinstance(registry.get(key), list) or not registry[key]:
             _error(errors, path, f"{key} must be a non-empty list")
+    package_authorities = [
+        row for row in registry.get("authorities", [])
+        if isinstance(row, dict) and row.get("id") == "package-version"
+    ]
+    if (
+        len(package_authorities) != 1
+        or package_authorities[0].get("owner") != "plugins/bedrock/.claude-plugin/plugin.json#/version"
+        or package_authorities[0].get("carriers") != [PACKAGE_IDENTITY_CARRIER]
+    ):
+        _error(errors, path, "package-version authority must declare the generated skill identity carrier exactly once")
     capability_ids = [row.get("id") for row in registry.get("capabilities", []) if isinstance(row, dict)]
     if len(capability_ids) != len(set(capability_ids)):
         _error(errors, path, "capability identifiers must be unique")
@@ -204,6 +220,34 @@ def _validate_registry(root: Path, errors: list[str]) -> dict[str, Any] | None:
     if not isinstance(prompt, dict) or len(prompt.get("required_provenance", [])) < 3:
         _error(errors, path, "prompt generations require format, source, and digest provenance")
     return registry
+
+
+def _validate_package_identity_carriers(root: Path, errors: list[str]) -> None:
+    try:
+        expected_payload = expected_carrier_payload(root)
+        expected_bytes = expected_carrier_bytes(root)
+    except (OSError, json.JSONDecodeError, yaml.YAMLError, KeyError, TypeError) as exc:
+        _error(errors, "package identity", f"cannot derive package identity carrier: {exc}")
+        return
+    observed_bytes: list[bytes] = []
+    paths = carrier_paths(root)
+    if {path.parent.name for path in paths} != EXPECTED_SKILLS or len(paths) != len(EXPECTED_SKILLS):
+        _error(errors, "package identity", "carrier population must match the 13-skill inventory")
+    for path in paths:
+        if not path.is_file():
+            _error(errors, path, "package identity carrier is missing")
+            continue
+        raw = path.read_bytes()
+        observed_bytes.append(raw)
+        try:
+            payload = json.loads(raw)
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            _error(errors, path, f"package identity carrier is not valid JSON: {exc}")
+            continue
+        if payload != expected_payload or raw != expected_bytes:
+            _error(errors, path, "package identity carrier does not match the manifest authority")
+    if len(set(observed_bytes)) > 1:
+        _error(errors, "package identity", "package identity carriers must be byte-identical")
 
 
 def _validate_budgets(root: Path, registry: dict[str, Any] | None, errors: list[str]) -> None:
@@ -562,6 +606,7 @@ def validate_package_governance(
     errors: list[str] = []
     version = _validate_metadata(root, errors)
     registry = _validate_registry(root, errors)
+    _validate_package_identity_carriers(root, errors)
     _validate_budgets(root, registry, errors)
     _validate_documents(root, version, errors)
     _validate_schemas(root, errors)

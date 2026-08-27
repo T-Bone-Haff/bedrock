@@ -18,12 +18,13 @@ counting_basis:
   limit: >-
     The semantic-unit count proves deterministic screen coverage, not an atomic
     normative-rule count or infallible semantic classification.
-  last_refreshed_at: 2026-08-26 ET
+  last_refreshed_at: 2026-08-27 ET
   last_refresh: >-
-    HEB-133 amended six existing Markdown carriers. Each amended carrier was
-    re-read whole; every added rule fires on relay, charge, touch-set, premise,
-    or proving-profile construction and is bound to a required instrument.
-    No internal-state-triggered rule was added, so the finding set remains empty.
+    HEB-140 added 13 byte-identical generated package-identity JSON carriers.
+    The generated payload was read whole and contains identity data only, with
+    no normative rule or trigger. The structured-file population advances from
+    17 to 30; the Markdown population, semantic-unit count, and empty finding
+    set do not change.
 scope:
   markdown_root: plugins/bedrock/skills
   expected_markdown_carriers: 55
@@ -139,9 +140,13 @@ scope:
     plugins/bedrock/skills/testing/SKILL.md: inspected
     plugins/bedrock/skills/testing/reference/nondeterministic-components.md: inspected
     plugins/bedrock/skills/testing/reference/test-authoring.md: inspected
-  expected_structured_files: 17
+  expected_structured_files: 30
   structured_files:
+    - path: plugins/bedrock/skills/agent-code/PACKAGE_IDENTITY.json
+      inspection: inspected
     - path: plugins/bedrock/skills/agent-code/reference/agent-execution.schema.json
+      inspection: inspected
+    - path: plugins/bedrock/skills/app-delivery-pipeline/PACKAGE_IDENTITY.json
       inspection: inspected
     - path: plugins/bedrock/skills/app-delivery-pipeline/reference/application-release-manifest.schema.json
       inspection: inspected
@@ -149,17 +154,35 @@ scope:
       inspection: inspected
     - path: plugins/bedrock/skills/app-delivery-pipeline/reference/delivery-profile.schema.json
       inspection: inspected
+    - path: plugins/bedrock/skills/application-code/PACKAGE_IDENTITY.json
+      inspection: inspected
     - path: plugins/bedrock/skills/application-code/reference/application-service-profile.schema.json
+      inspection: inspected
+    - path: plugins/bedrock/skills/author-construct-spec/PACKAGE_IDENTITY.json
+      inspection: inspected
+    - path: plugins/bedrock/skills/author-decision-record/PACKAGE_IDENTITY.json
       inspection: inspected
     - path: plugins/bedrock/skills/author-decision-record/reference/record-relations.schema.json
       inspection: inspected
+    - path: plugins/bedrock/skills/author-execution-relay/PACKAGE_IDENTITY.json
+      inspection: inspected
     - path: plugins/bedrock/skills/author-execution-relay/reference/relay.schema.json
+      inspection: inspected
+    - path: plugins/bedrock/skills/author-standard/PACKAGE_IDENTITY.json
+      inspection: inspected
+    - path: plugins/bedrock/skills/code-review/PACKAGE_IDENTITY.json
       inspection: inspected
     - path: plugins/bedrock/skills/code-review/reference/review-result.schema.json
       inspection: inspected
+    - path: plugins/bedrock/skills/debug/PACKAGE_IDENTITY.json
+      inspection: inspected
     - path: plugins/bedrock/skills/debug/reference/diagnosis-record.schema.json
       inspection: inspected
+    - path: plugins/bedrock/skills/design-review-loop/PACKAGE_IDENTITY.json
+      inspection: inspected
     - path: plugins/bedrock/skills/design-review-loop/reference/design-review-result.schema.json
+      inspection: inspected
+    - path: plugins/bedrock/skills/frontend-code/PACKAGE_IDENTITY.json
       inspection: inspected
     - path: plugins/bedrock/skills/frontend-code/reference/authority-provenance.yaml
       inspection: inspected
@@ -167,11 +190,15 @@ scope:
       inspection: inspected
     - path: plugins/bedrock/skills/frontend-code/reference/frontend-profile.schema.json
       inspection: inspected
+    - path: plugins/bedrock/skills/infrastructure-code/PACKAGE_IDENTITY.json
+      inspection: inspected
     - path: plugins/bedrock/skills/infrastructure-code/reference/authority-provenance.yaml
       inspection: inspected
     - path: plugins/bedrock/skills/infrastructure-code/reference/infrastructure-apply-manifest.schema.json
       inspection: inspected
     - path: plugins/bedrock/skills/infrastructure-code/reference/infrastructure-profile.schema.json
+      inspection: inspected
+    - path: plugins/bedrock/skills/testing/PACKAGE_IDENTITY.json
       inspection: inspected
     - path: plugins/bedrock/skills/testing/reference/test-strategy.schema.json
       inspection: inspected
