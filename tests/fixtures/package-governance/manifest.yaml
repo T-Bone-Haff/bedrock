@@ -9,6 +9,11 @@ defects:
   - {id: portable-core-version-drift, test: test_rejects_portable_core_version_drift_from_accepted_adr, expected_diagnostic: portable_core must match the accepted ADR-001 version}
   - {id: portable-core-provenance-drift, test: test_rejects_portable_core_authority_provenance_drift, expected_diagnostic: ADR-001 source must identify the accepted portable-core authority}
   - {id: compatibility-portable-core-drift, test: test_rejects_compatibility_portable_core_version_drift, expected_diagnostic: portable-core identity must match the registry}
+  - {id: claude-code-minimum-semantics-drift, test: test_rejects_claude_code_minimum_version_semantics_drift, expected_diagnostic: Claude Code capability must declare a minimum-supported SemVer floor}
+  - {id: compatibility-minimum-host-drift, test: test_rejects_compatibility_minimum_host_drift, expected_diagnostic: minimum supported Claude Code version must match the registry}
+  - {id: verified-host-below-minimum, test: test_rejects_verified_host_below_minimum, expected_diagnostic: verified Claude Code host is below the supported minimum}
+  - {id: nonexact-verified-host, test: test_rejects_nonexact_verified_host_identity, expected_diagnostic: verified Claude Code hosts must use exact SemVer identities}
+  - {id: ci-host-floor-drift, test: test_rejects_ci_host_floor_drift, expected_diagnostic: Claude Code CI pins must exercise the supported minimum}
   - {id: vocabulary-schema-drift, test: test_rejects_vocabulary_schema_drift, expected_diagnostic: gate_status must match the governing schema enum exactly}
   - {id: uncontrolled-duplicate-authority, test: test_rejects_uncontrolled_duplicate_authority, expected_diagnostic: every repetition requires an allowed classification and drift control}
   - {id: stale-context-measurement, test: test_rejects_stale_context_measurement, expected_diagnostic: catalog description measurement is stale}

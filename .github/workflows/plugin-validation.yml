@@ -51,6 +51,7 @@ jobs:
         working-directory: tests/fixtures/frontend-contracts/browser-app
         run: ./node_modules/.bin/playwright install --with-deps chromium firefox webkit
       - name: Install pinned Claude Code validator
+        # Exercise the oldest supported host, not a single-version support ceiling.
         run: npm install --global @anthropic-ai/claude-code@2.1.226
       - name: Run seeded validator tests
         env:
@@ -114,6 +115,7 @@ jobs:
       - name: Install validation dependencies
         run: python -m pip install -r validation/requirements.txt
       - name: Install pinned Claude Code adapter
+        # Exercise the oldest supported host, not a single-version support ceiling.
         run: npm install --global @anthropic-ai/claude-code@2.1.226
       - name: Run repeated routing regression suite
         env:

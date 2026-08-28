@@ -1,10 +1,11 @@
 # Compatibility and support matrix
 
-Only combinations backed by retained evidence are supported.
+Support is bounded by the declared requirements below. Retained evidence must
+exercise each minimum and record the exact identity of every execution.
 
-| Surface | Verified identity | Distribution and reload behavior | Evidence | Status |
+| Surface | Support requirement | Distribution and reload behavior | Evidence | Status |
 |---|---|---|---|---|
-| Claude Code | 2.1.226 | Refresh/update marketplace, update plugin, then start a new session. | strict validation and isolated install/reload in required CI | supported |
+| Claude Code | >=2.1.226 | Refresh/update marketplace, update plugin, then start a new session. | strict validation and isolated install/reload at the minimum version in required CI | supported |
 | Claude.ai / Cowork | Hosted service observed 2026-08-27 | Marketplace changes take effect in the next new session; the host exposes skill-local supporting files but not the package-root manifest. | v8.3.0 fresh-session and full-client-restart probes proved 13 skills and current content while package version remained unavailable; HEB-140's retained v8.4.0 final release evidence and rollout ledger record release acceptance and successful two-surface verification through the generated skill-local carrier | supported |
 | Codex/OpenAI adapter | None | No adapter is distributed. | none | unsupported |
 | Cursor adapter | None | No adapter is distributed. | none | unsupported |
@@ -27,7 +28,14 @@ the declared skill contracts on verified rows. It does not promise incident
 response, production operations, regulatory compliance, or cross-agent
 security assurance; see the product coverage map and threat model.
 
-A host upgrade, manifest-schema change, routing-adapter change, or generated
-carrier format change invalidates the corresponding evidence row until it is
-rerun. Unsupported surfaces fail closed: name the missing adapter or capability
-and do not claim compatibility by similarity.
+The Claude Code capability is a minimum-version contract. Exact versions in
+skill `verified_hosts` rows, CI logs, and retained reports identify individual
+executions; they neither narrow nor expand the supported minimum. Required CI
+pins the minimum so the oldest supported host remains exercised.
+
+A host below the declared minimum, an observed incompatibility at or above the
+minimum, a manifest-schema change, a routing-adapter change, or a generated
+carrier format change invalidates the corresponding evidence until it is
+reconciled and rerun. A host upgrade at or above the minimum does not by itself
+invalidate support. Unsupported surfaces fail closed: name the missing adapter
+or capability and do not claim compatibility by similarity.

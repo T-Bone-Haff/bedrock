@@ -24,6 +24,11 @@ Best-effort support carries no response-time guarantee. Consumers own their
 runtime credentials, repository permissions, production operations, and any
 external orchestration capabilities.
 
+A declared minimum host version defines the supported compatibility floor.
+Exact host versions in lifecycle rows and retained evidence identify the
+executions that produced that evidence; they do not replace the minimum-version
+contract or imply that only one exact host version is supported.
+
 ## Deprecation and retirement
 
 Deprecation is a versioned lifecycle state in `registry.yaml`, never a prose-only

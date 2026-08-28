@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import hashlib
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -135,6 +136,54 @@ class PackageGovernanceTests(unittest.TestCase):
             encoding="utf-8",
         )
         self.assert_has_error("portable-core identity must match the registry")
+
+    def test_rejects_claude_code_minimum_version_semantics_drift(self) -> None:
+        path = self.root / "plugins/bedrock/governance/registry.yaml"
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+        capability = next(
+            row for row in payload["capabilities"] if row["id"] == "claude-code-plugin-host"
+        )
+        capability.pop("version_semantics", None)
+        path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+        self.assert_has_error("Claude Code capability must declare a minimum-supported SemVer floor")
+
+    def test_rejects_compatibility_minimum_host_drift(self) -> None:
+        path = self.root / "plugins/bedrock/governance/COMPATIBILITY.md"
+        text, replacements = re.subn(
+            r"^\| Claude Code \| [^|]+ \|",
+            "| Claude Code | >=9.9.9 |",
+            path.read_text(encoding="utf-8"),
+            count=1,
+            flags=re.MULTILINE,
+        )
+        self.assertEqual(1, replacements)
+        path.write_text(text, encoding="utf-8")
+        self.assert_has_error("minimum supported Claude Code version must match the registry")
+
+    def test_rejects_verified_host_below_minimum(self) -> None:
+        path = self.root / "plugins/bedrock/governance/registry.yaml"
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+        payload["skills"][0]["verified_hosts"] = ["claude-code-2.1.225"]
+        path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+        self.assert_has_error("verified Claude Code host is below the supported minimum")
+
+    def test_rejects_nonexact_verified_host_identity(self) -> None:
+        path = self.root / "plugins/bedrock/governance/registry.yaml"
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+        payload["skills"][0]["verified_hosts"] = ["claude-code>=2.1.226"]
+        path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+        self.assert_has_error("verified Claude Code hosts must use exact SemVer identities")
+
+    def test_rejects_ci_host_floor_drift(self) -> None:
+        path = self.root / ".github/workflows/plugin-validation.yml"
+        original = path.read_text(encoding="utf-8")
+        changed = original.replace(
+            "@anthropic-ai/claude-code@2.1.226",
+            "@anthropic-ai/claude-code@2.1.247",
+        )
+        self.assertNotEqual(original, changed)
+        path.write_text(changed, encoding="utf-8")
+        self.assert_has_error("Claude Code CI pins must exercise the supported minimum")
 
     def test_rejects_vocabulary_schema_drift(self) -> None:
         path = self.root / "plugins/bedrock/governance/vocabulary.yaml"
