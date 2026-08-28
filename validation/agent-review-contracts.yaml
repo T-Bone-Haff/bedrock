@@ -19,11 +19,43 @@ required_contract_markers:
     - "Content capture is off by default."
   plugins/bedrock/skills/design-review-loop/SKILL.md:
     - "Direct review"
+    - "Multi-perspective review"
+    - "The consuming product owns workflow meaning"
+    - "declared, versioned product-owned runner"
     - "Without fresh evidence that the declared runner/profile executed"
     - "No policy universally dominates."
 forbidden_markers:
-  - "$SOFIA_ROOT"
+  - "SOFIA"
+  - "recipe/kernel"
+  - "control-plane state"
   - "~15 real runs"
   - "salvage the first parseable payload"
   - "Tie goes to the defect"
   - "union strictly dominates"
+forbidden_paths:
+  - plugins/bedrock/skills/design-review-loop/reference/haffey-sofia-profile.md
+runner_profile_cases:
+  - id: direct-without-runner
+    input: {profile: direct}
+    expected: direct-review-complete
+  - id: multi-perspective-without-runner
+    input: {profile: multi-perspective}
+    expected: multi-perspective-review-complete
+  - id: runner-backed-complete-binding
+    input: {profile: runner-backed, product_binding_id: product-review-workflow, product_binding_version: 1.0.0, runner_id: product-review-runner, runner_version: 2.1.0, schemas_compatible: true, invocation: "product-review run --profile convergence", fresh_gate_evidence: true}
+    expected: runner-backed-claim-permitted
+  - id: runner-backed-without-product-binding
+    input: {profile: runner-backed, runner_id: product-review-runner, runner_version: 2.1.0, schemas_compatible: true, invocation: "product-review run --profile convergence", fresh_gate_evidence: true}
+    expected: stop-unavailable
+  - id: runner-backed-without-product-binding-version
+    input: {profile: runner-backed, product_binding_id: product-review-workflow, runner_id: product-review-runner, runner_version: 2.1.0, schemas_compatible: true, invocation: "product-review run --profile convergence", fresh_gate_evidence: true}
+    expected: stop-unavailable
+  - id: runner-backed-without-version
+    input: {profile: runner-backed, product_binding_id: product-review-workflow, product_binding_version: 1.0.0, runner_id: product-review-runner, schemas_compatible: true, invocation: "product-review run --profile convergence", fresh_gate_evidence: true}
+    expected: stop-unavailable
+  - id: runner-backed-without-exact-invocation
+    input: {profile: runner-backed, product_binding_id: product-review-workflow, product_binding_version: 1.0.0, runner_id: product-review-runner, runner_version: 2.1.0, schemas_compatible: true, fresh_gate_evidence: true}
+    expected: stop-unavailable
+  - id: runner-backed-without-fresh-evidence
+    input: {profile: runner-backed, product_binding_id: product-review-workflow, product_binding_version: 1.0.0, runner_id: product-review-runner, runner_version: 2.1.0, schemas_compatible: true, invocation: "product-review run --profile convergence", fresh_gate_evidence: false}
+    expected: stop-unavailable

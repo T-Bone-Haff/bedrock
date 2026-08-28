@@ -10,7 +10,7 @@ import yaml
 
 from scripts.validate_plugin import (
     EXPECTED_SKILLS,
-    run_host_validator,
+    run_host_manifest_validator,
     validate_repository,
 )
 
@@ -373,19 +373,20 @@ class ValidatorTests(unittest.TestCase):
         self.assertEqual(set(), declared - available)
 @unittest.skipUnless(shutil.which("claude"), "Claude Code CLI is not installed")
 class StrictHostValidatorIntegrationTests(unittest.TestCase):
-    def test_seeded_invalid_frontmatter_fails_strict_host_validation(self) -> None:
+    def test_seeded_invalid_manifest_fails_strict_host_validation(self) -> None:
         repository_root = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory() as temporary:
             fixture_root = Path(temporary)
             destination = fixture_root / "plugins" / "bedrock"
             destination.parent.mkdir(parents=True)
             shutil.copytree(repository_root / "plugins" / "bedrock", destination)
-            skill = destination / "skills" / "agent-code" / "SKILL.md"
-            text = skill.read_text(encoding="utf-8")
-            skill.write_text(text.replace('description: "', "description: invalid: ", 1), encoding="utf-8")
+            manifest = destination / ".claude-plugin" / "plugin.json"
+            payload = json.loads(manifest.read_text(encoding="utf-8"))
+            payload["unexpected_field"] = True
+            manifest.write_text(json.dumps(payload), encoding="utf-8")
             errors: list[str] = []
-            run_host_validator(fixture_root, errors)
-            self.assertTrue(errors, "seeded invalid frontmatter unexpectedly passed strict host validation")
+            run_host_manifest_validator(fixture_root, errors)
+            self.assertTrue(errors, "seeded invalid plugin manifest unexpectedly passed strict host validation")
 
 
 if __name__ == "__main__":

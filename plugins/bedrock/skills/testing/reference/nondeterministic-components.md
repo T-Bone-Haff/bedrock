@@ -29,4 +29,4 @@ For deterministic mechanism, use an ordinary meaningful failing test. For judgme
 
 ## Ownership boundary
 
-`testing` authors the evaluation strategy and evidence contract. `agent-code` supplies model-call implementation constraints. An orchestration kernel may execute repeated draws, budgets, and durable state, but it does not redefine the evaluation's normative pass criteria.
+`testing` authors the evaluation strategy and evidence contract. `agent-code` supplies model-call implementation constraints. A product-owned runner may execute repeated draws, budgets, and durable state, but it does not redefine the evaluation's normative pass criteria.

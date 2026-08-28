@@ -64,8 +64,8 @@ def evaluate_behavior_case(case: dict[str, Any]) -> str:
         allowed = data.get("accepted_values", [])
         demanded = data.get("demanded_value")
         return "accept" if data.get("consumer_read_whole") and demanded in allowed else "reject"
-    if kind == "instrument-demand":
-        required = (
+    if kind in {"instrument-demand", "relay-instrument-demand"}:
+        required = [
             "consumer_read_whole",
             "taxonomy_verbatim",
             "verdict_pins_complete",
@@ -73,8 +73,61 @@ def evaluate_behavior_case(case: dict[str, Any]) -> str:
             "dry_run_passed",
             "unavailable_declared",
             "report_field_declared",
-        )
+        ]
+        if kind == "relay-instrument-demand":
+            comparison_involved = data.get("comparison_involved")
+            if not isinstance(comparison_involved, bool):
+                return "reject"
+            if comparison_involved:
+                required.extend(
+                    [
+                        "population_derivation_declared",
+                        "expected_state_oracle_declared",
+                        "subject_declared",
+                        "discrimination_declared",
+                    ]
+                )
         return "accept" if all(data.get(field) for field in required) else "reject"
+    if kind == "population-comparison":
+        comparison_available = all(
+            data.get(field)
+            for field in (
+                "derivation_available",
+                "canonicalization_declared",
+                "expected_state_oracle_declared",
+                "subject_declared",
+            )
+        )
+        subject_matches = data.get("subject_matches")
+        observed_matches_expected = data.get("observed_matches_expected")
+        cross_check_present = data.get("cross_check_present")
+        if (
+            not comparison_available
+            or data.get("comparison_ambiguous")
+            or not isinstance(subject_matches, bool)
+            or not isinstance(observed_matches_expected, bool)
+            or not isinstance(cross_check_present, bool)
+        ):
+            return "stop-unavailable"
+        if not subject_matches:
+            return "stop-subject-mismatch"
+        second_derivation_agrees = data.get("second_derivation_agrees")
+        falsification_control_refused = data.get("falsification_control_refused")
+        discrimination_results = [
+            result
+            for result in (second_derivation_agrees, falsification_control_refused)
+            if isinstance(result, bool)
+        ]
+        if not discrimination_results or not all(discrimination_results):
+            return "stop-unavailable"
+        if not observed_matches_expected:
+            return "stop-state-change"
+        cross_check_matches_expected = data.get("cross_check_matches_expected")
+        if cross_check_present and not isinstance(cross_check_matches_expected, bool):
+            return "stop-unavailable"
+        if cross_check_present and not cross_check_matches_expected:
+            return "report-relay-defect-and-proceed"
+        return "proceed"
     if kind == "touch-derivation":
         edit_loci = set(data.get("edit_loci", []))
         touch_set = set(data.get("touch_set", []))
@@ -200,6 +253,14 @@ def validate_authoring_contracts(root: Path, *, required: bool = True) -> list[s
                 "custody",
                 "reachability",
                 "edit-locus rows",
+                "claim subject",
+                "population derivation",
+                "expected-state oracle",
+                "differently-shaped derivation",
+                "discrimination control",
+                "subject mismatch",
+                "state changed",
+                "arithmetic or transcription defect",
                 "falsification control",
                 "confirmed",
                 "falsified",
@@ -212,7 +273,18 @@ def validate_authoring_contracts(root: Path, *, required: bool = True) -> list[s
     relay_templates = root / "plugins/bedrock/skills/author-execution-relay/templates"
     for path in relay_templates.glob("*.md"):
         text = path.read_text(encoding="utf-8")
-        for fragment in ("instrument contract", "Verdict-bearing inputs/pins", "Structural instrument"):
+        for fragment in (
+            "instrument contract",
+            "Claim subject",
+            "Verdict-bearing inputs/pins",
+            "Population derivation / expected-state oracle",
+            "Structural instrument / discrimination control",
+            "differently-shaped derivation",
+            "subject mismatch",
+            "typed count or member list",
+            "state mismatch",
+            "arithmetic or transcription defect",
+        ):
             if fragment.lower() not in text.lower():
                 errors.append(f"{path}: relay instrument template is missing {fragment!r}")
     reviewer_instrument = root / "plugins/bedrock/skills/design-review-loop/reference/reviewer-instrument.md"

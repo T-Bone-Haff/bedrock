@@ -6,6 +6,9 @@ defects:
   - {id: orphaned-skill-lifecycle, test: test_rejects_orphaned_skill_lifecycle, expected_diagnostic: owner is required}
   - {id: retirement-without-migration, test: test_rejects_retired_skill_without_migration, expected_diagnostic: non-active skill requires migration treatment}
   - {id: incomplete-consumer-enumeration, test: test_rejects_incomplete_consumer_enumeration, expected_diagnostic: must contain claude-ai and claude-code exactly}
+  - {id: portable-core-version-drift, test: test_rejects_portable_core_version_drift_from_accepted_adr, expected_diagnostic: portable_core must match the accepted ADR-001 version}
+  - {id: portable-core-provenance-drift, test: test_rejects_portable_core_authority_provenance_drift, expected_diagnostic: ADR-001 source must identify the accepted portable-core authority}
+  - {id: compatibility-portable-core-drift, test: test_rejects_compatibility_portable_core_version_drift, expected_diagnostic: portable-core identity must match the registry}
   - {id: vocabulary-schema-drift, test: test_rejects_vocabulary_schema_drift, expected_diagnostic: gate_status must match the governing schema enum exactly}
   - {id: uncontrolled-duplicate-authority, test: test_rejects_uncontrolled_duplicate_authority, expected_diagnostic: every repetition requires an allowed classification and drift control}
   - {id: stale-context-measurement, test: test_rejects_stale_context_measurement, expected_diagnostic: catalog description measurement is stale}
@@ -17,4 +20,9 @@ defects:
   - {id: stale-package-identity-digest, test: test_rejects_stale_package_identity_digest, expected_diagnostic: package identity carrier does not match the manifest authority}
   - {id: divergent-package-identity-copy, test: test_rejects_divergent_package_identity_copy, expected_diagnostic: package identity carriers must be byte-identical}
   - {id: package-identity-contract-drift, test: test_rejects_package_identity_contract_drift, expected_diagnostic: package identity carrier does not match the manifest authority}
+  - {id: package-identity-extra-field, test: test_rejects_package_identity_extra_field, expected_diagnostic: package identity carrier does not match the manifest authority}
+  - {id: nested-extra-package-identity-carrier, test: test_rejects_nested_noncanonical_package_identity_carrier, expected_diagnostic: package identity carrier is unexpected}
+  - {id: cli-extra-package-identity-carrier, test: test_cli_entrypoints_report_same_unexpected_package_identity_carrier, expected_diagnostic: package identity carrier is unexpected}
+  - {id: stale-directory-package-identity-carriers, test: test_rejects_every_package_identity_carrier_in_stale_skill_directories, expected_diagnostic: package identity carrier is unexpected}
+  - {id: write-with-extra-package-identity-carrier, test: test_write_refuses_unexpected_package_identity_carrier_before_mutation, expected_diagnostic: package identity carrier is unexpected}
   - {id: release-before-acceptance, test: test_release_mode_fails_closed_before_acceptance, expected_diagnostic: release mode requires --release-evidence}

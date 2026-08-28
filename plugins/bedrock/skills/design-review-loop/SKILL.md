@@ -13,9 +13,11 @@ Before review, publish the profile, substrate, actor set, budgets, tools, and ev
 
 - **Direct review:** one or more explicitly named stances, executed manually or as independent calls. Exit is a direct-review report with findings and coverage limits. It never claims convergence.
 - **Multi-perspective review:** all required stances execute in isolated contexts and their findings are combined and adjudicated. Exit is a multi-perspective report with unresolved findings and uncertainty. It never claims durable or mechanical convergence.
-- **Runner-backed review:** a declared, versioned runner implements the portable schemas and gates, persists the ledger, and emits replayable evidence. Only this profile may claim mechanical convergence—and only when that runner actually executed every applicable gate successfully.
+- **Runner-backed review:** a declared, versioned product-owned runner implements the portable schemas and gates, persists the ledger, and emits replayable evidence. Only this profile may claim mechanical convergence—and only when that runner actually executed every applicable gate successfully.
 
-If a requested profile is unavailable, downgrade explicitly to the strongest available profile or stop. Do not reason a missing runner, ledger, gate, or actor into existence. `reference/haffey-sofia-profile.md` is an optional organization adapter, not portable authority.
+The consuming product owns workflow meaning, actor roster and authority, state transitions, retries, budgets, durable execution, and operational posture. Bedrock owns the bounded review, finding, arbitration, escalation, and evidence contracts. A runner binding invokes those contracts without becoming their authority or admitting its implementation into Bedrock.
+
+If a requested profile is unavailable, downgrade explicitly to the strongest available profile or stop. Do not reason a missing runner, ledger, gate, or actor into existence. `reference/product-runner-binding.md` defines the optional external binding requirements; it is not a bundled runner or portable authority.
 
 ## Frozen substrate and injection containment
 
@@ -73,4 +75,4 @@ Every profile declares data classification, redaction, allowed model/provider/re
 - `reference/arbiter-classifier.md` — bounded classification contract.
 - `reference/convergence-machinery.md` — capability and evidence gates.
 - `reference/design-review-result.schema.json` — portable output schema.
-- `reference/haffey-sofia-profile.md` — optional Haffey/SOFIA adapter; verify live before use.
+- `reference/product-runner-binding.md` — optional external product-runner binding contract; verify live before use.

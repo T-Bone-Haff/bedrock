@@ -763,10 +763,10 @@ def validate_routing(
     return cases
 
 
-def run_host_validator(root: Path, errors: list[str]) -> None:
+def run_host_manifest_validator(root: Path, errors: list[str]) -> None:
     executable = shutil.which("claude")
     if executable is None:
-        _error(errors, "claude", "Claude Code CLI is required for strict host validation")
+        _error(errors, "claude", "Claude Code CLI is required for strict plugin-manifest validation")
         return
     environment = os.environ.copy()
     environment.pop("CLAUDECODE", None)
@@ -780,7 +780,11 @@ def run_host_validator(root: Path, errors: list[str]) -> None:
     )
     if result.returncode != 0:
         detail = (result.stdout + result.stderr).strip()
-        _error(errors, "claude plugin validate --strict", detail or f"exited {result.returncode}")
+        _error(
+            errors,
+            "claude plugin validate --strict (plugin manifest)",
+            detail or f"exited {result.returncode}",
+        )
 
 
 def validate_repository(
@@ -814,7 +818,7 @@ def validate_repository(
     )
     errors.extend(validate_frontend_contracts(root, required=require_authoring_contracts))
     if run_host_cli:
-        run_host_validator(root, errors)
+        run_host_manifest_validator(root, errors)
 
     for name, record in inventory.items():
         record["positive_cases"] = [case.get("id") for case in cases if case.get("expected") == name]
@@ -841,7 +845,7 @@ def validate_repository(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
-    parser.add_argument("--skip-host-cli", action="store_true", help="Skip Claude CLI validation (tests only).")
+    parser.add_argument("--skip-host-cli", action="store_true", help="Skip Claude CLI plugin-manifest validation (tests only).")
     parser.add_argument("--inventory", type=Path, help="Write the derived metadata/routing inventory as JSON.")
     args = parser.parse_args()
 
@@ -855,8 +859,10 @@ def main() -> int:
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    scope = "deterministic validation" if args.skip_host_cli else "deterministic and strict host validation"
-    print(f"PASS: {report['skill_count']}/{len(EXPECTED_SKILLS)} skills passed {scope}")
+    message = f"PASS: {report['skill_count']}/{len(EXPECTED_SKILLS)} skills passed deterministic validation"
+    if not args.skip_host_cli:
+        message += "; plugin manifest passed strict host validation"
+    print(message)
     return 0
 
 

@@ -5,12 +5,15 @@ import hashlib
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 
 import yaml
 
+from scripts.sync_package_identity import synchronize
 from scripts.validate_package_governance import validate_package_governance
+from scripts.validate_plugin import validate_repository
 
 
 class PackageGovernanceTests(unittest.TestCase):
@@ -103,6 +106,36 @@ class PackageGovernanceTests(unittest.TestCase):
         path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
         self.assert_has_error("must contain claude-ai and claude-code exactly")
 
+    def test_rejects_portable_core_version_drift_from_accepted_adr(self) -> None:
+        path = self.root / "plugins/bedrock/governance/registry.yaml"
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+        payload["contracts"]["portable_core"] = "9.9.9"
+        path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+        self.assert_has_error("portable_core must match the accepted ADR-001 version")
+
+    def test_rejects_portable_core_authority_provenance_drift(self) -> None:
+        path = self.root / "plugins/bedrock/governance/registry.yaml"
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+        source = next(row for row in payload["sources"] if row["id"] == "adr-001")
+        source["type"] = "contextual-restatement"
+        path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+        self.assert_has_error("ADR-001 source must identify the accepted portable-core authority")
+
+    def test_rejects_compatibility_portable_core_version_drift(self) -> None:
+        path = self.root / "plugins/bedrock/governance/COMPATIBILITY.md"
+        registry = yaml.safe_load(
+            (self.root / "plugins/bedrock/governance/registry.yaml").read_text(encoding="utf-8")
+        )
+        portable_core = registry["contracts"]["portable_core"]
+        path.write_text(
+            path.read_text(encoding="utf-8").replace(
+                f"portable skill core has contract version `{portable_core}`",
+                "portable skill core has contract version `9.9.9`",
+            ),
+            encoding="utf-8",
+        )
+        self.assert_has_error("portable-core identity must match the registry")
+
     def test_rejects_vocabulary_schema_drift(self) -> None:
         path = self.root / "plugins/bedrock/governance/vocabulary.yaml"
         payload = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -187,6 +220,84 @@ class PackageGovernanceTests(unittest.TestCase):
                 target[parts[-1]] = replacement
                 carrier_paths[0].write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
                 self.assert_has_error("package identity carrier does not match the manifest authority")
+
+    def test_rejects_package_identity_extra_field(self) -> None:
+        carrier_paths = self.write_package_identity_carriers()
+        payload = json.loads(carrier_paths[0].read_text(encoding="utf-8"))
+        payload["unexpected"] = True
+        carrier_paths[0].write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+        self.assert_has_error("package identity carrier does not match the manifest authority")
+
+    def test_rejects_nested_noncanonical_package_identity_carrier(self) -> None:
+        carrier_paths = self.write_package_identity_carriers()
+        extra = self.root / "plugins/bedrock/skills/agent-code/reference/PACKAGE_IDENTITY.json"
+        extra.write_bytes(carrier_paths[0].read_bytes())
+        expected = f"{extra}: package identity carrier is unexpected"
+
+        self.assertIn(expected, synchronize(self.root, write=False))
+        self.assertIn(expected, validate_package_governance(self.root))
+        plugin_errors, _ = validate_repository(
+            self.root,
+            run_host_cli=False,
+            run_safety_checks=False,
+            validate_retained_evidence=False,
+            require_authoring_contracts=False,
+        )
+        self.assertIn(expected, plugin_errors)
+
+    def test_cli_entrypoints_report_same_unexpected_package_identity_carrier(self) -> None:
+        carrier_paths = self.write_package_identity_carriers()
+        extra = self.root / "plugins/bedrock/skills/stale/PACKAGE_IDENTITY.json"
+        extra.parent.mkdir(parents=True)
+        extra.write_bytes(carrier_paths[0].read_bytes())
+        expected = f"{extra}: package identity carrier is unexpected"
+
+        commands = (
+            [sys.executable, "scripts/sync_package_identity.py", "--root", str(self.root), "--check"],
+            [sys.executable, "scripts/validate_package_governance.py", "--root", str(self.root)],
+        )
+        for command in commands:
+            with self.subTest(command=command[1]):
+                result = subprocess.run(
+                    command,
+                    cwd=self.root,
+                    capture_output=True,
+                    text=True,
+                    check=False,
+                )
+                self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+                self.assertIn(expected, result.stdout)
+
+    def test_rejects_every_package_identity_carrier_in_stale_skill_directories(self) -> None:
+        carrier_paths = self.write_package_identity_carriers()
+        extras = [
+            self.root / "plugins/bedrock/skills/retired-one/PACKAGE_IDENTITY.json",
+            self.root / "plugins/bedrock/skills/retired-two/nested/PACKAGE_IDENTITY.json",
+        ]
+        for extra in extras:
+            extra.parent.mkdir(parents=True, exist_ok=True)
+            extra.write_bytes(carrier_paths[0].read_bytes())
+
+        sync_errors = synchronize(self.root, write=False)
+        governance_errors = validate_package_governance(self.root)
+        for extra in extras:
+            expected = f"{extra}: package identity carrier is unexpected"
+            self.assertIn(expected, sync_errors)
+            self.assertIn(expected, governance_errors)
+
+    def test_write_refuses_unexpected_package_identity_carrier_before_mutation(self) -> None:
+        carrier_paths = self.write_package_identity_carriers()
+        stale = carrier_paths[0]
+        stale.write_text("stale\n", encoding="utf-8")
+        extra = self.root / "plugins/bedrock/skills/stale/PACKAGE_IDENTITY.json"
+        extra.parent.mkdir(parents=True)
+        extra.write_bytes(carrier_paths[1].read_bytes())
+
+        errors = synchronize(self.root, write=True)
+
+        self.assertIn(f"{extra}: package identity carrier is unexpected", errors)
+        self.assertEqual("stale\n", stale.read_text(encoding="utf-8"))
+        self.assertTrue(extra.is_file())
 
     def test_release_mode_fails_closed_before_acceptance(self) -> None:
         errors = validate_package_governance(self.root, release=True)
