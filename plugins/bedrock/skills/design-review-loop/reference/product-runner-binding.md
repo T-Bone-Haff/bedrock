@@ -5,7 +5,7 @@ This optional binding connects the portable review contract to an external runne
 Before selecting runner-backed review, resolve and record from the live product authority:
 
 1. product workflow-binding identity, immutable version, owner, and authority boundary;
-2. runner identity, immutable version or digest, and compatible portable-core and review-schema versions;
+2. runner identity, immutable SemVer, and compatible portable-core and review-schema versions;
 3. actor charters, arbitration capability, durable ledger, identity and lifecycle gates, cancellation, budgets, and evidence export;
 4. exact command or API entrypoint, inputs, outputs, and validator profile;
 5. proof that the product owns sequencing, durable state, retries, and operational posture while Bedrock actors retain their bounded judgments; and
