@@ -25,7 +25,11 @@ required_contract_markers:
     - "Without fresh evidence that the declared runner/profile executed"
     - "No policy universally dominates."
   plugins/bedrock/skills/design-review-loop/reference/product-runner-binding.md:
-    - "runner identity, immutable SemVer"
+    - "product-defined opaque immutable version"
+    - "immutable full SemVer 2.0.0 identity"
+    - "named claim subject"
+    - "complete required actor and gate populations"
+    - "boolean assertion"
 forbidden_markers:
   - "SOFIA"
   - "recipe/kernel"
@@ -44,23 +48,72 @@ runner_profile_cases:
     input: {profile: multi-perspective}
     expected: multi-perspective-review-complete
   - id: runner-backed-complete-binding
-    input: {profile: runner-backed, product_binding_id: product-review-workflow, product_binding_version: 1.0.0, runner_id: product-review-runner, runner_version: 2.1.0, schemas_compatible: true, invocation: "product-review run --profile convergence", fresh_gate_evidence: true}
+    input: &complete_runner_case
+      profile: runner-backed
+      product_binding_id: product-review-workflow
+      product_binding_version: release-2026-08-28
+      product_binding_sha256: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+      product_binding_owner: product-review-owner
+      product_binding_authority: product/review-workflow
+      runner_id: product-review-runner
+      runner_version: 2.1.0-rc.1+build.7
+      runner_sha256: cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+      portable_core_version: 2.0.0
+      review_schema_version: 1.0.0
+      compatibility_manifest_sha256: dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+      invocation: product-review run --profile convergence
+      validator_profile: convergence
+      evidence:
+        subject:
+          substrate_sha256: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          product_binding_id: product-review-workflow
+          product_binding_version: release-2026-08-28
+          product_binding_sha256: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+          product_binding_owner: product-review-owner
+          product_binding_authority: product/review-workflow
+          runner_id: product-review-runner
+          runner_version: 2.1.0-rc.1+build.7
+          runner_sha256: cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+          portable_core_version: 2.0.0
+          review_schema_version: 1.0.0
+          compatibility_manifest_sha256: dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+          invocation_sha256: 13977cf35c76eb60897336d62217eee4a64d88e23ea76b7ec748f4e4911e2531
+          validator_profile: convergence
+        required_actor_ids: [laa, sa, ea, cross-set]
+        actor_results:
+          - {id: laa, outcome: completed, evidence_sha256: "1111111111111111111111111111111111111111111111111111111111111111"}
+          - {id: sa, outcome: completed, evidence_sha256: "2222222222222222222222222222222222222222222222222222222222222222"}
+          - {id: ea, outcome: completed, evidence_sha256: "3333333333333333333333333333333333333333333333333333333333333333"}
+          - {id: cross-set, outcome: completed, evidence_sha256: "4444444444444444444444444444444444444444444444444444444444444444"}
+        required_gate_ids: [schema, identity, lifecycle, convergence]
+        gate_results:
+          - {id: schema, outcome: passed, evidence_sha256: "5555555555555555555555555555555555555555555555555555555555555555"}
+          - {id: identity, outcome: passed, evidence_sha256: "6666666666666666666666666666666666666666666666666666666666666666"}
+          - {id: lifecycle, outcome: passed, evidence_sha256: "7777777777777777777777777777777777777777777777777777777777777777"}
+          - {id: convergence, outcome: passed, evidence_sha256: "8888888888888888888888888888888888888888888888888888888888888888"}
+        ledger_sha256: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+        evidence_manifest_sha256: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+        verification:
+          method: second-derivation
+          instrument: verify_runner_evidence --profile convergence
+          subject_sha256: cd5d6b575b77d0aa1489c5ce6df921b3d4c99bf286e1f13e2b0a275877212a7e
+          result: confirmed
     expected: runner-backed-claim-permitted
-  - id: runner-backed-without-product-binding
-    input: {profile: runner-backed, runner_id: product-review-runner, runner_version: 2.1.0, schemas_compatible: true, invocation: "product-review run --profile convergence", fresh_gate_evidence: true}
-    expected: stop-unavailable
-  - id: runner-backed-without-product-binding-version
-    input: {profile: runner-backed, product_binding_id: product-review-workflow, runner_id: product-review-runner, runner_version: 2.1.0, schemas_compatible: true, invocation: "product-review run --profile convergence", fresh_gate_evidence: true}
-    expected: stop-unavailable
-  - id: runner-backed-without-version
-    input: {profile: runner-backed, product_binding_id: product-review-workflow, product_binding_version: 1.0.0, runner_id: product-review-runner, schemas_compatible: true, invocation: "product-review run --profile convergence", fresh_gate_evidence: true}
-    expected: stop-unavailable
   - id: runner-backed-with-digest-only
-    input: {profile: runner-backed, product_binding_id: product-review-workflow, product_binding_version: 1.0.0, runner_id: product-review-runner, runner_version: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", schemas_compatible: true, invocation: "product-review run --profile convergence", fresh_gate_evidence: true}
+    input:
+      <<: *complete_runner_case
+      runner_version: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     expected: stop-unavailable
-  - id: runner-backed-without-exact-invocation
-    input: {profile: runner-backed, product_binding_id: product-review-workflow, product_binding_version: 1.0.0, runner_id: product-review-runner, runner_version: 2.1.0, schemas_compatible: true, fresh_gate_evidence: true}
+  - id: runner-backed-with-malformed-semver
+    input:
+      <<: *complete_runner_case
+      runner_version: 02.1.0
     expected: stop-unavailable
-  - id: runner-backed-without-fresh-evidence
-    input: {profile: runner-backed, product_binding_id: product-review-workflow, product_binding_version: 1.0.0, runner_id: product-review-runner, runner_version: 2.1.0, schemas_compatible: true, invocation: "product-review run --profile convergence", fresh_gate_evidence: false}
+  - id: runner-backed-without-subject-bound-evidence
+    input:
+      <<: *complete_runner_case
+      evidence: null
+    expected: stop-unavailable
+  - id: runner-backed-with-narration-only-evidence
+    input: {profile: runner-backed, product_binding_id: product-review-workflow, product_binding_version: 1.0.0, runner_id: product-review-runner, runner_version: 2.1.0, schemas_compatible: true, invocation: "product-review run --profile convergence", fresh_gate_evidence: true}
     expected: stop-unavailable
