@@ -76,6 +76,8 @@ REQUIRED_FILES = (
     "docs/evidence/heb-118/context-budget.json",
 )
 SEMVER = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
+MINIMUM_SEMVER = re.compile(r"^>=([0-9]+\.[0-9]+\.[0-9]+)$")
+VERIFIED_CLAUDE_CODE_HOST = re.compile(r"^claude-code-([0-9]+\.[0-9]+\.[0-9]+)$")
 MARKDOWN_LINK = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 FINAL_RELEASE_GATES = {
     "deterministic",
@@ -124,6 +126,10 @@ def _load_yaml(path: Path, errors: list[str]) -> dict[str, Any] | None:
 def _frontmatter_description(path: Path) -> str | None:
     match = re.search(r'^description: "(.*)"$', path.read_text(encoding="utf-8"), re.MULTILINE)
     return match.group(1) if match else None
+
+
+def _semver_tuple(value: str) -> tuple[int, int, int]:
+    return tuple(int(part) for part in value.split("."))
 
 
 def _accepted_portable_core_version(root: Path, errors: list[str]) -> str | None:
@@ -203,6 +209,27 @@ def _validate_registry(root: Path, errors: list[str]) -> dict[str, Any] | None:
     ):
         _error(errors, path, "portable_core must match the accepted ADR-001 version")
 
+    capabilities = registry.get("capabilities")
+    claude_code_rows = [
+        row
+        for row in capabilities or []
+        if isinstance(row, dict) and row.get("id") == "claude-code-plugin-host"
+    ] if isinstance(capabilities, list) else []
+    claude_code_minimum: str | None = None
+    if len(claude_code_rows) != 1:
+        _error(errors, path, "registry must declare exactly one Claude Code capability")
+    else:
+        capability = claude_code_rows[0]
+        minimum_match = (
+            MINIMUM_SEMVER.fullmatch(capability.get("version", ""))
+            if isinstance(capability.get("version"), str)
+            else None
+        )
+        if capability.get("version_semantics") != "minimum-supported" or minimum_match is None:
+            _error(errors, path, "Claude Code capability must declare a minimum-supported SemVer floor")
+        else:
+            claude_code_minimum = minimum_match.group(1)
+
     skills = registry.get("skills")
     if not isinstance(skills, list):
         _error(errors, path, "skills must be a list")
@@ -227,6 +254,19 @@ def _validate_registry(root: Path, errors: list[str]) -> dict[str, Any] | None:
         verified = row.get("last_verified")
         if not isinstance(verified, (date, str)):
             _error(errors, location, "last_verified must be a date")
+        verified_hosts = row.get("verified_hosts")
+        if isinstance(verified_hosts, list) and claude_code_minimum is not None:
+            claude_code_hosts = [
+                host
+                for host in verified_hosts
+                if isinstance(host, str) and host.startswith("claude-code")
+            ]
+            matches = [VERIFIED_CLAUDE_CODE_HOST.fullmatch(host) for host in claude_code_hosts]
+            if not claude_code_hosts or any(match is None for match in matches):
+                _error(errors, location, "verified Claude Code hosts must use exact SemVer identities")
+            for match in matches:
+                if match and _semver_tuple(match.group(1)) < _semver_tuple(claude_code_minimum):
+                    _error(errors, location, "verified Claude Code host is below the supported minimum")
 
     for key in ("authorities", "precedence", "capabilities", "consumer_surfaces", "release_gates", "sources"):
         if not isinstance(registry.get(key), list) or not registry[key]:
@@ -404,6 +444,22 @@ def _validate_documents(
         not in compatibility.read_text(encoding="utf-8")
     ):
         _error(errors, compatibility, "portable-core identity must match the registry")
+    claude_code_capabilities = [
+        row
+        for row in registry.get("capabilities", [])
+        if isinstance(row, dict) and row.get("id") == "claude-code-plugin-host"
+    ] if registry else []
+    if len(claude_code_capabilities) == 1:
+        minimum = claude_code_capabilities[0].get("version")
+        compatibility_text = compatibility.read_text(encoding="utf-8") if compatibility.is_file() else ""
+        if not isinstance(minimum, str) or f"| Claude Code | {minimum} |" not in compatibility_text:
+            _error(errors, compatibility, "minimum supported Claude Code version must match the registry")
+        minimum_match = MINIMUM_SEMVER.fullmatch(minimum) if isinstance(minimum, str) else None
+        workflow = root / ".github/workflows/plugin-validation.yml"
+        workflow_text = workflow.read_text(encoding="utf-8") if workflow.is_file() else ""
+        pins = re.findall(r"@anthropic-ai/claude-code@([0-9]+\.[0-9]+\.[0-9]+)", workflow_text)
+        if minimum_match is None or len(pins) != 2 or any(pin != minimum_match.group(1) for pin in pins):
+            _error(errors, workflow, "Claude Code CI pins must exercise the supported minimum")
     orientation = root / "CLAUDE.md"
     if orientation.is_file():
         text = orientation.read_text(encoding="utf-8")

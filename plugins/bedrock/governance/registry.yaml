@@ -50,6 +50,7 @@ capabilities:
   - id: claude-code-plugin-host
     required_for: Claude Code installation, discovery, and update
     version: ">=2.1.226"
+    version_semantics: minimum-supported
     detection: claude --version and claude plugin validate --strict
     unavailable_behavior: Installation and Claude Code compatibility remain unverified; use another verified surface or stop.
   - id: claude-ai-plugin-host

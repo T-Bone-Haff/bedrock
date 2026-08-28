@@ -16,6 +16,9 @@ records candidate and released changes; a version heading is not release proof.
 - Reject every noncanonical recursive package-identity carrier consistently
   across synchronization, package governance, and the main validator, including
   fail-before-mutation behavior for identity writes.
+- Define Claude Code 2.1.226 as the minimum supported host version, preserve
+  exact host identities as execution evidence, and enforce the floor across the
+  compatibility matrix, registry, and required CI.
 - Retain migration, meaningful-red, deterministic, strict-host, install,
   rule-trigger, and three-draw routing evidence for the aggregate candidate.
 
