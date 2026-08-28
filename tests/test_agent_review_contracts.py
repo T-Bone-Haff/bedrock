@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 from pathlib import Path
 import shutil
 import tempfile
@@ -27,6 +29,78 @@ class AgentReviewContractTests(unittest.TestCase):
 
     def tearDown(self) -> None:
         self.temporary_directory.cleanup()
+
+    @staticmethod
+    def runner_case(
+        *,
+        product_binding_version: str = "release-2026-08-28",
+        runner_version: str = "2.1.0-rc.1+build.7",
+    ) -> dict[str, object]:
+        invocation = "product-review run --profile convergence"
+        subject = {
+            "substrate_sha256": "a" * 64,
+            "product_binding_id": "product-review-workflow",
+            "product_binding_version": product_binding_version,
+            "product_binding_sha256": "b" * 64,
+            "product_binding_owner": "product-review-owner",
+            "product_binding_authority": "product/review-workflow",
+            "runner_id": "product-review-runner",
+            "runner_version": runner_version,
+            "runner_sha256": "c" * 64,
+            "portable_core_version": "2.0.0",
+            "review_schema_version": "1.0.0",
+            "compatibility_manifest_sha256": "d" * 64,
+            "invocation_sha256": hashlib.sha256(invocation.encode()).hexdigest(),
+            "validator_profile": "convergence",
+        }
+        subject_sha256 = hashlib.sha256(
+            json.dumps(subject, sort_keys=True, separators=(",", ":")).encode()
+        ).hexdigest()
+        return {
+            "profile": "runner-backed",
+            "product_binding_id": subject["product_binding_id"],
+            "product_binding_version": subject["product_binding_version"],
+            "product_binding_sha256": subject["product_binding_sha256"],
+            "product_binding_owner": subject["product_binding_owner"],
+            "product_binding_authority": subject["product_binding_authority"],
+            "runner_id": subject["runner_id"],
+            "runner_version": subject["runner_version"],
+            "runner_sha256": subject["runner_sha256"],
+            "portable_core_version": subject["portable_core_version"],
+            "review_schema_version": subject["review_schema_version"],
+            "compatibility_manifest_sha256": subject["compatibility_manifest_sha256"],
+            "invocation": invocation,
+            "validator_profile": subject["validator_profile"],
+            "evidence": {
+                "subject": subject,
+                "required_actor_ids": ["laa", "sa", "ea", "cross-set"],
+                "actor_results": [
+                    {"id": actor_id, "outcome": "completed", "evidence_sha256": digest * 64}
+                    for actor_id, digest in zip(
+                        ("laa", "sa", "ea", "cross-set"),
+                        ("1", "2", "3", "4"),
+                        strict=True,
+                    )
+                ],
+                "required_gate_ids": ["schema", "identity", "lifecycle", "convergence"],
+                "gate_results": [
+                    {"id": gate_id, "outcome": "passed", "evidence_sha256": digest * 64}
+                    for gate_id, digest in zip(
+                        ("schema", "identity", "lifecycle", "convergence"),
+                        ("5", "6", "7", "8"),
+                        strict=True,
+                    )
+                ],
+                "ledger_sha256": "e" * 64,
+                "evidence_manifest_sha256": "f" * 64,
+                "verification": {
+                    "method": "second-derivation",
+                    "instrument": "verify_runner_evidence --profile convergence",
+                    "subject_sha256": subject_sha256,
+                    "result": "confirmed",
+                },
+            },
+        }
 
     def test_repository_contracts_pass(self) -> None:
         self.assertEqual([], validate_agent_review_contracts(self.root))
@@ -65,7 +139,31 @@ class AgentReviewContractTests(unittest.TestCase):
         self.assertTrue(any("runner profile case" in item for item in errors), errors)
 
     def test_runner_backed_claim_requires_replayable_binding_and_invocation(self) -> None:
-        complete = {
+        complete = self.runner_case()
+        self.assertEqual("runner-backed-claim-permitted", evaluate_runner_profile_case(complete))
+        for field in (
+            "product_binding_id",
+            "product_binding_version",
+            "product_binding_sha256",
+            "product_binding_owner",
+            "product_binding_authority",
+            "runner_id",
+            "runner_version",
+            "runner_sha256",
+            "portable_core_version",
+            "review_schema_version",
+            "compatibility_manifest_sha256",
+            "invocation",
+            "validator_profile",
+            "evidence",
+        ):
+            with self.subTest(field=field):
+                incomplete = dict(complete)
+                incomplete.pop(field)
+                self.assertEqual("stop-unavailable", evaluate_runner_profile_case(incomplete))
+
+    def test_runner_backed_claim_rejects_narration_only_evidence_boolean(self) -> None:
+        legacy = {
             "profile": "runner-backed",
             "product_binding_id": "product-review-workflow",
             "product_binding_version": "1.0.0",
@@ -75,12 +173,57 @@ class AgentReviewContractTests(unittest.TestCase):
             "invocation": "product-review run --profile convergence",
             "fresh_gate_evidence": True,
         }
-        self.assertEqual("runner-backed-claim-permitted", evaluate_runner_profile_case(complete))
-        for field in ("product_binding_id", "product_binding_version", "runner_id", "runner_version", "invocation"):
-            with self.subTest(field=field):
-                incomplete = dict(complete)
-                incomplete.pop(field)
-                self.assertEqual("stop-unavailable", evaluate_runner_profile_case(incomplete))
+        self.assertEqual("stop-unavailable", evaluate_runner_profile_case(legacy))
+
+    def test_product_binding_version_is_opaque_and_runner_accepts_full_semver(self) -> None:
+        for binding_version in ("release-2026-08-28", "sha256:" + "a" * 64):
+            for runner_version in ("2.1.0", "2.1.0-rc.1", "2.1.0+build.7"):
+                with self.subTest(
+                    binding_version=binding_version,
+                    runner_version=runner_version,
+                ):
+                    self.assertEqual(
+                        "runner-backed-claim-permitted",
+                        evaluate_runner_profile_case(
+                            self.runner_case(
+                                product_binding_version=binding_version,
+                                runner_version=runner_version,
+                            )
+                        ),
+                    )
+
+    def test_runner_rejects_malformed_semver(self) -> None:
+        for runner_version in ("v2.1.0", "2.1", "02.1.0", "sha256:" + "a" * 64):
+            with self.subTest(runner_version=runner_version):
+                self.assertEqual(
+                    "stop-unavailable",
+                    evaluate_runner_profile_case(self.runner_case(runner_version=runner_version)),
+                )
+
+    def test_runner_accepts_subject_bound_falsification_control(self) -> None:
+        case = self.runner_case()
+        case["evidence"]["verification"].update(
+            {"method": "falsification-control", "result": "refused"}
+        )
+        self.assertEqual("runner-backed-claim-permitted", evaluate_runner_profile_case(case))
+
+    def test_runner_backed_claim_requires_complete_subject_bound_evidence(self) -> None:
+        mutations = {
+            "missing-actor": lambda case: case["evidence"]["actor_results"].pop(),
+            "missing-gate": lambda case: case["evidence"]["gate_results"].pop(),
+            "wrong-subject": lambda case: case["evidence"]["verification"].update(
+                {"subject_sha256": "0" * 64}
+            ),
+            "wrong-invocation": lambda case: case.update({"invocation": "different invocation"}),
+            "failed-discrimination": lambda case: case["evidence"]["verification"].update(
+                {"result": "unavailable"}
+            ),
+        }
+        for name, mutate in mutations.items():
+            with self.subTest(name=name):
+                case = self.runner_case()
+                mutate(case)
+                self.assertEqual("stop-unavailable", evaluate_runner_profile_case(case))
 
 
 if __name__ == "__main__":

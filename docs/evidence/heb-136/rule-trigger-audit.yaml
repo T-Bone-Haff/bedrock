@@ -208,7 +208,7 @@ scope:
 findings: []
 counts:
   carriers_examined: 55
-  semantic_units_screened: 1026
+  semantic_units_screened: 1031
   internal_state_rules: 0
   converted_to_instrument: 0
   external_detector: 0

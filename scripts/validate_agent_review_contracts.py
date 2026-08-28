@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -16,7 +17,61 @@ from jsonschema.exceptions import SchemaError
 
 
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
-SEMVER = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
+SEMVER = re.compile(
+    r"""
+    ^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)
+    (?:-
+        (?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)
+        (?:\.(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*
+    )?
+    (?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?
+    $
+    """,
+    re.VERBOSE,
+)
+
+
+def _nonempty_string(value: Any) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
+def _sha256(value: Any) -> bool:
+    return isinstance(value, str) and bool(SHA256.fullmatch(value))
+
+
+def _unique_string_list(value: Any) -> bool:
+    return (
+        isinstance(value, list)
+        and bool(value)
+        and all(_nonempty_string(item) for item in value)
+        and len(value) == len(set(value))
+    )
+
+
+def _canonical_sha256(value: Any) -> str:
+    encoded = json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _complete_outcomes(
+    required_ids: Any,
+    results: Any,
+    *,
+    required_outcome: str,
+) -> bool:
+    if not _unique_string_list(required_ids) or not isinstance(results, list):
+        return False
+    result_ids: list[str] = []
+    for result in results:
+        if (
+            not isinstance(result, dict)
+            or not _nonempty_string(result.get("id"))
+            or result.get("outcome") != required_outcome
+            or not _sha256(result.get("evidence_sha256"))
+        ):
+            return False
+        result_ids.append(result["id"])
+    return len(result_ids) == len(set(result_ids)) and set(result_ids) == set(required_ids)
 
 
 def _balanced_json_candidates(text: str) -> list[Any]:
@@ -112,19 +167,85 @@ def evaluate_runner_profile_case(case: dict[str, Any]) -> str:
         return "multi-perspective-review-complete"
     if profile != "runner-backed":
         return "stop-unavailable"
-    if not all(
-        (
-            isinstance(case.get("product_binding_id"), str)
-            and bool(case["product_binding_id"].strip()),
-            isinstance(case.get("product_binding_version"), str)
-            and bool(SEMVER.fullmatch(case["product_binding_version"])),
-            isinstance(case.get("runner_id"), str) and bool(case["runner_id"].strip()),
-            isinstance(case.get("runner_version"), str)
-            and bool(SEMVER.fullmatch(case["runner_version"])),
-            case.get("schemas_compatible") is True,
-            isinstance(case.get("invocation"), str) and bool(case["invocation"].strip()),
-            case.get("fresh_gate_evidence") is True,
-        )
+    string_fields = (
+        "product_binding_id",
+        "product_binding_version",
+        "product_binding_owner",
+        "product_binding_authority",
+        "runner_id",
+        "invocation",
+        "validator_profile",
+    )
+    digest_fields = (
+        "product_binding_sha256",
+        "runner_sha256",
+        "compatibility_manifest_sha256",
+    )
+    if (
+        not all(_nonempty_string(case.get(field)) for field in string_fields)
+        or not all(_sha256(case.get(field)) for field in digest_fields)
+        or not _nonempty_string(case.get("runner_version"))
+        or not SEMVER.fullmatch(case["runner_version"])
+        or not _nonempty_string(case.get("portable_core_version"))
+        or not SEMVER.fullmatch(case["portable_core_version"])
+        or not _nonempty_string(case.get("review_schema_version"))
+        or not SEMVER.fullmatch(case["review_schema_version"])
+    ):
+        return "stop-unavailable"
+
+    invocation_sha256 = hashlib.sha256(case["invocation"].encode()).hexdigest()
+    expected_subject = {
+        "substrate_sha256": None,
+        "product_binding_id": case["product_binding_id"],
+        "product_binding_version": case["product_binding_version"],
+        "product_binding_sha256": case["product_binding_sha256"],
+        "product_binding_owner": case["product_binding_owner"],
+        "product_binding_authority": case["product_binding_authority"],
+        "runner_id": case["runner_id"],
+        "runner_version": case["runner_version"],
+        "runner_sha256": case["runner_sha256"],
+        "portable_core_version": case["portable_core_version"],
+        "review_schema_version": case["review_schema_version"],
+        "compatibility_manifest_sha256": case["compatibility_manifest_sha256"],
+        "invocation_sha256": invocation_sha256,
+        "validator_profile": case["validator_profile"],
+    }
+    evidence = case.get("evidence")
+    if not isinstance(evidence, dict) or not isinstance(evidence.get("subject"), dict):
+        return "stop-unavailable"
+    subject = evidence["subject"]
+    expected_subject["substrate_sha256"] = subject.get("substrate_sha256")
+    if not _sha256(expected_subject["substrate_sha256"]) or subject != expected_subject:
+        return "stop-unavailable"
+    if not _complete_outcomes(
+        evidence.get("required_actor_ids"),
+        evidence.get("actor_results"),
+        required_outcome="completed",
+    ) or not _complete_outcomes(
+        evidence.get("required_gate_ids"),
+        evidence.get("gate_results"),
+        required_outcome="passed",
+    ):
+        return "stop-unavailable"
+    if not _sha256(evidence.get("ledger_sha256")) or not _sha256(
+        evidence.get("evidence_manifest_sha256")
+    ):
+        return "stop-unavailable"
+
+    verification = evidence.get("verification")
+    if not isinstance(verification, dict) or not _nonempty_string(
+        verification.get("instrument")
+    ):
+        return "stop-unavailable"
+    method = verification.get("method")
+    required_result = {
+        "second-derivation": "confirmed",
+        "falsification-control": "refused",
+    }.get(method)
+    if (
+        required_result is None
+        or verification.get("result") != required_result
+        or verification.get("subject_sha256") != _canonical_sha256(subject)
     ):
         return "stop-unavailable"
     return "runner-backed-claim-permitted"
