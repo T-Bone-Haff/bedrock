@@ -26,6 +26,20 @@ def carrier_paths(root: Path) -> list[Path]:
     return [path.with_name(CARRIER_FILENAME) for path in sorted(skills_root.glob("*/SKILL.md"))]
 
 
+def observed_carrier_paths(root: Path) -> list[Path]:
+    skills_root = root / "plugins/bedrock/skills"
+    return sorted(skills_root.rglob(CARRIER_FILENAME))
+
+
+def carrier_population_errors(root: Path) -> list[str]:
+    expected = set(carrier_paths(root))
+    observed = set(observed_carrier_paths(root))
+    return [
+        f"{path}: package identity carrier is unexpected"
+        for path in sorted(observed - expected)
+    ]
+
+
 def expected_carrier_payload(root: Path) -> dict[str, Any]:
     manifest_path = root / "plugins/bedrock/.claude-plugin/plugin.json"
     registry_path = root / "plugins/bedrock/governance/registry.yaml"
@@ -53,11 +67,13 @@ def expected_carrier_bytes(root: Path) -> bytes:
 
 
 def synchronize(root: Path, *, write: bool) -> list[str]:
-    expected = expected_carrier_bytes(root)
-    errors: list[str] = []
     paths = carrier_paths(root)
+    errors = carrier_population_errors(root)
     if not paths:
-        return ["no Bedrock skill entrypoints found"]
+        errors.insert(0, "no Bedrock skill entrypoints found")
+    if not paths or (write and errors):
+        return errors
+    expected = expected_carrier_bytes(root)
     for path in paths:
         if write:
             path.write_bytes(expected)

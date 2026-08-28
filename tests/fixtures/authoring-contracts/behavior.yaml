@@ -113,13 +113,89 @@ cases:
       accepted_values: [feature/rbt-114-v1.1-chain]
     expected: accept
   - id: complete-relay-instrument-demand
-    kind: instrument-demand
-    input: {consumer_read_whole: true, taxonomy_verbatim: true, verdict_pins_complete: true, structural_instrument: true, dry_run_passed: true, unavailable_declared: true, report_field_declared: true}
+    kind: relay-instrument-demand
+    input: {consumer_read_whole: true, taxonomy_verbatim: true, verdict_pins_complete: true, structural_instrument: true, comparison_involved: true, population_derivation_declared: true, expected_state_oracle_declared: true, subject_declared: true, discrimination_declared: true, dry_run_passed: true, unavailable_declared: true, report_field_declared: true}
     expected: accept
   - id: summarized-review-charge-rejected
     kind: instrument-demand
     input: {consumer_read_whole: true, taxonomy_verbatim: false, verdict_pins_complete: true, structural_instrument: true, dry_run_passed: true, unavailable_declared: true, report_field_declared: true}
     expected: reject
+  - id: hand-enumerated-relay-instrument-rejected
+    kind: relay-instrument-demand
+    input: {consumer_read_whole: true, taxonomy_verbatim: true, verdict_pins_complete: true, structural_instrument: true, comparison_involved: true, population_derivation_declared: false, expected_state_oracle_declared: false, subject_declared: true, discrimination_declared: true, dry_run_passed: true, unavailable_declared: true, report_field_declared: true}
+    expected: reject
+  - id: relay-comparison-without-subject
+    kind: relay-instrument-demand
+    input: {consumer_read_whole: true, taxonomy_verbatim: true, verdict_pins_complete: true, structural_instrument: true, comparison_involved: true, population_derivation_declared: true, expected_state_oracle_declared: true, subject_declared: false, discrimination_declared: true, dry_run_passed: true, unavailable_declared: true, report_field_declared: true}
+    expected: reject
+  - id: relay-comparison-without-discrimination
+    kind: relay-instrument-demand
+    input: {consumer_read_whole: true, taxonomy_verbatim: true, verdict_pins_complete: true, structural_instrument: true, comparison_involved: true, population_derivation_declared: true, expected_state_oracle_declared: true, subject_declared: true, discrimination_declared: false, dry_run_passed: true, unavailable_declared: true, report_field_declared: true}
+    expected: reject
+  - id: relay-instrument-without-comparison
+    kind: relay-instrument-demand
+    input: {consumer_read_whole: true, taxonomy_verbatim: true, verdict_pins_complete: true, structural_instrument: true, comparison_involved: false, dry_run_passed: true, unavailable_declared: true, report_field_declared: true}
+    expected: accept
+  - id: relay-instrument-without-comparison-disposition
+    kind: relay-instrument-demand
+    input: {consumer_read_whole: true, taxonomy_verbatim: true, verdict_pins_complete: true, structural_instrument: true, dry_run_passed: true, unavailable_declared: true, report_field_declared: true}
+    expected: reject
+  - id: population-derived-and-matched
+    kind: population-comparison
+    input: {derivation_available: true, canonicalization_declared: true, expected_state_oracle_declared: true, subject_declared: true, subject_matches: true, second_derivation_agrees: true, observed_matches_expected: true, cross_check_present: true, cross_check_matches_expected: true}
+    expected: proceed
+  - id: population-derived-without-cross-check
+    kind: population-comparison
+    input: {derivation_available: true, canonicalization_declared: true, expected_state_oracle_declared: true, subject_declared: true, subject_matches: true, second_derivation_agrees: true, observed_matches_expected: true, cross_check_present: false, cross_check_matches_expected: false}
+    expected: proceed
+  - id: population-state-changed
+    kind: population-comparison
+    input: {derivation_available: true, canonicalization_declared: true, expected_state_oracle_declared: true, subject_declared: true, subject_matches: true, second_derivation_agrees: true, observed_matches_expected: false, cross_check_present: true, cross_check_matches_expected: true}
+    expected: stop-state-change
+  - id: population-relay-arithmetic-defect
+    kind: population-comparison
+    input: {derivation_available: true, canonicalization_declared: true, expected_state_oracle_declared: true, subject_declared: true, subject_matches: true, second_derivation_agrees: true, observed_matches_expected: true, cross_check_present: true, cross_check_matches_expected: false}
+    expected: report-relay-defect-and-proceed
+  - id: population-typed-without-derivation
+    kind: population-comparison
+    input: {derivation_available: false, canonicalization_declared: false, expected_state_oracle_declared: false, subject_declared: true, subject_matches: true, second_derivation_agrees: true, observed_matches_expected: true, cross_check_present: true, cross_check_matches_expected: true}
+    expected: stop-unavailable
+  - id: population-derivation-without-canonicalization
+    kind: population-comparison
+    input: {derivation_available: true, canonicalization_declared: false, expected_state_oracle_declared: true, subject_declared: true, subject_matches: true, second_derivation_agrees: true, observed_matches_expected: true, cross_check_present: false, cross_check_matches_expected: false}
+    expected: stop-unavailable
+  - id: population-comparison-ambiguous
+    kind: population-comparison
+    input: {derivation_available: true, canonicalization_declared: true, expected_state_oracle_declared: true, subject_declared: true, subject_matches: true, second_derivation_agrees: true, comparison_ambiguous: true, observed_matches_expected: true, cross_check_present: true, cross_check_matches_expected: true}
+    expected: stop-unavailable
+  - id: population-comparison-without-observed-verdict
+    kind: population-comparison
+    input: {derivation_available: true, canonicalization_declared: true, expected_state_oracle_declared: true, subject_declared: true, subject_matches: true, second_derivation_agrees: true, cross_check_present: true, cross_check_matches_expected: true}
+    expected: stop-unavailable
+  - id: population-wrong-subject-true-value
+    kind: population-comparison
+    input: {derivation_available: true, canonicalization_declared: true, expected_state_oracle_declared: true, subject_declared: true, subject_matches: false, second_derivation_agrees: true, observed_matches_expected: true, cross_check_present: true, cross_check_matches_expected: true}
+    expected: stop-subject-mismatch
+  - id: population-without-discrimination
+    kind: population-comparison
+    input: {derivation_available: true, canonicalization_declared: true, expected_state_oracle_declared: true, subject_declared: true, subject_matches: true, observed_matches_expected: true, cross_check_present: true, cross_check_matches_expected: true}
+    expected: stop-unavailable
+  - id: population-second-derivation-agrees
+    kind: population-comparison
+    input: {derivation_available: true, canonicalization_declared: true, expected_state_oracle_declared: true, subject_declared: true, subject_matches: true, second_derivation_agrees: true, observed_matches_expected: true, cross_check_present: true, cross_check_matches_expected: true}
+    expected: proceed
+  - id: population-second-derivation-disagrees
+    kind: population-comparison
+    input: {derivation_available: true, canonicalization_declared: true, expected_state_oracle_declared: true, subject_declared: true, subject_matches: true, second_derivation_agrees: false, observed_matches_expected: true, cross_check_present: true, cross_check_matches_expected: true}
+    expected: stop-unavailable
+  - id: population-falsification-control-refuses
+    kind: population-comparison
+    input: {derivation_available: true, canonicalization_declared: true, expected_state_oracle_declared: true, subject_declared: true, subject_matches: true, falsification_control_refused: true, observed_matches_expected: true, cross_check_present: true, cross_check_matches_expected: true}
+    expected: proceed
+  - id: population-falsification-control-accepts-bad-input
+    kind: population-comparison
+    input: {derivation_available: true, canonicalization_declared: true, expected_state_oracle_declared: true, subject_declared: true, subject_matches: true, falsification_control_refused: false, observed_matches_expected: true, cross_check_present: true, cross_check_matches_expected: true}
+    expected: stop-unavailable
   - id: touch-set-derived-from-edit-loci
     kind: touch-derivation
     input:

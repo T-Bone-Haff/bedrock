@@ -19,9 +19,19 @@ from jsonschema.exceptions import SchemaError, ValidationError
 import yaml
 
 if __package__:
-    from .sync_package_identity import carrier_paths, expected_carrier_bytes, expected_carrier_payload
+    from .sync_package_identity import (
+        carrier_paths,
+        carrier_population_errors,
+        expected_carrier_bytes,
+        expected_carrier_payload,
+    )
 else:
-    from sync_package_identity import carrier_paths, expected_carrier_bytes, expected_carrier_payload
+    from sync_package_identity import (
+        carrier_paths,
+        carrier_population_errors,
+        expected_carrier_bytes,
+        expected_carrier_payload,
+    )
 
 
 EXPECTED_SKILLS = {
@@ -78,6 +88,9 @@ FINAL_RELEASE_GATES = {
     "github-release",
 }
 PACKAGE_IDENTITY_CARRIER = "plugins/bedrock/skills/{skill}/PACKAGE_IDENTITY.json"
+PORTABLE_CORE_AUTHORITY = "docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md"
+ADR_VERSION = re.compile(r"^\| \*\*Version\*\* \| ([0-9]+\.[0-9]+\.[0-9]+) \|$", re.MULTILINE)
+ADR_STATUS = re.compile(r"^\| \*\*Status\*\* \| ACCEPTED\b", re.MULTILINE)
 
 
 def _error(errors: list[str], location: Path | str, message: str) -> None:
@@ -111,6 +124,20 @@ def _load_yaml(path: Path, errors: list[str]) -> dict[str, Any] | None:
 def _frontmatter_description(path: Path) -> str | None:
     match = re.search(r'^description: "(.*)"$', path.read_text(encoding="utf-8"), re.MULTILINE)
     return match.group(1) if match else None
+
+
+def _accepted_portable_core_version(root: Path, errors: list[str]) -> str | None:
+    path = root / PORTABLE_CORE_AUTHORITY
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError as exc:
+        _error(errors, path, f"cannot read portable-core authority: {exc}")
+        return None
+    version = ADR_VERSION.search(text)
+    if version is None or ADR_STATUS.search(text) is None:
+        _error(errors, path, "portable-core authority must be ACCEPTED with a SemVer version")
+        return None
+    return version.group(1)
 
 
 def _validate_metadata(root: Path, errors: list[str]) -> str | None:
@@ -168,6 +195,13 @@ def _validate_registry(root: Path, errors: list[str]) -> dict[str, Any] | None:
         for key in ("portable_core", "claude_adapter", "prompt_generation_format")
     ):
         _error(errors, path, "all independent contract identities must be SemVer strings")
+    portable_core_version = _accepted_portable_core_version(root, errors)
+    if (
+        portable_core_version is not None
+        and isinstance(contracts, dict)
+        and contracts.get("portable_core") != portable_core_version
+    ):
+        _error(errors, path, "portable_core must match the accepted ADR-001 version")
 
     skills = registry.get("skills")
     if not isinstance(skills, list):
@@ -197,6 +231,21 @@ def _validate_registry(root: Path, errors: list[str]) -> dict[str, Any] | None:
     for key in ("authorities", "precedence", "capabilities", "consumer_surfaces", "release_gates", "sources"):
         if not isinstance(registry.get(key), list) or not registry[key]:
             _error(errors, path, f"{key} must be a non-empty list")
+    sources = registry.get("sources", [])
+    adr_sources = [
+        row for row in sources
+        if isinstance(row, dict) and row.get("id") == "adr-001"
+    ] if isinstance(sources, list) else []
+    expected_adr_source = {
+        "id": "adr-001",
+        "type": "ratified-architecture",
+        "location": PORTABLE_CORE_AUTHORITY,
+        "authority_version": portable_core_version,
+        "status": "accepted",
+        "applicability": "package architecture and versioning",
+    }
+    if len(adr_sources) != 1 or adr_sources[0] != expected_adr_source:
+        _error(errors, path, "ADR-001 source must identify the accepted portable-core authority")
     package_authorities = [
         row for row in registry.get("authorities", [])
         if isinstance(row, dict) and row.get("id") == "package-version"
@@ -223,6 +272,7 @@ def _validate_registry(root: Path, errors: list[str]) -> dict[str, Any] | None:
 
 
 def _validate_package_identity_carriers(root: Path, errors: list[str]) -> None:
+    errors.extend(carrier_population_errors(root))
     try:
         expected_payload = expected_carrier_payload(root)
         expected_bytes = expected_carrier_bytes(root)
@@ -305,7 +355,12 @@ def _validate_budgets(root: Path, registry: dict[str, Any] | None, errors: list[
             _error(errors, context_path, "routing population measurement is stale")
 
 
-def _validate_documents(root: Path, version: str | None, errors: list[str]) -> None:
+def _validate_documents(
+    root: Path,
+    version: str | None,
+    registry: dict[str, Any] | None,
+    errors: list[str],
+) -> None:
     for relative in REQUIRED_FILES:
         path = root / relative
         if not path.is_file() or not path.read_text(encoding="utf-8").strip():
@@ -319,7 +374,7 @@ def _validate_documents(root: Path, version: str | None, errors: list[str]) -> N
         "plugins/bedrock/governance/README.md": ("## Semantic-version decisions", "## Rollback", "HEB-119"),
         "plugins/bedrock/governance/COMPATIBILITY.md": ("Claude Code", "Claude.ai", "unsupported"),
         "plugins/bedrock/governance/POLICIES.md": ("## Security reporting", "## Support", "## Deprecation and retirement"),
-        "plugins/bedrock/governance/THREAT-MODEL.md": ("Malicious skill content", "Poisoned or drifting references", "Marketplace or source compromise", "External-runner drift"),
+        "plugins/bedrock/governance/THREAT-MODEL.md": ("Malicious skill content", "Poisoned or drifting references", "Marketplace or source compromise", "External product-runner drift"),
         "plugins/bedrock/governance/REBINDING.md": ("## Preserved invariants", "## Changed axes and assumptions", "## Replacement authority and responsibility", "## Migration and compatibility", "## Exceptions, degradation, and refusal", "## Proving evidence"),
     }
     for relative, required in markers.items():
@@ -340,6 +395,15 @@ def _validate_documents(root: Path, version: str | None, errors: list[str]) -> N
     changelog = root / "plugins/bedrock/CHANGELOG.md"
     if version and changelog.is_file() and version not in changelog.read_text(encoding="utf-8"):
         _error(errors, changelog, "must identify the current manifest candidate without becoming version authority")
+    compatibility = root / "plugins/bedrock/governance/COMPATIBILITY.md"
+    portable_core = registry.get("contracts", {}).get("portable_core") if registry else None
+    if (
+        isinstance(portable_core, str)
+        and compatibility.is_file()
+        and f"portable skill core has contract version `{portable_core}`"
+        not in compatibility.read_text(encoding="utf-8")
+    ):
+        _error(errors, compatibility, "portable-core identity must match the registry")
     orientation = root / "CLAUDE.md"
     if orientation.is_file():
         text = orientation.read_text(encoding="utf-8")
@@ -608,7 +672,7 @@ def validate_package_governance(
     registry = _validate_registry(root, errors)
     _validate_package_identity_carriers(root, errors)
     _validate_budgets(root, registry, errors)
-    _validate_documents(root, version, errors)
+    _validate_documents(root, version, registry, errors)
     _validate_schemas(root, errors)
     _validate_vocabulary_and_authority(root, errors)
     _validate_heb118_evidence(root, errors)

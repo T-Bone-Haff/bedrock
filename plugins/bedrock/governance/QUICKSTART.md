@@ -14,7 +14,7 @@ skill owns the output; a domain overlay does not take over another operation.
 | “Review this finished Terraform pull request before merge.” | review operation | `code-review` with infrastructure overlay | findings and merge verdict; no implementation without separate authorization |
 | “Write planned browser accessibility and security coverage.” | testing operation | `testing` with frontend overlay | test strategy or tests, not frontend implementation |
 | “Draft a customer billing PRD.” | negative | no Bedrock route | product requirements are outside the catalog |
-| “Run the full decision-record lifecycle to mechanical convergence without a runner.” | unavailable capability | `design-review-loop` direct or multi-perspective profile, or stop | never claim runner-backed convergence without the declared kernel |
+| “Run the full decision-record lifecycle to mechanical convergence without a runner.” | unavailable capability | `design-review-loop` direct or multi-perspective profile, or stop | never claim runner-backed convergence without a declared product binding, versioned runner, and fresh gate evidence |
 
 For installation, use the marketplace. Do not copy individual skill folders.
 For explicit invocation, select the named skill and provide its required inputs.

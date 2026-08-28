@@ -16,6 +16,7 @@ from jsonschema.exceptions import SchemaError
 
 
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
+SEMVER = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
 
 
 def _balanced_json_candidates(text: str) -> list[Any]:
@@ -103,6 +104,32 @@ def _validate_review(value: dict[str, Any], path: Path, errors: list[str]) -> No
         errors.append(f"{path}: unknown design-review result kind")
 
 
+def evaluate_runner_profile_case(case: dict[str, Any]) -> str:
+    profile = case.get("profile")
+    if profile == "direct":
+        return "direct-review-complete"
+    if profile == "multi-perspective":
+        return "multi-perspective-review-complete"
+    if profile != "runner-backed":
+        return "stop-unavailable"
+    if not all(
+        (
+            isinstance(case.get("product_binding_id"), str)
+            and bool(case["product_binding_id"].strip()),
+            isinstance(case.get("product_binding_version"), str)
+            and bool(SEMVER.fullmatch(case["product_binding_version"])),
+            isinstance(case.get("runner_id"), str) and bool(case["runner_id"].strip()),
+            isinstance(case.get("runner_version"), str)
+            and bool(SEMVER.fullmatch(case["runner_version"])),
+            case.get("schemas_compatible") is True,
+            isinstance(case.get("invocation"), str) and bool(case["invocation"].strip()),
+            case.get("fresh_gate_evidence") is True,
+        )
+    ):
+        return "stop-unavailable"
+    return "runner-backed-claim-permitted"
+
+
 def validate_agent_review_contracts(root: Path, *, required: bool = True) -> list[str]:
     errors: list[str] = []
     registry_path = root / "validation/agent-review-contracts.yaml"
@@ -162,6 +189,26 @@ def validate_agent_review_contracts(root: Path, *, required: bool = True) -> lis
     for marker in registry.get("forbidden_markers", []):
         if marker in corpus:
             errors.append(f"agent/review contract: forbidden marker remains {marker!r}")
+    for relative in registry.get("forbidden_paths", []):
+        if (root / relative).exists():
+            errors.append(f"agent/review contract: forbidden path remains {relative!r}")
+    runner_cases = registry.get("runner_profile_cases")
+    if not isinstance(runner_cases, list) or not runner_cases:
+        errors.append("agent/review contract: runner_profile_cases must be a non-empty list")
+    else:
+        case_ids = [case.get("id") for case in runner_cases if isinstance(case, dict)]
+        if len(case_ids) != len(runner_cases) or len(case_ids) != len(set(case_ids)):
+            errors.append("agent/review contract: runner profile case ids must be unique")
+        for index, case in enumerate(runner_cases):
+            if not isinstance(case, dict) or not isinstance(case.get("input"), dict):
+                errors.append(f"agent/review contract: runner profile case[{index}] is invalid")
+                continue
+            actual = evaluate_runner_profile_case(case["input"])
+            if actual != case.get("expected"):
+                errors.append(
+                    f"agent/review contract: runner profile case {case.get('id')!r} "
+                    f"expected {case.get('expected')!r}, got {actual!r}"
+                )
     return errors
 
 

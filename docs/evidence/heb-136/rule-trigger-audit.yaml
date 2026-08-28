@@ -20,11 +20,14 @@ counting_basis:
     normative-rule count or infallible semantic classification.
   last_refreshed_at: 2026-08-27 ET
   last_refresh: >-
-    HEB-140 added 13 byte-identical generated package-identity JSON carriers.
-    The generated payload was read whole and contains identity data only, with
-    no normative rule or trigger. The structured-file population advances from
-    17 to 30; the Markdown population, semantic-unit count, and empty finding
-    set do not change.
+    The HEB-131/HEB-143 relay changes add subject-bound, derived-population, and
+    discrimination rules; HEB-128 replaces the product-specific runner profile
+    with an external product-owned binding contract and binds runner-backed
+    claims to declared identities, compatible schemas, exact invocation, and
+    fresh gate evidence. These are observable workflow events and add no
+    internal-state finding. The Markdown and structured-file populations remain
+    unchanged, while the aggregate deterministic semantic-unit count advances
+    from 1018 to 1026.
 scope:
   markdown_root: plugins/bedrock/skills
   expected_markdown_carriers: 55
@@ -65,7 +68,7 @@ scope:
     - plugins/bedrock/skills/design-review-loop/SKILL.md
     - plugins/bedrock/skills/design-review-loop/reference/arbiter-classifier.md
     - plugins/bedrock/skills/design-review-loop/reference/convergence-machinery.md
-    - plugins/bedrock/skills/design-review-loop/reference/haffey-sofia-profile.md
+    - plugins/bedrock/skills/design-review-loop/reference/product-runner-binding.md
     - plugins/bedrock/skills/design-review-loop/reference/reviewer-instrument.md
     - plugins/bedrock/skills/frontend-code/SKILL.md
     - plugins/bedrock/skills/frontend-code/reference/01-haffey-react-vite-profile.md
@@ -121,7 +124,7 @@ scope:
     plugins/bedrock/skills/design-review-loop/SKILL.md: inspected
     plugins/bedrock/skills/design-review-loop/reference/arbiter-classifier.md: inspected
     plugins/bedrock/skills/design-review-loop/reference/convergence-machinery.md: inspected
-    plugins/bedrock/skills/design-review-loop/reference/haffey-sofia-profile.md: inspected
+    plugins/bedrock/skills/design-review-loop/reference/product-runner-binding.md: inspected
     plugins/bedrock/skills/design-review-loop/reference/reviewer-instrument.md: inspected
     plugins/bedrock/skills/frontend-code/SKILL.md: inspected
     plugins/bedrock/skills/frontend-code/reference/01-haffey-react-vite-profile.md: inspected
@@ -205,7 +208,7 @@ scope:
 findings: []
 counts:
   carriers_examined: 55
-  semantic_units_screened: 1018
+  semantic_units_screened: 1026
   internal_state_rules: 0
   converted_to_instrument: 0
   external_detector: 0

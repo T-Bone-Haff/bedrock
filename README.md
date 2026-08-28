@@ -80,7 +80,7 @@ python3 scripts/validate_package_governance.py
 bash scripts/smoke_clean_install.sh
 ```
 
-`validate_plugin.py` enforces the 13-skill inventory, strict YAML frontmatter, the 1,024-character description limit, explicit positive and negative routing boundaries, unique names, plugin/marketplace coherence, package lifecycle and policy contracts, relative-link and private-path safety, declared external-root dependencies and snapshot currency markers, complete code-sample accounting, evidence-manifest integrity, routing-fixture coverage, and `claude plugin validate --strict`.
+`validate_plugin.py` deterministically enforces the 13-skill inventory, strict YAML frontmatter, the 1,024-character description limit, explicit positive and negative routing boundaries, unique names, plugin/marketplace coherence, package lifecycle and policy contracts, relative-link and private-path safety, declared external-root dependencies and snapshot currency markers, complete code-sample accounting, evidence-manifest integrity, and routing-fixture coverage. It separately runs `claude plugin validate --strict` against the plugin manifest; that host check does not claim recursive skill-frontmatter coverage.
 
 `validate_package_governance.py` separately exposes the package gate for seeded
 tests and release automation. Its default mode validates a candidate. Its

@@ -3,6 +3,22 @@
 The package manifest is the sole authority for the current version. This file
 records candidate and released changes; a version heading is not release proof.
 
+## 9.0.0 — portable-core 2.0 and derived-evidence candidate
+
+- Advance the portable-core and design-review-loop contracts to `2.0.0`, move
+  runner-backed workflow ownership to a generic external product binding, and
+  require replayable binding, runner, schema, invocation, and fresh-gate
+  evidence while preserving runner-free direct and multi-perspective review.
+- Make execution relays bind claims to their subjects, derive comparison
+  populations and expected state mechanically, discriminate claims before
+  narration, and distinguish state changes from summary-only arithmetic or
+  transcription defects.
+- Reject every noncanonical recursive package-identity carrier consistently
+  across synchronization, package governance, and the main validator, including
+  fail-before-mutation behavior for identity writes.
+- Retain migration, meaningful-red, deterministic, strict-host, install,
+  rule-trigger, and three-draw routing evidence for the aggregate candidate.
+
 ## 8.4.0 — consumer-visible identity candidate
 
 - Add a generated, byte-identical package identity carrier to every skill so a

@@ -1,6 +1,6 @@
 # Convergence Machinery
 
-This is a portable capability contract, not executable machinery. A profile is runner-backed only when a declared versioned runner actually implements and executes these gates against a durable ledger.
+This is a portable capability contract, not executable machinery. A profile is runner-backed only when a declared, versioned product-owned runner actually implements and executes these gates against a durable ledger.
 
 ## Ledger invariants
 
@@ -21,4 +21,4 @@ Raw finding counts and count plateaus are diagnostic metrics, not identity-aware
 
 ## Claim gate
 
-A runner-backed convergence claim cites the profile and runner version plus a retained manifest containing substrate/prompt/schema hashes, model/profile configuration, budgets and usage, actor outcomes, complete ledger, arbitration records, gate output, and validator output. If any applicable runner or gate was reasoned, emulated, or omitted, this is not a conforming runner-backed profile and may not claim mechanical convergence.
+A runner-backed convergence claim cites the product workflow binding, profile, and runner version plus a retained manifest containing substrate/prompt/schema hashes, model/profile configuration, budgets and usage, actor outcomes, complete ledger, arbitration records, gate output, and validator output. If any applicable runner or gate was reasoned, emulated, or omitted, this is not a conforming runner-backed profile and may not claim mechanical convergence.

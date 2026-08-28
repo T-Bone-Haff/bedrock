@@ -4,7 +4,7 @@ Invoke each required stance independently with the same frozen substrate hashes 
 
 ## Author the charge from its consumer
 
-Before issuing a review charge, read the result schema, parser, verifier, orchestration wrapper, and any accepted charge template whole. Record their identities, instantiate a proven template before narrowing it, and carry the consumer's field grammar and outcome taxonomy verbatim. Dry-run one charge through the actual parse-and-verification seam before spending the review round.
+Before issuing a review charge, read the result schema, parser, verifier, the selected product runner or direct host invocation, and any accepted charge template whole. Record their identities, instantiate a proven template before narrowing it, and carry the consumer's field grammar and outcome taxonomy verbatim. Dry-run one charge through the actual parse-and-verification seam before spending the review round.
 
 Complete one row per demanded property or load-bearing premise. Pin only substrate and auxiliary files whose bytes can change the verdict.
 

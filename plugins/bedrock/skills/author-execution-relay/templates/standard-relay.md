@@ -17,13 +17,15 @@ State the settled source of scope and numbered operations. Identify any operator
 **Touch derivation:** <ratified edit-locus rows reconciled bidirectionally to the allowlist>
 **Custody/reachability:** <separate permission evidence from production code-path and flow evidence>
 
-| Property or premise | Verdict-bearing inputs/pins | Population | Structural instrument or falsification control | Outcomes / unavailable | Report field |
-|---|---|---|---|---|---|
-| <property> | <pins> | <population or n/a> | <command/API/parser and contrary control> | <verbatim tokens; unavailable behavior> | <field> |
+| Property or premise | Claim subject | Verdict-bearing inputs/pins | Population derivation / expected-state oracle | Structural instrument / discrimination control | Outcomes / unavailable | Report field |
+|---|---|---|---|---|---|---|
+| <property> | <repository; checkout or working directory; inputs; population> | <pins> | <execution-time command/API/parser; canonicalization; pinned baseline or rule deriving the expected set; or n/a when no comparison> | <instrument; differently-shaped derivation or falsification control> | <subject mismatch or state mismatch: stop; arithmetic or transcription defect: report and proceed; unavailable or ambiguous: stop> | <field> |
+
+A typed count or member list is never the population oracle. If retained as a cross-check, generate it from the declared derivation. Verify the claim subject, then compare the execution-time derived population with the mechanically expected population before consulting any prose summary.
 
 ## Gates
 
-List edit, stage, commit, push, PR, merge, and cleanup gates that apply. Stop at each operator gate and on any anomaly.
+List edit, stage, commit, push, PR, merge, and cleanup gates that apply. Stop at each operator gate, on a subject mismatch or derived-state mismatch, on failed discrimination, and on any unresolved anomaly. Report and proceed on a summary-only arithmetic or transcription defect when the named subject and derived observed and expected populations match mechanically.
 
 ## Evidence
 

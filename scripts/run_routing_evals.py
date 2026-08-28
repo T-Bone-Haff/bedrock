@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 from collections import defaultdict
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime
 import hashlib
 import json
 import math
@@ -16,6 +16,7 @@ import shutil
 import subprocess
 import sys
 from typing import Any, Callable, Mapping
+from zoneinfo import ZoneInfo
 
 try:
     from scripts.validate_plugin import load_eval_policy, load_routing_cases, validate_repository
@@ -590,7 +591,7 @@ def main() -> int:
         [executable, "--version"], capture_output=True, text=True, check=False, timeout=10
     )
     cli_version = version_result.stdout.strip() or "unknown"
-    generated_at = datetime.now(timezone.utc).isoformat()
+    generated_at = datetime.now(ZoneInfo("America/New_York")).isoformat()
     suite_scope = "targeted" if args.case_ids else "full"
     planned_case_ids = [str(case["id"]) for case in cases]
     auth_error = check_authentication()

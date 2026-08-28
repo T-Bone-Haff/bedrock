@@ -37,7 +37,7 @@ skills:
     required_capabilities: [fresh readable target state]
     optional_capabilities: [authenticated approval verifier, mutation-enforcing wrapper, independent verifier]
     failure_behavior: Downgrade claims to advisory or stop when required enforcement, authorization, identity, or scope evidence is unavailable.
-    evidence: [profile validation, consumer-derived instrument table, author-time dry-run, premise falsification, durable-form verification, gate report]
+    evidence: [profile validation, consumer-derived instrument table, subject-bound discrimination, execution-time population comparison, author-time dry-run, premise falsification, durable-form verification, gate report]
     lifecycle: drafted -> authorized when required -> executed -> verified -> expired or revoked
   author-standard:
     task_class: Decide whether to create, then author or amend, a reusable standard.

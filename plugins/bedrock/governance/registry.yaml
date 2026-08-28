@@ -3,7 +3,7 @@ version_authority: plugins/bedrock/.claude-plugin/plugin.json#/version
 release_tag_pattern: v{manifest_version}
 release_state_source: Immutable tag plus schema-valid release evidence and rollout ledger; the packaged candidate does not self-ratify.
 contracts:
-  portable_core: 1.0.0
+  portable_core: 2.0.0
   claude_adapter: 1.1.0
   prompt_generation_format: 1.0.0
 authorities:
@@ -57,11 +57,11 @@ capabilities:
     version: hosted-service
     detection: marketplace install followed by a new-session skill inventory and direct inspection of a generated PACKAGE_IDENTITY.json carrier
     unavailable_behavior: Claude.ai compatibility remains unverified; do not infer it from Claude Code evidence.
-  - id: sofia-runner
+  - id: product-review-runner
     required_for: runner-backed convergence only
-    version: external-unimplemented
-    detection: declared versioned kernel capability and recipe binding
-    unavailable_behavior: Use direct or multi-perspective review without claiming mechanical convergence, or stop if runner-backed proof is required.
+    version: external-product-binding
+    detection: declared product workflow-binding identity plus runner identity and immutable version, compatible schemas, exact invocation, and fresh gate evidence
+    unavailable_behavior: Use direct or multi-perspective review without claiming mechanical convergence, or stop when runner-backed proof is required.
 external_dependencies: []
 consumer_surfaces:
   - id: claude-ai
@@ -105,12 +105,12 @@ skills:
   - {name: author-standard, owner: Tad Haffey - Haffey Enterprises, reviewer: standards reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
   - {name: code-review, owner: Tad Haffey - Haffey Enterprises, reviewer: review-governance reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
   - {name: debug, owner: Tad Haffey - Haffey Enterprises, reviewer: diagnosis reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
-  - {name: design-review-loop, owner: Tad Haffey - Haffey Enterprises, reviewer: design-governance reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
+  - {name: design-review-loop, owner: Tad Haffey - Haffey Enterprises, reviewer: design-governance reviewer, status: active, contract_version: 2.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-27, verified_hosts: [claude-code-2.1.226], successor: null, migration: "Product-specific runner profile replaced by the generic external product-runner binding; direct and multi-perspective profiles remain compatible."}
   - {name: frontend-code, owner: Tad Haffey - Haffey Enterprises, reviewer: frontend reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
   - {name: infrastructure-code, owner: Tad Haffey - Haffey Enterprises, reviewer: infrastructure reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
   - {name: testing, owner: Tad Haffey - Haffey Enterprises, reviewer: testing reviewer, status: active, contract_version: 1.0.0, layer: portable-core-plus-profile, last_verified: 2026-08-11, verified_hosts: [claude-code-2.1.226], successor: null, migration: null}
 sources:
-  - {id: adr-001, type: ratified-architecture, location: docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md, applicability: package architecture and versioning}
+  - {id: adr-001, type: ratified-architecture, location: docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md, authority_version: 2.0.0, status: accepted, applicability: package architecture and versioning}
   - {id: claude-plugin-reference, type: vendor-documentation, location: "https://code.claude.com/docs/en/plugins-reference", accessed: 2026-08-11, applicability: manifest metadata, packaging, and update behavior}
   - {id: semantic-versioning, type: public-standard, location: "https://semver.org/spec/v2.0.0.html", accessed: 2026-08-11, applicability: package version classification}
   - {id: mit-license, type: ratified-license, location: LICENSE, applicability: copying, modification, and redistribution}
