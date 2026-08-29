@@ -53,6 +53,7 @@ REPOSITORY = "https://github.com/T-Bone-Haff/bedrock"
 REQUIRED_FILES = (
     "LICENSE",
     "SECURITY.md",
+    "AGENTS.md",
     "CLAUDE.md",
     "README.md",
     "docs/repository-orientation.md",
@@ -74,6 +75,12 @@ REQUIRED_FILES = (
     "docs/evidence/heb-118/baseline.md",
     "docs/evidence/heb-118/manifest.yaml",
     "docs/evidence/heb-118/context-budget.json",
+)
+EXPECTED_CODEX_ADAPTER = (
+    "# AGENTS.md — bedrock\n\n"
+    "Read `docs/repository-orientation.md` from disk before acting in this repository; "
+    "it is the single host-neutral repository-orientation authority. This file contains "
+    "no repository guidance of its own.\n"
 )
 SEMVER = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
 MINIMUM_SEMVER = re.compile(r"^>=([0-9]+\.[0-9]+\.[0-9]+)$")
@@ -467,8 +474,18 @@ def _validate_documents(
             _error(errors, orientation, "host carrier must point to the tracked orientation authority")
         if "plugins/bedrock/.claude-plugin/plugin.json" not in text:
             _error(errors, orientation, "tracked orientation must name the actual manifest authority")
-        if "AGENTS.md" not in text or "local" not in text.lower():
-            _error(errors, orientation, "tracked orientation must classify root AGENTS.md as local context")
+        if "root `AGENTS.md` is the tracked Codex adapter" not in text:
+            _error(errors, orientation, "Claude carrier must classify root AGENTS.md as the tracked Codex adapter")
+
+    codex_adapter = root / "AGENTS.md"
+    if codex_adapter.is_file() and codex_adapter.read_text(encoding="utf-8") != EXPECTED_CODEX_ADAPTER:
+        _error(errors, codex_adapter, "Codex adapter must be the exact content-free authority pointer")
+
+    canonical_orientation = root / "docs/repository-orientation.md"
+    if canonical_orientation.is_file():
+        text = canonical_orientation.read_text(encoding="utf-8")
+        if "root `AGENTS.md` is the Codex adapter" not in text:
+            _error(errors, canonical_orientation, "canonical orientation must classify root AGENTS.md as the Codex adapter")
 
     markdown_files = [root / relative for relative in REQUIRED_FILES if relative.endswith(".md")]
     for path in markdown_files:
