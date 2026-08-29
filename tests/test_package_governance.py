@@ -218,6 +218,34 @@ class PackageGovernanceTests(unittest.TestCase):
         path.write_text(path.read_text(encoding="utf-8") + "\n[missing](missing.md)\n", encoding="utf-8")
         self.assert_has_error("package-governance link target does not exist")
 
+    def test_rejects_missing_codex_adapter(self) -> None:
+        (self.root / "AGENTS.md").unlink()
+        self.assert_has_error("required package-governance file is missing or empty")
+
+    def test_rejects_codex_adapter_drift(self) -> None:
+        path = self.root / "AGENTS.md"
+        path.write_text(
+            path.read_text(encoding="utf-8") + "\n## Mirrored repository guidance\n",
+            encoding="utf-8",
+        )
+        self.assert_has_error("Codex adapter must be the exact content-free authority pointer")
+
+    def test_rejects_claude_carrier_codex_adapter_classification_drift(self) -> None:
+        path = self.root / "CLAUDE.md"
+        original = path.read_text(encoding="utf-8")
+        changed = original.replace("tracked Codex adapter", "local Codex context", 1)
+        self.assertNotEqual(original, changed)
+        path.write_text(changed, encoding="utf-8")
+        self.assert_has_error("Claude carrier must classify root AGENTS.md as the tracked Codex adapter")
+
+    def test_rejects_canonical_orientation_codex_adapter_classification_drift(self) -> None:
+        path = self.root / "docs/repository-orientation.md"
+        original = path.read_text(encoding="utf-8")
+        changed = original.replace("root `AGENTS.md` is the Codex adapter", "root `AGENTS.md` is local context", 1)
+        self.assertNotEqual(original, changed)
+        path.write_text(changed, encoding="utf-8")
+        self.assert_has_error("canonical orientation must classify root AGENTS.md as the Codex adapter")
+
     def test_rejects_missing_package_identity_carrier(self) -> None:
         carrier_paths = self.write_package_identity_carriers()
         carrier_paths[0].unlink()

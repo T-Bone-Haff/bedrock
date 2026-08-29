@@ -37,8 +37,7 @@ this repository. This orientation does not mirror them.
 
 ## Host carriers and local context
 
-Tracked `CLAUDE.md` is the Claude Code carrier for this orientation. A root
-`AGENTS.md`, when an operator creates one locally for Codex, is ignored local
-context: preserve it, but do not stage it or treat it as repository/package
-authority. A future tracked adapter carrier must point to this file and pass a
-drift check rather than becoming a second hand-maintained orientation.
+Tracked `CLAUDE.md` is the Claude Code carrier for this orientation. Tracked
+root `AGENTS.md` is the Codex adapter: it points to this file and carries no
+repository guidance of its own. Host carriers must not become second
+hand-maintained orientation authorities.

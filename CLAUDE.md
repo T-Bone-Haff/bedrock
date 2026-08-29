@@ -27,8 +27,8 @@ no other surface states a version number.
 - `README.md` — the install, staying-current, and maintenance surface
 - `plugins/bedrock/governance/` — installed lifecycle, compatibility, policy,
   threat-model, quickstart, rebind, registry, and release-evidence contracts
-- root `AGENTS.md`, when present, is ignored local Codex context. It is not a
-  tracked package or repository authority and must not be staged implicitly
+- root `AGENTS.md` is the tracked Codex adapter to
+  `docs/repository-orientation.md`; it carries no repository guidance of its own
 
 ## Branch model and commit authority
 
