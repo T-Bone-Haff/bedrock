@@ -34,7 +34,25 @@ A reliable minimal reproduction is preferred because it becomes the falsificatio
 
 Select the least invasive technique that can distinguish candidates: minimal reproduction, binary search/bisection, recent-change analysis, environment/config/version diff, input minimization, dependency substitution, concurrency scheduling, fault injection, or observability comparison. State why the technique fits and what it cannot distinguish.
 
-## 5. Run the hypothesis loop
+## 5. Establish that the reading is about the claim subject
+
+Every observation arrives through an instrument whose transport, wrapper, vantage, execution environment, configuration, or normalisation can manufacture the watched result. Before an observation enters the hypothesis loop or supports closure, name the claim subject and ask whether the same instrument could have produced the same output if that subject were different. If the answer is yes or unavailable, the measurement is unavailable; do not treat it as evidence that the subject failed.
+
+Use a discrimination control shaped differently from the reading where possible:
+
+- test a known-good comparable before believing an absence;
+- run a contrary or known-dirty case beside a mechanism whose success is silence;
+- derive the expected value where the subject lives;
+- use the owning parser, API, or schema, including its configuration and normalisation; or
+- widen the scope enough to represent “nothing happened.”
+
+Carry the control in the same run when practical. Test identity, not mere liveness or status: a control that answers the same way for the subject and contrary case falsifies the instrument. Record that outcome as unavailable evidence, not as a subject failure.
+
+Do not prescribe corrective action from an unavailable reading. When a false failure would authorize changing a healthy subject, require stronger discrimination before acting.
+
+These are diagnosis-time rules. Standard proving, relay-premise controls, and reviewer structural measurement remain owned by `author-standard`, `author-execution-relay`, and `design-review-loop`; cite them rather than restating their contracts.
+
+## 6. Run the hypothesis loop
 
 For each numbered iteration record:
 
@@ -48,17 +66,17 @@ For each numbered iteration record:
 
 Seek falsification, not confirmation. A hypothesis that leaves material evidence unexplained is incomplete. Confidence is `low`, `medium`, or `high` and must follow the evidence, not fluency.
 
-## 6. Bound experiments
+## 7. Bound experiments
 
 Before any probe that writes, loads, exposes data, or affects customers, record authorization, blast radius, protected-data treatment, observability, rollback, time/resource budget, and stop conditions. Prefer read-only and lower-environment probes. Stop immediately on unexpected harm, lost observability, exceeded budget, invalid rollback, privacy boundary breach, or scope expansion.
 
-## 7. Decide cause and action honestly
+## 8. Decide cause and action honestly
 
 Name a root cause only when the evidence and falsification record distinguish it from viable alternatives. Otherwise report contributing factors or insufficient evidence and hand off what would resolve the uncertainty.
 
 A verified cause does not authorize a fix. Request or cite repair authorization, then hand implementation to the owning domain skill. A temporary mitigation records residual risk, owner, expiry/rollback, and root-cause follow-up.
 
-## 8. Verify and close
+## 9. Verify and close
 
 Closure requires evidence proportionate to where the failure existed:
 

@@ -2,9 +2,9 @@
   "schema_version": 1,
   "classification": "generated-carrier",
   "package": "bedrock",
-  "manifest_version": "9.0.0",
+  "manifest_version": "9.1.0",
   "version_authority": ".claude-plugin/plugin.json#/version",
-  "manifest_sha256": "e0671b5645c9dfbe255cbfc8b57beb6aaf40edfc26321c24d4c8e46cafdcb3fe",
+  "manifest_sha256": "ca0e42b0d2735c7655a63ce5fb50eb2ba0c3a47f4427f0b7952e6afb7e2a9c7a",
   "generator": {
     "id": "scripts/sync_package_identity.py",
     "version": "1.0.0"

@@ -93,6 +93,13 @@ cases:
     prompt: Implement the approved FastAPI endpoint in this repository now.
     expected: application-code
     excluded: [author-execution-relay]
+  - id: author-execution-relay-instrument-discrimination
+    kind: overlap
+    cue: implicit
+    surface: portable-core
+    prompt: Draft the gated executor handoff that requires a control proving each observation discriminates the claim subject before the executor may act on it.
+    expected: author-execution-relay
+    excluded: [debug]
   - id: author-standard-positive
     kind: positive
     surface: portable-core
@@ -143,6 +150,13 @@ cases:
     prompt: This failure is actively harming customers; contain it reversibly, preserve evidence, and then diagnose without claiming that restoration proves root cause.
     expected: debug
     excluded: []
+  - id: debug-claim-subject-discrimination
+    kind: overlap
+    cue: implicit
+    surface: portable-core
+    prompt: The diagnostic output contradicts the subject's own state; determine whether the instrument can distinguish the claim subject before using the reading as failure evidence.
+    expected: debug
+    excluded: [testing]
   - id: design-review-loop-positive
     kind: positive
     surface: portable-core
@@ -269,6 +283,13 @@ cases:
     cue: implicit
     surface: portable-core
     prompt: Design planned line, branch, critical-path, mutation, contract, and E2E gates for this new high-risk service behavior.
+    expected: testing
+    excluded: [debug]
+  - id: testing-silent-success-counterfactual
+    kind: overlap
+    cue: implicit
+    surface: portable-core
+    prompt: Commission this planned silent-success check with both a clean exemplar and a known-dirty case that must make the named detector fire.
     expected: testing
     excluded: [debug]
   - id: testing-regression-after-diagnosis
