@@ -18,7 +18,7 @@ counting_basis:
   limit: >-
     The semantic-unit count proves deterministic screen coverage, not an atomic
     normative-rule count or infallible semantic classification.
-  last_refreshed_at: 2026-08-28 ET
+  last_refreshed_at: 2026-08-30 ET
   last_refresh: >-
     The HEB-131/HEB-143 relay changes add subject-bound, derived-population, and
     discrimination rules; HEB-128 replaces the product-specific runner profile
@@ -28,7 +28,10 @@ counting_basis:
     internal-state finding. The Markdown and structured-file populations remain
     unchanged. The aggregate HEB-128/HEB-131/HEB-143 work advances the
     deterministic semantic-unit count from 1018 to 1026; the rc3 runner-proof
-    expansion adds five units, for a current total of 1031.
+    expansion adds five units. HEB-145 adds claim-subject discrimination and
+    silent-success counterfactual rules triggered by observable workflow events,
+    with no internal-state finding; those changes add eleven units, for a current
+    total of 1042.
 scope:
   markdown_root: plugins/bedrock/skills
   expected_markdown_carriers: 55
@@ -209,7 +212,7 @@ scope:
 findings: []
 counts:
   carriers_examined: 55
-  semantic_units_screened: 1031
+  semantic_units_screened: 1042
   internal_state_rules: 0
   converted_to_instrument: 0
   external_detector: 0

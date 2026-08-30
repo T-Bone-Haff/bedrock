@@ -49,6 +49,8 @@ Assert observable state and behavior by default. Interaction assertions are appr
 
 Coverage is a signal, not proof. Each strategy declares justified line and branch thresholds, critical paths/states, allowed exclusions, and any mutation-quality requirement. Equal line coverage may yield different gates when branch, state, mutation, or risk coverage differs. Never exclude testable code merely to pass.
 
+A mechanism whose success state is silence needs a counterfactual that must break it. A clean exemplar proves only that the check does not false-fire; an inert check also passes. Pair it with a known-dirty case and verify that the named detector fires. If the forbidden condition cannot be created safely, mark that coverage unavailable rather than treating silence as proof.
+
 Select advanced methods by risk: property-based, fuzz, mutation, concurrency, migration, performance/load, security, fault-injection, and chaos testing each require an applicability decision and an explicit `not_applicable` rationale when considered but omitted.
 
 ## Flakes and quarantine

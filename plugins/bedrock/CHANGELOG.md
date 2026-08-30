@@ -3,6 +3,17 @@
 The package manifest is the sole authority for the current version. This file
 records candidate and released changes; a version heading is not release proof.
 
+## 9.1.0 — claim-subject discrimination candidate
+
+- Require diagnostic readings to demonstrate that their instrument
+  discriminates the claim subject; treat a failed or unavailable control as
+  unavailable evidence and require stronger discrimination before corrective
+  action.
+- Require planned silent-success checks to pair a clean exemplar with a
+  known-dirty case that makes the named detector fire.
+- Add routing evidence that preserves the boundaries among diagnosis, planned
+  testing, and executor-handoff authoring.
+
 ## 9.0.0 — portable-core 2.0 and derived-evidence candidate
 
 - Advance the portable-core and design-review-loop contracts to `2.0.0`, move
