@@ -1,0 +1,2175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:haffey:frd:wire:1",
+  "title": "FRD wire — structural translation candidate",
+  "$comment": "Accepted WIRE design translation; not physical freeze, transport implementation, policy acceptance or runtime proof. Root validates Request only. Select Response definitions using the correlated request action, never by guessing from response content.",
+  "$ref": "#/$defs/Request",
+  "$defs": {
+    "Id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._:-]"
+      }
+    },
+    "Digest": {
+      "type": "string",
+      "minLength": 71,
+      "maxLength": 71,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "UInt": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991,
+      "$comment": "Raw numeric lexeme validation is separately required."
+    },
+    "Positive": {
+      "$ref": "#/$defs/UInt",
+      "minimum": 1
+    },
+    "Text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "$comment": "maxLength is only a necessary code-point bound; enforce 4096 UTF-8 octets and Unicode scalar validity separately."
+    },
+    "Kind": {
+      "enum": [
+        "inventory.reserve",
+        "arrangement.record"
+      ]
+    },
+    "SourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "record_id",
+        "revision",
+        "content_digest"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "order",
+            "customer_brief",
+            "supplier_notice",
+            "quote",
+            "stock"
+          ]
+        },
+        "record_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "revision": {
+          "$ref": "#/$defs/Positive"
+        },
+        "content_digest": {
+          "$ref": "#/$defs/Digest"
+        }
+      }
+    },
+    "OrderRef": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/SourceRef"
+        },
+        {
+          "properties": {
+            "kind": {
+              "const": "order"
+            }
+          }
+        }
+      ]
+    },
+    "BriefRef": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/SourceRef"
+        },
+        {
+          "properties": {
+            "kind": {
+              "const": "customer_brief"
+            }
+          }
+        }
+      ]
+    },
+    "NoticeRef": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/SourceRef"
+        },
+        {
+          "properties": {
+            "kind": {
+              "const": "supplier_notice"
+            }
+          }
+        }
+      ]
+    },
+    "QuoteRef": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/SourceRef"
+        },
+        {
+          "properties": {
+            "kind": {
+              "const": "quote"
+            }
+          }
+        }
+      ]
+    },
+    "StockRef": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/SourceRef"
+        },
+        {
+          "properties": {
+            "kind": {
+              "const": "stock"
+            }
+          }
+        }
+      ]
+    },
+    "Terms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "quote_ref",
+        "site",
+        "sku",
+        "quantity",
+        "destination",
+        "estimated_arrival_time",
+        "extra_transport_cost_minor",
+        "currency",
+        "expires_at"
+      ],
+      "properties": {
+        "quote_ref": {
+          "$ref": "#/$defs/QuoteRef"
+        },
+        "site": {
+          "$ref": "#/$defs/Id"
+        },
+        "sku": {
+          "$ref": "#/$defs/Id"
+        },
+        "quantity": {
+          "$ref": "#/$defs/Positive"
+        },
+        "destination": {
+          "$ref": "#/$defs/Id"
+        },
+        "estimated_arrival_time": {
+          "$ref": "#/$defs/UInt"
+        },
+        "extra_transport_cost_minor": {
+          "$ref": "#/$defs/UInt"
+        },
+        "currency": {
+          "const": "USD"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/UInt"
+        }
+      }
+    },
+    "Plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan_id",
+        "revision",
+        "order_id",
+        "order_revision",
+        "requirement_source_refs",
+        "terms"
+      ],
+      "properties": {
+        "plan_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "revision": {
+          "$ref": "#/$defs/Positive"
+        },
+        "order_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "order_revision": {
+          "$ref": "#/$defs/Positive"
+        },
+        "requirement_source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/BriefRef"
+          },
+          "uniqueItems": true
+        },
+        "terms": {
+          "$ref": "#/$defs/Terms"
+        }
+      }
+    },
+    "Grant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approval_id",
+        "issuer_id",
+        "policy_id",
+        "policy_revision",
+        "plan_digest",
+        "approved_plan",
+        "issued_at_minute",
+        "expires_at_minute",
+        "allowed_operations",
+        "arrangement_requires_matching_reservation"
+      ],
+      "properties": {
+        "approval_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "issuer_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "policy_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "policy_revision": {
+          "$ref": "#/$defs/Id"
+        },
+        "plan_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "approved_plan": {
+          "$ref": "#/$defs/Plan"
+        },
+        "issued_at_minute": {
+          "$ref": "#/$defs/UInt"
+        },
+        "expires_at_minute": {
+          "$ref": "#/$defs/UInt"
+        },
+        "allowed_operations": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "prefixItems": [
+            {
+              "const": "inventory.reserve"
+            },
+            {
+              "const": "arrangement.record"
+            }
+          ],
+          "items": false
+        },
+        "arrangement_requires_matching_reservation": {
+          "const": true
+        }
+      }
+    },
+    "Source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_ref",
+        "body_utf8",
+        "body_length_bytes"
+      ],
+      "properties": {
+        "source_ref": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "body_utf8": {
+          "type": "string",
+          "maxLength": 262144,
+          "contentMediaType": "application/json",
+          "$comment": "Annotation is not nested content validation. Exact Unicode-scalar UTF-8 source bytes, body schema, length and digest require separate checks."
+        },
+        "body_length_bytes": {
+          "$ref": "#/$defs/UInt",
+          "maximum": 262144
+        }
+      }
+    },
+    "OrderSource": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Source"
+        },
+        {
+          "properties": {
+            "source_ref": {
+              "$ref": "#/$defs/OrderRef"
+            }
+          }
+        }
+      ]
+    },
+    "BriefSource": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Source"
+        },
+        {
+          "properties": {
+            "source_ref": {
+              "$ref": "#/$defs/BriefRef"
+            }
+          }
+        }
+      ]
+    },
+    "NoticeSource": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Source"
+        },
+        {
+          "properties": {
+            "source_ref": {
+              "$ref": "#/$defs/NoticeRef"
+            }
+          }
+        }
+      ]
+    },
+    "QuoteSource": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Source"
+        },
+        {
+          "properties": {
+            "source_ref": {
+              "$ref": "#/$defs/QuoteRef"
+            }
+          }
+        }
+      ]
+    },
+    "StockSource": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Source"
+        },
+        {
+          "properties": {
+            "source_ref": {
+              "$ref": "#/$defs/StockRef"
+            }
+          }
+        }
+      ]
+    },
+    "Publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "publication_id",
+        "catalog_epoch",
+        "source_ref",
+        "supersedes",
+        "published_at_minute"
+      ],
+      "properties": {
+        "publication_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "catalog_epoch": {
+          "$ref": "#/$defs/UInt"
+        },
+        "source_ref": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "supersedes": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          },
+          "uniqueItems": true
+        },
+        "published_at_minute": {
+          "$ref": "#/$defs/UInt"
+        }
+      }
+    },
+    "ObservationScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "catalog_epoch",
+        "complete",
+        "member_refs"
+      ],
+      "properties": {
+        "catalog_epoch": {
+          "$ref": "#/$defs/UInt"
+        },
+        "complete": {
+          "const": true
+        },
+        "member_refs": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "Mutation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_key",
+        "attempt_id",
+        "plan_digest",
+        "approval_id",
+        "grant_digest",
+        "expected_order_revision",
+        "terms",
+        "reservation_id",
+        "semantic_effect_digest"
+      ],
+      "properties": {
+        "operation_key": {
+          "$ref": "#/$defs/Id"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "plan_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "approval_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "grant_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "expected_order_revision": {
+          "$ref": "#/$defs/Positive"
+        },
+        "terms": {
+          "$ref": "#/$defs/Terms"
+        },
+        "reservation_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "semantic_effect_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "replay_permit_id": {
+          "$ref": "#/$defs/Id"
+        }
+      }
+    },
+    "OperationIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "order_id",
+        "operation_key",
+        "operation_kind",
+        "semantic_effect_digest"
+      ],
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "order_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "operation_key": {
+          "$ref": "#/$defs/Id"
+        },
+        "operation_kind": {
+          "$ref": "#/$defs/Kind"
+        },
+        "semantic_effect_digest": {
+          "$ref": "#/$defs/Digest"
+        }
+      }
+    },
+    "AttemptIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "attempt_id",
+        "generation",
+        "original_request_digest"
+      ],
+      "properties": {
+        "operation": {
+          "$ref": "#/$defs/OperationIdentity"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "generation": {
+          "$ref": "#/$defs/UInt"
+        },
+        "original_request_digest": {
+          "$ref": "#/$defs/Digest"
+        }
+      }
+    },
+    "Reservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reservation_id",
+        "committed_attempt",
+        "plan_digest",
+        "approval_id",
+        "grant_digest",
+        "terms",
+        "stock_id",
+        "stock_revision_before",
+        "stock_revision_after",
+        "committed_at_minute"
+      ],
+      "properties": {
+        "reservation_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "committed_attempt": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/AttemptIdentity"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "properties": {
+                    "operation_kind": {
+                      "const": "inventory.reserve"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "plan_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "approval_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "grant_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "terms": {
+          "$ref": "#/$defs/Terms"
+        },
+        "stock_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "stock_revision_before": {
+          "$ref": "#/$defs/Positive"
+        },
+        "stock_revision_after": {
+          "$ref": "#/$defs/Positive"
+        },
+        "committed_at_minute": {
+          "$ref": "#/$defs/UInt"
+        }
+      }
+    },
+    "Arrangement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "arrangement_id",
+        "committed_attempt",
+        "plan_digest",
+        "approval_id",
+        "grant_digest",
+        "reservation_id",
+        "terms",
+        "order_revision_before",
+        "order_revision_after",
+        "committed_at_minute",
+        "service_status"
+      ],
+      "properties": {
+        "arrangement_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "committed_attempt": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/AttemptIdentity"
+            },
+            {
+              "properties": {
+                "operation": {
+                  "properties": {
+                    "operation_kind": {
+                      "const": "arrangement.record"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "plan_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "approval_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "grant_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "reservation_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "terms": {
+          "$ref": "#/$defs/Terms"
+        },
+        "order_revision_before": {
+          "$ref": "#/$defs/Positive"
+        },
+        "order_revision_after": {
+          "$ref": "#/$defs/Positive"
+        },
+        "committed_at_minute": {
+          "$ref": "#/$defs/UInt"
+        },
+        "service_status": {
+          "const": "arrangement_recorded"
+        }
+      }
+    },
+    "CommittedReservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "operation_kind",
+        "effect"
+      ],
+      "properties": {
+        "tag": {
+          "const": "committed"
+        },
+        "operation_kind": {
+          "const": "inventory.reserve"
+        },
+        "effect": {
+          "$ref": "#/$defs/Reservation"
+        }
+      }
+    },
+    "CommittedArrangement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "operation_kind",
+        "effect"
+      ],
+      "properties": {
+        "tag": {
+          "const": "committed"
+        },
+        "operation_kind": {
+          "const": "arrangement.record"
+        },
+        "effect": {
+          "$ref": "#/$defs/Arrangement"
+        }
+      }
+    },
+    "Closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "closed_attempt",
+        "fence_event_id",
+        "closed_at_minute",
+        "replay_permit_id"
+      ],
+      "properties": {
+        "closed_attempt": {
+          "$ref": "#/$defs/AttemptIdentity"
+        },
+        "fence_event_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "closed_at_minute": {
+          "$ref": "#/$defs/UInt"
+        },
+        "replay_permit_id": {
+          "$ref": "#/$defs/Id"
+        }
+      }
+    },
+    "RejectionReason": {
+      "enum": [
+        "no_stock",
+        "allocation_exists",
+        "stale_order",
+        "stale_source",
+        "stale_quote",
+        "expired_quote",
+        "invalid_authority",
+        "expired_authority",
+        "terms_mismatch",
+        "reservation_mismatch",
+        "order_write_rejected"
+      ]
+    },
+    "UnresolvedReason": {
+      "enum": [
+        "pending",
+        "journal_unavailable",
+        "identity_conflict",
+        "finality_unproven",
+        "not_found",
+        "stale_generation"
+      ]
+    },
+    "Rejected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "reason",
+        "closure"
+      ],
+      "properties": {
+        "tag": {
+          "const": "rejected"
+        },
+        "reason": {
+          "$ref": "#/$defs/RejectionReason"
+        },
+        "closure": {
+          "$ref": "#/$defs/Closure"
+        }
+      }
+    },
+    "Terminal": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/CommittedReservation"
+        },
+        {
+          "$ref": "#/$defs/CommittedArrangement"
+        },
+        {
+          "$ref": "#/$defs/Rejected"
+        }
+      ]
+    },
+    "ReconciledCommit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "original_result_utf8",
+        "original_result_digest"
+      ],
+      "properties": {
+        "tag": {
+          "const": "committed"
+        },
+        "original_result_utf8": {
+          "type": "string",
+          "contentMediaType": "application/json",
+          "$comment": "Decode and independently validate matching committed Terminal plus raw digest; contentMediaType alone does not enforce this. Outer response byte ceiling still applies."
+        },
+        "original_result_digest": {
+          "$ref": "#/$defs/Digest"
+        }
+      }
+    },
+    "MutationUnresolved": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "reason"
+      ],
+      "properties": {
+        "tag": {
+          "const": "unresolved"
+        },
+        "reason": {
+          "$ref": "#/$defs/UnresolvedReason"
+        }
+      }
+    },
+    "ClosedNotApplied": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "closure"
+      ],
+      "properties": {
+        "tag": {
+          "const": "closed_not_applied"
+        },
+        "closure": {
+          "$ref": "#/$defs/Closure"
+        }
+      }
+    },
+    "ActionError": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "enum": [
+            "identity_conflict",
+            "unauthorized_replay",
+            "run_sealed",
+            "fixture_unavailable"
+          ]
+        },
+        "message": {
+          "$ref": "#/$defs/Text"
+        }
+      }
+    },
+    "ProtocolCode": {
+      "enum": [
+        "invalid_json",
+        "invalid_envelope",
+        "unauthenticated",
+        "forbidden_scope",
+        "body_too_large",
+        "unsupported_media_type",
+        "unsupported_revision"
+      ]
+    },
+    "ProtocolError": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_revision",
+        "error_code",
+        "receipt_id"
+      ],
+      "properties": {
+        "protocol_revision": {
+          "const": "frd-wire-1"
+        },
+        "error_code": {
+          "$ref": "#/$defs/ProtocolCode"
+        },
+        "receipt_id": {
+          "$ref": "#/$defs/Id"
+        }
+      }
+    },
+    "ContextResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "scope",
+        "order",
+        "customer_briefs",
+        "supplier_notices",
+        "publications"
+      ],
+      "properties": {
+        "tag": {
+          "const": "context"
+        },
+        "scope": {
+          "$ref": "#/$defs/ObservationScope"
+        },
+        "order": {
+          "$ref": "#/$defs/OrderSource"
+        },
+        "customer_briefs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/BriefSource"
+          }
+        },
+        "supplier_notices": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/NoticeSource"
+          }
+        },
+        "publications": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/Publication"
+          }
+        }
+      }
+    },
+    "SourceResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "source"
+      ],
+      "properties": {
+        "tag": {
+          "const": "source"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        }
+      }
+    },
+    "Reasonunavailable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "reason"
+      ],
+      "properties": {
+        "tag": {
+          "const": "unavailable"
+        },
+        "reason": {
+          "$ref": "#/$defs/Text"
+        }
+      }
+    },
+    "Reasondenied": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "reason"
+      ],
+      "properties": {
+        "tag": {
+          "const": "denied"
+        },
+        "reason": {
+          "$ref": "#/$defs/Text"
+        }
+      }
+    },
+    "Reasonunresolved": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "reason"
+      ],
+      "properties": {
+        "tag": {
+          "const": "unresolved"
+        },
+        "reason": {
+          "$ref": "#/$defs/Text"
+        }
+      }
+    },
+    "AvailabilityResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "scope",
+        "skus",
+        "sites",
+        "inventory",
+        "quotes",
+        "publications"
+      ],
+      "properties": {
+        "tag": {
+          "const": "availability"
+        },
+        "scope": {
+          "$ref": "#/$defs/ObservationScope"
+        },
+        "skus": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/Id"
+          },
+          "uniqueItems": true
+        },
+        "sites": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/Id"
+          },
+          "uniqueItems": true
+        },
+        "inventory": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/StockSource"
+          }
+        },
+        "quotes": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/QuoteSource"
+          }
+        },
+        "publications": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/Publication"
+          }
+        }
+      }
+    },
+    "AcceptedRevisionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "source",
+        "publication"
+      ],
+      "properties": {
+        "tag": {
+          "const": "accepted_revision"
+        },
+        "source": {
+          "$ref": "#/$defs/BriefSource"
+        },
+        "publication": {
+          "$ref": "#/$defs/Publication"
+        }
+      }
+    },
+    "GrantedResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "grant",
+        "grant_digest"
+      ],
+      "properties": {
+        "tag": {
+          "const": "granted"
+        },
+        "grant": {
+          "$ref": "#/$defs/Grant"
+        },
+        "grant_digest": {
+          "$ref": "#/$defs/Digest"
+        }
+      }
+    },
+    "CancelAccepted": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag"
+      ],
+      "properties": {
+        "tag": {
+          "const": "accepted"
+        }
+      }
+    },
+    "CancelUnsupported": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag"
+      ],
+      "properties": {
+        "tag": {
+          "const": "unsupported"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_revision",
+        "request_id",
+        "observation_id",
+        "observed_at_minute",
+        "error"
+      ],
+      "properties": {
+        "protocol_revision": {
+          "const": "frd-wire-1"
+        },
+        "request_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "observation_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "observed_at_minute": {
+          "$ref": "#/$defs/UInt"
+        },
+        "error": {
+          "$ref": "#/$defs/ActionError"
+        }
+      }
+    },
+    "OrderContextReadPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {}
+    },
+    "OrderContextReadRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_revision",
+        "run_id",
+        "request_id",
+        "order_id",
+        "action",
+        "payload"
+      ],
+      "properties": {
+        "protocol_revision": {
+          "const": "frd-wire-1"
+        },
+        "run_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "request_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "order_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "action": {
+          "const": "order_context.read"
+        },
+        "payload": {
+          "$ref": "#/$defs/OrderContextReadPayload"
+        }
+      }
+    },
+    "OrderContextReadResult": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ContextResult"
+        }
+      ]
+    },
+    "OrderContextReadResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol_revision",
+            "request_id",
+            "observation_id",
+            "observed_at_minute",
+            "result"
+          ],
+          "properties": {
+            "protocol_revision": {
+              "const": "frd-wire-1"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observation_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observed_at_minute": {
+              "$ref": "#/$defs/UInt"
+            },
+            "result": {
+              "$ref": "#/$defs/OrderContextReadResult"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/ErrorResponse"
+        }
+      ]
+    },
+    "SourceReadPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_ref"
+      ],
+      "properties": {
+        "source_ref": {
+          "$ref": "#/$defs/SourceRef"
+        }
+      }
+    },
+    "SourceReadRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_revision",
+        "run_id",
+        "request_id",
+        "order_id",
+        "action",
+        "payload"
+      ],
+      "properties": {
+        "protocol_revision": {
+          "const": "frd-wire-1"
+        },
+        "run_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "request_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "order_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "action": {
+          "const": "source.read"
+        },
+        "payload": {
+          "$ref": "#/$defs/SourceReadPayload"
+        }
+      }
+    },
+    "SourceReadResult": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/SourceResult"
+        },
+        {
+          "$ref": "#/$defs/Reasonunavailable"
+        },
+        {
+          "$ref": "#/$defs/Reasondenied"
+        }
+      ]
+    },
+    "SourceReadResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol_revision",
+            "request_id",
+            "observation_id",
+            "observed_at_minute",
+            "result"
+          ],
+          "properties": {
+            "protocol_revision": {
+              "const": "frd-wire-1"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observation_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observed_at_minute": {
+              "$ref": "#/$defs/UInt"
+            },
+            "result": {
+              "$ref": "#/$defs/SourceReadResult"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/ErrorResponse"
+        }
+      ]
+    },
+    "AvailabilityReadPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skus",
+        "sites"
+      ],
+      "properties": {
+        "skus": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/Id"
+          },
+          "uniqueItems": true
+        },
+        "sites": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/Id"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "AvailabilityReadRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_revision",
+        "run_id",
+        "request_id",
+        "order_id",
+        "action",
+        "payload"
+      ],
+      "properties": {
+        "protocol_revision": {
+          "const": "frd-wire-1"
+        },
+        "run_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "request_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "order_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "action": {
+          "const": "availability.read"
+        },
+        "payload": {
+          "$ref": "#/$defs/AvailabilityReadPayload"
+        }
+      }
+    },
+    "AvailabilityReadResult": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/AvailabilityResult"
+        }
+      ]
+    },
+    "AvailabilityReadResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol_revision",
+            "request_id",
+            "observation_id",
+            "observed_at_minute",
+            "result"
+          ],
+          "properties": {
+            "protocol_revision": {
+              "const": "frd-wire-1"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observation_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observed_at_minute": {
+              "$ref": "#/$defs/UInt"
+            },
+            "result": {
+              "$ref": "#/$defs/AvailabilityReadResult"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/ErrorResponse"
+        }
+      ]
+    },
+    "RequirementsClarifyPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field",
+        "question",
+        "source_refs"
+      ],
+      "properties": {
+        "field": {
+          "enum": [
+            "deadline",
+            "destination"
+          ]
+        },
+        "question": {
+          "$ref": "#/$defs/Text"
+        },
+        "source_refs": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "RequirementsClarifyRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_revision",
+        "run_id",
+        "request_id",
+        "order_id",
+        "action",
+        "payload"
+      ],
+      "properties": {
+        "protocol_revision": {
+          "const": "frd-wire-1"
+        },
+        "run_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "request_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "order_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "action": {
+          "const": "requirements.clarify"
+        },
+        "payload": {
+          "$ref": "#/$defs/RequirementsClarifyPayload"
+        }
+      }
+    },
+    "RequirementsClarifyResult": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/AcceptedRevisionResult"
+        },
+        {
+          "$ref": "#/$defs/Reasonunresolved"
+        },
+        {
+          "$ref": "#/$defs/Reasonunavailable"
+        }
+      ]
+    },
+    "RequirementsClarifyResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol_revision",
+            "request_id",
+            "observation_id",
+            "observed_at_minute",
+            "result"
+          ],
+          "properties": {
+            "protocol_revision": {
+              "const": "frd-wire-1"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observation_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observed_at_minute": {
+              "$ref": "#/$defs/UInt"
+            },
+            "result": {
+              "$ref": "#/$defs/RequirementsClarifyResult"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/ErrorResponse"
+        }
+      ]
+    },
+    "ApprovalRequestPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan",
+        "plan_digest"
+      ],
+      "properties": {
+        "plan": {
+          "$ref": "#/$defs/Plan"
+        },
+        "plan_digest": {
+          "$ref": "#/$defs/Digest"
+        }
+      }
+    },
+    "ApprovalRequestRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_revision",
+        "run_id",
+        "request_id",
+        "order_id",
+        "action",
+        "payload"
+      ],
+      "properties": {
+        "protocol_revision": {
+          "const": "frd-wire-1"
+        },
+        "run_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "request_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "order_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "action": {
+          "const": "approval.request"
+        },
+        "payload": {
+          "$ref": "#/$defs/ApprovalRequestPayload"
+        }
+      }
+    },
+    "ApprovalRequestResult": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/GrantedResult"
+        },
+        {
+          "$ref": "#/$defs/Reasondenied"
+        },
+        {
+          "$ref": "#/$defs/Reasonunavailable"
+        }
+      ]
+    },
+    "ApprovalRequestResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol_revision",
+            "request_id",
+            "observation_id",
+            "observed_at_minute",
+            "result"
+          ],
+          "properties": {
+            "protocol_revision": {
+              "const": "frd-wire-1"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observation_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observed_at_minute": {
+              "$ref": "#/$defs/UInt"
+            },
+            "result": {
+              "$ref": "#/$defs/ApprovalRequestResult"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/ErrorResponse"
+        }
+      ]
+    },
+    "InventoryReservePayload": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Mutation"
+        },
+        {
+          "properties": {
+            "reservation_id": {
+              "type": "null"
+            }
+          }
+        }
+      ]
+    },
+    "InventoryReserveRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_revision",
+        "run_id",
+        "request_id",
+        "order_id",
+        "action",
+        "payload"
+      ],
+      "properties": {
+        "protocol_revision": {
+          "const": "frd-wire-1"
+        },
+        "run_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "request_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "order_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "action": {
+          "const": "inventory.reserve"
+        },
+        "payload": {
+          "$ref": "#/$defs/InventoryReservePayload"
+        }
+      }
+    },
+    "InventoryReserveResult": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/CommittedReservation"
+        },
+        {
+          "$ref": "#/$defs/Rejected"
+        },
+        {
+          "$ref": "#/$defs/MutationUnresolved"
+        }
+      ]
+    },
+    "InventoryReserveResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol_revision",
+            "request_id",
+            "observation_id",
+            "observed_at_minute",
+            "result"
+          ],
+          "properties": {
+            "protocol_revision": {
+              "const": "frd-wire-1"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observation_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observed_at_minute": {
+              "$ref": "#/$defs/UInt"
+            },
+            "result": {
+              "$ref": "#/$defs/InventoryReserveResult"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/ErrorResponse"
+        }
+      ]
+    },
+    "ArrangementRecordPayload": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Mutation"
+        },
+        {
+          "properties": {
+            "reservation_id": {
+              "$ref": "#/$defs/Id"
+            }
+          }
+        }
+      ]
+    },
+    "ArrangementRecordRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_revision",
+        "run_id",
+        "request_id",
+        "order_id",
+        "action",
+        "payload"
+      ],
+      "properties": {
+        "protocol_revision": {
+          "const": "frd-wire-1"
+        },
+        "run_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "request_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "order_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "action": {
+          "const": "arrangement.record"
+        },
+        "payload": {
+          "$ref": "#/$defs/ArrangementRecordPayload"
+        }
+      }
+    },
+    "ArrangementRecordResult": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/CommittedArrangement"
+        },
+        {
+          "$ref": "#/$defs/Rejected"
+        },
+        {
+          "$ref": "#/$defs/MutationUnresolved"
+        }
+      ]
+    },
+    "ArrangementRecordResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol_revision",
+            "request_id",
+            "observation_id",
+            "observed_at_minute",
+            "result"
+          ],
+          "properties": {
+            "protocol_revision": {
+              "const": "frd-wire-1"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observation_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observed_at_minute": {
+              "$ref": "#/$defs/UInt"
+            },
+            "result": {
+              "$ref": "#/$defs/ArrangementRecordResult"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/ErrorResponse"
+        }
+      ]
+    },
+    "OperationReconcilePayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_key",
+        "attempt_id",
+        "original_request_digest",
+        "operation_kind",
+        "semantic_effect_digest"
+      ],
+      "properties": {
+        "operation_key": {
+          "$ref": "#/$defs/Id"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "original_request_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "operation_kind": {
+          "$ref": "#/$defs/Kind"
+        },
+        "semantic_effect_digest": {
+          "$ref": "#/$defs/Digest"
+        }
+      }
+    },
+    "OperationReconcileRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_revision",
+        "run_id",
+        "request_id",
+        "order_id",
+        "action",
+        "payload"
+      ],
+      "properties": {
+        "protocol_revision": {
+          "const": "frd-wire-1"
+        },
+        "run_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "request_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "order_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "action": {
+          "const": "operation.reconcile"
+        },
+        "payload": {
+          "$ref": "#/$defs/OperationReconcilePayload"
+        }
+      }
+    },
+    "OperationReconcileResult": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ReconciledCommit"
+        },
+        {
+          "$ref": "#/$defs/ClosedNotApplied"
+        },
+        {
+          "$ref": "#/$defs/MutationUnresolved"
+        }
+      ]
+    },
+    "OperationReconcileResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol_revision",
+            "request_id",
+            "observation_id",
+            "observed_at_minute",
+            "result"
+          ],
+          "properties": {
+            "protocol_revision": {
+              "const": "frd-wire-1"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observation_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observed_at_minute": {
+              "$ref": "#/$defs/UInt"
+            },
+            "result": {
+              "$ref": "#/$defs/OperationReconcileResult"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/ErrorResponse"
+        }
+      ]
+    },
+    "OperationCancelPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_key",
+        "attempt_id"
+      ],
+      "properties": {
+        "operation_key": {
+          "$ref": "#/$defs/Id"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/Id"
+        }
+      }
+    },
+    "OperationCancelRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_revision",
+        "run_id",
+        "request_id",
+        "order_id",
+        "action",
+        "payload"
+      ],
+      "properties": {
+        "protocol_revision": {
+          "const": "frd-wire-1"
+        },
+        "run_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "request_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "order_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "action": {
+          "const": "operation.cancel"
+        },
+        "payload": {
+          "$ref": "#/$defs/OperationCancelPayload"
+        }
+      }
+    },
+    "OperationCancelResult": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/CancelAccepted"
+        },
+        {
+          "$ref": "#/$defs/CancelUnsupported"
+        }
+      ]
+    },
+    "OperationCancelResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol_revision",
+            "request_id",
+            "observation_id",
+            "observed_at_minute",
+            "result"
+          ],
+          "properties": {
+            "protocol_revision": {
+              "const": "frd-wire-1"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observation_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "observed_at_minute": {
+              "$ref": "#/$defs/UInt"
+            },
+            "result": {
+              "$ref": "#/$defs/OperationCancelResult"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/ErrorResponse"
+        }
+      ]
+    },
+    "Request": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/OrderContextReadRequest"
+        },
+        {
+          "$ref": "#/$defs/SourceReadRequest"
+        },
+        {
+          "$ref": "#/$defs/AvailabilityReadRequest"
+        },
+        {
+          "$ref": "#/$defs/RequirementsClarifyRequest"
+        },
+        {
+          "$ref": "#/$defs/ApprovalRequestRequest"
+        },
+        {
+          "$ref": "#/$defs/InventoryReserveRequest"
+        },
+        {
+          "$ref": "#/$defs/ArrangementRecordRequest"
+        },
+        {
+          "$ref": "#/$defs/OperationReconcileRequest"
+        },
+        {
+          "$ref": "#/$defs/OperationCancelRequest"
+        }
+      ]
+    },
+    "PlanIdentityValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "plan"
+      ],
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "plan": {
+          "$ref": "#/$defs/Plan"
+        }
+      }
+    },
+    "GrantIdentityValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "grant"
+      ],
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "grant": {
+          "$ref": "#/$defs/Grant"
+        }
+      }
+    },
+    "EffectIdentityValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "order_id",
+        "operation_kind",
+        "plan_digest",
+        "approval_id",
+        "grant_digest",
+        "expected_order_revision",
+        "terms",
+        "reservation_id"
+      ],
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "order_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "operation_kind": {
+          "$ref": "#/$defs/Kind"
+        },
+        "plan_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "approval_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "grant_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "expected_order_revision": {
+          "$ref": "#/$defs/Positive"
+        },
+        "terms": {
+          "$ref": "#/$defs/Terms"
+        },
+        "reservation_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "operation_kind": {
+              "const": "inventory.reserve"
+            },
+            "reservation_id": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "properties": {
+            "operation_kind": {
+              "const": "arrangement.record"
+            },
+            "reservation_id": {
+              "$ref": "#/$defs/Id"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

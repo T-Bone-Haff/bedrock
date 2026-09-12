@@ -1,0 +1,4 @@
+# Isolated authoring environment; no fixture/runtime dependency decision.
+jsonschema==4.25.1
+referencing==0.37.0
+pytest==8.4.2

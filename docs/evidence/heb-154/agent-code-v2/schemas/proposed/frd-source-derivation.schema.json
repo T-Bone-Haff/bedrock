@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:haffey:frd:source-derivation:1",
+  "title": "FRD source derivation entry — candidate",
+  "$comment": "One entry, not a completeness claim or fixture initialization. SOURCE-events is accepted design. event_origin is semantically required for event-derived records and may be omitted for ordinary originals; independent provenance verification must enforce applicability. Resolve input pointer to an actual structured record, never reinterpret an event description string as the source body.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "manifest_revision",
+    "derivation",
+    "input_artifact",
+    "world_id",
+    "json_pointer",
+    "source_body_definition",
+    "source"
+  ],
+  "properties": {
+    "manifest_revision": {
+      "const": "frd-source-derivation-1"
+    },
+    "derivation": {
+      "const": "jcs-structured-record"
+    },
+    "input_artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^[A-Za-z0-9._/-]+$",
+          "not": {
+            "anyOf": [
+              {
+                "pattern": "(^/|(^|/)\\.\\.(/|$))"
+              },
+              {
+                "pattern": "[^A-Za-z0-9._/-]"
+              }
+            ]
+          }
+        },
+        "sha256": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Digest"
+        }
+      }
+    },
+    "world_id": {
+      "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+    },
+    "json_pointer": {
+      "type": "string",
+      "pattern": "^(?:/(?:[^~/]|~[01])*)*$",
+      "maxLength": 4096
+    },
+    "source_body_definition": {
+      "enum": [
+        "OrderInitial",
+        "OrderArrangedProposed",
+        "Stock",
+        "Quote",
+        "CustomerBriefPack",
+        "CustomerBriefReference",
+        "SupplierNoticeProposed"
+      ]
+    },
+    "source": {
+      "$ref": "urn:haffey:frd:wire:1#/$defs/Source"
+    },
+    "event_origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "specification_artifact",
+        "case_id",
+        "event_json_pointer"
+      ],
+      "properties": {
+        "specification_artifact": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "pattern": "^[A-Za-z0-9._/-]+$",
+              "not": {
+                "anyOf": [
+                  {
+                    "pattern": "(^/|(^|/)\\.\\.(/|$))"
+                  },
+                  {
+                    "pattern": "[^A-Za-z0-9._/-]"
+                  }
+                ]
+              }
+            },
+            "sha256": {
+              "$ref": "urn:haffey:frd:wire:1#/$defs/Digest"
+            }
+          }
+        },
+        "case_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "event_json_pointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~/]|~[01])*)*$",
+          "maxLength": 4096
+        }
+      }
+    }
+  }
+}
