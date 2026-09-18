@@ -50,6 +50,7 @@ landing, never pre-claimed.
   transaction.
 - The production marketplace resolves `main`; unaccepted candidates remain on
   isolated feature branches. HEB-119 cold acceptance binds to the frozen reviewed
-  commit before merge. Only an explicit proceed permits a merge commit preserving
-  that commit as a direct parent, or a true fast-forward, followed by distributed
-  path parity proof and the matching immutable tag and GitHub release.
+  commit before merge. Only an explicit proceed permits a merge commit on
+  `main`'s first-parent history whose second parent is that accepted commit,
+  followed by distributed path parity proof and the matching immutable tag and
+  GitHub release.

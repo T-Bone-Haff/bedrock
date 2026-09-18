@@ -39,7 +39,8 @@ The lifecycle is:
 6. freeze the exact reviewed candidate commit and run independent cold
    acceptance under HEB-119 against that commit;
 7. only after a `proceed` decision, land the accepted commit on `main` by a
-   merge commit that preserves it as a direct parent or by a true fast-forward;
+   merge commit on `main`'s first-parent history whose second parent is the
+   accepted source commit;
 8. prove the marketplace catalog and installed package paths are byte-identical
    between the accepted commit and the landing commit, then create the matching
    tag and GitHub release at the accepted commit;
@@ -94,10 +95,10 @@ The release record conforms to `release-evidence.schema.json` and binds the
 candidate to the manifest digest, accepted source commit, finding
 reconciliation, changed surfaces, migration disposition, required gates,
 limitations, operator decision, and later landing record. The operator decision
-must precede landing. Release validation proves the accepted commit is either
-the landing commit or a direct parent of it, proves the landing commit is
-reachable from the declared local `refs/heads/main`, and proves that the
-marketplace catalog and installed package paths did not change during landing.
+must precede landing. Release validation proves the merge landing commit is on
+the declared local `refs/heads/main` first-parent history, proves its second
+parent is the accepted source commit, and proves that the marketplace catalog
+and installed package paths did not change during landing.
 The local marketplace branch must therefore be synchronized before release
 validation; an unavailable ref fails closed. Evidence produced by different
 fixture, catalog, policy, model, adapter, or source identities is not pooled.

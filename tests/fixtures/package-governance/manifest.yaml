@@ -7,6 +7,7 @@ defects:
   - {id: orphaned-skill-lifecycle, test: test_rejects_orphaned_skill_lifecycle, expected_diagnostic: owner is required}
   - {id: retirement-without-migration, test: test_rejects_retired_skill_without_migration, expected_diagnostic: non-active skill requires migration treatment}
   - {id: incomplete-consumer-enumeration, test: test_rejects_incomplete_consumer_enumeration, expected_diagnostic: must contain claude-ai and claude-code exactly}
+  - {id: non-merge-commit-landing-method, test: test_rejects_non_merge_commit_landing_method, expected_diagnostic: landing method must require merge_commit only}
   - {id: portable-core-version-drift, test: test_rejects_portable_core_version_drift_from_accepted_adr, expected_diagnostic: portable_core must match the accepted ADR-001 version}
   - {id: portable-core-provenance-drift, test: test_rejects_portable_core_authority_provenance_drift, expected_diagnostic: ADR-001 source must identify the accepted portable-core authority}
   - {id: compatibility-portable-core-drift, test: test_rejects_compatibility_portable_core_version_drift, expected_diagnostic: portable-core identity must match the registry}
@@ -37,8 +38,11 @@ defects:
   - {id: landing-before-acceptance, test: test_release_mode_rejects_landing_before_acceptance, expected_diagnostic: cold-acceptance proceed decision must precede landing}
   - {id: distribution-drift-during-landing, test: test_release_mode_rejects_distribution_drift_during_landing, expected_diagnostic: landing changed marketplace or installed package bytes after acceptance}
   - {id: landing-not-reachable-from-main, test: test_release_mode_rejects_landing_not_reachable_from_main, expected_diagnostic: landing commit must be reachable from marketplace branch main}
-  - {id: rebased-candidate-false-fast-forward, test: test_release_mode_rejects_rebased_candidate_claimed_as_fast_forward, expected_diagnostic: landing commit must be reachable from marketplace branch main}
-  - {id: merge-mislabeled-fast-forward, test: test_release_mode_rejects_merge_mislabeled_as_fast_forward, expected_diagnostic: fast-forward landing commit must be on the marketplace branch first-parent history}
-  - {id: folded-side-branch-mislabeled-fast-forward, test: test_release_mode_rejects_side_branch_fold_mislabeled_as_fast_forward, expected_diagnostic: fast-forward landing commit must be on the marketplace branch first-parent history}
+  - {id: rebased-candidate-false-fast-forward, test: test_release_mode_rejects_rebased_candidate_claimed_as_fast_forward, expected_diagnostic: release permits merge_commit landing only}
+  - {id: true-fast-forward-prohibited, test: test_release_mode_rejects_true_fast_forward_landing, expected_diagnostic: release permits merge_commit landing only}
+  - {id: merge-mislabeled-fast-forward, test: test_release_mode_rejects_merge_mislabeled_as_fast_forward, expected_diagnostic: release permits merge_commit landing only}
+  - {id: folded-side-branch-mislabeled-fast-forward, test: test_release_mode_rejects_side_branch_fold_mislabeled_as_fast_forward, expected_diagnostic: release permits merge_commit landing only}
+  - {id: swapped-parent-merge-mislabeled-fast-forward, test: test_release_mode_rejects_swapped_parent_merge_mislabeled_as_fast_forward, expected_diagnostic: release permits merge_commit landing only}
   - {id: merge-source-not-second-parent, test: test_release_mode_rejects_merge_with_source_as_third_parent, expected_diagnostic: merge landing must preserve the accepted source commit as its second parent}
   - {id: timezone-naive-landing-timestamp, test: test_release_mode_rejects_timezone_naive_landing_timestamp, expected_diagnostic: decision and landing timestamps must be valid timezone-aware date-times}
+  - {id: malformed-decision-record, test: test_release_mode_rejects_malformed_decision_record_cleanly, expected_diagnostic: release requires a valid decision record}

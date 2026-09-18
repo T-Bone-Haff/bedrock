@@ -36,7 +36,8 @@ the skill corpus into consumer repositories.
 
 The production marketplace resolves `main`, so cold acceptance runs against the
 frozen reviewed feature-branch commit before that commit lands. Only an explicit
-proceed decision permits a commit-preserving merge or fast-forward to `main`.
+proceed decision permits a merge commit on `main`'s first-parent history whose
+second parent is the accepted source commit.
 A release completes only after post-landing package-byte parity, an immutable
 tag and GitHub release at the accepted commit, and verification of every
 enumerated consumer surface. The operational rollout ledger may live in the

@@ -119,6 +119,13 @@ class PackageGovernanceTests(unittest.TestCase):
         path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
         self.assert_has_error("must contain claude-ai and claude-code exactly")
 
+    def test_rejects_non_merge_commit_landing_method(self) -> None:
+        path = self.root / "plugins/bedrock/governance/registry.yaml"
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+        payload["distribution"]["permitted_landing_methods"].append("fast_forward")
+        path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+        self.assert_has_error("landing method must require merge_commit only")
+
     def test_rejects_portable_core_version_drift_from_accepted_adr(self) -> None:
         path = self.root / "plugins/bedrock/governance/registry.yaml"
         payload = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -492,6 +499,17 @@ class PackageGovernanceTests(unittest.TestCase):
             )
             landing_method = "fast_forward"
             landing_commit = source_commit
+        elif landing_scenario == "swapped_parent_merge_mislabeled_fast_forward":
+            subprocess.run(["git", "switch", "-q", "candidate"], cwd=self.root, check=True)
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "merge advanced main into candidate", "main"],
+                cwd=self.root,
+                check=True,
+            )
+            subprocess.run(["git", "switch", "-q", "main"], cwd=self.root, check=True)
+            subprocess.run(["git", "merge", "--ff-only", "candidate"], cwd=self.root, check=True)
+            landing_method = "fast_forward"
+            landing_commit = source_commit
         elif landing_scenario == "merge_source_as_third_parent":
             subprocess.run(["git", "switch", "-qc", "alternate"], cwd=self.root, check=True)
             (self.root / "alternate-marker.txt").write_text("alternate candidate\n", encoding="utf-8")
@@ -649,20 +667,21 @@ class PackageGovernanceTests(unittest.TestCase):
             rollout_ledger=rollout_path,
         )
         self.assertTrue(
-            any("landing commit must be reachable from marketplace branch main" in error for error in errors),
+            any("release permits merge_commit landing only" in error for error in errors),
             errors,
         )
 
-    def test_release_mode_accepts_true_fast_forward_landing(self) -> None:
+    def test_release_mode_rejects_true_fast_forward_landing(self) -> None:
         evidence_path, rollout_path = self.write_release_fixture(landing_scenario="fast_forward")
-        self.assertEqual(
-            [],
-            validate_package_governance(
-                self.root,
-                release=True,
-                release_evidence=evidence_path,
-                rollout_ledger=rollout_path,
-            ),
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("release permits merge_commit landing only" in error for error in errors),
+            errors,
         )
 
     def test_release_mode_rejects_merge_mislabeled_as_fast_forward(self) -> None:
@@ -677,10 +696,7 @@ class PackageGovernanceTests(unittest.TestCase):
             rollout_ledger=rollout_path,
         )
         self.assertTrue(
-            any(
-                "fast-forward landing commit must be on the marketplace branch first-parent history" in error
-                for error in errors
-            ),
+            any("release permits merge_commit landing only" in error for error in errors),
             errors,
         )
 
@@ -695,10 +711,23 @@ class PackageGovernanceTests(unittest.TestCase):
             rollout_ledger=rollout_path,
         )
         self.assertTrue(
-            any(
-                "fast-forward landing commit must be on the marketplace branch first-parent history" in error
-                for error in errors
-            ),
+            any("release permits merge_commit landing only" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_rejects_swapped_parent_merge_mislabeled_as_fast_forward(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            landing_drift=True,
+            landing_scenario="swapped_parent_merge_mislabeled_fast_forward",
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("release permits merge_commit landing only" in error for error in errors),
             errors,
         )
 
@@ -732,6 +761,24 @@ class PackageGovernanceTests(unittest.TestCase):
         )
         self.assertTrue(
             any("decision and landing timestamps must be valid timezone-aware date-times" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_rejects_malformed_decision_record_cleanly(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture()
+        evidence = yaml.safe_load(evidence_path.read_text(encoding="utf-8"))
+        evidence["decision"] = "malformed"
+        evidence_path.write_text(yaml.safe_dump(evidence, sort_keys=False), encoding="utf-8")
+
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+
+        self.assertTrue(
+            any("release requires a valid decision record" in error for error in errors),
             errors,
         )
 

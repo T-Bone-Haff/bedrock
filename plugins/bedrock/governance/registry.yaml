@@ -7,7 +7,7 @@ distribution:
   marketplace_source: ./plugins/bedrock
   candidate_isolation: Feature branches are not resolved by the production marketplace; cold acceptance binds to the frozen reviewed source commit before it lands on main.
   acceptance_order: before-marketplace-branch-merge
-  permitted_landing_methods: [merge_commit, fast_forward]
+  permitted_landing_methods: [merge_commit]
   preserved_paths: [.claude-plugin/marketplace.json, plugins/bedrock]
 contracts:
   portable_core: 2.0.0

@@ -33,9 +33,9 @@ that branch. After review, freeze the exact candidate commit and run HEB-119
 cold acceptance against that commit before merge. A failed or changed candidate
 returns to implementation and requires fresh review and acceptance.
 
-After an explicit `proceed`, land the accepted commit by a merge commit that
-preserves it as a direct parent, or by a true fast-forward. Squash and rebase
-merges are not release landing methods because they replace the accepted commit.
+After an explicit `proceed`, land the accepted commit by a merge commit on
+`main`'s first-parent history whose second parent is the accepted source commit.
+Fast-forward, squash, and rebase are not release landing methods.
 Before tag or release, prove that `.claude-plugin/marketplace.json` and
 `plugins/bedrock/` are byte-identical between the accepted commit and the
 landing commit. Then create the matching immutable tag at the accepted commit,

@@ -75,7 +75,7 @@
       "properties": {
         "marketplace_branch": {"const": "main"},
         "commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
-        "method": {"enum": ["merge_commit", "fast_forward", null]},
+        "method": {"enum": ["merge_commit", null]},
         "merged_at": {"type": ["string", "null"], "format": "date-time"},
         "evidence": {"type": ["string", "null"], "minLength": 1}
       }

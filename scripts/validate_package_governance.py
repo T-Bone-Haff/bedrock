@@ -219,8 +219,8 @@ def _validate_registry(root: Path, errors: list[str]) -> dict[str, Any] | None:
             _error(errors, path, "registry marketplace source must match the accepted distribution boundary")
         if distribution.get("acceptance_order") != "before-marketplace-branch-merge":
             _error(errors, path, "cold acceptance must precede merge to the marketplace branch")
-        if set(distribution.get("permitted_landing_methods", [])) != {"merge_commit", "fast_forward"}:
-            _error(errors, path, "landing methods must preserve the accepted commit")
+        if distribution.get("permitted_landing_methods") != ["merge_commit"]:
+            _error(errors, path, "landing method must require merge_commit only")
         if distribution.get("preserved_paths") != list(PRESERVED_DISTRIBUTION_PATHS):
             _error(errors, path, "distribution parity paths must cover the marketplace and installed package")
         if not isinstance(distribution.get("candidate_isolation"), str) or not distribution["candidate_isolation"].strip():
@@ -755,7 +755,11 @@ def _validate_release(
         findings = evidence.get("findings", {})
         if findings.get("assigned") != findings.get("closed"):
             _error(errors, evidence_path, "all assigned findings must be closed")
-        if evidence.get("decision", {}).get("status") != "proceed":
+        decision = evidence.get("decision")
+        if not isinstance(decision, dict):
+            _error(errors, evidence_path, "release requires a valid decision record")
+            decision = {}
+        if decision.get("status") != "proceed":
             _error(errors, evidence_path, "release requires a proceed decision")
         blocked = {"failed", "unavailable"}
         if any(row.get("status") in blocked for row in evidence.get("gates", []) if isinstance(row, dict)):
@@ -774,17 +778,19 @@ def _validate_release(
         landing_commit = landing.get("commit") if isinstance(landing, dict) else None
         landing_method = landing.get("method") if isinstance(landing, dict) else None
         merged_at_value = landing.get("merged_at") if isinstance(landing, dict) else None
-        decision_at = _parse_timestamp(evidence.get("decision", {}).get("recorded_at"))
+        decision_at = _parse_timestamp(decision.get("recorded_at"))
         merged_at = _parse_timestamp(merged_at_value)
         if (
             not isinstance(landing_commit, str)
-            or landing_method not in {"merge_commit", "fast_forward"}
+            or not isinstance(landing_method, str)
             or not isinstance(merged_at_value, str)
             or not merged_at_value.strip()
             or not isinstance(landing.get("evidence"), str)
             or not landing["evidence"].strip()
         ):
             _error(errors, evidence_path, "release requires a complete landing record")
+        elif landing_method != "merge_commit":
+            _error(errors, evidence_path, "release permits merge_commit landing only")
         elif decision_at is None or merged_at is None:
             _error(
                 errors,
@@ -827,30 +833,20 @@ def _validate_release(
                         )
                     else:
                         first_parent_shas = set(first_parent.stdout.splitlines())
-                        if landing_method == "merge_commit" and landing_commit not in first_parent_shas:
+                        if landing_commit not in first_parent_shas:
                             _error(
                                 errors,
                                 evidence_path,
                                 "merge landing commit must be on the marketplace branch first-parent history",
                             )
-                        if landing_method == "fast_forward" and landing_commit not in first_parent_shas:
-                            _error(
-                                errors,
-                                evidence_path,
-                                "fast-forward landing commit must be on the marketplace branch first-parent history",
-                            )
                 parents = _git_result(root, "rev-list", "--parents", "-n", "1", landing_commit)
                 parent_shas = parents.stdout.strip().split()[1:] if parents.returncode == 0 else []
-                if landing_method == "merge_commit" and (
-                    len(parent_shas) < 2 or parent_shas[1] != source_commit
-                ):
+                if len(parent_shas) < 2 or parent_shas[1] != source_commit:
                     _error(
                         errors,
                         evidence_path,
                         "merge landing must preserve the accepted source commit as its second parent",
                     )
-                if landing_method == "fast_forward" and landing_commit != source_commit:
-                    _error(errors, evidence_path, "fast-forward landing commit must equal the accepted source commit")
                 parity = _git_result(
                     root,
                     "diff",
