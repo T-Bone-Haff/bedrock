@@ -17,14 +17,15 @@ must not be inferred from skill content.
 
 ## Candidate and release states
 
-A manifest version on a branch or on `main` is a **candidate** until cold
-acceptance makes an explicit release decision. The package cannot self-declare
-that state: the immutable tag, release evidence, and rollout ledger are the
-operational authority. Internal recovery candidates are not retroactively called
-releases. A consumer release requires one annotated tag named
-`v<manifest-version>`, a GitHub release at the same commit, retained release
-evidence, and a completed rollout ledger. There is no tag before the release
-decision.
+A manifest version on an isolated feature branch is a **candidate** until cold
+acceptance makes an explicit release decision. The production marketplace
+resolves `main`, which carries accepted package content only. The package cannot
+self-declare release state: the immutable tag, release evidence, and rollout
+ledger are the operational authority. Internal recovery candidates are not
+retroactively called releases. A consumer release requires one annotated tag
+named `v<manifest-version>` at the accepted source commit, a GitHub release at
+that commit, retained release evidence, and a completed rollout ledger. There
+is no tag before the release decision.
 
 The lifecycle is:
 
@@ -35,12 +36,25 @@ The lifecycle is:
    review evidence;
 4. record compatibility and migration impact;
 5. obtain the operator's ratified candidate gate;
-6. merge the reviewed candidate;
-7. run independent cold acceptance under HEB-119;
-8. only after a `proceed` decision, create the matching tag and GitHub release;
+6. freeze the exact reviewed candidate commit and run independent cold
+   acceptance under HEB-119 against that commit;
+7. only after a `proceed` decision, land the accepted commit on `main` by a
+   merge commit on `main`'s first-parent history whose second parent is the
+   accepted source commit;
+8. prove the marketplace catalog and installed package paths are byte-identical
+   between the accepted commit and the landing commit, then create the matching
+   tag and GitHub release at the accepted commit;
 9. execute and retain the per-release rollout ledger; and
 10. close only after every required surface has loaded the intended identity or
     has an explicit failed/waived disposition.
+
+Squash and rebase merges are prohibited for release landing because they replace
+the commit that review and cold acceptance bound. Any change to the candidate
+after review or during acceptance invalidates those gates. The same-repository
+relative marketplace source remains the production distribution shape; a
+candidate probe may resolve the isolated branch in a disposable host context,
+but must not repoint the production marketplace or make the candidate available
+to ordinary consumers.
 
 ## Recovery boundaries
 
@@ -70,17 +84,24 @@ The finished delta, not the ticket title, selects the version:
 - **patch**: correct a compatible defect or evidence carrier without changing
   the public contract.
 
-Every skill-content edit and its manifest bump land in one commit transaction.
-Metadata-only release-evidence corrections do not claim a new version unless
-they change bytes consumers must receive.
+Every skill-content edit and its manifest bump form one candidate transaction.
+Pre-merge acceptance does not split the version bump from the content it
+identifies. Metadata-only release-evidence corrections do not claim a new
+version unless they change bytes consumers must receive.
 
 ## Release evidence
 
 The release record conforms to `release-evidence.schema.json` and binds the
-candidate to the manifest digest, source commit, finding reconciliation,
-changed surfaces, migration disposition, required gates, limitations, and
-operator decision. Evidence produced by different fixture, catalog, policy,
-model, adapter, or source identities is not pooled.
+candidate to the manifest digest, accepted source commit, finding
+reconciliation, changed surfaces, migration disposition, required gates,
+limitations, operator decision, and later landing record. The operator decision
+must precede landing. Release validation proves the merge landing commit is on
+the declared local `refs/heads/main` first-parent history, proves its second
+parent is the accepted source commit, and proves that the marketplace catalog
+and installed package paths did not change during landing.
+The local marketplace branch must therefore be synchronized before release
+validation; an unavailable ref fails closed. Evidence produced by different
+fixture, catalog, policy, model, adapter, or source identities is not pooled.
 
 The operational rollout record conforms to `rollout-ledger.schema.json`. It may
 live in the tracker, but the schema and all load-bearing distribution rules are

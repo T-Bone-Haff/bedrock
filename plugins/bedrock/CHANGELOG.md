@@ -13,6 +13,9 @@ records candidate and released changes; a version heading is not release proof.
   known-dirty case that makes the named detector fire.
 - Add routing evidence that preserves the boundaries among diagnosis, planned
   testing, and executor-handoff authoring.
+- Require cold acceptance before marketplace landing and permit only a merge
+  commit on `main`'s first-parent history whose second parent is the accepted
+  source commit, with package-byte parity verified before release.
 
 ## 9.0.0 — portable-core 2.0 and derived-evidence candidate
 

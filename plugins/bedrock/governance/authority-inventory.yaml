@@ -5,7 +5,7 @@ concepts:
     repetitions:
       - {path: "plugins/bedrock/skills/{skill}/PACKAGE_IDENTITY.json", classification: generated-carrier, drift_control: all 13 copies are regenerated from and validated byte-for-byte against the manifest authority}
       - {path: plugins/bedrock/CHANGELOG.md, classification: contextual-restatement, drift_control: package-governance validator requires the current candidate identity}
-      - {path: release tag, classification: generated-carrier, drift_control: "release-mode validator requires v{manifest_version} at HEAD"}
+      - {path: release tag, classification: generated-carrier, drift_control: "release-mode validator requires v{manifest_version} at the accepted source commit"}
   - concept: repository license
     authority: LICENSE
     repetitions:
@@ -35,8 +35,16 @@ concepts:
     repetitions:
       - {path: README.md, classification: contextual-restatement, drift_control: package-governance validator}
       - {path: CLAUDE.md, classification: contextual-restatement, drift_control: orientation marker validation}
+      - {path: plugins/bedrock/governance/release-evidence.schema.json, classification: generated-carrier, drift_control: schema and release-mode validation}
       - {path: plugins/bedrock/governance/release-evidence.template.yaml, classification: generated-carrier, drift_control: JSON Schema validation at release}
       - {path: plugins/bedrock/governance/rollout-ledger.template.yaml, classification: generated-carrier, drift_control: JSON Schema validation at release}
+  - concept: production distribution boundary
+    authority: plugins/bedrock/governance/registry.yaml#/distribution
+    repetitions:
+      - {path: .claude-plugin/marketplace.json#/plugins/0/source, classification: generated-carrier, drift_control: package-governance validator requires the accepted production source}
+      - {path: docs/repository-orientation.md#/change-and-release-path, classification: contextual-restatement, drift_control: package-governance orientation validation}
+      - {path: plugins/bedrock/governance/README.md#/candidate-and-release-states, classification: contextual-restatement, drift_control: package-governance lifecycle marker validation}
+      - {path: plugins/bedrock/governance/release-evidence.schema.json#/properties/landing, classification: generated-carrier, drift_control: schema and release-mode validation}
   - concept: repository orientation
     authority: docs/repository-orientation.md
     repetitions:

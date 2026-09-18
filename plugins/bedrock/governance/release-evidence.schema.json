@@ -14,7 +14,8 @@
     "migration",
     "gates",
     "limitations",
-    "decision"
+    "decision",
+    "landing"
   ],
   "properties": {
     "schema_version": {"const": 1},
@@ -65,6 +66,18 @@
         "status": {"enum": ["pending", "proceed", "conditional_proceed", "pause"]},
         "authority": {"type": "string", "minLength": 1},
         "recorded_at": {"type": ["string", "null"], "format": "date-time"}
+      }
+    },
+    "landing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["marketplace_branch", "commit", "method", "merged_at", "evidence"],
+      "properties": {
+        "marketplace_branch": {"const": "main"},
+        "commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+        "method": {"enum": ["merge_commit", null]},
+        "merged_at": {"type": ["string", "null"], "format": "date-time"},
+        "evidence": {"type": ["string", "null"], "minLength": 1}
       }
     }
   }
