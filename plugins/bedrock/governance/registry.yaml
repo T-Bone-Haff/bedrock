@@ -2,6 +2,13 @@ schema_version: 1
 version_authority: plugins/bedrock/.claude-plugin/plugin.json#/version
 release_tag_pattern: v{manifest_version}
 release_state_source: Immutable tag plus schema-valid release evidence and rollout ledger; the packaged candidate does not self-ratify.
+distribution:
+  marketplace_branch: main
+  marketplace_source: ./plugins/bedrock
+  candidate_isolation: Feature branches are not resolved by the production marketplace; cold acceptance binds to the frozen reviewed source commit before it lands on main.
+  acceptance_order: before-marketplace-branch-merge
+  permitted_landing_methods: [merge_commit, fast_forward]
+  preserved_paths: [.claude-plugin/marketplace.json, plugins/bedrock]
 contracts:
   portable_core: 2.0.0
   claude_adapter: 1.1.0
@@ -113,5 +120,6 @@ skills:
 sources:
   - {id: adr-001, type: ratified-architecture, location: docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md, authority_version: 2.0.0, status: accepted, applicability: package architecture and versioning}
   - {id: claude-plugin-reference, type: vendor-documentation, location: "https://code.claude.com/docs/en/plugins-reference", accessed: 2026-08-11, applicability: manifest metadata, packaging, and update behavior}
+  - {id: claude-marketplace-reference, type: vendor-documentation, location: "https://code.claude.com/docs/en/plugin-marketplaces", accessed: 2026-09-18, applicability: marketplace and plugin source resolution, version caching, and release channels}
   - {id: semantic-versioning, type: public-standard, location: "https://semver.org/spec/v2.0.0.html", accessed: 2026-08-11, applicability: package version classification}
   - {id: mit-license, type: ratified-license, location: LICENSE, applicability: copying, modification, and redistribution}

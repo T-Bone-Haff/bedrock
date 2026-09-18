@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
-from datetime import date
+from datetime import date, datetime
 import hashlib
 import json
 from pathlib import Path
@@ -98,6 +98,11 @@ FINAL_RELEASE_GATES = {
 }
 PACKAGE_IDENTITY_CARRIER = "plugins/bedrock/skills/{skill}/PACKAGE_IDENTITY.json"
 PORTABLE_CORE_AUTHORITY = "docs/adr/ADR-001-portable-core-and-surface-adapter-architecture.md"
+PRODUCTION_MARKETPLACE_SOURCE = "./plugins/bedrock"
+PRESERVED_DISTRIBUTION_PATHS = (
+    ".claude-plugin/marketplace.json",
+    "plugins/bedrock",
+)
 ADR_VERSION = re.compile(r"^\| \*\*Version\*\* \| ([0-9]+\.[0-9]+\.[0-9]+) \|$", re.MULTILINE)
 ADR_STATUS = re.compile(r"^\| \*\*Status\*\* \| ACCEPTED\b", re.MULTILINE)
 
@@ -183,6 +188,8 @@ def _validate_metadata(root: Path, errors: list[str]) -> str | None:
         _error(errors, marketplace_path, "must contain exactly one bedrock plugin entry")
         return version
     entry = matches[0]
+    if entry.get("source") != PRODUCTION_MARKETPLACE_SOURCE:
+        _error(errors, marketplace_path, "marketplace source must match the accepted distribution boundary")
     for field in ("description", "author", "repository", "homepage", "license", "keywords"):
         if entry.get(field) != plugin.get(field):
             _error(errors, marketplace_path, f"bedrock {field} must equal plugin.json {field}")
@@ -202,6 +209,22 @@ def _validate_registry(root: Path, errors: list[str]) -> dict[str, Any] | None:
         _error(errors, path, "manifest must be the sole package version authority")
     if not isinstance(registry.get("release_state_source"), str) or not registry["release_state_source"].strip():
         _error(errors, path, "release state must be derived from external tag and evidence authority")
+    distribution = registry.get("distribution")
+    if not isinstance(distribution, dict):
+        _error(errors, path, "distribution boundary must be declared")
+    else:
+        if distribution.get("marketplace_branch") != "main":
+            _error(errors, path, "production marketplace branch must be main")
+        if distribution.get("marketplace_source") != PRODUCTION_MARKETPLACE_SOURCE:
+            _error(errors, path, "registry marketplace source must match the accepted distribution boundary")
+        if distribution.get("acceptance_order") != "before-marketplace-branch-merge":
+            _error(errors, path, "cold acceptance must precede merge to the marketplace branch")
+        if set(distribution.get("permitted_landing_methods", [])) != {"merge_commit", "fast_forward"}:
+            _error(errors, path, "landing methods must preserve the accepted commit")
+        if distribution.get("preserved_paths") != list(PRESERVED_DISTRIBUTION_PATHS):
+            _error(errors, path, "distribution parity paths must cover the marketplace and installed package")
+        if not isinstance(distribution.get("candidate_isolation"), str) or not distribution["candidate_isolation"].strip():
+            _error(errors, path, "candidate isolation rule is required")
     contracts = registry.get("contracts")
     if not isinstance(contracts, dict) or any(
         not isinstance(contracts.get(key), str) or not SEMVER.fullmatch(contracts[key])
@@ -418,7 +441,13 @@ def _validate_documents(
         _error(errors, package_license, "installed-package license must match repository license exactly")
 
     markers = {
-        "plugins/bedrock/governance/README.md": ("## Semantic-version decisions", "## Rollback", "HEB-119"),
+        "plugins/bedrock/governance/README.md": (
+            "## Semantic-version decisions",
+            "## Rollback",
+            "HEB-119",
+            "accepted package content only",
+            "Squash and rebase merges are prohibited",
+        ),
         "plugins/bedrock/governance/COMPATIBILITY.md": ("Claude Code", "Claude.ai", "unsupported"),
         "plugins/bedrock/governance/POLICIES.md": ("## Security reporting", "## Support", "## Deprecation and retirement"),
         "plugins/bedrock/governance/THREAT-MODEL.md": ("Malicious skill content", "Poisoned or drifting references", "Marketplace or source compromise", "External product-runner drift"),
@@ -476,6 +505,14 @@ def _validate_documents(
             _error(errors, orientation, "tracked orientation must name the actual manifest authority")
         if "root `AGENTS.md` is the tracked Codex adapter" not in text:
             _error(errors, orientation, "Claude carrier must classify root AGENTS.md as the tracked Codex adapter")
+        if "HEB-119 cold acceptance binds to the frozen reviewed" not in text or "commit before merge" not in text:
+            _error(errors, orientation, "Claude carrier must preserve the pre-merge acceptance boundary")
+
+    readme = root / "README.md"
+    if readme.is_file():
+        text = readme.read_text(encoding="utf-8")
+        if "cold acceptance runs against the" not in text or "before that commit lands" not in text:
+            _error(errors, readme, "README release guidance must preserve the pre-merge acceptance boundary")
 
     codex_adapter = root / "AGENTS.md"
     if codex_adapter.is_file() and codex_adapter.read_text(encoding="utf-8") != EXPECTED_CODEX_ADAPTER:
@@ -486,6 +523,12 @@ def _validate_documents(
         text = canonical_orientation.read_text(encoding="utf-8")
         if "root `AGENTS.md` is the Codex adapter" not in text:
             _error(errors, canonical_orientation, "canonical orientation must classify root AGENTS.md as the Codex adapter")
+        if (
+            "production marketplace resolves `main`" not in text
+            or "package content only" not in text
+            or "cold acceptance against that commit before merge" not in text
+        ):
+            _error(errors, canonical_orientation, "canonical orientation must require acceptance before marketplace-branch merge")
 
     markdown_files = [root / relative for relative in REQUIRED_FILES if relative.endswith(".md")]
     for path in markdown_files:
@@ -522,6 +565,15 @@ def _validate_schemas(root: Path, errors: list[str]) -> None:
             gate_ids = [row.get("id") for row in template.get("gates", []) if isinstance(row, dict)]
             if set(gate_ids) != FINAL_RELEASE_GATES or len(gate_ids) != len(FINAL_RELEASE_GATES):
                 _error(errors, template_path, "template must enumerate every final release gate exactly once")
+            expected_landing = {
+                "marketplace_branch": "main",
+                "commit": None,
+                "method": None,
+                "merged_at": None,
+                "evidence": None,
+            }
+            if template.get("landing") != expected_landing:
+                _error(errors, template_path, "release template must carry a pending marketplace landing record")
 
 
 def _nested_enum(schema: dict[str, Any], *path: str) -> list[str] | None:
@@ -637,6 +689,25 @@ def _validate_heb118_evidence(root: Path, errors: list[str]) -> None:
                     _error(errors, location, f"claim evidence does not exist: {item}")
 
 
+def _git_result(root: Path, *arguments: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", *arguments],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+
+def _parse_timestamp(value: Any) -> datetime | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
 def _validate_release(
     root: Path,
     version: str | None,
@@ -695,22 +766,45 @@ def _validate_release(
         ):
             _error(errors, evidence_path, "release requires every named final gate to pass exactly once")
         source_commit = evidence.get("source_commit")
-        result = subprocess.run(
-            ["git", "rev-list", "-n", "1", tag],
-            cwd=root,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
+        landing = evidence.get("landing", {})
+        landing_commit = landing.get("commit") if isinstance(landing, dict) else None
+        landing_method = landing.get("method") if isinstance(landing, dict) else None
+        decision_at = _parse_timestamp(evidence.get("decision", {}).get("recorded_at"))
+        merged_at = _parse_timestamp(landing.get("merged_at")) if isinstance(landing, dict) else None
+        if (
+            not isinstance(landing_commit, str)
+            or landing_method not in {"merge_commit", "fast_forward"}
+            or merged_at is None
+            or not isinstance(landing.get("evidence"), str)
+            or not landing["evidence"].strip()
+        ):
+            _error(errors, evidence_path, "release requires a complete landing record")
+        elif decision_at is None or decision_at >= merged_at:
+            _error(errors, evidence_path, "cold-acceptance proceed decision must precede landing")
+        elif not isinstance(source_commit, str):
+            _error(errors, evidence_path, "release requires an accepted source commit")
+        else:
+            parents = _git_result(root, "rev-list", "--parents", "-n", "1", landing_commit)
+            parent_shas = parents.stdout.strip().split()[1:] if parents.returncode == 0 else []
+            if landing_method == "merge_commit" and source_commit not in parent_shas:
+                _error(errors, evidence_path, "merge landing must preserve the accepted source commit as a direct parent")
+            if landing_method == "fast_forward" and landing_commit != source_commit:
+                _error(errors, evidence_path, "fast-forward landing commit must equal the accepted source commit")
+            parity = _git_result(
+                root,
+                "diff",
+                "--quiet",
+                source_commit,
+                landing_commit,
+                "--",
+                *PRESERVED_DISTRIBUTION_PATHS,
+            )
+            if parity.returncode != 0:
+                _error(errors, evidence_path, "landing changed marketplace or installed package bytes after acceptance")
+        result = _git_result(root, "rev-list", "-n", "1", tag)
         if result.returncode != 0 or result.stdout.strip() != source_commit:
             _error(errors, "release gate", f"immutable tag {tag} must resolve to the evidence source commit")
-        tag_type = subprocess.run(
-            ["git", "cat-file", "-t", tag],
-            cwd=root,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
+        tag_type = _git_result(root, "cat-file", "-t", tag)
         if tag_type.returncode != 0 or tag_type.stdout.strip() != "tag":
             _error(errors, "release gate", f"{tag} must be an annotated tag")
     if rollout:

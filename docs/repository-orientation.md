@@ -26,11 +26,22 @@ consumer project template. It is not the private HE-Bedrock governance corpus.
 
 ## Change and release path
 
-Changes use a feature branch and pull request into `main`. Skill-content changes
-and their manifest bump land in one transaction. A merged manifest identity is
-a release candidate until HEB-119 cold acceptance returns an explicit proceed
-decision. Only then may the matching immutable tag, GitHub release, and
-consumer-surface rollout occur.
+The production marketplace resolves `main`, so that branch carries accepted
+package content only. Changes use an isolated feature branch and pull request.
+Skill-content changes and their manifest bump form one candidate transaction on
+that branch. After review, freeze the exact candidate commit and run HEB-119
+cold acceptance against that commit before merge. A failed or changed candidate
+returns to implementation and requires fresh review and acceptance.
+
+After an explicit `proceed`, land the accepted commit by a merge commit that
+preserves it as a direct parent, or by a true fast-forward. Squash and rebase
+merges are not release landing methods because they replace the accepted commit.
+Before tag or release, prove that `.claude-plugin/marketplace.json` and
+`plugins/bedrock/` are byte-identical between the accepted commit and the
+landing commit. Then create the matching immutable tag at the accepted commit,
+publish the GitHub release, and execute consumer-surface rollout. This ordering
+preserves the one-transaction manifest rule while preventing an unaccepted
+candidate from reaching the production marketplace branch.
 
 The package's own skill contracts are the engineering standards for work in
 this repository. This orientation does not mirror them.

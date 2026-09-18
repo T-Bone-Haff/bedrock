@@ -81,6 +81,18 @@ class PackageGovernanceTests(unittest.TestCase):
         path.write_text(json.dumps(payload), encoding="utf-8")
         self.assert_has_error("must not duplicate the manifest version authority")
 
+    def test_rejects_marketplace_source_boundary_drift(self) -> None:
+        path = self.root / ".claude-plugin/marketplace.json"
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        payload["plugins"][0]["source"] = {
+            "source": "git-subdir",
+            "url": "https://github.com/T-Bone-Haff/bedrock.git",
+            "path": "plugins/bedrock",
+            "ref": "candidate",
+        }
+        path.write_text(json.dumps(payload), encoding="utf-8")
+        self.assert_has_error("marketplace source must match the accepted distribution boundary")
+
     def test_rejects_license_carrier_drift(self) -> None:
         path = self.root / "plugins/bedrock/LICENSE"
         path.write_text(path.read_text(encoding="utf-8") + "\ndrift\n", encoding="utf-8")
@@ -192,6 +204,13 @@ class PackageGovernanceTests(unittest.TestCase):
         path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
         self.assert_has_error("gate_status must match the governing schema enum exactly")
 
+    def test_rejects_release_template_without_pending_landing(self) -> None:
+        path = self.root / "plugins/bedrock/governance/release-evidence.template.yaml"
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+        payload.pop("landing")
+        path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+        self.assert_has_error("release template must carry a pending marketplace landing record")
+
     def test_rejects_uncontrolled_duplicate_authority(self) -> None:
         path = self.root / "plugins/bedrock/governance/authority-inventory.yaml"
         payload = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -245,6 +264,18 @@ class PackageGovernanceTests(unittest.TestCase):
         self.assertNotEqual(original, changed)
         path.write_text(changed, encoding="utf-8")
         self.assert_has_error("canonical orientation must classify root AGENTS.md as the Codex adapter")
+
+    def test_rejects_canonical_orientation_acceptance_order_drift(self) -> None:
+        path = self.root / "docs/repository-orientation.md"
+        original = path.read_text(encoding="utf-8")
+        changed = original.replace(
+            "cold acceptance against that commit before merge",
+            "cold acceptance against that commit after merge",
+            1,
+        )
+        self.assertNotEqual(original, changed)
+        path.write_text(changed, encoding="utf-8")
+        self.assert_has_error("canonical orientation must require acceptance before marketplace-branch merge")
 
     def test_rejects_missing_package_identity_carrier(self) -> None:
         carrier_paths = self.write_package_identity_carriers()
@@ -380,19 +411,45 @@ class PackageGovernanceTests(unittest.TestCase):
         errors = validate_package_governance(self.root, release=True)
         self.assertTrue(any("requires --release-evidence" in error for error in errors), errors)
 
-    def test_release_mode_accepts_external_evidence_after_immutable_tag(self) -> None:
+    def write_release_fixture(
+        self,
+        *,
+        decision_at: str = "2026-08-11T21:00:00Z",
+        merged_at: str = "2026-08-11T21:05:00Z",
+        landing_drift: bool = False,
+    ) -> tuple[Path, Path]:
         manifest_path = self.root / "plugins/bedrock/.claude-plugin/plugin.json"
         manifest_version = json.loads(manifest_path.read_text(encoding="utf-8"))["version"]
         release_tag = f"v{manifest_version}"
-        subprocess.run(["git", "init", "-q"], cwd=self.root, check=True)
+        subprocess.run(["git", "init", "-q", "-b", "main"], cwd=self.root, check=True)
         subprocess.run(["git", "config", "user.name", "Bedrock Test"], cwd=self.root, check=True)
         subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=self.root, check=True)
         subprocess.run(["git", "add", "."], cwd=self.root, check=True)
-        subprocess.run(["git", "commit", "-qm", "candidate"], cwd=self.root, check=True)
+        subprocess.run(["git", "commit", "-qm", "base"], cwd=self.root, check=True)
+        subprocess.run(["git", "switch", "-qc", "candidate"], cwd=self.root, check=True)
+        subprocess.run(["git", "commit", "--allow-empty", "-qm", "candidate"], cwd=self.root, check=True)
         source_commit = subprocess.run(
             ["git", "rev-parse", "HEAD"], cwd=self.root, check=True, capture_output=True, text=True
         ).stdout.strip()
-        subprocess.run(["git", "tag", "-am", "release", release_tag], cwd=self.root, check=True)
+        subprocess.run(["git", "switch", "-q", "main"], cwd=self.root, check=True)
+        if landing_drift:
+            drift_path = self.root / "plugins/bedrock/governance/README.md"
+            drift_path.write_text(drift_path.read_text(encoding="utf-8") + "\nlanding drift\n", encoding="utf-8")
+            subprocess.run(["git", "add", str(drift_path)], cwd=self.root, check=True)
+            subprocess.run(["git", "commit", "-qm", "change package during landing"], cwd=self.root, check=True)
+        subprocess.run(
+            ["git", "merge", "--no-ff", "-m", "land accepted candidate", "candidate"],
+            cwd=self.root,
+            check=True,
+        )
+        landing_commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=self.root, check=True, capture_output=True, text=True
+        ).stdout.strip()
+        subprocess.run(
+            ["git", "tag", "-am", "release", release_tag, source_commit],
+            cwd=self.root,
+            check=True,
+        )
         manifest_digest = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
         gate_ids = (
             "deterministic",
@@ -417,7 +474,14 @@ class PackageGovernanceTests(unittest.TestCase):
             "decision": {
                 "status": "proceed",
                 "authority": "operator",
-                "recorded_at": "2026-08-11T21:00:00Z",
+                "recorded_at": decision_at,
+            },
+            "landing": {
+                "marketplace_branch": "main",
+                "commit": landing_commit,
+                "method": "merge_commit",
+                "merged_at": merged_at,
+                "evidence": "https://github.com/T-Bone-Haff/bedrock/pull/1",
             },
         }
         rollout = {
@@ -444,6 +508,10 @@ class PackageGovernanceTests(unittest.TestCase):
         rollout_path = self.root / "rollout-ledger.yaml"
         evidence_path.write_text(yaml.safe_dump(evidence, sort_keys=False), encoding="utf-8")
         rollout_path.write_text(yaml.safe_dump(rollout, sort_keys=False), encoding="utf-8")
+        return evidence_path, rollout_path
+
+    def test_release_mode_accepts_external_evidence_after_immutable_tag(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture()
         self.assertEqual(
             [],
             validate_package_governance(
@@ -452,6 +520,35 @@ class PackageGovernanceTests(unittest.TestCase):
                 release_evidence=evidence_path,
                 rollout_ledger=rollout_path,
             ),
+        )
+
+    def test_release_mode_rejects_landing_before_acceptance(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            decision_at="2026-08-11T21:10:00Z",
+            merged_at="2026-08-11T21:05:00Z",
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("cold-acceptance proceed decision must precede landing" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_rejects_distribution_drift_during_landing(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(landing_drift=True)
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("landing changed marketplace or installed package bytes after acceptance" in error for error in errors),
+            errors,
         )
 
     def test_seeded_governance_defect_manifest_names_existing_tests(self) -> None:

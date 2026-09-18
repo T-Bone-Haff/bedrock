@@ -34,11 +34,15 @@ marketplace version in the next new session. Claude Code requires marketplace
 refresh/update, plugin update, and a new session. Neither path requires copying
 the skill corpus into consumer repositories.
 
-A release completes only after cold acceptance, an immutable tag and GitHub
-release matching the manifest, and verification of every enumerated consumer
-surface. The operational rollout ledger may live in the HE-Bedrock tracker, but
-it conforms to the installed schema and cannot replace the package's
-load-bearing lifecycle rules. See the [package lifecycle](plugins/bedrock/governance/README.md),
+The production marketplace resolves `main`, so cold acceptance runs against the
+frozen reviewed feature-branch commit before that commit lands. Only an explicit
+proceed decision permits a commit-preserving merge or fast-forward to `main`.
+A release completes only after post-landing package-byte parity, an immutable
+tag and GitHub release at the accepted commit, and verification of every
+enumerated consumer surface. The operational rollout ledger may live in the
+HE-Bedrock tracker, but it conforms to the installed schema and cannot replace
+the package's load-bearing lifecycle rules. See the
+[package lifecycle](plugins/bedrock/governance/README.md),
 [compatibility matrix](plugins/bedrock/governance/COMPATIBILITY.md), and
 [security/support policies](plugins/bedrock/governance/POLICIES.md).
 
@@ -86,8 +90,10 @@ bash scripts/smoke_clean_install.sh
 tests and release automation. Its default mode validates a candidate. Its
 `--release` mode additionally requires paths to operator-supplied, schema-valid
 release evidence and a completed consumer-surface rollout ledger, and proves
-both against the immutable tag. It is a final release-closure check, not a
-pre-HEB-119 candidate gate.
+the acceptance decision preceded landing, the accepted commit survived landing,
+the distributed paths retained byte parity, and the tag and rollout identities
+agree. It is a final release-closure check, not the pre-merge HEB-119 candidate
+gate itself.
 
 `sync_package_identity.py --check` proves the 13 skill-local identity carriers
 are byte-identical, canonical generations of the manifest and registry

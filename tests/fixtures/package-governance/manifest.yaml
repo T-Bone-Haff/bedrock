@@ -2,6 +2,7 @@ schema_version: 1
 defects:
   - {id: manifest-license-drift, test: test_rejects_manifest_metadata_drift, expected_diagnostic: "license must equal 'MIT'"}
   - {id: competing-version-authority, test: test_rejects_marketplace_authority_drift, expected_diagnostic: must not duplicate the manifest version authority}
+  - {id: marketplace-source-boundary-drift, test: test_rejects_marketplace_source_boundary_drift, expected_diagnostic: marketplace source must match the accepted distribution boundary}
   - {id: installed-license-drift, test: test_rejects_license_carrier_drift, expected_diagnostic: license must match repository license exactly}
   - {id: orphaned-skill-lifecycle, test: test_rejects_orphaned_skill_lifecycle, expected_diagnostic: owner is required}
   - {id: retirement-without-migration, test: test_rejects_retired_skill_without_migration, expected_diagnostic: non-active skill requires migration treatment}
@@ -15,10 +16,12 @@ defects:
   - {id: nonexact-verified-host, test: test_rejects_nonexact_verified_host_identity, expected_diagnostic: verified Claude Code hosts must use exact SemVer identities}
   - {id: ci-host-floor-drift, test: test_rejects_ci_host_floor_drift, expected_diagnostic: Claude Code CI pins must exercise the supported minimum}
   - {id: vocabulary-schema-drift, test: test_rejects_vocabulary_schema_drift, expected_diagnostic: gate_status must match the governing schema enum exactly}
+  - {id: missing-pending-landing-record, test: test_rejects_release_template_without_pending_landing, expected_diagnostic: release template must carry a pending marketplace landing record}
   - {id: uncontrolled-duplicate-authority, test: test_rejects_uncontrolled_duplicate_authority, expected_diagnostic: every repetition requires an allowed classification and drift control}
   - {id: stale-context-measurement, test: test_rejects_stale_context_measurement, expected_diagnostic: catalog description measurement is stale}
   - {id: missing-package-finding, test: test_rejects_missing_package_finding, expected_diagnostic: must contain PKG-001 through PKG-039 exactly once}
   - {id: missing-governance-link, test: test_rejects_missing_governance_link, expected_diagnostic: package-governance link target does not exist}
+  - {id: acceptance-order-orientation-drift, test: test_rejects_canonical_orientation_acceptance_order_drift, expected_diagnostic: canonical orientation must require acceptance before marketplace-branch merge}
   - {id: missing-package-identity-carrier, test: test_rejects_missing_package_identity_carrier, expected_diagnostic: package identity carrier is missing}
   - {id: malformed-package-identity-carrier, test: test_rejects_malformed_package_identity_carrier, expected_diagnostic: package identity carrier is not valid JSON}
   - {id: stale-package-identity-version, test: test_rejects_stale_package_identity_version, expected_diagnostic: package identity carrier does not match the manifest authority}
@@ -31,3 +34,5 @@ defects:
   - {id: stale-directory-package-identity-carriers, test: test_rejects_every_package_identity_carrier_in_stale_skill_directories, expected_diagnostic: package identity carrier is unexpected}
   - {id: write-with-extra-package-identity-carrier, test: test_write_refuses_unexpected_package_identity_carrier_before_mutation, expected_diagnostic: package identity carrier is unexpected}
   - {id: release-before-acceptance, test: test_release_mode_fails_closed_before_acceptance, expected_diagnostic: release mode requires --release-evidence}
+  - {id: landing-before-acceptance, test: test_release_mode_rejects_landing_before_acceptance, expected_diagnostic: cold-acceptance proceed decision must precede landing}
+  - {id: distribution-drift-during-landing, test: test_release_mode_rejects_distribution_drift_during_landing, expected_diagnostic: landing changed marketplace or installed package bytes after acceptance}
