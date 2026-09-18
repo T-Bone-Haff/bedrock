@@ -1,0 +1,55 @@
+{
+  "reviewer_result": {
+    "schema_version": "1.0.0",
+    "kind": "reviewer_result",
+    "invocation_id": "c5-supplemental-cross-set-1",
+    "source": "C5-MIN-CUSTODY-CONSTRUCT-1@459c4a93fa3f9048f31478a70ee1889dba475d828cc174c380c7eba8af3ea1fb",
+    "stance": "cross-set",
+    "findings": [
+      {
+        "id": "a483dab16a88cee4e058406b9c7dc0f55afc2748bf774bfb68dd241918c981f0",
+        "severity": "BLOCKING",
+        "targets": ["AC1-AC3-INTERFACE"],
+        "locus": "candidate-5-minimal-custody-construct-spec.md, Decision C5C-plan prerequisite block, post-approval revalidation paragraph, and C5C-prerequisite-authority invariant",
+        "stance": "cross-set",
+        "claim": "The construct's C5C-prerequisite-authority invariant says every separately owned prerequisite is revalidated at the launch edge, but the operative post-approval step re-reads only pricing, spend authorization, and calibration-launch authorization. It neither re-reads the external run manifest, evaluator configuration, provider profile/settings, or provider-relay contract nor freezes their verified bytes as the launch-consumed snapshot, so those AC-1 authorities can drift before AC-3 run-identity consumption without a stated detection gate.",
+        "cited_authority": {
+          "kind": "coherence",
+          "ref": "DDR-HEB-154-001-candidate-5-custody-boundary-reset.md, Ratified closure dispositions AC-1 and AC-3 and Ratified corrective closure packet RC-1; candidate-5-minimal-custody-construct-spec.md, Decision C5C-plan"
+        },
+        "status": "open",
+        "related_finding_ids": []
+      }
+    ],
+    "survived_attacks": [
+      {
+        "surface": "RC-0: the profile's 13-artifact authority table matches the test definition's exhaustive authority boundary artifact-for-artifact, while charges, validators, the result schema, and input-manifest controls remain only in the separately frozen review-instrument population.",
+        "cited_authority": {"kind": "coherence", "ref": "candidate-5-minimal-custody-test-definition.md, Review boundary; review-profile.md, Frozen authority substrate and Frozen review instruments"}
+      },
+      {
+        "surface": "RC-4: the construct orders static checks, approval, RC-1 revalidation, durable create-once consumption, stopped-container creation and host inspection, trusted-wrapper runtime proof, durable boundary receipt, and only then evaluator exec; preflight failure cannot execute evaluator code, and every post-marker failure permanently fails the run identity while preserving available evidence.",
+        "cited_authority": {"kind": "coherence", "ref": "candidate-5-minimal-custody-construct-spec.md, Decision C5C-isolate and Decision C5C-stop evaluator phase order and failure behavior"}
+      }
+    ]
+  },
+  "checks": [
+    {
+      "target_id": "RC-0",
+      "outcome": "closed",
+      "basis": "Compared every artifact identity and SHA-256 in the profile's frozen authority table with the test definition's complete Review boundary list, then checked that the profile classifies all review-control artifacts only in its separately hash-frozen instrument population.",
+      "report_ref": "review-profile.md#frozen-authority-substrate and review-profile.md#frozen-review-instruments; candidate-5-minimal-custody-test-definition.md#review-boundary"
+    },
+    {
+      "target_id": "RC-4",
+      "outcome": "closed",
+      "basis": "Traced the exact executable sequence from static plan and launch checks through approval, RC-1 revalidation, durable marker creation, stopped-container host inspection, trusted-wrapper mount proof and durable receipt, and evaluator exec; also traced preflight and post-marker failures against evaluator non-execution, evidence preservation, container destruction when possible, and permanent same-ID refusal.",
+      "report_ref": "candidate-5-minimal-custody-construct-spec.md#decision-c5c-isolate--mount-only-the-current-phase and candidate-5-minimal-custody-construct-spec.md#decision-c5c-stop--abort-once-restart-only-with-a-new-identity"
+    },
+    {
+      "target_id": "AC1-AC3-INTERFACE",
+      "outcome": "falsified",
+      "basis": "Compared AC-1's complete prerequisite population with the post-approval launch-edge check immediately preceding AC-3 consumption. The check refreshes only pricing and the two authorizations, leaving the external run manifest, evaluator configuration, provider profile/settings, and relay contract without either a final byte check or a required immutable launch-consumed snapshot.",
+      "report_ref": "a483dab16a88cee4e058406b9c7dc0f55afc2748bf774bfb68dd241918c981f0"
+    }
+  ]
+}

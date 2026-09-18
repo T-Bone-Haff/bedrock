@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "host_closure_audit",
+  "audit_id": "C5-HOST-CLOSURE-AUDIT-1",
+  "source_construct_sha256": "464b52c4f05959796b2e2819430f88c52dbd9055d3210f167f8693ccf24efeca",
+  "authorization": "proceed with the audit",
+  "claim": "host closure audit completed",
+  "checks": [
+    {
+      "finding_id": "a483dab16a88cee4e058406b9c7dc0f55afc2748bf774bfb68dd241918c981f0",
+      "target": "HCA-1",
+      "outcome": "closed",
+      "requirements": [
+        {
+          "requirement_id": "HCA1-POPULATION",
+          "outcome": "satisfied",
+          "basis": "The closed post-approval block enumerates the external run manifest, evaluator configuration, provider profile and settings, provider-relay contract, immutable pricing, spend authorization, calibration-launch authorization, and every owning schema or contract.",
+          "ref": "candidate-5-minimal-custody-construct-spec.md, Decision C5C-plan, paragraph beginning 'After exact approval'"
+        },
+        {
+          "requirement_id": "HCA1-CAPTURE",
+          "outcome": "satisfied",
+          "basis": "After approval and immediately before durable run consumption, the supervisor no-follow opens and captures each named regular file, recomputes its hash, validates every owning schema or contract, and revalidates identities, scope, cross-field equality, principal, ceiling, and time.",
+          "ref": "candidate-5-minimal-custody-construct-spec.md, Decision C5C-plan, paragraphs beginning 'After exact approval' and 'The captured byte population'"
+        },
+        {
+          "requirement_id": "HCA1-CONSUME",
+          "outcome": "satisfied",
+          "basis": "The effective command, configuration, relay binding, and every other launch input are derived exclusively from the captured bytes in the same process; path reopen and separately parsed substitution are forbidden.",
+          "ref": "candidate-5-minimal-custody-construct-spec.md, Decision C5C-plan, paragraph beginning 'The captured byte population'"
+        },
+        {
+          "requirement_id": "HCA1-FAIL",
+          "outcome": "satisfied",
+          "basis": "The design refuses before marker or container creation on path re-read, missing or non-regular input, byte drift, identity, scope, or time mismatch, expiry, insufficient remaining interval, or inability to construct launch solely from the snapshot.",
+          "ref": "candidate-5-minimal-custody-construct-spec.md, Decision C5C-plan, paragraph beginning 'The captured byte population'"
+        },
+        {
+          "requirement_id": "HCA1-MARKER",
+          "outcome": "satisfied",
+          "basis": "The exact phase order places complete snapshot capture, revalidation, and binding before marker creation, and the start marker binds the complete prerequisite-snapshot digest.",
+          "ref": "candidate-5-minimal-custody-construct-spec.md, Decision C5C-stop, evaluator phase order and following start-marker paragraph"
+        }
+      ],
+      "basis": "Revision 4 defines one complete, immutable, launch-consumed snapshot across the full prerequisite population, binds its digest before container creation, and fail-closes every listed drift or binding failure.",
+      "authority_refs": [
+        "candidate-5-minimal-custody-construct-spec.md, Decision C5C-plan",
+        "candidate-5-minimal-custody-construct-spec.md, Decision C5C-stop",
+        "candidate-5-minimal-custody-construct-spec.md, obligations C5M-3 and C5M-6"
+      ]
+    },
+    {
+      "finding_id": "ca41c23463c9e226eaa315edc4f970be81c8a898479d99e6e7a55f15f94bb4a1",
+      "target": "HCA-2",
+      "outcome": "closed",
+      "requirements": [
+        {
+          "requirement_id": "HCA2-LOGGING",
+          "outcome": "satisfied",
+          "basis": "The stopped container must have Docker logging type exactly none with an empty options map, and the supervisor verifies the host-visible effective configuration before start.",
+          "ref": "candidate-5-minimal-custody-construct-spec.md, Decision C5C-isolate, paragraph beginning 'The container entrypoint'"
+        },
+        {
+          "requirement_id": "HCA2-SILENCE",
+          "outcome": "satisfied",
+          "basis": "The frozen trusted wrapper is prohibited from emitting any byte to inherited standard output or standard error before descriptor rebinding.",
+          "ref": "candidate-5-minimal-custody-construct-spec.md, Decision C5C-isolate, paragraph beginning 'The supervisor then starts'"
+        },
+        {
+          "requirement_id": "HCA2-REBIND",
+          "outcome": "satisfied",
+          "basis": "The wrapper first opens create-once, no-follow, mode-0600 regular files on the /run/out mount, replaces descriptors 1 and 2, closes originals, and later execs the evaluator without changing those descriptors.",
+          "ref": "candidate-5-minimal-custody-construct-spec.md, Decision C5C-isolate, paragraphs beginning 'The supervisor then starts' and 'Only after descriptor binding succeeds'"
+        },
+        {
+          "requirement_id": "HCA2-PROVE",
+          "outcome": "satisfied",
+          "basis": "Both /proc/self/fd targets must resolve canonically inside /run/out, and the durable boundary receipt includes their targets and the host-verified logging configuration before evaluator exec.",
+          "ref": "candidate-5-minimal-custody-construct-spec.md, Decision C5C-isolate, descriptor-binding and boundary-receipt paragraphs"
+        },
+        {
+          "requirement_id": "HCA2-FAIL",
+          "outcome": "satisfied",
+          "basis": "Any open, type, mount, replacement, resolution, effective-config, probe, or receipt failure prevents evaluator execution; because the wrapper runs after the create-once marker, the failure permanently fails that run identity.",
+          "ref": "candidate-5-minimal-custody-construct-spec.md, Decision C5C-isolate; Decision C5C-stop, start-marker failure paragraph; obligations C5M-2 and C5M-6"
+        }
+      ],
+      "basis": "Revision 4 disables Docker logging, silently rebinds both output descriptors into the encrypted result mount before evaluator execution, proves and records the effective targets, and fail-closes any deviation.",
+      "authority_refs": [
+        "candidate-5-minimal-custody-construct-spec.md, Decision C5C-isolate",
+        "candidate-5-minimal-custody-construct-spec.md, Decision C5C-stop",
+        "candidate-5-minimal-custody-construct-spec.md, obligations C5M-2 and C5M-6"
+      ]
+    }
+  ],
+  "limitations": [
+    "The outcome closes only the two exact retained findings against the frozen revision-4 design text.",
+    "The audit does not prove implementation, runtime behavior, platform feasibility, launch readiness, or any external authority.",
+    "The audit is a direct current-host check without independent reviewers and makes no convergence or whole-design-review claim.",
+    "The audit does not constitute operator acceptance of the design or change its PROPOSED lifecycle status."
+  ]
+}
