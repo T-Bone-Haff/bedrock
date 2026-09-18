@@ -432,6 +432,8 @@ class PackageGovernanceTests(unittest.TestCase):
         subprocess.run(["git", "init", "-q", "-b", "main"], cwd=self.root, check=True)
         subprocess.run(["git", "config", "user.name", "Bedrock Test"], cwd=self.root, check=True)
         subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=self.root, check=True)
+        subprocess.run(["git", "config", "maintenance.auto", "false"], cwd=self.root, check=True)
+        subprocess.run(["git", "config", "gc.auto", "0"], cwd=self.root, check=True)
         subprocess.run(["git", "add", "."], cwd=self.root, check=True)
         subprocess.run(["git", "commit", "-qm", "base"], cwd=self.root, check=True)
         subprocess.run(["git", "switch", "-qc", "candidate"], cwd=self.root, check=True)
