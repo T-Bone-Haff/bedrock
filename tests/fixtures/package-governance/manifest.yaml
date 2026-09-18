@@ -36,3 +36,5 @@ defects:
   - {id: release-before-acceptance, test: test_release_mode_fails_closed_before_acceptance, expected_diagnostic: release mode requires --release-evidence}
   - {id: landing-before-acceptance, test: test_release_mode_rejects_landing_before_acceptance, expected_diagnostic: cold-acceptance proceed decision must precede landing}
   - {id: distribution-drift-during-landing, test: test_release_mode_rejects_distribution_drift_during_landing, expected_diagnostic: landing changed marketplace or installed package bytes after acceptance}
+  - {id: landing-not-reachable-from-main, test: test_release_mode_rejects_landing_not_reachable_from_main, expected_diagnostic: landing commit must be reachable from marketplace branch main}
+  - {id: rebased-candidate-false-fast-forward, test: test_release_mode_rejects_rebased_candidate_claimed_as_fast_forward, expected_diagnostic: landing commit must be reachable from marketplace branch main}

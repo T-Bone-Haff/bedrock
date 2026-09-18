@@ -417,6 +417,7 @@ class PackageGovernanceTests(unittest.TestCase):
         decision_at: str = "2026-08-11T21:00:00Z",
         merged_at: str = "2026-08-11T21:05:00Z",
         landing_drift: bool = False,
+        landing_scenario: str = "merge_main",
     ) -> tuple[Path, Path]:
         manifest_path = self.root / "plugins/bedrock/.claude-plugin/plugin.json"
         manifest_version = json.loads(manifest_path.read_text(encoding="utf-8"))["version"]
@@ -427,7 +428,9 @@ class PackageGovernanceTests(unittest.TestCase):
         subprocess.run(["git", "add", "."], cwd=self.root, check=True)
         subprocess.run(["git", "commit", "-qm", "base"], cwd=self.root, check=True)
         subprocess.run(["git", "switch", "-qc", "candidate"], cwd=self.root, check=True)
-        subprocess.run(["git", "commit", "--allow-empty", "-qm", "candidate"], cwd=self.root, check=True)
+        (self.root / "candidate-marker.txt").write_text("accepted candidate\n", encoding="utf-8")
+        subprocess.run(["git", "add", "candidate-marker.txt"], cwd=self.root, check=True)
+        subprocess.run(["git", "commit", "-qm", "candidate"], cwd=self.root, check=True)
         source_commit = subprocess.run(
             ["git", "rev-parse", "HEAD"], cwd=self.root, check=True, capture_output=True, text=True
         ).stdout.strip()
@@ -437,14 +440,43 @@ class PackageGovernanceTests(unittest.TestCase):
             drift_path.write_text(drift_path.read_text(encoding="utf-8") + "\nlanding drift\n", encoding="utf-8")
             subprocess.run(["git", "add", str(drift_path)], cwd=self.root, check=True)
             subprocess.run(["git", "commit", "-qm", "change package during landing"], cwd=self.root, check=True)
-        subprocess.run(
-            ["git", "merge", "--no-ff", "-m", "land accepted candidate", "candidate"],
-            cwd=self.root,
-            check=True,
-        )
-        landing_commit = subprocess.run(
-            ["git", "rev-parse", "HEAD"], cwd=self.root, check=True, capture_output=True, text=True
-        ).stdout.strip()
+        if landing_scenario == "merge_main":
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "land accepted candidate", "candidate"],
+                cwd=self.root,
+                check=True,
+            )
+            landing_method = "merge_commit"
+            landing_commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"], cwd=self.root, check=True, capture_output=True, text=True
+            ).stdout.strip()
+        elif landing_scenario == "merge_off_main":
+            subprocess.run(["git", "switch", "-qc", "landing-side"], cwd=self.root, check=True)
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "land accepted candidate off main", "candidate"],
+                cwd=self.root,
+                check=True,
+            )
+            landing_method = "merge_commit"
+            landing_commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"], cwd=self.root, check=True, capture_output=True, text=True
+            ).stdout.strip()
+        elif landing_scenario == "fast_forward":
+            subprocess.run(["git", "merge", "--ff-only", "candidate"], cwd=self.root, check=True)
+            landing_method = "fast_forward"
+            landing_commit = source_commit
+        elif landing_scenario == "rebased_false_fast_forward":
+            (self.root / "main-marker.txt").write_text("main advanced\n", encoding="utf-8")
+            subprocess.run(["git", "add", "main-marker.txt"], cwd=self.root, check=True)
+            subprocess.run(["git", "commit", "-qm", "advance main"], cwd=self.root, check=True)
+            subprocess.run(["git", "switch", "-q", "candidate"], cwd=self.root, check=True)
+            subprocess.run(["git", "rebase", "main"], cwd=self.root, check=True)
+            subprocess.run(["git", "switch", "-q", "main"], cwd=self.root, check=True)
+            subprocess.run(["git", "merge", "--ff-only", "candidate"], cwd=self.root, check=True)
+            landing_method = "fast_forward"
+            landing_commit = source_commit
+        else:
+            self.fail(f"unsupported landing scenario: {landing_scenario}")
         subprocess.run(
             ["git", "tag", "-am", "release", release_tag, source_commit],
             cwd=self.root,
@@ -479,7 +511,7 @@ class PackageGovernanceTests(unittest.TestCase):
             "landing": {
                 "marketplace_branch": "main",
                 "commit": landing_commit,
-                "method": "merge_commit",
+                "method": landing_method,
                 "merged_at": merged_at,
                 "evidence": "https://github.com/T-Bone-Haff/bedrock/pull/1",
             },
@@ -549,6 +581,46 @@ class PackageGovernanceTests(unittest.TestCase):
         self.assertTrue(
             any("landing changed marketplace or installed package bytes after acceptance" in error for error in errors),
             errors,
+        )
+
+    def test_release_mode_rejects_landing_not_reachable_from_main(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(landing_scenario="merge_off_main")
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("landing commit must be reachable from marketplace branch main" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_rejects_rebased_candidate_claimed_as_fast_forward(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            landing_scenario="rebased_false_fast_forward"
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("landing commit must be reachable from marketplace branch main" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_accepts_true_fast_forward_landing(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(landing_scenario="fast_forward")
+        self.assertEqual(
+            [],
+            validate_package_governance(
+                self.root,
+                release=True,
+                release_evidence=evidence_path,
+                rollout_ledger=rollout_path,
+            ),
         )
 
     def test_seeded_governance_defect_manifest_names_existing_tests(self) -> None:

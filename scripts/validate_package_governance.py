@@ -767,6 +767,7 @@ def _validate_release(
             _error(errors, evidence_path, "release requires every named final gate to pass exactly once")
         source_commit = evidence.get("source_commit")
         landing = evidence.get("landing", {})
+        marketplace_branch = landing.get("marketplace_branch") if isinstance(landing, dict) else None
         landing_commit = landing.get("commit") if isinstance(landing, dict) else None
         landing_method = landing.get("method") if isinstance(landing, dict) else None
         decision_at = _parse_timestamp(evidence.get("decision", {}).get("recorded_at"))
@@ -784,23 +785,49 @@ def _validate_release(
         elif not isinstance(source_commit, str):
             _error(errors, evidence_path, "release requires an accepted source commit")
         else:
-            parents = _git_result(root, "rev-list", "--parents", "-n", "1", landing_commit)
-            parent_shas = parents.stdout.strip().split()[1:] if parents.returncode == 0 else []
-            if landing_method == "merge_commit" and source_commit not in parent_shas:
-                _error(errors, evidence_path, "merge landing must preserve the accepted source commit as a direct parent")
-            if landing_method == "fast_forward" and landing_commit != source_commit:
-                _error(errors, evidence_path, "fast-forward landing commit must equal the accepted source commit")
-            parity = _git_result(
-                root,
-                "diff",
-                "--quiet",
-                source_commit,
-                landing_commit,
-                "--",
-                *PRESERVED_DISTRIBUTION_PATHS,
-            )
-            if parity.returncode != 0:
-                _error(errors, evidence_path, "landing changed marketplace or installed package bytes after acceptance")
+            landing_object = _git_result(root, "cat-file", "-e", f"{landing_commit}^{{commit}}")
+            if landing_object.returncode != 0:
+                _error(errors, evidence_path, "landing commit must resolve to a commit object")
+            elif marketplace_branch == "main":
+                marketplace_ref = f"refs/heads/{marketplace_branch}"
+                branch = _git_result(root, "show-ref", "--verify", "--quiet", marketplace_ref)
+                if branch.returncode != 0:
+                    _error(errors, evidence_path, f"marketplace branch ref {marketplace_ref} must exist locally")
+                else:
+                    reachable = _git_result(
+                        root,
+                        "merge-base",
+                        "--is-ancestor",
+                        landing_commit,
+                        marketplace_ref,
+                    )
+                    if reachable.returncode != 0:
+                        _error(
+                            errors,
+                            evidence_path,
+                            f"landing commit must be reachable from marketplace branch {marketplace_branch}",
+                        )
+                parents = _git_result(root, "rev-list", "--parents", "-n", "1", landing_commit)
+                parent_shas = parents.stdout.strip().split()[1:] if parents.returncode == 0 else []
+                if landing_method == "merge_commit" and source_commit not in parent_shas:
+                    _error(
+                        errors,
+                        evidence_path,
+                        "merge landing must preserve the accepted source commit as a direct parent",
+                    )
+                if landing_method == "fast_forward" and landing_commit != source_commit:
+                    _error(errors, evidence_path, "fast-forward landing commit must equal the accepted source commit")
+                parity = _git_result(
+                    root,
+                    "diff",
+                    "--quiet",
+                    source_commit,
+                    landing_commit,
+                    "--",
+                    *PRESERVED_DISTRIBUTION_PATHS,
+                )
+                if parity.returncode != 0:
+                    _error(errors, evidence_path, "landing changed marketplace or installed package bytes after acceptance")
         result = _git_result(root, "rev-list", "-n", "1", tag)
         if result.returncode != 0 or result.stdout.strip() != source_commit:
             _error(errors, "release gate", f"immutable tag {tag} must resolve to the evidence source commit")

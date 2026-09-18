@@ -95,10 +95,12 @@ candidate to the manifest digest, accepted source commit, finding
 reconciliation, changed surfaces, migration disposition, required gates,
 limitations, operator decision, and later landing record. The operator decision
 must precede landing. Release validation proves the accepted commit is either
-the landing commit or a direct parent of it, and that the marketplace catalog
-and installed package paths did not change during landing. Evidence produced by
-different fixture, catalog, policy, model, adapter, or source identities is not
-pooled.
+the landing commit or a direct parent of it, proves the landing commit is
+reachable from the declared local `refs/heads/main`, and proves that the
+marketplace catalog and installed package paths did not change during landing.
+The local marketplace branch must therefore be synchronized before release
+validation; an unavailable ref fails closed. Evidence produced by different
+fixture, catalog, policy, model, adapter, or source identities is not pooled.
 
 The operational rollout record conforms to `rollout-ledger.schema.json`. It may
 live in the tracker, but the schema and all load-bearing distribution rules are
