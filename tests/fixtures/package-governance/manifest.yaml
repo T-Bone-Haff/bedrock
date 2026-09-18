@@ -38,3 +38,7 @@ defects:
   - {id: distribution-drift-during-landing, test: test_release_mode_rejects_distribution_drift_during_landing, expected_diagnostic: landing changed marketplace or installed package bytes after acceptance}
   - {id: landing-not-reachable-from-main, test: test_release_mode_rejects_landing_not_reachable_from_main, expected_diagnostic: landing commit must be reachable from marketplace branch main}
   - {id: rebased-candidate-false-fast-forward, test: test_release_mode_rejects_rebased_candidate_claimed_as_fast_forward, expected_diagnostic: landing commit must be reachable from marketplace branch main}
+  - {id: merge-mislabeled-fast-forward, test: test_release_mode_rejects_merge_mislabeled_as_fast_forward, expected_diagnostic: fast-forward landing commit must be on the marketplace branch first-parent history}
+  - {id: folded-side-branch-mislabeled-fast-forward, test: test_release_mode_rejects_side_branch_fold_mislabeled_as_fast_forward, expected_diagnostic: fast-forward landing commit must be on the marketplace branch first-parent history}
+  - {id: merge-source-not-second-parent, test: test_release_mode_rejects_merge_with_source_as_third_parent, expected_diagnostic: merge landing must preserve the accepted source commit as its second parent}
+  - {id: timezone-naive-landing-timestamp, test: test_release_mode_rejects_timezone_naive_landing_timestamp, expected_diagnostic: decision and landing timestamps must be valid timezone-aware date-times}

@@ -703,9 +703,12 @@ def _parse_timestamp(value: Any) -> datetime | None:
     if not isinstance(value, str):
         return None
     try:
-        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError:
         return None
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        return None
+    return parsed
 
 
 def _validate_release(
@@ -770,17 +773,25 @@ def _validate_release(
         marketplace_branch = landing.get("marketplace_branch") if isinstance(landing, dict) else None
         landing_commit = landing.get("commit") if isinstance(landing, dict) else None
         landing_method = landing.get("method") if isinstance(landing, dict) else None
+        merged_at_value = landing.get("merged_at") if isinstance(landing, dict) else None
         decision_at = _parse_timestamp(evidence.get("decision", {}).get("recorded_at"))
-        merged_at = _parse_timestamp(landing.get("merged_at")) if isinstance(landing, dict) else None
+        merged_at = _parse_timestamp(merged_at_value)
         if (
             not isinstance(landing_commit, str)
             or landing_method not in {"merge_commit", "fast_forward"}
-            or merged_at is None
+            or not isinstance(merged_at_value, str)
+            or not merged_at_value.strip()
             or not isinstance(landing.get("evidence"), str)
             or not landing["evidence"].strip()
         ):
             _error(errors, evidence_path, "release requires a complete landing record")
-        elif decision_at is None or decision_at >= merged_at:
+        elif decision_at is None or merged_at is None:
+            _error(
+                errors,
+                evidence_path,
+                "decision and landing timestamps must be valid timezone-aware date-times",
+            )
+        elif decision_at >= merged_at:
             _error(errors, evidence_path, "cold-acceptance proceed decision must precede landing")
         elif not isinstance(source_commit, str):
             _error(errors, evidence_path, "release requires an accepted source commit")
@@ -807,13 +818,36 @@ def _validate_release(
                             evidence_path,
                             f"landing commit must be reachable from marketplace branch {marketplace_branch}",
                         )
+                    first_parent = _git_result(root, "rev-list", "--first-parent", marketplace_ref)
+                    if first_parent.returncode != 0:
+                        _error(
+                            errors,
+                            evidence_path,
+                            f"marketplace branch {marketplace_branch} first-parent history must be readable",
+                        )
+                    else:
+                        first_parent_shas = set(first_parent.stdout.splitlines())
+                        if landing_method == "merge_commit" and landing_commit not in first_parent_shas:
+                            _error(
+                                errors,
+                                evidence_path,
+                                "merge landing commit must be on the marketplace branch first-parent history",
+                            )
+                        if landing_method == "fast_forward" and landing_commit not in first_parent_shas:
+                            _error(
+                                errors,
+                                evidence_path,
+                                "fast-forward landing commit must be on the marketplace branch first-parent history",
+                            )
                 parents = _git_result(root, "rev-list", "--parents", "-n", "1", landing_commit)
                 parent_shas = parents.stdout.strip().split()[1:] if parents.returncode == 0 else []
-                if landing_method == "merge_commit" and source_commit not in parent_shas:
+                if landing_method == "merge_commit" and (
+                    len(parent_shas) < 2 or parent_shas[1] != source_commit
+                ):
                     _error(
                         errors,
                         evidence_path,
-                        "merge landing must preserve the accepted source commit as a direct parent",
+                        "merge landing must preserve the accepted source commit as its second parent",
                     )
                 if landing_method == "fast_forward" and landing_commit != source_commit:
                     _error(errors, evidence_path, "fast-forward landing commit must equal the accepted source commit")

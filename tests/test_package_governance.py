@@ -465,6 +465,48 @@ class PackageGovernanceTests(unittest.TestCase):
             subprocess.run(["git", "merge", "--ff-only", "candidate"], cwd=self.root, check=True)
             landing_method = "fast_forward"
             landing_commit = source_commit
+        elif landing_scenario == "merge_main_mislabeled_fast_forward":
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "land accepted candidate", "candidate"],
+                cwd=self.root,
+                check=True,
+            )
+            landing_method = "fast_forward"
+            landing_commit = source_commit
+        elif landing_scenario == "folded_side_branch_mislabeled_fast_forward":
+            subprocess.run(["git", "switch", "-qc", "landing-side"], cwd=self.root, check=True)
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "land accepted candidate off main", "candidate"],
+                cwd=self.root,
+                check=True,
+            )
+            subprocess.run(["git", "switch", "-q", "main"], cwd=self.root, check=True)
+            drift_path = self.root / "plugins/bedrock/governance/README.md"
+            drift_path.write_text(drift_path.read_text(encoding="utf-8") + "\nlanding drift\n", encoding="utf-8")
+            subprocess.run(["git", "add", str(drift_path)], cwd=self.root, check=True)
+            subprocess.run(["git", "commit", "-qm", "change package before folding side branch"], cwd=self.root, check=True)
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "fold landing side branch into main", "landing-side"],
+                cwd=self.root,
+                check=True,
+            )
+            landing_method = "fast_forward"
+            landing_commit = source_commit
+        elif landing_scenario == "merge_source_as_third_parent":
+            subprocess.run(["git", "switch", "-qc", "alternate"], cwd=self.root, check=True)
+            (self.root / "alternate-marker.txt").write_text("alternate candidate\n", encoding="utf-8")
+            subprocess.run(["git", "add", "alternate-marker.txt"], cwd=self.root, check=True)
+            subprocess.run(["git", "commit", "-qm", "alternate candidate"], cwd=self.root, check=True)
+            subprocess.run(["git", "switch", "-q", "main"], cwd=self.root, check=True)
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "land octopus", "alternate", "candidate"],
+                cwd=self.root,
+                check=True,
+            )
+            landing_method = "merge_commit"
+            landing_commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"], cwd=self.root, check=True, capture_output=True, text=True
+            ).stdout.strip()
         elif landing_scenario == "rebased_false_fast_forward":
             (self.root / "main-marker.txt").write_text("main advanced\n", encoding="utf-8")
             subprocess.run(["git", "add", "main-marker.txt"], cwd=self.root, check=True)
@@ -621,6 +663,76 @@ class PackageGovernanceTests(unittest.TestCase):
                 release_evidence=evidence_path,
                 rollout_ledger=rollout_path,
             ),
+        )
+
+    def test_release_mode_rejects_merge_mislabeled_as_fast_forward(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            landing_drift=True,
+            landing_scenario="merge_main_mislabeled_fast_forward",
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any(
+                "fast-forward landing commit must be on the marketplace branch first-parent history" in error
+                for error in errors
+            ),
+            errors,
+        )
+
+    def test_release_mode_rejects_side_branch_fold_mislabeled_as_fast_forward(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            landing_scenario="folded_side_branch_mislabeled_fast_forward"
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any(
+                "fast-forward landing commit must be on the marketplace branch first-parent history" in error
+                for error in errors
+            ),
+            errors,
+        )
+
+    def test_release_mode_rejects_merge_with_source_as_third_parent(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            landing_scenario="merge_source_as_third_parent"
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any(
+                "merge landing must preserve the accepted source commit as its second parent" in error
+                for error in errors
+            ),
+            errors,
+        )
+
+    def test_release_mode_rejects_timezone_naive_landing_timestamp(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            merged_at="2026-08-11T21:05:00"
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("decision and landing timestamps must be valid timezone-aware date-times" in error for error in errors),
+            errors,
         )
 
     def test_seeded_governance_defect_manifest_names_existing_tests(self) -> None:
