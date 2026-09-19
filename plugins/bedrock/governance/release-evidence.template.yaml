@@ -43,3 +43,9 @@ decision:
   status: pending
   authority: HEB-119 operator release gate
   recorded_at: null
+landing:
+  marketplace_branch: main
+  commit: null
+  method: null
+  merged_at: null
+  evidence: null

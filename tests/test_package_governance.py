@@ -81,6 +81,18 @@ class PackageGovernanceTests(unittest.TestCase):
         path.write_text(json.dumps(payload), encoding="utf-8")
         self.assert_has_error("must not duplicate the manifest version authority")
 
+    def test_rejects_marketplace_source_boundary_drift(self) -> None:
+        path = self.root / ".claude-plugin/marketplace.json"
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        payload["plugins"][0]["source"] = {
+            "source": "git-subdir",
+            "url": "https://github.com/T-Bone-Haff/bedrock.git",
+            "path": "plugins/bedrock",
+            "ref": "candidate",
+        }
+        path.write_text(json.dumps(payload), encoding="utf-8")
+        self.assert_has_error("marketplace source must match the accepted distribution boundary")
+
     def test_rejects_license_carrier_drift(self) -> None:
         path = self.root / "plugins/bedrock/LICENSE"
         path.write_text(path.read_text(encoding="utf-8") + "\ndrift\n", encoding="utf-8")
@@ -106,6 +118,13 @@ class PackageGovernanceTests(unittest.TestCase):
         payload["consumer_surfaces"] = payload["consumer_surfaces"][:1]
         path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
         self.assert_has_error("must contain claude-ai and claude-code exactly")
+
+    def test_rejects_non_merge_commit_landing_method(self) -> None:
+        path = self.root / "plugins/bedrock/governance/registry.yaml"
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+        payload["distribution"]["permitted_landing_methods"].append("fast_forward")
+        path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+        self.assert_has_error("landing method must require merge_commit only")
 
     def test_rejects_portable_core_version_drift_from_accepted_adr(self) -> None:
         path = self.root / "plugins/bedrock/governance/registry.yaml"
@@ -192,6 +211,13 @@ class PackageGovernanceTests(unittest.TestCase):
         path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
         self.assert_has_error("gate_status must match the governing schema enum exactly")
 
+    def test_rejects_release_template_without_pending_landing(self) -> None:
+        path = self.root / "plugins/bedrock/governance/release-evidence.template.yaml"
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+        payload.pop("landing")
+        path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+        self.assert_has_error("release template must carry a pending marketplace landing record")
+
     def test_rejects_uncontrolled_duplicate_authority(self) -> None:
         path = self.root / "plugins/bedrock/governance/authority-inventory.yaml"
         payload = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -245,6 +271,18 @@ class PackageGovernanceTests(unittest.TestCase):
         self.assertNotEqual(original, changed)
         path.write_text(changed, encoding="utf-8")
         self.assert_has_error("canonical orientation must classify root AGENTS.md as the Codex adapter")
+
+    def test_rejects_canonical_orientation_acceptance_order_drift(self) -> None:
+        path = self.root / "docs/repository-orientation.md"
+        original = path.read_text(encoding="utf-8")
+        changed = original.replace(
+            "cold acceptance against that commit before merge",
+            "cold acceptance against that commit after merge",
+            1,
+        )
+        self.assertNotEqual(original, changed)
+        path.write_text(changed, encoding="utf-8")
+        self.assert_has_error("canonical orientation must require acceptance before marketplace-branch merge")
 
     def test_rejects_missing_package_identity_carrier(self) -> None:
         carrier_paths = self.write_package_identity_carriers()
@@ -380,19 +418,132 @@ class PackageGovernanceTests(unittest.TestCase):
         errors = validate_package_governance(self.root, release=True)
         self.assertTrue(any("requires --release-evidence" in error for error in errors), errors)
 
-    def test_release_mode_accepts_external_evidence_after_immutable_tag(self) -> None:
+    def write_release_fixture(
+        self,
+        *,
+        decision_at: str = "2026-08-11T21:00:00Z",
+        merged_at: str = "2026-08-11T21:05:00Z",
+        landing_drift: bool = False,
+        landing_scenario: str = "merge_main",
+    ) -> tuple[Path, Path]:
         manifest_path = self.root / "plugins/bedrock/.claude-plugin/plugin.json"
         manifest_version = json.loads(manifest_path.read_text(encoding="utf-8"))["version"]
         release_tag = f"v{manifest_version}"
-        subprocess.run(["git", "init", "-q"], cwd=self.root, check=True)
+        subprocess.run(["git", "init", "-q", "-b", "main"], cwd=self.root, check=True)
         subprocess.run(["git", "config", "user.name", "Bedrock Test"], cwd=self.root, check=True)
         subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=self.root, check=True)
+        subprocess.run(["git", "config", "maintenance.auto", "false"], cwd=self.root, check=True)
+        subprocess.run(["git", "config", "gc.auto", "0"], cwd=self.root, check=True)
         subprocess.run(["git", "add", "."], cwd=self.root, check=True)
+        subprocess.run(["git", "commit", "-qm", "base"], cwd=self.root, check=True)
+        subprocess.run(["git", "switch", "-qc", "candidate"], cwd=self.root, check=True)
+        (self.root / "candidate-marker.txt").write_text("accepted candidate\n", encoding="utf-8")
+        subprocess.run(["git", "add", "candidate-marker.txt"], cwd=self.root, check=True)
         subprocess.run(["git", "commit", "-qm", "candidate"], cwd=self.root, check=True)
         source_commit = subprocess.run(
             ["git", "rev-parse", "HEAD"], cwd=self.root, check=True, capture_output=True, text=True
         ).stdout.strip()
-        subprocess.run(["git", "tag", "-am", "release", release_tag], cwd=self.root, check=True)
+        subprocess.run(["git", "switch", "-q", "main"], cwd=self.root, check=True)
+        if landing_drift:
+            drift_path = self.root / "plugins/bedrock/governance/README.md"
+            drift_path.write_text(drift_path.read_text(encoding="utf-8") + "\nlanding drift\n", encoding="utf-8")
+            subprocess.run(["git", "add", str(drift_path)], cwd=self.root, check=True)
+            subprocess.run(["git", "commit", "-qm", "change package during landing"], cwd=self.root, check=True)
+        if landing_scenario == "merge_main":
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "land accepted candidate", "candidate"],
+                cwd=self.root,
+                check=True,
+            )
+            landing_method = "merge_commit"
+            landing_commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"], cwd=self.root, check=True, capture_output=True, text=True
+            ).stdout.strip()
+        elif landing_scenario == "merge_off_main":
+            subprocess.run(["git", "switch", "-qc", "landing-side"], cwd=self.root, check=True)
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "land accepted candidate off main", "candidate"],
+                cwd=self.root,
+                check=True,
+            )
+            landing_method = "merge_commit"
+            landing_commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"], cwd=self.root, check=True, capture_output=True, text=True
+            ).stdout.strip()
+        elif landing_scenario == "fast_forward":
+            subprocess.run(["git", "merge", "--ff-only", "candidate"], cwd=self.root, check=True)
+            landing_method = "fast_forward"
+            landing_commit = source_commit
+        elif landing_scenario == "merge_main_mislabeled_fast_forward":
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "land accepted candidate", "candidate"],
+                cwd=self.root,
+                check=True,
+            )
+            landing_method = "fast_forward"
+            landing_commit = source_commit
+        elif landing_scenario == "folded_side_branch_mislabeled_fast_forward":
+            subprocess.run(["git", "switch", "-qc", "landing-side"], cwd=self.root, check=True)
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "land accepted candidate off main", "candidate"],
+                cwd=self.root,
+                check=True,
+            )
+            subprocess.run(["git", "switch", "-q", "main"], cwd=self.root, check=True)
+            drift_path = self.root / "plugins/bedrock/governance/README.md"
+            drift_path.write_text(drift_path.read_text(encoding="utf-8") + "\nlanding drift\n", encoding="utf-8")
+            subprocess.run(["git", "add", str(drift_path)], cwd=self.root, check=True)
+            subprocess.run(["git", "commit", "-qm", "change package before folding side branch"], cwd=self.root, check=True)
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "fold landing side branch into main", "landing-side"],
+                cwd=self.root,
+                check=True,
+            )
+            landing_method = "fast_forward"
+            landing_commit = source_commit
+        elif landing_scenario == "swapped_parent_merge_mislabeled_fast_forward":
+            subprocess.run(["git", "switch", "-q", "candidate"], cwd=self.root, check=True)
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "merge advanced main into candidate", "main"],
+                cwd=self.root,
+                check=True,
+            )
+            subprocess.run(["git", "switch", "-q", "main"], cwd=self.root, check=True)
+            subprocess.run(["git", "merge", "--ff-only", "candidate"], cwd=self.root, check=True)
+            landing_method = "fast_forward"
+            landing_commit = source_commit
+        elif landing_scenario == "merge_source_as_third_parent":
+            subprocess.run(["git", "switch", "-qc", "alternate"], cwd=self.root, check=True)
+            (self.root / "alternate-marker.txt").write_text("alternate candidate\n", encoding="utf-8")
+            subprocess.run(["git", "add", "alternate-marker.txt"], cwd=self.root, check=True)
+            subprocess.run(["git", "commit", "-qm", "alternate candidate"], cwd=self.root, check=True)
+            subprocess.run(["git", "switch", "-q", "main"], cwd=self.root, check=True)
+            subprocess.run(
+                ["git", "merge", "--no-ff", "-m", "land octopus", "alternate", "candidate"],
+                cwd=self.root,
+                check=True,
+            )
+            landing_method = "merge_commit"
+            landing_commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"], cwd=self.root, check=True, capture_output=True, text=True
+            ).stdout.strip()
+        elif landing_scenario == "rebased_false_fast_forward":
+            (self.root / "main-marker.txt").write_text("main advanced\n", encoding="utf-8")
+            subprocess.run(["git", "add", "main-marker.txt"], cwd=self.root, check=True)
+            subprocess.run(["git", "commit", "-qm", "advance main"], cwd=self.root, check=True)
+            subprocess.run(["git", "switch", "-q", "candidate"], cwd=self.root, check=True)
+            subprocess.run(["git", "rebase", "main"], cwd=self.root, check=True)
+            subprocess.run(["git", "switch", "-q", "main"], cwd=self.root, check=True)
+            subprocess.run(["git", "merge", "--ff-only", "candidate"], cwd=self.root, check=True)
+            landing_method = "fast_forward"
+            landing_commit = source_commit
+        else:
+            self.fail(f"unsupported landing scenario: {landing_scenario}")
+        subprocess.run(
+            ["git", "tag", "-am", "release", release_tag, source_commit],
+            cwd=self.root,
+            check=True,
+        )
         manifest_digest = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
         gate_ids = (
             "deterministic",
@@ -417,7 +568,14 @@ class PackageGovernanceTests(unittest.TestCase):
             "decision": {
                 "status": "proceed",
                 "authority": "operator",
-                "recorded_at": "2026-08-11T21:00:00Z",
+                "recorded_at": decision_at,
+            },
+            "landing": {
+                "marketplace_branch": "main",
+                "commit": landing_commit,
+                "method": landing_method,
+                "merged_at": merged_at,
+                "evidence": "https://github.com/T-Bone-Haff/bedrock/pull/1",
             },
         }
         rollout = {
@@ -444,6 +602,10 @@ class PackageGovernanceTests(unittest.TestCase):
         rollout_path = self.root / "rollout-ledger.yaml"
         evidence_path.write_text(yaml.safe_dump(evidence, sort_keys=False), encoding="utf-8")
         rollout_path.write_text(yaml.safe_dump(rollout, sort_keys=False), encoding="utf-8")
+        return evidence_path, rollout_path
+
+    def test_release_mode_accepts_external_evidence_after_immutable_tag(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture()
         self.assertEqual(
             [],
             validate_package_governance(
@@ -452,6 +614,174 @@ class PackageGovernanceTests(unittest.TestCase):
                 release_evidence=evidence_path,
                 rollout_ledger=rollout_path,
             ),
+        )
+
+    def test_release_mode_rejects_landing_before_acceptance(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            decision_at="2026-08-11T21:10:00Z",
+            merged_at="2026-08-11T21:05:00Z",
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("cold-acceptance proceed decision must precede landing" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_rejects_distribution_drift_during_landing(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(landing_drift=True)
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("landing changed marketplace or installed package bytes after acceptance" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_rejects_landing_not_reachable_from_main(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(landing_scenario="merge_off_main")
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("landing commit must be reachable from marketplace branch main" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_rejects_rebased_candidate_claimed_as_fast_forward(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            landing_scenario="rebased_false_fast_forward"
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("release permits merge_commit landing only" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_rejects_true_fast_forward_landing(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(landing_scenario="fast_forward")
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("release permits merge_commit landing only" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_rejects_merge_mislabeled_as_fast_forward(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            landing_drift=True,
+            landing_scenario="merge_main_mislabeled_fast_forward",
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("release permits merge_commit landing only" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_rejects_side_branch_fold_mislabeled_as_fast_forward(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            landing_scenario="folded_side_branch_mislabeled_fast_forward"
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("release permits merge_commit landing only" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_rejects_swapped_parent_merge_mislabeled_as_fast_forward(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            landing_drift=True,
+            landing_scenario="swapped_parent_merge_mislabeled_fast_forward",
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("release permits merge_commit landing only" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_rejects_merge_with_source_as_third_parent(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            landing_scenario="merge_source_as_third_parent"
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any(
+                "merge landing must preserve the accepted source commit as its second parent" in error
+                for error in errors
+            ),
+            errors,
+        )
+
+    def test_release_mode_rejects_timezone_naive_landing_timestamp(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture(
+            merged_at="2026-08-11T21:05:00"
+        )
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+        self.assertTrue(
+            any("decision and landing timestamps must be valid timezone-aware date-times" in error for error in errors),
+            errors,
+        )
+
+    def test_release_mode_rejects_malformed_decision_record_cleanly(self) -> None:
+        evidence_path, rollout_path = self.write_release_fixture()
+        evidence = yaml.safe_load(evidence_path.read_text(encoding="utf-8"))
+        evidence["decision"] = "malformed"
+        evidence_path.write_text(yaml.safe_dump(evidence, sort_keys=False), encoding="utf-8")
+
+        errors = validate_package_governance(
+            self.root,
+            release=True,
+            release_evidence=evidence_path,
+            rollout_ledger=rollout_path,
+        )
+
+        self.assertTrue(
+            any("release requires a valid decision record" in error for error in errors),
+            errors,
         )
 
     def test_seeded_governance_defect_manifest_names_existing_tests(self) -> None:
