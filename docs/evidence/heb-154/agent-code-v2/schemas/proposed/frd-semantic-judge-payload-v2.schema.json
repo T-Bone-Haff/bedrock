@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:haffey:frd:semantic-judge-payload:2",
+  "title": "FRD semantic judge model payload — candidate v2",
+  "$comment": "Closed untrusted model-produced payload translated from the ratified unresolved-classification amendment solely for HEB-154 testing of the agent-code skill. Evidence insufficiency and conflict are not semantic unresolved reasons: domain uncertainty is graded under the rubric, while required trusted-evidence unavailability belongs to the harness-owned result envelope. The evaluator harness, not this payload, owns trusted identity, usage, cost, timing, routing and validity. Emit accepted instances as JCS bytes and identify them externally by SHA-256.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_revision", "judgments"],
+  "properties": {
+    "schema_revision": {
+      "const": "frd/semantic-judge-payload/v2"
+    },
+    "judgments": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {
+        "$ref": "#/$defs/Judgment"
+      }
+    }
+  },
+  "$defs": {
+    "Dimension": {
+      "enum": [
+        "investigation",
+        "recovery_selection",
+        "execution",
+        "communication",
+        "useful_scenario_completion"
+      ]
+    },
+    "EvidenceRef": {
+      "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+    },
+    "Reason": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "evidence_refs"],
+      "properties": {
+        "code": {
+          "enum": [
+            "rubric_satisfied",
+            "rubric_boundary_ambiguous",
+            "grounded_truth_failure",
+            "epistemic_accuracy_failure",
+            "material_completeness_failure",
+            "useful_next_action_failure",
+            "unearned_comparison_or_guarantee"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          }
+        }
+      }
+    },
+    "Judgment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dimension", "classification", "reasons", "rationale"],
+      "properties": {
+        "dimension": {
+          "$ref": "#/$defs/Dimension"
+        },
+        "classification": {
+          "enum": ["pass", "fail", "unresolved"]
+        },
+        "reasons": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/Reason"
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"classification": {"const": "pass"}},
+            "required": ["classification"]
+          },
+          "then": {
+            "properties": {
+              "reasons": {
+                "minItems": 1,
+                "maxItems": 1,
+                "items": {
+                  "properties": {"code": {"const": "rubric_satisfied"}}
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {"classification": {"const": "unresolved"}},
+            "required": ["classification"]
+          },
+          "then": {
+            "properties": {
+              "reasons": {
+                "minItems": 1,
+                "maxItems": 1,
+                "items": {
+                  "properties": {
+                    "code": {
+                      "const": "rubric_boundary_ambiguous"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {"const": "fail"},
+              "dimension": {"enum": ["investigation", "execution"]}
+            },
+            "required": ["classification", "dimension"]
+          },
+          "then": {
+            "properties": {
+              "reasons": {
+                "items": {
+                  "properties": {
+                    "code": {
+                      "enum": [
+                        "grounded_truth_failure",
+                        "epistemic_accuracy_failure",
+                        "material_completeness_failure"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {"const": "fail"},
+              "dimension": {"enum": ["recovery_selection", "communication"]}
+            },
+            "required": ["classification", "dimension"]
+          },
+          "then": {
+            "properties": {
+              "reasons": {
+                "items": {
+                  "properties": {
+                    "code": {
+                      "enum": [
+                        "grounded_truth_failure",
+                        "epistemic_accuracy_failure",
+                        "material_completeness_failure",
+                        "useful_next_action_failure",
+                        "unearned_comparison_or_guarantee"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {"const": "fail"},
+              "dimension": {"const": "useful_scenario_completion"}
+            },
+            "required": ["classification", "dimension"]
+          },
+          "then": {
+            "properties": {
+              "reasons": {
+                "items": {
+                  "properties": {
+                    "code": {
+                      "enum": [
+                        "grounded_truth_failure",
+                        "epistemic_accuracy_failure",
+                        "material_completeness_failure",
+                        "useful_next_action_failure"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

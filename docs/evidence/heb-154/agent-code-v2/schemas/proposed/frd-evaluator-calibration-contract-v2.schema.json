@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:haffey:frd:evaluator-calibration-contract:2",
+  "title": "FRD evaluator calibration contract v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_revision",
+    "contract_id",
+    "accepted_date_eastern",
+    "supersedes",
+    "artifact_bindings",
+    "population",
+    "semantic_cleanliness_gate",
+    "selection_gate",
+    "runtime_unresolved_policy",
+    "exclusions"
+  ],
+  "properties": {
+    "schema_revision": {
+      "const": "frd/evaluator-calibration-contract/v2"
+    },
+    "contract_id": {
+      "const": "VERIFY-evaluator-calibration-contract-v2"
+    },
+    "accepted_date_eastern": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2} America/New_York$"
+    },
+    "supersedes": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "VERIFY-evaluator-reason-code-taxonomy:v1"},
+        {"const": "VERIFY-evaluator-calibration-population:v1"}
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "artifact_bindings": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role", "artifact"],
+        "properties": {
+          "role": {"type": "string", "minLength": 1},
+          "artifact": {"$ref": "#/$defs/Artifact"}
+        }
+      }
+    },
+    "population": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_controls",
+        "classification_matrix",
+        "anti_abstention_matrix",
+        "expected_counts"
+      ],
+      "properties": {
+        "total_controls": {"const": 50},
+        "classification_matrix": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["dimensions", "categories", "variants_per_cell", "count", "expected_counts"],
+          "properties": {
+            "dimensions": {"$ref": "#/$defs/Dimensions"},
+            "categories": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "known_correct"},
+                {"const": "known_wrong"},
+                {"const": "materially_incomplete"},
+                {"const": "fluent_but_false"}
+              ],
+              "minItems": 4,
+              "maxItems": 4
+            },
+            "variants_per_cell": {"const": 2},
+            "count": {"const": 40},
+            "expected_counts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["pass", "fail", "unresolved"],
+              "properties": {
+                "pass": {"const": 10},
+                "fail": {"const": 30},
+                "unresolved": {"const": 0}
+              }
+            }
+          }
+        },
+        "anti_abstention_matrix": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["dimensions", "per_dimension", "count", "control_requirements"],
+          "properties": {
+            "dimensions": {"$ref": "#/$defs/Dimensions"},
+            "per_dimension": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "investigation",
+                "recovery_selection",
+                "execution",
+                "communication",
+                "useful_scenario_completion"
+              ],
+              "properties": {
+                "investigation": {"$ref": "#/$defs/PassFailPair"},
+                "recovery_selection": {"$ref": "#/$defs/PassFailPair"},
+                "execution": {"$ref": "#/$defs/PassFailPair"},
+                "communication": {"$ref": "#/$defs/PassFailPair"},
+                "useful_scenario_completion": {"$ref": "#/$defs/PassFailPair"}
+              }
+            },
+            "count": {"const": 10},
+            "control_requirements": {
+              "type": "array",
+              "prefixItems": [
+                {"const": "complete_case_observation"},
+                {"const": "semantic_cleanliness_gate_pass"},
+                {"const": "near_boundary_without_rubric_ambiguity"},
+                {"const": "one_expected_pass_and_one_single_defect_fail_per_dimension"},
+                {"const": "unresolved_is_an_incorrect_abstention"}
+              ],
+              "minItems": 5,
+              "maxItems": 5
+            }
+          }
+        },
+        "expected_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pass", "fail", "unresolved"],
+          "properties": {
+            "pass": {"const": 15},
+            "fail": {"const": 35},
+            "unresolved": {"const": 0}
+          }
+        }
+      }
+    },
+    "semantic_cleanliness_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "complete_case_observation_required",
+        "mandatory_trusted_evidence_complete",
+        "deterministic_findings_settled",
+        "all_rubric_clauses_mapped",
+        "required_material_facts_and_remaining_work_present",
+        "no_non_target_material_defect",
+        "dirty_controls"
+      ],
+      "properties": {
+        "complete_case_observation_required": {"const": true},
+        "mandatory_trusted_evidence_complete": {"const": true},
+        "deterministic_findings_settled": {"const": true},
+        "all_rubric_clauses_mapped": {"const": true},
+        "required_material_facts_and_remaining_work_present": {"const": true},
+        "no_non_target_material_defect": {"const": true},
+        "dirty_controls": {
+          "type": "array",
+          "prefixItems": [
+            {"const": "omitted_material_fact_rejected"},
+            {"const": "missing_trusted_evidence_routes_unavailable"},
+            {"const": "settled_evidence_contradiction_fails"}
+          ],
+          "minItems": 3,
+          "maxItems": 3
+        }
+      }
+    },
+    "selection_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "correct_classifications",
+        "false_passes",
+        "false_fails",
+        "unjustified_unresolved",
+        "malformed_missing_or_incomplete_judgments",
+        "full_population_every_eligible_configuration",
+        "selective_reruns_or_replacements",
+        "original_observations_preserved"
+      ],
+      "properties": {
+        "correct_classifications": {"const": 50},
+        "false_passes": {"const": 0},
+        "false_fails": {"const": 0},
+        "unjustified_unresolved": {"const": 0},
+        "malformed_missing_or_incomplete_judgments": {"const": 0},
+        "full_population_every_eligible_configuration": {"const": true},
+        "selective_reruns_or_replacements": {"const": false},
+        "original_observations_preserved": {"const": true}
+      }
+    },
+    "runtime_unresolved_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed_reason_codes",
+        "routes_to_named_human_adjudicator",
+        "counts_as_automatic_pass",
+        "original_machine_judgment_preserved",
+        "future_positive_calibration_use_requires"
+      ],
+      "properties": {
+        "allowed_reason_codes": {
+          "type": "array",
+          "prefixItems": [{"const": "rubric_boundary_ambiguous"}],
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "routes_to_named_human_adjudicator": {"const": true},
+        "counts_as_automatic_pass": {"const": false},
+        "original_machine_judgment_preserved": {"const": true},
+        "future_positive_calibration_use_requires": {
+          "type": "array",
+          "prefixItems": [
+            {"const": "complete_case_observation"},
+            {"const": "semantic_cleanliness_gate_pass"},
+            {"const": "independent_human_adjudication"},
+            {"const": "applicable_rubric_version_disposition"}
+          ],
+          "minItems": 4,
+          "maxItems": 4
+        }
+      }
+    },
+    "exclusions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_4_authored",
+        "physical_custody_activated",
+        "provider_calls",
+        "spend_authorized",
+        "evaluator_reliability_established"
+      ],
+      "properties": {
+        "candidate_4_authored": {"const": false},
+        "physical_custody_activated": {"const": false},
+        "provider_calls": {"const": 0},
+        "spend_authorized": {"const": false},
+        "evaluator_reliability_established": {"const": false}
+      }
+    }
+  },
+  "$defs": {
+    "Artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "Dimensions": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "investigation"},
+        {"const": "recovery_selection"},
+        {"const": "execution"},
+        {"const": "communication"},
+        {"const": "useful_scenario_completion"}
+      ],
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "PassFailPair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pass", "fail"],
+      "properties": {
+        "pass": {"const": 1},
+        "fail": {"const": 1}
+      }
+    }
+  }
+}

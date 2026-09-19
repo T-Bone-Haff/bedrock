@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0.0",
+  "symptom": "The first read-only Candidate-5 sealed-comparison probe failed before comparison because a detached Judgment subschema retained root-local references that could not resolve outside the full v2 semantic payload schema.",
+  "scope": "Offline diagnosis and bounded repair of the local comparison validator only; the completed blind review, custodian answers, Candidate-5 controls, rubrics, schemas, selection gate, custody, freeze, providers and spend were unchanged.",
+  "mode": "offline-diagnosis",
+  "timeline": [
+    "2026-09-15 America/New_York — the independent blind report completed and was read in full.",
+    "2026-09-15 America/New_York — the first sealed-comparison probe stopped with PointerToNowhere before emitting any comparison result.",
+    "2026-09-15 America/New_York — validation was rebound to the owning full payload schema by wrapping each judgment in a one-judgment payload; all 50 validated and the sealed comparison completed."
+  ],
+  "evidence": [
+    {
+      "source": "first read-only sealed-comparison validation trace",
+      "captured_at": "2026-09-15T21:26:46-04:00",
+      "classification": "repository-local comparison harness evidence",
+      "integrity": "The trace was jsonschema PointerToNowhere for /$defs/Dimension within the detached Judgment object; no comparison result or repository mutation occurred."
+    },
+    {
+      "source": "schemas/proposed/frd-semantic-judge-payload-v2.schema.json",
+      "captured_at": "2026-09-15T21:26:46-04:00",
+      "classification": "frozen repository-local schema authority",
+      "integrity": "SHA-256 df9b833cd831e91e0a87cf13d90279d894b2caf4ff3958a6e67c333efb9f964d; Judgment references root-local $defs/Dimension and $defs/Reason."
+    },
+    {
+      "source": "corrected read-only sealed-comparison probe over the complete 50-control review and custodian population",
+      "captured_at": "2026-09-15T21:26:46-04:00",
+      "classification": "repository-local verification output",
+      "integrity": "All 50 one-judgment payloads validated under the full schema; the comparison returned 50 classification matches and zero malformed, missing or incomplete judgments."
+    }
+  ],
+  "hypotheses": [
+    {
+      "iteration": 1,
+      "hypothesis": "The blind review contained a malformed semantic judgment.",
+      "prediction": "Validation under the owning full payload schema would identify one or more control-specific instance errors.",
+      "falsifier": "All 50 judgments validating when placed in schema-valid one-judgment payloads would falsify malformed review content.",
+      "evidence": "The corrected validator reported zero schema errors across all 50 controls.",
+      "disposition": "falsified",
+      "unexplained": []
+    },
+    {
+      "iteration": 2,
+      "hypothesis": "Detaching the Judgment object changed the reference root, so its #/$defs references could no longer resolve even though the instance was valid.",
+      "prediction": "The failure would occur before any instance-specific comparison, and validation through the complete payload schema would succeed without changing review bytes.",
+      "falsifier": "A continuing PointerToNowhere under the complete schema, or any required review mutation, would falsify the hypothesis.",
+      "evidence": "The original trace failed at reference resolution. Wrapping each unchanged judgment in the full frd/semantic-judge-payload/v2 envelope resolved the references and validated all 50.",
+      "disposition": "supported",
+      "unexplained": []
+    }
+  ],
+  "containment": "The failed probe emitted no comparison and wrote no file. The blind review remained immutable and the custodian surface remained inaccessible to the completed reviewer.",
+  "conclusion": {
+    "status": "root_cause_identified",
+    "confidence": "high",
+    "statement": "The comparison harness incorrectly treated a root-referential schema definition as standalone. The review judgments were valid; validation had to occur through the owning full payload schema."
+  },
+  "repair": {
+    "authorized": true,
+    "action": "Within the authorized sealed comparison, validate each unchanged review judgment inside a one-judgment frd/semantic-judge-payload/v2 envelope using the complete schema and registry."
+  },
+  "verification": [
+    "All 50 unchanged blind-review judgments validated under the full payload schema.",
+    "The corrected comparison covered all 50 manifest controls with no missing, extra or duplicate identifiers.",
+    "The corrected comparison reported 50/50 classification matches and zero gate defects."
+  ],
+  "residual_risk": "Future comparison code could repeat this error if it detaches a schema definition with root-local references. The retained diagnosis names the required full-schema validation boundary.",
+  "owner": "Tad Haffey"
+}

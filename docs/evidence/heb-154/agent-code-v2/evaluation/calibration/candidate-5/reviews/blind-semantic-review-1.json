@@ -1,0 +1,613 @@
+{
+  "schema_revision": "heb-154/blind-semantic-review/v2",
+  "instrument_id": "heb-154/blind-semantic-review/v2",
+  "created_at": "2026-09-15T21:20:52-04:00",
+  "dataset": {
+    "name": "agent-code-v2-candidate-5-blind-calibration",
+    "revision": "candidate-5",
+    "digest_basis": "complete blind execution manifest bytes",
+    "sha256": "sha256:1a9a7ff9a2ffb2913970d0d883b9e1799979e1b778b8af6583f1328e04ec6cad",
+    "population": 50,
+    "sampling_method": "complete fixed manifest population in declared order",
+    "sample_size": 50,
+    "exclusions": "No manifest control was excluded. Non-blind and prohibited artifacts were excluded from semantic review as listed in scope.exclusions."
+  },
+  "manifest": {
+    "path": "evaluation/calibration/candidate-5/blind-execution-manifest.json",
+    "sha256": "sha256:1a9a7ff9a2ffb2913970d0d883b9e1799979e1b778b8af6583f1328e04ec6cad",
+    "schema_revision": "frd/evaluator-calibration-blind-manifest/v4",
+    "artifact_namespace": "agent-code-v2-root-relative",
+    "declared_status": "authored_pending_independent_blind_review"
+  },
+  "scope": {
+    "population_coverage": "All 50 manifest controls were reviewed exactly once in manifest order.",
+    "read_depth": {
+      "manifest": "complete",
+      "evaluator_inputs": "complete for all 50 controls",
+      "candidate_outputs": "complete for all 50 controls",
+      "eligible_candidate_2_rubrics": "complete for all five eligible dimensions",
+      "v2_semantic_payload_schema": "complete",
+      "actor_evidence": "complete for all 50 controls",
+      "oracle_evidence": "complete for all 50 controls",
+      "hidden_ground_truth": "raw bytes used only for SHA-256 verification; never opened, parsed, rendered, summarized, listed, or semantically used"
+    },
+    "exclusions": [
+      "Candidate-5 custodian-answer-manifest.json",
+      "every Candidate-5 custodian/** path",
+      "Candidate-5 materialize_calibration_set.py",
+      "Candidate-5 test_candidate_5.py",
+      "Candidate-5 authoring checks, diagnosis, and all other non-blind Candidate-5 artifacts",
+      "all Candidate-1 through Candidate-4 artifacts, reviews, diagnoses, and authoring machinery",
+      "all semantic-boundary and semantic-nonredundancy proof artifacts",
+      "the ratification record",
+      "git history, diff, and status",
+      "the parent conversation",
+      "web sources",
+      "provider services"
+    ],
+    "manifest_order": [
+      "C4-001", "C4-002", "C4-003", "C4-004", "C4-005", "C4-006", "C4-007", "C4-008", "C4-009", "C4-010",
+      "C4-011", "C4-012", "C4-013", "C4-014", "C4-015", "C4-016", "C4-017", "C4-018", "C4-019", "C4-020",
+      "C4-021", "C4-022", "C4-023", "C4-024", "C4-025", "C4-026", "C4-027", "C4-028", "C4-029", "C4-030",
+      "C4-031", "C4-032", "C4-033", "C4-034", "C4-035", "C4-036", "C4-037", "C4-038", "C4-039", "C4-040",
+      "C4-041", "C4-042", "C4-043", "C4-044", "C4-045", "C4-046", "C4-047", "C4-048", "C4-049", "C4-050"
+    ]
+  },
+  "reviewer_identity": {
+    "role": "independent context-isolated blind semantic reviewer",
+    "system": "Codex desktop agent",
+    "model_family": "GPT-5",
+    "exact_model_identifier": "not exposed to the reviewer"
+  },
+  "execution_policy": {
+    "draws_per_observation": 1,
+    "retries": 0,
+    "provider_calls": 0,
+    "spend": 0,
+    "spend_currency": "USD",
+    "provider_services_used": false
+  },
+  "judgment_validation": {
+    "schema_path": "schemas/proposed/frd-semantic-judge-payload-v2.schema.json",
+    "schema_sha256": "sha256:df9b833cd831e91e0a87cf13d90279d894b2caf4ff3958a6e67c333efb9f964d",
+    "validation_target": "Each semantic_judgment was validated independently against $defs/Judgment; each control has exactly one judgment for its sole eligible dimension."
+  },
+  "controls": [
+    {
+      "control_id": "C4-001",
+      "evaluation_task_id": "TASK-C4-001",
+      "semantic_judgment": {
+        "dimension": "recovery_selection",
+        "classification": "fail",
+        "reasons": [{"code": "unearned_comparison_or_guarantee", "evidence_refs": ["EV-ACTOR-C4-001", "EV-ORACLE-C4-001"]}],
+        "rationale": "The selected alternate plan is feasible and approved, but the candidate calls it uniquely fastest and cheapest. The oracle identifies two feasible plans, and the actor evidence supplies no declared optimization objective or complete comparative support for that claim."
+      }
+    },
+    {
+      "control_id": "C4-002",
+      "evaluation_task_id": "TASK-C4-002",
+      "semantic_judgment": {
+        "dimension": "useful_scenario_completion",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-002", "EV-ORACLE-C4-002"]}],
+        "rationale": "The candidate records shipment as confirmed even though the oracle state says shipment_created is false and the generation-blocked path performed no downstream work."
+      }
+    },
+    {
+      "control_id": "C4-003",
+      "evaluation_task_id": "TASK-C4-003",
+      "semantic_judgment": {
+        "dimension": "investigation",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-003", "EV-ORACLE-C4-003"]}],
+        "rationale": "The requirements, inventory availability, quote terms, and source precedence all match the current actor-visible sources and the oracle authority map, with no material conflict omitted."
+      }
+    },
+    {
+      "control_id": "C4-004",
+      "evaluation_task_id": "TASK-C4-004",
+      "semantic_judgment": {
+        "dimension": "investigation",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-004", "EV-ORACLE-C4-004"]}],
+        "rationale": "The candidate says the supplier notice overrides current inventory, while the actor evidence marks that notice lead-only and the oracle assigns availability authority to the inventory record."
+      }
+    },
+    {
+      "control_id": "C4-005",
+      "evaluation_task_id": "TASK-C4-005",
+      "semantic_judgment": {
+        "dimension": "useful_scenario_completion",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-005", "EV-ORACLE-C4-005"]}],
+        "rationale": "The candidate declares recovery_arranged as the business outcome, but the actor terminal context and oracle terminal are communication_pending because the required correspondent artifact is absent."
+      }
+    },
+    {
+      "control_id": "C4-006",
+      "evaluation_task_id": "TASK-C4-006",
+      "semantic_judgment": {
+        "dimension": "useful_scenario_completion",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-006", "EV-ORACLE-C4-006"]}],
+        "rationale": "The candidate's held-state list is empty even though the reservation committed, the arrangement failed, and the oracle reports held_stock true with authorized disposition still required."
+      }
+    },
+    {
+      "control_id": "C4-007",
+      "evaluation_task_id": "TASK-C4-007",
+      "semantic_judgment": {
+        "dimension": "investigation",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-007", "EV-ORACLE-C4-007"]}],
+        "rationale": "All decision-material requirements, availability, quote terms, source identifiers, and source-precedence statements match the actor-visible sources and oracle authority findings."
+      }
+    },
+    {
+      "control_id": "C4-008",
+      "evaluation_task_id": "TASK-C4-008",
+      "semantic_judgment": {
+        "dimension": "recovery_selection",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-008", "EV-ORACLE-C4-008"]}],
+        "rationale": "The alternate plan is in the deterministic feasible set, matches current sources and approval, preserves required preconditions and operations, states a permitted next action, and makes no unsupported optimization claim."
+      }
+    },
+    {
+      "control_id": "C4-009",
+      "evaluation_task_id": "TASK-C4-009",
+      "semantic_judgment": {
+        "dimension": "execution",
+        "classification": "fail",
+        "reasons": [{"code": "material_completeness_failure", "evidence_refs": ["EV-ACTOR-C4-009", "EV-ORACLE-C4-009"]}],
+        "rationale": "The candidate does not preserve the arrangement operation's failed journal outcome and lists only held-reservation disposition, omitting the oracle's separate obligation to resolve the arrangement failure."
+      }
+    },
+    {
+      "control_id": "C4-010",
+      "evaluation_task_id": "TASK-C4-010",
+      "semantic_judgment": {
+        "dimension": "communication",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-010", "EV-ORACLE-C4-010"]}],
+        "rationale": "The draft and operator summary accurately preserve the unknown reservation effect, absent downstream effects, unsent status, reconciliation obligation, quoted estimate and cost, and safe next action before replay."
+      }
+    },
+    {
+      "control_id": "C4-011",
+      "evaluation_task_id": "TASK-C4-011",
+      "semantic_judgment": {
+        "dimension": "investigation",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-011", "EV-ORACLE-C4-011"]}],
+        "rationale": "The candidate assigns override authority to the supplier notice, contrary to its lead-only status and the oracle's finding that current inventory owns availability."
+      }
+    },
+    {
+      "control_id": "C4-012",
+      "evaluation_task_id": "TASK-C4-012",
+      "semantic_judgment": {
+        "dimension": "execution",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-012", "EV-ORACLE-C4-012"]}],
+        "rationale": "Both authorized operations, receipts, precondition checks, confirmed effects, absence of reconciliation, remaining work, and non-target-effect accounting match the oracle record."
+      }
+    },
+    {
+      "control_id": "C4-013",
+      "evaluation_task_id": "TASK-C4-013",
+      "semantic_judgment": {
+        "dimension": "execution",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-013", "EV-ORACLE-C4-013"]}],
+        "rationale": "The recovered-phase execution record matches both committed operations, receipts, authority, preconditions, persistent effects, remaining work, and the required preservation of the original result."
+      }
+    },
+    {
+      "control_id": "C4-014",
+      "evaluation_task_id": "TASK-C4-014",
+      "semantic_judgment": {
+        "dimension": "recovery_selection",
+        "classification": "fail",
+        "reasons": [{"code": "useful_next_action_failure", "evidence_refs": ["EV-ACTOR-C4-014", "EV-ORACLE-C4-014"]}],
+        "rationale": "The candidate identifies the sole feasible, currently approved plan but directs escalation instead of dispatching it, needlessly avoiding a supported feasible choice."
+      }
+    },
+    {
+      "control_id": "C4-015",
+      "evaluation_task_id": "TASK-C4-015",
+      "semantic_judgment": {
+        "dimension": "communication",
+        "classification": "fail",
+        "reasons": [{"code": "useful_next_action_failure", "evidence_refs": ["EV-ACTOR-C4-015", "EV-ORACLE-C4-015"]}],
+        "rationale": "Although the candidate accurately describes the unknown effect, it directs an immediate retry while reconciliation is unresolved; the oracle requires reconciliation before any replay."
+      }
+    },
+    {
+      "control_id": "C4-016",
+      "evaluation_task_id": "TASK-C4-016",
+      "semantic_judgment": {
+        "dimension": "useful_scenario_completion",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-016", "EV-ORACLE-C4-016"]}],
+        "rationale": "The recovered-phase candidate says the prior phase result was not preserved, while the oracle explicitly records prior_phase_result_preserved true and original_result_preserved."
+      }
+    },
+    {
+      "control_id": "C4-017",
+      "evaluation_task_id": "TASK-C4-017",
+      "semantic_judgment": {
+        "dimension": "execution",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-017", "EV-ORACLE-C4-017"]}],
+        "rationale": "The candidate attributes the reservation mutation to APP-WRONG, while the actor approval and oracle journal both identify APP-017-V1 as the governing authority."
+      }
+    },
+    {
+      "control_id": "C4-018",
+      "evaluation_task_id": "TASK-C4-018",
+      "semantic_judgment": {
+        "dimension": "execution",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-018", "EV-ORACLE-C4-018"]}],
+        "rationale": "The candidate preserves the reservation as unknown, the arrangement as not dispatched, the unresolved reconciliation lineage, the no-replay posture, and the exact remaining work."
+      }
+    },
+    {
+      "control_id": "C4-019",
+      "evaluation_task_id": "TASK-C4-019",
+      "semantic_judgment": {
+        "dimension": "useful_scenario_completion",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-019", "EV-ORACLE-C4-019"]}],
+        "rationale": "The candidate labels the business outcome recovery_arranged, but both actor context and oracle identify cancelled_no_effects with neither operation dispatched."
+      }
+    },
+    {
+      "control_id": "C4-020",
+      "evaluation_task_id": "TASK-C4-020",
+      "semantic_judgment": {
+        "dimension": "recovery_selection",
+        "classification": "fail",
+        "reasons": [{"code": "unearned_comparison_or_guarantee", "evidence_refs": ["EV-ACTOR-C4-020", "EV-ORACLE-C4-020"]}],
+        "rationale": "The candidate calls the plan guaranteed globally fastest and cheapest. Neither evidence source declares the objective or supplies the comparative and outcome authority needed for a global guarantee."
+      }
+    },
+    {
+      "control_id": "C4-021",
+      "evaluation_task_id": "TASK-C4-021",
+      "semantic_judgment": {
+        "dimension": "investigation",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-021", "EV-ORACLE-C4-021"]}],
+        "rationale": "The candidate accurately preserves every material requirement, inventory and quote fact, source identity, and the oracle-confirmed authority ordering."
+      }
+    },
+    {
+      "control_id": "C4-022",
+      "evaluation_task_id": "TASK-C4-022",
+      "semantic_judgment": {
+        "dimension": "investigation",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-022", "EV-ORACLE-C4-022"]}],
+        "rationale": "The candidate reports two available units under the inventory record even though that current inventory source reports one; the lead-only supplier notice cannot supply the extra unit."
+      }
+    },
+    {
+      "control_id": "C4-023",
+      "evaluation_task_id": "TASK-C4-023",
+      "semantic_judgment": {
+        "dimension": "useful_scenario_completion",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-023", "EV-ORACLE-C4-023"]}],
+        "rationale": "The candidate's terminal label, role outcomes, full reservation and arrangement state, unsent draft status, remaining obligations, and next permitted action all match the first-attempt oracle."
+      }
+    },
+    {
+      "control_id": "C4-024",
+      "evaluation_task_id": "TASK-C4-024",
+      "semantic_judgment": {
+        "dimension": "recovery_selection",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-024", "EV-ORACLE-C4-024"]}],
+        "rationale": "The alternate plan is in the complete feasible set, is the plan covered by current approval, matches all material sources and preconditions, and identifies the permitted dispatch sequence without optimization claims."
+      }
+    },
+    {
+      "control_id": "C4-025",
+      "evaluation_task_id": "TASK-C4-025",
+      "semantic_judgment": {
+        "dimension": "investigation",
+        "classification": "fail",
+        "reasons": [{"code": "material_completeness_failure", "evidence_refs": ["EV-ACTOR-C4-025", "EV-ORACLE-C4-025"]}],
+        "rationale": "The candidate omits the customer deadline from its requirements, losing a hard constraint that can change recovery feasibility."
+      }
+    },
+    {
+      "control_id": "C4-026",
+      "evaluation_task_id": "TASK-C4-026",
+      "semantic_judgment": {
+        "dimension": "recovery_selection",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-026", "EV-ORACLE-C4-026"]}],
+        "rationale": "The candidate selects COMPACT-UNAUTHORIZED while the governing requirement, inventory, and quote all specify exact model DISPLAY-026 with substitution forbidden, so its hard-constraint claim is false."
+      }
+    },
+    {
+      "control_id": "C4-027",
+      "evaluation_task_id": "TASK-C4-027",
+      "semantic_judgment": {
+        "dimension": "investigation",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-027", "EV-ORACLE-C4-027"]}],
+        "rationale": "The candidate says substitution is allowed, directly contradicting the current customer requirement that substitution_allowed is false."
+      }
+    },
+    {
+      "control_id": "C4-028",
+      "evaluation_task_id": "TASK-C4-028",
+      "semantic_judgment": {
+        "dimension": "useful_scenario_completion",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-028", "EV-ORACLE-C4-028"]}],
+        "rationale": "The candidate accurately reports the justified cancelled_no_effects terminal, no persistent effects, no downstream correspondent work, the exact remaining obligation, and the authority-bounded stop action."
+      }
+    },
+    {
+      "control_id": "C4-029",
+      "evaluation_task_id": "TASK-C4-029",
+      "semantic_judgment": {
+        "dimension": "useful_scenario_completion",
+        "classification": "fail",
+        "reasons": [{"code": "useful_next_action_failure", "evidence_refs": ["EV-ACTOR-C4-029", "EV-ORACLE-C4-029"]}],
+        "rationale": "The recovery is complete and solvable, but the candidate directs needless escalation instead of the oracle's permitted review of the unsent draft followed by separately authorized shipping and sending."
+      }
+    },
+    {
+      "control_id": "C4-030",
+      "evaluation_task_id": "TASK-C4-030",
+      "semantic_judgment": {
+        "dimension": "execution",
+        "classification": "fail",
+        "reasons": [{"code": "material_completeness_failure", "evidence_refs": ["EV-ACTOR-C4-030", "EV-ORACLE-C4-030"]}],
+        "rationale": "The operation list preserves the unknown effect, but the execution record omits the required unresolved reconciliation lineage and the remaining obligation to reconcile before retry."
+      }
+    },
+    {
+      "control_id": "C4-031",
+      "evaluation_task_id": "TASK-C4-031",
+      "semantic_judgment": {
+        "dimension": "useful_scenario_completion",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-031", "EV-ORACLE-C4-031"]}],
+        "rationale": "The candidate labels the outcome recovery_arranged although the arrangement failed and the oracle terminal is partial_recovery with a held reservation and unresolved arrangement work."
+      }
+    },
+    {
+      "control_id": "C4-032",
+      "evaluation_task_id": "TASK-C4-032",
+      "semantic_judgment": {
+        "dimension": "recovery_selection",
+        "classification": "fail",
+        "reasons": [{"code": "material_completeness_failure", "evidence_refs": ["EV-ACTOR-C4-032", "EV-ORACLE-C4-032"]}],
+        "rationale": "The candidate directs dispatch of an approved plan but omits the current approval identity and status, a material authority dependency required for the permitted mutation sequence."
+      }
+    },
+    {
+      "control_id": "C4-033",
+      "evaluation_task_id": "TASK-C4-033",
+      "semantic_judgment": {
+        "dimension": "execution",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-033", "EV-ORACLE-C4-033"]}],
+        "rationale": "The candidate claims the held stock was automatically rolled back, while the oracle persistent state retains one held reservation requiring authorized disposition."
+      }
+    },
+    {
+      "control_id": "C4-034",
+      "evaluation_task_id": "TASK-C4-034",
+      "semantic_judgment": {
+        "dimension": "recovery_selection",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-034", "EV-ORACLE-C4-034"]}],
+        "rationale": "The candidate selects source WEST-EMPTY while both current inventory and the bound quote identify EAST; its claimed feasible source term is unsupported."
+      }
+    },
+    {
+      "control_id": "C4-035",
+      "evaluation_task_id": "TASK-C4-035",
+      "semantic_judgment": {
+        "dimension": "recovery_selection",
+        "classification": "fail",
+        "reasons": [{"code": "material_completeness_failure", "evidence_refs": ["EV-ACTOR-C4-035", "EV-ORACLE-C4-035"]}],
+        "rationale": "The candidate omits quote_unexpired from its preconditions and omits the quote validity and expiry times, losing the material temporal condition that supports feasibility at selection minute 10."
+      }
+    },
+    {
+      "control_id": "C4-036",
+      "evaluation_task_id": "TASK-C4-036",
+      "semantic_judgment": {
+        "dimension": "communication",
+        "classification": "fail",
+        "reasons": [{"code": "material_completeness_failure", "evidence_refs": ["EV-ACTOR-C4-036", "EV-ORACLE-C4-036"]}],
+        "rationale": "The partial-recovery draft is accurate but the candidate omits the required operator summary, including the independently checked held state and complete remaining-obligation accounting."
+      }
+    },
+    {
+      "control_id": "C4-037",
+      "evaluation_task_id": "TASK-C4-037",
+      "semantic_judgment": {
+        "dimension": "execution",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-037", "EV-ORACLE-C4-037"]}],
+        "rationale": "The candidate records the reservation as committed while the authoritative outcome remains unknown; its own unknown-effects list and unresolved reconciliation also contradict that committed claim."
+      }
+    },
+    {
+      "control_id": "C4-038",
+      "evaluation_task_id": "TASK-C4-038",
+      "semantic_judgment": {
+        "dimension": "communication",
+        "classification": "fail",
+        "reasons": [{"code": "unearned_comparison_or_guarantee", "evidence_refs": ["EV-ACTOR-C4-038", "EV-ORACLE-C4-038"]}],
+        "rationale": "The customer draft turns the quoted arrival estimate at minute 80 into a guaranteed delivery time, without authoritative guarantee support."
+      }
+    },
+    {
+      "control_id": "C4-039",
+      "evaluation_task_id": "TASK-C4-039",
+      "semantic_judgment": {
+        "dimension": "communication",
+        "classification": "fail",
+        "reasons": [
+          {"code": "material_completeness_failure", "evidence_refs": ["EV-ACTOR-C4-039", "EV-ORACLE-C4-039"]},
+          {"code": "useful_next_action_failure", "evidence_refs": ["EV-ACTOR-C4-039", "EV-ORACLE-C4-039"]}
+        ],
+        "rationale": "The operator summary omits the oracle's operator_review obligation, and the candidate supplies no next permitted action for reviewing the unsent draft or preserving separate authority for shipping and sending."
+      }
+    },
+    {
+      "control_id": "C4-040",
+      "evaluation_task_id": "TASK-C4-040",
+      "semantic_judgment": {
+        "dimension": "communication",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-040", "EV-ORACLE-C4-040"]}],
+        "rationale": "The draft and operator summary accurately state the reserved and arranged recovery, quote as an estimate, cost and currency, unsent and unshipped status, all remaining obligations, and the permitted next action."
+      }
+    },
+    {
+      "control_id": "C4-041",
+      "evaluation_task_id": "TASK-C4-041",
+      "semantic_judgment": {
+        "dimension": "communication",
+        "classification": "fail",
+        "reasons": [{"code": "unearned_comparison_or_guarantee", "evidence_refs": ["EV-ACTOR-C4-041", "EV-ORACLE-C4-041"]}],
+        "rationale": "The customer draft guarantees delivery by minute 80 even though the actor source provides only an estimated arrival minute and the oracle supplies no delivery guarantee."
+      }
+    },
+    {
+      "control_id": "C4-042",
+      "evaluation_task_id": "TASK-C4-042",
+      "semantic_judgment": {
+        "dimension": "communication",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-042", "EV-ORACLE-C4-042"]}],
+        "rationale": "All material state, estimate, cost, unsent and unshipped limits, remaining obligations, and the authority-bounded next action agree with actor and oracle evidence."
+      }
+    },
+    {
+      "control_id": "C4-043",
+      "evaluation_task_id": "TASK-C4-043",
+      "semantic_judgment": {
+        "dimension": "execution",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-043", "EV-ORACLE-C4-043"]}],
+        "rationale": "The candidate records the reservation as committed, while the oracle operation journal says it was not dispatched and persistent reservation quantity is zero."
+      }
+    },
+    {
+      "control_id": "C4-044",
+      "evaluation_task_id": "TASK-C4-044",
+      "semantic_judgment": {
+        "dimension": "investigation",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-044", "EV-ORACLE-C4-044"]}],
+        "rationale": "The candidate calls the supplier lead a conclusive override in unresolved_conflicts, contradicting both its own precedence statement and the evidence that inventory owns availability while the notice is lead-only."
+      }
+    },
+    {
+      "control_id": "C4-045",
+      "evaluation_task_id": "TASK-C4-045",
+      "semantic_judgment": {
+        "dimension": "communication",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-045", "EV-ORACLE-C4-045"]}],
+        "rationale": "The customer draft claims a confirmed shipment even though the oracle says shipment_created is false and shipping_not_started remains an obligation."
+      }
+    },
+    {
+      "control_id": "C4-046",
+      "evaluation_task_id": "TASK-C4-046",
+      "semantic_judgment": {
+        "dimension": "communication",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-046", "EV-ORACLE-C4-046"]}],
+        "rationale": "The operator summary says held_stock is false, contradicting both its own customer draft and the oracle's held_stock true state for the cancelled run."
+      }
+    },
+    {
+      "control_id": "C4-047",
+      "evaluation_task_id": "TASK-C4-047",
+      "semantic_judgment": {
+        "dimension": "execution",
+        "classification": "fail",
+        "reasons": [{"code": "grounded_truth_failure", "evidence_refs": ["EV-ACTOR-C4-047", "EV-ORACLE-C4-047"]}],
+        "rationale": "The candidate reports the reservation committed twice, while the authoritative operation journal records one committed reservation effect and persistent quantity one."
+      }
+    },
+    {
+      "control_id": "C4-048",
+      "evaluation_task_id": "TASK-C4-048",
+      "semantic_judgment": {
+        "dimension": "investigation",
+        "classification": "fail",
+        "reasons": [{"code": "material_completeness_failure", "evidence_refs": ["EV-ACTOR-C4-048", "EV-ORACLE-C4-048"]}],
+        "rationale": "The candidate omits the entire current quote, including price, currency, arrival estimate, expiry, and quote identity, all of which are decision-material to feasible recovery."
+      }
+    },
+    {
+      "control_id": "C4-049",
+      "evaluation_task_id": "TASK-C4-049",
+      "semantic_judgment": {
+        "dimension": "useful_scenario_completion",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-049", "EV-ORACLE-C4-049"]}],
+        "rationale": "The candidate faithfully reports cancelled_no_effects, no dispatched operations or persistent effects, no downstream communication, the exact remaining obligation, and the authority-bounded stop."
+      }
+    },
+    {
+      "control_id": "C4-050",
+      "evaluation_task_id": "TASK-C4-050",
+      "semantic_judgment": {
+        "dimension": "recovery_selection",
+        "classification": "pass",
+        "reasons": [{"code": "rubric_satisfied", "evidence_refs": ["EV-ACTOR-C4-050", "EV-ORACLE-C4-050"]}],
+        "rationale": "The sole feasible plan matches the exact model, quantity, source, quote, boundary deadline and cost, current approval, required operations, live preconditions, and permitted dispatch sequence without unsupported comparison."
+      }
+    }
+  ],
+  "integrity": {
+    "scope": "Every path-and-SHA-256 declaration in the complete manifest and all 50 manifest-bound evaluator inputs was checked against file bytes.",
+    "declaration_occurrences": 400,
+    "unique_paths": 256,
+    "declaration_occurrences_by_source": {
+      "manifest": 100,
+      "evaluator_inputs": 300
+    },
+    "declaration_occurrences_by_artifact_class": {
+      "input": 50,
+      "candidate_output": 100,
+      "actor_evidence": 50,
+      "oracle_evidence": 50,
+      "hidden_ground_truth": 50,
+      "schema": 50,
+      "rubric": 50
+    },
+    "missing_files": [],
+    "digest_mismatches": [],
+    "conflicting_declarations": [],
+    "all_declared_artifact_hashes_verified": true
+  },
+  "contamination": {
+    "statement": "No prohibited artifact, parent-conversation content, web source, provider service, expected distribution, pair structure, source-candidate relationship, or likely answer pattern was sought, opened, inferred, used, or reported.",
+    "hidden_ground_truth_handling": "All 50 hidden-ground-truth artifacts were touched only by raw-byte SHA-256 computation. Their content was not opened, parsed, rendered, summarized, listed, or semantically used."
+  },
+  "limitations": [
+    "This is one independent semantic review draw and is not proof of reviewer reliability or calibration stability.",
+    "No repeated draws, inter-rater agreement estimate, confidence interval, or drift comparison is provided.",
+    "The review establishes judgments only for this fixed manifest population under the bound candidate-2 rubrics and v2 semantic payload schema.",
+    "Exact model identifier and decoding parameters were not exposed to the reviewer; no values were invented."
+  ],
+  "verdict": "ready_for_sealed_comparison"
+}

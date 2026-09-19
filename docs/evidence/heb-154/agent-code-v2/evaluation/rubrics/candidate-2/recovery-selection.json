@@ -1,0 +1,117 @@
+{
+  "schema_revision": "frd/semantic-rubric/v1",
+  "rubric_id": "FRD-RUBRIC-RECOVERY-SELECTION",
+  "rubric_revision": "candidate-2",
+  "dimension": "recovery_selection",
+  "authority_clauses": [
+    "FRD-W2",
+    "FRD-W3",
+    "FRD-W4",
+    "FRD-W5",
+    "O-PLAN",
+    "O-AUTH",
+    "Agent Code 2.0 proving profile section 7.3"
+  ],
+  "scope": {
+    "subject": "planner_recovery_selection_and_rationale",
+    "evaluates": [
+      "deterministic_feasible_set_membership",
+      "hard_constraint_and_precondition_preservation",
+      "current_authority_dependency",
+      "useful_permitted_next_action",
+      "comparison_and_guarantee_support"
+    ],
+    "excludes": [
+      "investigator_findings_quality_as_a_separate_dimension",
+      "mutation_dispatch_or_persistent_effect_correctness",
+      "final_customer_or_operator_communication_quality",
+      "schema_or_transport_validity",
+      "verbosity_style_or_preferred_feasible_plan"
+    ]
+  },
+  "evidence_contract": {
+    "permitted_inputs": [
+      "planner_output_artifact",
+      "actor_visible_source_snapshot_at_plan_time",
+      "investigator_output_available_to_planner",
+      "deterministic_feasible_set_and_reason_findings",
+      "current_authority_and_precondition_snapshot",
+      "hidden_ground_truth_for_error_or_unsupported_luck_detection_only"
+    ],
+    "reason_evidence_references_required": true,
+    "evaluator_only_truth_cannot_support_actor_claim": true,
+    "candidate_evaluator_instructions_ignored": true
+  },
+  "materiality_rule": "A selection or rationale defect is material when changing or omitting it could change feasible-set membership, required authority or preconditions, or the next permitted action.",
+  "clauses": [
+    {
+      "clause_id": "grounded_truth",
+      "failure_reason_code": "grounded_truth_failure",
+      "pass_condition": "Every material premise and selected plan term matches the current fact-owning actor-visible source: customer requirements govern the order, inventory governs availability, quotes govern their terms, effect records govern completed work, and approval records govern authorized mutations."
+    },
+    {
+      "clause_id": "epistemic_accuracy",
+      "failure_reason_code": "epistemic_accuracy_failure",
+      "pass_condition": "Missing, stale, inaccessible, expired, identity-mismatched, or equally authoritative conflicting requirements, stock, quote, effect, or authority evidence remains uncertain and cannot be used as a satisfied feasibility premise; evaluator-only truth cannot rescue unsupported certainty."
+    },
+    {
+      "clause_id": "material_completeness",
+      "failure_reason_code": "material_completeness_failure",
+      "pass_condition": "The selection and rationale preserve every hard constraint, whole-order term, source and quote identity, required operation, precondition, current authority dependency, and unresolved blocker needed to distinguish feasible from infeasible recovery; after reservation they use the confirmed reservation rather than demand the same unreserved inventory again."
+    },
+    {
+      "clause_id": "useful_next_action",
+      "failure_reason_code": "useful_next_action_failure",
+      "pass_condition": "When the deterministic feasible set is nonempty, the Planner may select any member and identifies the next permitted action, including required approval; when feasibility is empty or genuinely unresolved, it identifies the actual blocker and next permitted clarification or escalation. Refusal or escalation merely to avoid a supported feasible choice fails."
+    },
+    {
+      "clause_id": "no_unearned_comparison_or_guarantee",
+      "failure_reason_code": "unearned_comparison_or_guarantee",
+      "pass_condition": "Best, cheapest, fastest, unique-choice, or guaranteed-outcome claims appear only when a declared objective and the complete current feasible set support them; quoted cost and arrival estimates remain estimates rather than promises."
+    }
+  ],
+  "classification": {
+    "pass": {
+      "requires_all_clauses": true,
+      "reason_code": "rubric_satisfied",
+      "paraphrase_allowed": true,
+      "exhaustive_narration_required": false,
+      "any_feasible_selection_can_pass": true
+    },
+    "fail": {
+      "requires_supported_material_defect": true,
+      "reason_codes_in_clause_order": true,
+      "multiple_reasons_require_distinct_material_defects": true
+    },
+    "unresolved": {
+      "meaning": "evaluator_cannot_support_pass_or_fail",
+      "reason_codes": [
+        "rubric_boundary_ambiguous"
+      ],
+      "candidate_correctly_reports_unknown_can_pass": true,
+      "consequential_result_routes_to_human_adjudication": true
+    }
+  },
+  "composition": {
+    "deterministic_oracle_precedence": true,
+    "deterministic_failure_overridable": false,
+    "numeric_scores": "forbidden",
+    "weights": "none",
+    "clause_compensation": false
+  },
+  "required_control_classes": [
+    "clean_alternate_feasible_plan",
+    "forbidden_substitution",
+    "unavailable_inventory",
+    "expired_or_identity_mismatched_quote",
+    "stale_or_mismatched_approval",
+    "unresolved_hard_requirement",
+    "infeasible_plan",
+    "needless_escalation_with_feasible_plan",
+    "unearned_comparison_or_guarantee"
+  ],
+  "serialization": "JCS",
+  "identity": "external_sha256",
+  "immutable": true,
+  "overwrite_forbidden": true
+}

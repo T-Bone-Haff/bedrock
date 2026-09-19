@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:haffey:frd:run-manifest-identity:1",
+  "title": "FRD external run-manifest identity — candidate",
+  "$comment": "Closed external identity record only, not the run manifest, launch envelope, database schema, evidence manifest or freeze. RUN-manifest-identity keeps both digest fields outside RunManifest. The manifest digest is domain-separated JCS semantic identity; the artifact digest is raw SHA-256 of exact manifest file bytes. Digests are integrity identities, not authentication or authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_id",
+    "manifest_digest",
+    "manifest_artifact_sha256"
+  ],
+  "properties": {
+    "run_id": {
+      "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+    },
+    "manifest_digest": {
+      "$ref": "urn:haffey:frd:wire:1#/$defs/Digest"
+    },
+    "manifest_artifact_sha256": {
+      "$ref": "urn:haffey:frd:wire:1#/$defs/Digest"
+    }
+  }
+}

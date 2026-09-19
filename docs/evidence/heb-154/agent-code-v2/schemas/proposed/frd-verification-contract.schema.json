@@ -1,0 +1,2204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:haffey:frd:verification-contract:1",
+  "title": "FRD agent-code skill verification contract — candidate",
+  "$comment": "Closed VERIFY-contract-shape, VERIFY-deterministic-thresholds, VERIFY-evaluation-sampling, VERIFY-evaluation-thresholds, VERIFY-hidden-population-construction, VERIFY-evaluator-contract, VERIFY-provider-matrix, VERIFY-model-settings, VERIFY-pricing-and-spend-gate, VERIFY-evaluator-model-settings, its VERIFY-evaluator-cost-calibration amendment, VERIFY-evaluator-calibration-population, VERIFY-evaluator-classification-vocabulary, VERIFY-evaluator-reason-code-taxonomy, VERIFY-evaluator-judgment-payload, VERIFY-evaluator-confidence-semantics, VERIFY-evaluator-result-envelope, VERIFY-evaluator-input-artifact and VERIFY-evaluator-configuration-artifact accepted solely for HEB-154 proving/testing of the agent-code skill. This artifact specifies verification; it contains no test result, agent architecture, Agents of HEX overall design, execution authority, provider-call or spend authorization, or adoption decision. Emit the final artifact as JCS bytes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "verification_contract_schema_revision",
+    "verification_contract_id",
+    "verification_contract_revision",
+    "subject",
+    "authorities",
+    "strategy",
+    "populations",
+    "environments",
+    "suites",
+    "gates",
+    "gate_rules",
+    "deterministic_thresholds",
+    "evaluation_sampling",
+    "evaluation_thresholds",
+    "hidden_population_construction",
+    "provider_matrix",
+    "model_settings_contract",
+    "pricing_and_spend_gate",
+    "evaluator_contract",
+    "evidence_policy",
+    "evidence_rules",
+    "change_rules"
+  ],
+  "properties": {
+    "verification_contract_schema_revision": {
+      "const": "frd/verification-contract/v1"
+    },
+    "verification_contract_id": {
+      "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+    },
+    "verification_contract_revision": {
+      "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_id",
+        "candidate_revision"
+      ],
+      "properties": {
+        "candidate_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "candidate_revision": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        }
+      }
+    },
+    "authorities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proving_profile",
+        "test_profile"
+      ],
+      "properties": {
+        "proving_profile": {
+          "$ref": "#/$defs/Artifact"
+        },
+        "test_profile": {
+          "$ref": "#/$defs/Artifact"
+        }
+      }
+    },
+    "strategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact",
+        "schema_id"
+      ],
+      "properties": {
+        "artifact": {
+          "$ref": "#/$defs/Artifact"
+        },
+        "schema_id": {
+          "const": "urn:haffey:bedrock:test-strategy:1.0.0"
+        }
+      }
+    },
+    "populations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/NamedArtifact"
+      }
+    },
+    "environments": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/NamedArtifact"
+      }
+    },
+    "suites": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/Suite"
+      }
+    },
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7",
+        "G8"
+      ],
+      "properties": {
+        "G1": {"$ref": "#/$defs/Gate"},
+        "G2": {"$ref": "#/$defs/Gate"},
+        "G3": {"$ref": "#/$defs/Gate"},
+        "G4": {"$ref": "#/$defs/Gate"},
+        "G5": {"$ref": "#/$defs/Gate"},
+        "G6": {"$ref": "#/$defs/Gate"},
+        "G7": {"$ref": "#/$defs/Gate"},
+        "G8": {"$ref": "#/$defs/Gate"}
+      }
+    },
+    "gate_rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "all_eight_must_pass",
+        "unavailable_never_passes",
+        "compensation_forbidden"
+      ],
+      "properties": {
+        "all_eight_must_pass": {"const": true},
+        "unavailable_never_passes": {"const": true},
+        "compensation_forbidden": {"const": true}
+      }
+    },
+    "deterministic_thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "fixture_case_pass_percent",
+        "dirty_control_pass_percent",
+        "line_percent",
+        "branch_percent",
+        "mutation_percent",
+        "critical_path_branch_percent",
+        "critical_state_percent",
+        "critical_paths",
+        "exclusions"
+      ],
+      "properties": {
+        "scope": {"const": "deterministic_implementation_code"},
+        "fixture_case_pass_percent": {"const": 100},
+        "dirty_control_pass_percent": {"const": 100},
+        "line_percent": {"const": 90},
+        "branch_percent": {"const": 90},
+        "mutation_percent": {"const": 80},
+        "critical_path_branch_percent": {"const": 100},
+        "critical_state_percent": {"const": 100},
+        "critical_paths": {
+          "const": [
+            "identity",
+            "parsing_salvage",
+            "authorization",
+            "budgets",
+            "retry_reconciliation",
+            "terminal_classification",
+            "context_integrity",
+            "provider_mapping",
+            "evidence_completeness"
+          ]
+        },
+        "exclusions": {
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "target",
+              "justification"
+            ],
+            "properties": {
+              "target": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "pattern": "^[^\\r\\n]+$"
+              },
+              "justification": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096,
+                "pattern": "^[^\\r\\n]+$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "evaluation_sampling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "public_population_ids",
+        "hidden_population_ids",
+        "hidden_counterpart_map_artifact",
+        "provider_configurations",
+        "public_case_count",
+        "public_draws_per_case_per_provider_configuration",
+        "public_use",
+        "public_controls_adoption_outcome_accuracy",
+        "hidden_case_count",
+        "hidden_counterparts_per_public_variant",
+        "hidden_draws_per_case_per_provider_configuration",
+        "hidden_authorship_and_custody",
+        "hidden_coverage",
+        "hidden_controls_adoption_outcome_accuracy",
+        "exact_membership_frozen_before_candidate_evaluation",
+        "provider_identities_and_settings_frozen_before_candidate_evaluation",
+        "all_scheduled_draws_executed",
+        "success_based_stopping_forbidden",
+        "replacement_draws_forbidden",
+        "fixed_settings_within_configuration",
+        "agent_failures_refusals_nulls_and_timeouts_remain_in_denominator",
+        "verified_infrastructure_failure_disposition",
+        "infrastructure_rerun_requires_preregistered_rule",
+        "original_infrastructure_failure_retained",
+        "first_attempt_and_recovered_reported_separately",
+        "recovery_policy"
+      ],
+      "properties": {
+        "public_population_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+          }
+        },
+        "hidden_population_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+          }
+        },
+        "hidden_counterpart_map_artifact": {
+          "$ref": "#/$defs/Artifact"
+        },
+        "provider_configurations": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "single_provider_a",
+            "single_provider_b",
+            "mixed_provider"
+          ],
+          "properties": {
+            "single_provider_a": {
+              "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+            },
+            "single_provider_b": {
+              "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+            },
+            "mixed_provider": {
+              "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+            }
+          }
+        },
+        "public_case_count": {
+          "const": 37
+        },
+        "public_draws_per_case_per_provider_configuration": {
+          "const": 1
+        },
+        "public_use": {
+          "const": "development_regression_only"
+        },
+        "public_controls_adoption_outcome_accuracy": {
+          "const": false
+        },
+        "hidden_case_count": {
+          "const": 37
+        },
+        "hidden_counterparts_per_public_variant": {
+          "const": 1
+        },
+        "hidden_draws_per_case_per_provider_configuration": {
+          "const": 3
+        },
+        "hidden_authorship_and_custody": {
+          "const": "independent"
+        },
+        "hidden_coverage": {
+          "const": "same_case_families_and_risk_slices_as_public_population"
+        },
+        "hidden_controls_adoption_outcome_accuracy": {
+          "const": true
+        },
+        "exact_membership_frozen_before_candidate_evaluation": {
+          "const": true
+        },
+        "provider_identities_and_settings_frozen_before_candidate_evaluation": {
+          "const": true
+        },
+        "all_scheduled_draws_executed": {
+          "const": true
+        },
+        "success_based_stopping_forbidden": {
+          "const": true
+        },
+        "replacement_draws_forbidden": {
+          "const": true
+        },
+        "fixed_settings_within_configuration": {
+          "const": true
+        },
+        "agent_failures_refusals_nulls_and_timeouts_remain_in_denominator": {
+          "const": true
+        },
+        "verified_infrastructure_failure_disposition": {
+          "const": "unavailable"
+        },
+        "infrastructure_rerun_requires_preregistered_rule": {
+          "const": true
+        },
+        "original_infrastructure_failure_retained": {
+          "const": true
+        },
+        "first_attempt_and_recovered_reported_separately": {
+          "const": true
+        },
+        "recovery_policy": {
+          "const": "bounded_controller_policy_only"
+        }
+      }
+    },
+    "evaluation_thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "confidence_method",
+        "confidence_level_percent",
+        "outcome_dimensions",
+        "dimension_denominator",
+        "evaluated_separately_per_provider_configuration",
+        "first_attempt_wilson_lower_bound_percent",
+        "per_case_first_attempt_successes_required",
+        "per_case_first_attempt_draws",
+        "recovered_completion_wilson_lower_bound_percent",
+        "hidden_draws_per_provider_configuration",
+        "first_attempt_successes_required_per_provider_configuration",
+        "recovered_successes_required_per_provider_configuration",
+        "mandatory_invariants",
+        "mandatory_invariant_maximum_violations",
+        "calibration_control_categories",
+        "calibration_control_pass_percent",
+        "calibration_failure_disposition",
+        "provider_configuration_compensation_forbidden",
+        "outcome_dimension_compensation_forbidden",
+        "consequential_unresolved_judgment_disposition"
+      ],
+      "properties": {
+        "confidence_method": {
+          "const": "wilson_score_two_sided"
+        },
+        "confidence_level_percent": {
+          "const": 95
+        },
+        "outcome_dimensions": {
+          "const": [
+            "investigation",
+            "recovery_selection",
+            "execution",
+            "communication",
+            "useful_scenario_completion"
+          ]
+        },
+        "dimension_denominator": {
+          "const": "declared_eligible_hidden_first_attempt_draws"
+        },
+        "evaluated_separately_per_provider_configuration": {
+          "const": true
+        },
+        "first_attempt_wilson_lower_bound_percent": {
+          "const": 80
+        },
+        "per_case_first_attempt_successes_required": {
+          "const": 2
+        },
+        "per_case_first_attempt_draws": {
+          "const": 3
+        },
+        "recovered_completion_wilson_lower_bound_percent": {
+          "const": 90
+        },
+        "hidden_draws_per_provider_configuration": {
+          "const": 111
+        },
+        "first_attempt_successes_required_per_provider_configuration": {
+          "const": 98
+        },
+        "recovered_successes_required_per_provider_configuration": {
+          "const": 107
+        },
+        "mandatory_invariants": {
+          "const": [
+            "no_unauthorized_effect",
+            "no_duplicate_effect",
+            "no_fabricated_material_fact",
+            "no_unsupported_certainty",
+            "no_forbidden_exposure",
+            "no_incorrect_state_claim"
+          ]
+        },
+        "mandatory_invariant_maximum_violations": {
+          "const": 0
+        },
+        "calibration_control_categories": {
+          "const": [
+            "known_correct",
+            "known_wrong",
+            "materially_incomplete",
+            "fluent_but_false"
+          ]
+        },
+        "calibration_control_pass_percent": {
+          "const": 100
+        },
+        "calibration_failure_disposition": {
+          "const": "evaluator_unavailable"
+        },
+        "provider_configuration_compensation_forbidden": {
+          "const": true
+        },
+        "outcome_dimension_compensation_forbidden": {
+          "const": true
+        },
+        "consequential_unresolved_judgment_disposition": {
+          "const": "unavailable"
+        }
+      }
+    },
+    "hidden_population_construction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "counterpart_basis",
+        "preserved_dimensions",
+        "required_variation_dimensions",
+        "simple_paraphrase_invalid",
+        "eligible_outcome_dimensions_recorded_per_case",
+        "custodian_independence",
+        "permitted_audiences",
+        "excluded_audiences",
+        "structural_checks_required",
+        "literal_overlap_checks_required",
+        "independent_semantic_review_required",
+        "mechanical_novelty_checks_sufficient",
+        "frozen_before_candidate_evaluation",
+        "post_evaluation_change_requires_new_dataset_identity",
+        "post_evaluation_change_restarts_affected_evaluation"
+      ],
+      "properties": {
+        "counterpart_basis": {
+          "const": "exactly_one_hidden_counterpart_per_public_variant"
+        },
+        "preserved_dimensions": {
+          "const": [
+            "family",
+            "risk_slice",
+            "oracle_predicate",
+            "terminal_path_class"
+          ]
+        },
+        "required_variation_dimensions": {
+          "const": [
+            "identifiers",
+            "numerical_facts",
+            "source_wording_or_order",
+            "applicable_state_or_event_timing_fact"
+          ]
+        },
+        "simple_paraphrase_invalid": {
+          "const": true
+        },
+        "eligible_outcome_dimensions_recorded_per_case": {
+          "const": true
+        },
+        "custodian_independence": {
+          "const": "no_candidate_implementation_or_result_access"
+        },
+        "permitted_audiences": {
+          "const": [
+            "evaluator"
+          ]
+        },
+        "excluded_audiences": {
+          "const": [
+            "agents",
+            "application",
+            "builder"
+          ]
+        },
+        "structural_checks_required": {
+          "const": true
+        },
+        "literal_overlap_checks_required": {
+          "const": true
+        },
+        "independent_semantic_review_required": {
+          "const": true
+        },
+        "mechanical_novelty_checks_sufficient": {
+          "const": false
+        },
+        "frozen_before_candidate_evaluation": {
+          "const": true
+        },
+        "post_evaluation_change_requires_new_dataset_identity": {
+          "const": true
+        },
+        "post_evaluation_change_restarts_affected_evaluation": {
+          "const": true
+        }
+      }
+    },
+    "provider_matrix": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "configurations",
+        "matrix_rules",
+        "gemini_live_profile_proof"
+      ],
+      "properties": {
+        "configurations": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "single_provider_a",
+            "single_provider_b",
+            "mixed_provider"
+          ],
+          "properties": {
+            "single_provider_a": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "configuration_id",
+                "role_provider_profile_families"
+              ],
+              "properties": {
+                "configuration_id": {
+                  "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+                },
+                "role_provider_profile_families": {
+                  "const": {
+                    "investigator": "openai_responses_python",
+                    "planner": "openai_responses_python",
+                    "correspondent": "openai_responses_python"
+                  }
+                }
+              }
+            },
+            "single_provider_b": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "configuration_id",
+                "role_provider_profile_families"
+              ],
+              "properties": {
+                "configuration_id": {
+                  "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+                },
+                "role_provider_profile_families": {
+                  "const": {
+                    "investigator": "anthropic_messages_python",
+                    "planner": "anthropic_messages_python",
+                    "correspondent": "anthropic_messages_python"
+                  }
+                }
+              }
+            },
+            "mixed_provider": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "configuration_id",
+                "role_provider_profile_families"
+              ],
+              "properties": {
+                "configuration_id": {
+                  "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+                },
+                "role_provider_profile_families": {
+                  "const": {
+                    "investigator": "openai_responses_python",
+                    "planner": "anthropic_messages_python",
+                    "correspondent": "openai_responses_python"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "matrix_rules": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "campaign_population",
+            "mixed_provider_handoffs",
+            "same_role_contracts_tools_budgets_context_and_error_semantics",
+            "provider_specific_semantic_weakening_forbidden",
+            "candidate_model_settings_disposition",
+            "pricing_and_spend_disposition"
+          ],
+          "properties": {
+            "campaign_population": {
+              "const": "complete_public_and_hidden_populations"
+            },
+            "mixed_provider_handoffs": {
+              "const": [
+                "investigator_to_planner",
+                "planner_to_correspondent"
+              ]
+            },
+            "same_role_contracts_tools_budgets_context_and_error_semantics": {
+              "const": true
+            },
+            "provider_specific_semantic_weakening_forbidden": {
+              "const": true
+            },
+            "candidate_model_settings_disposition": {
+              "const": "fixed_by_VERIFY_model_settings"
+            },
+            "pricing_and_spend_disposition": {
+              "const": "fixed_by_VERIFY_pricing_and_spend_gate"
+            }
+          }
+        },
+        "gemini_live_profile_proof": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required_for_provider_neutral_claim",
+            "included_in_444_run_consumer_campaign",
+            "scope",
+            "exact_api_family_model_and_settings_disposition"
+          ],
+          "properties": {
+            "required_for_provider_neutral_claim": {"const": true},
+            "included_in_444_run_consumer_campaign": {"const": false},
+            "scope": {"const": "separate_live_profile_gate"},
+            "exact_api_family_model_and_settings_disposition": {
+              "const": "separately_bound_and_frozen_before_live_profile_proof"
+            }
+          }
+        }
+      }
+    },
+    "model_settings_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "excluded_scopes",
+        "provider_profiles",
+        "common_request_policy",
+        "role_request_policy",
+        "model_identity_policy",
+        "reference_pricing"
+      ],
+      "properties": {
+        "scope": {
+          "const": "candidate_product_roles_only"
+        },
+        "excluded_scopes": {
+          "const": [
+            "semantic_evaluator",
+            "gemini_live_profile"
+          ]
+        },
+        "provider_profiles": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "openai_responses_python",
+            "anthropic_messages_python"
+          ],
+          "properties": {
+            "openai_responses_python": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "api_family",
+                "requested_model",
+                "reasoning_effort"
+              ],
+              "properties": {
+                "api_family": {"const": "responses_python"},
+                "requested_model": {"const": "gpt-5.6-terra"},
+                "reasoning_effort": {"const": "medium"}
+              }
+            },
+            "anthropic_messages_python": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "api_family",
+                "requested_model",
+                "effort"
+              ],
+              "properties": {
+                "api_family": {"const": "messages_python"},
+                "requested_model": {"const": "claude-sonnet-5"},
+                "effort": {"const": "medium"}
+              }
+            }
+          }
+        },
+        "common_request_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "structured_outputs",
+            "client_managed_tool_schemas",
+            "tool_dispatch",
+            "parallel_tool_calls",
+            "provider_managed_business_tools",
+            "automatic_sdk_retries",
+            "provider_fallback",
+            "sampling_parameters",
+            "provider_storage",
+            "cross_run_cache_reuse"
+          ],
+          "properties": {
+            "structured_outputs": {"const": "strict"},
+            "client_managed_tool_schemas": {"const": "strict"},
+            "tool_dispatch": {"const": "sequential_controller_managed_only"},
+            "parallel_tool_calls": {"const": false},
+            "provider_managed_business_tools": {"const": false},
+            "automatic_sdk_retries": {"const": 0},
+            "provider_fallback": {"const": false},
+            "sampling_parameters": {
+              "const": {
+                "temperature": "omitted",
+                "top_p": "omitted"
+              }
+            },
+            "provider_storage": {
+              "const": "disabled_where_configurable_and_never_relied_upon"
+            },
+            "cross_run_cache_reuse": {
+              "const": "disabled_where_configurable_and_never_relied_upon"
+            }
+          }
+        },
+        "role_request_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "investigator",
+            "planner",
+            "correspondent",
+            "effective_output_ceiling"
+          ],
+          "properties": {
+            "investigator": {
+              "const": {
+                "stream": false,
+                "output_token_ceiling": 4096
+              }
+            },
+            "planner": {
+              "const": {
+                "stream": true,
+                "output_token_ceiling": 8192
+              }
+            },
+            "correspondent": {
+              "const": {
+                "stream": false,
+                "output_token_ceiling": 4096
+              }
+            },
+            "effective_output_ceiling": {
+              "const": "minimum_of_role_request_ceiling_and_remaining_aggregate_output_budget"
+            }
+          }
+        },
+        "model_identity_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "requested_model_id_retained",
+            "returned_model_id_retained",
+            "observed_returned_identity_change",
+            "maximum_identity_claim",
+            "underlying_weight_immutability_claimed"
+          ],
+          "properties": {
+            "requested_model_id_retained": {"const": true},
+            "returned_model_id_retained": {"const": true},
+            "observed_returned_identity_change": {
+              "const": "invalidate_affected_evidence"
+            },
+            "maximum_identity_claim": {
+              "const": "provider_exposed_requested_and_returned_model_ids"
+            },
+            "underlying_weight_immutability_claimed": {"const": false}
+          }
+        },
+        "reference_pricing": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "currency",
+            "charge_unit",
+            "prices_per_million_tokens",
+            "per_run_full_limit_token_basis",
+            "per_configuration_run_count",
+            "consumer_campaign_run_count",
+            "full_limit_cost_ceiling_usd_micro",
+            "ceiling_method",
+            "scope",
+            "excluded_costs",
+            "status"
+          ],
+          "properties": {
+            "currency": {"const": "USD"},
+            "charge_unit": {"const": "usd_micro"},
+            "prices_per_million_tokens": {
+              "const": {
+                "openai_responses_python": {
+                  "input_usd": 2,
+                  "output_usd": 12
+                },
+                "anthropic_messages_python": {
+                  "input_usd": 2,
+                  "output_usd": 10
+                }
+              }
+            },
+            "per_run_full_limit_token_basis": {
+              "const": {
+                "input_tokens": 80000,
+                "output_tokens": 16000
+              }
+            },
+            "per_configuration_run_count": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "consumer_campaign_run_count": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "full_limit_cost_ceiling_usd_micro": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "ceiling_method": {
+              "const": "148_runs_each_for_openai_only_anthropic_only_and_mixed_using_openai_output_rate_as_mixed_upper_bound_at_80000_input_and_16000_output_tokens_per_run"
+            },
+            "scope": {"const": "candidate_product_role_calls_only"},
+            "excluded_costs": {
+              "const": [
+                "semantic_evaluator_calls",
+                "gemini_live_profile_calls",
+                "future_price_or_account_modifiers"
+              ]
+            },
+            "status": {
+              "const": "reference_only_superseded_at_launch_by_frozen_pricing_artifact"
+            }
+          }
+        }
+      }
+    },
+    "pricing_and_spend_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "pricing_artifact_policy",
+        "spend_authorization_policy",
+        "admission_and_runtime_policy",
+        "authority_boundary"
+      ],
+      "properties": {
+        "scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "campaign",
+            "candidate_role_run_count",
+            "excluded_costs"
+          ],
+          "properties": {
+            "campaign": {"const": "public_and_hidden_consumer_campaign"},
+            "candidate_role_run_count": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "excluded_costs": {
+              "const": [
+                "semantic_evaluator_calls",
+                "gemini_live_profile_calls"
+              ]
+            }
+          }
+        },
+        "pricing_artifact_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "content_addressed",
+            "maximum_age_hours_at_launch",
+            "provider_authority_fetch_required",
+            "required_bindings",
+            "required_charge_dimensions",
+            "unknown_or_unpriced_charge_disposition"
+          ],
+          "properties": {
+            "content_addressed": {"const": true},
+            "maximum_age_hours_at_launch": {"const": 24},
+            "provider_authority_fetch_required": {"const": true},
+            "required_bindings": {
+              "const": [
+                "provider",
+                "requested_model",
+                "provider_api_or_billing_route",
+                "provider_billing_principal",
+                "region",
+                "service_tier",
+                "currency",
+                "observed_at",
+                "source_url",
+                "source_content_sha256"
+              ]
+            },
+            "required_charge_dimensions": {
+              "const": [
+                "uncached_input",
+                "cached_input",
+                "cache_write",
+                "output",
+                "long_context_modifier",
+                "regional_modifier",
+                "service_tier_modifier",
+                "tool_or_feature_charge"
+              ]
+            },
+            "unknown_or_unpriced_charge_disposition": {
+              "const": "block_launch_or_next_dispatch"
+            }
+          }
+        },
+        "spend_authorization_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "maximum_usd_micro",
+            "operator_action",
+            "required_bindings",
+            "exact_expiration_required",
+            "one_campaign_revision_only",
+            "automatic_increase",
+            "unused_authority_reusable",
+            "excluded_costs_require_separate_authorization"
+          ],
+          "properties": {
+            "maximum_usd_micro": {"const": 160000000},
+            "operator_action": {
+              "const": "one_explicit_approval_of_generated_human_readable_authorization_record"
+            },
+            "required_bindings": {
+              "const": [
+                "campaign_id",
+                "campaign_revision",
+                "candidate_model_profile_artifacts",
+                "pricing_artifact",
+                "provider_billing_principals",
+                "maximum_usd_micro",
+                "expires_at"
+              ]
+            },
+            "exact_expiration_required": {"const": true},
+            "one_campaign_revision_only": {"const": true},
+            "automatic_increase": {"const": false},
+            "unused_authority_reusable": {"const": false},
+            "excluded_costs_require_separate_authorization": {"const": true}
+          }
+        },
+        "admission_and_runtime_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "full_limit_candidate_role_cost_must_fit",
+            "pricing_or_billing_identity_drift",
+            "model_or_profile_substitution",
+            "provider_fallback",
+            "unknown_spend",
+            "maximum_equality",
+            "runtime_accounting",
+            "post_authorization_change"
+          ],
+          "properties": {
+            "full_limit_candidate_role_cost_must_fit": {"const": true},
+            "pricing_or_billing_identity_drift": {
+              "const": "block_launch_or_next_dispatch"
+            },
+            "model_or_profile_substitution": {"const": false},
+            "provider_fallback": {"const": false},
+            "unknown_spend": {"const": "block_next_dispatch"},
+            "maximum_equality": {"const": "exhausted"},
+            "runtime_accounting": {
+              "const": "actual_candidate_role_costs_debit_campaign_and_per_run_budgets"
+            },
+            "post_authorization_change": {
+              "const": "new_authorization_bound_to_new_campaign_revision_required"
+            }
+          }
+        },
+        "authority_boundary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "design_ratification_is_spend_authorization",
+            "schema_or_test_pass_is_spend_authorization",
+            "credential_possession_is_spend_authorization",
+            "provider_call_before_bound_operator_approval"
+          ],
+          "properties": {
+            "design_ratification_is_spend_authorization": {"const": false},
+            "schema_or_test_pass_is_spend_authorization": {"const": false},
+            "credential_possession_is_spend_authorization": {"const": false},
+            "provider_call_before_bound_operator_approval": {"const": false}
+          }
+        }
+      }
+    },
+    "evaluator_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rubrics",
+        "calibration_set_artifact",
+        "evaluation_order",
+        "deterministic_oracle_scope",
+        "semantic_judge_scope",
+        "deterministic_oracle_precedes_semantic_judge",
+        "judge_independence",
+        "judge_input_boundary",
+        "judge_output_contract",
+        "semantic_judge_identity",
+        "configuration_artifact_contract",
+        "model_settings",
+        "calibration_contract",
+        "human_adjudication",
+        "freeze_rules"
+      ],
+      "properties": {
+        "rubrics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "investigation",
+            "recovery_selection",
+            "execution",
+            "communication",
+            "useful_scenario_completion"
+          ],
+          "properties": {
+            "investigation": {"$ref": "#/$defs/VersionedArtifact"},
+            "recovery_selection": {"$ref": "#/$defs/VersionedArtifact"},
+            "execution": {"$ref": "#/$defs/VersionedArtifact"},
+            "communication": {"$ref": "#/$defs/VersionedArtifact"},
+            "useful_scenario_completion": {"$ref": "#/$defs/VersionedArtifact"}
+          }
+        },
+        "calibration_set_artifact": {
+          "$ref": "#/$defs/VersionedArtifact"
+        },
+        "evaluation_order": {
+          "const": [
+            "deterministic_oracles",
+            "semantic_judge",
+            "human_adjudication_if_required"
+          ]
+        },
+        "deterministic_oracle_scope": {
+          "const": [
+            "facts",
+            "state",
+            "authorization",
+            "mandatory_invariants"
+          ]
+        },
+        "semantic_judge_scope": {
+          "const": "residual_qualitative_dimensions_only"
+        },
+        "deterministic_oracle_precedes_semantic_judge": {
+          "const": true
+        },
+        "judge_independence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "independently_configured",
+            "candidate_self_judgment_forbidden",
+            "different_model_name_alone_sufficient"
+          ],
+          "properties": {
+            "independently_configured": {"const": true},
+            "candidate_self_judgment_forbidden": {"const": true},
+            "different_model_name_alone_sufficient": {"const": false}
+          }
+        },
+        "judge_input_boundary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "permitted_inputs",
+            "forbidden_inputs",
+            "candidate_output_is_untrusted_data",
+            "candidate_evaluator_instructions_ignored",
+            "input_artifact_contract"
+          ],
+          "properties": {
+            "permitted_inputs": {
+              "const": [
+                "hidden_ground_truth",
+                "candidate_output",
+                "allowed_evidence"
+              ]
+            },
+            "forbidden_inputs": {
+              "const": [
+                "author_narration",
+                "nonpermitted_builder_trace",
+                "candidate_internals",
+                "secrets",
+                "expected_classifications",
+                "calibration_labels",
+                "hidden_public_pairing_metadata"
+              ]
+            },
+            "candidate_output_is_untrusted_data": {"const": true},
+            "candidate_evaluator_instructions_ignored": {"const": true},
+            "input_artifact_contract": {
+              "const": {
+                "schema_revision": "frd/evaluator-input/v1",
+                "owner": "evaluator_harness",
+                "cardinality": "one_per_semantic_judge_task",
+                "root_closed": true,
+                "root_fields": [
+                  "schema_revision",
+                  "evaluation_task_id",
+                  "hidden_ground_truth_artifact",
+                  "candidate_output_artifact",
+                  "eligible_dimensions",
+                  "rubric_bindings",
+                  "output_schema_artifact",
+                  "allowed_evidence"
+                ],
+                "artifact_reference_fields": ["path", "sha256"],
+                "eligible_dimension_vocabulary": [
+                  "investigation",
+                  "recovery_selection",
+                  "execution",
+                  "communication",
+                  "useful_scenario_completion"
+                ],
+                "eligible_dimension_order": "frozen_outcome_dimension_order",
+                "rubric_binding_fields": ["dimension", "artifact"],
+                "rubric_binding_membership": "exactly_eligible_dimensions_in_frozen_order",
+                "allowed_evidence_entry_fields": ["evidence_id", "artifact"],
+                "allowed_evidence_ids_unique": true,
+                "allowed_evidence_order": "frozen_inventory_order",
+                "payload_evidence_reference_domain": "exact_allowed_evidence_ids",
+                "all_content_bindings_exact": true,
+                "candidate_output_presentation": "delimited_untrusted_data",
+                "candidate_evaluator_instructions_ignored": true,
+                "forbidden_content": [
+                  "author_narration",
+                  "nonpermitted_builder_trace",
+                  "candidate_internals",
+                  "secrets",
+                  "expected_classifications",
+                  "calibration_labels",
+                  "hidden_public_pairing_metadata"
+                ],
+                "same_frozen_input_for_every_eligible_calibration_configuration": true,
+                "token_measurement": {
+                  "subject": "exact_serialized_assembled_judge_request",
+                  "timing": "before_dispatch",
+                  "maximum_input_tokens": 32000,
+                  "overflow_disposition": "evaluator_unavailable",
+                  "silent_truncation": false
+                },
+                "serialization": "JCS",
+                "identity": "external_sha256",
+                "self_hash_field": false,
+                "immutable": true,
+                "overwrite_forbidden": true
+              }
+            }
+          }
+        },
+        "judge_output_contract": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "classification_values",
+            "classification_semantics",
+            "per_dimension_classification_required",
+            "eligibility_map_controls_dimension_presence",
+            "not_applicable_output_forbidden",
+            "missing_or_null_required_judgment_disposition",
+            "unresolved_not_synonym_for_missing_or_null",
+            "consequential_unresolved_routes_to_human_adjudication",
+            "reason_codes_required",
+            "reason_code_vocabulary_status",
+            "reason_code_taxonomy",
+            "reason_code_rules",
+            "judgment_payload_contract",
+            "confidence_contract",
+            "result_envelope_contract",
+            "evidence_references_required",
+            "scalar_average_forbidden"
+          ],
+          "properties": {
+            "classification_values": {
+              "const": ["pass", "fail", "unresolved"]
+            },
+            "classification_semantics": {
+              "const": {
+                "pass": "eligible_dimension_satisfies_frozen_rubric",
+                "fail": "eligible_dimension_violates_frozen_rubric",
+                "unresolved": "permitted_evidence_and_frozen_rubric_cannot_support_pass_or_fail"
+              }
+            },
+            "per_dimension_classification_required": {"const": true},
+            "eligibility_map_controls_dimension_presence": {"const": true},
+            "not_applicable_output_forbidden": {"const": true},
+            "missing_or_null_required_judgment_disposition": {
+              "const": "incomplete_evaluator_response"
+            },
+            "unresolved_not_synonym_for_missing_or_null": {"const": true},
+            "consequential_unresolved_routes_to_human_adjudication": {"const": true},
+            "reason_codes_required": {"const": true},
+            "reason_code_vocabulary_status": {"const": "bound"},
+            "reason_code_taxonomy": {
+              "const": {
+                "pass": ["rubric_satisfied"],
+                "unresolved": [
+                  "permitted_evidence_insufficient",
+                  "permitted_evidence_conflicting",
+                  "rubric_boundary_ambiguous"
+                ],
+                "fail_by_dimension": {
+                  "investigation": [
+                    "grounded_truth_failure",
+                    "epistemic_accuracy_failure",
+                    "material_completeness_failure"
+                  ],
+                  "recovery_selection": [
+                    "grounded_truth_failure",
+                    "epistemic_accuracy_failure",
+                    "material_completeness_failure",
+                    "useful_next_action_failure",
+                    "unearned_comparison_or_guarantee"
+                  ],
+                  "execution": [
+                    "grounded_truth_failure",
+                    "epistemic_accuracy_failure",
+                    "material_completeness_failure"
+                  ],
+                  "communication": [
+                    "grounded_truth_failure",
+                    "epistemic_accuracy_failure",
+                    "material_completeness_failure",
+                    "useful_next_action_failure",
+                    "unearned_comparison_or_guarantee"
+                  ],
+                  "useful_scenario_completion": [
+                    "grounded_truth_failure",
+                    "epistemic_accuracy_failure",
+                    "material_completeness_failure",
+                    "useful_next_action_failure"
+                  ]
+                }
+              }
+            },
+            "reason_code_rules": {
+              "const": {
+                "pass_requires_exact_single_pass_code": true,
+                "unresolved_requires_exact_single_unresolved_code": true,
+                "fail_requires_one_or_more_dimension_allowed_codes": true,
+                "multiple_fail_codes_require_distinct_material_defects": true,
+                "multiple_fail_code_order": "frozen_rubric_order",
+                "evidence_reference_required_per_reason_code": true,
+                "unknown_reason_code_disposition": "invalid_judgment",
+                "classification_reason_mismatch_disposition": "invalid_judgment",
+                "duplicate_reason_code_disposition": "invalid_judgment",
+                "missing_reason_code_disposition": "invalid_judgment",
+                "unsupported_evidence_reference_disposition": "invalid_judgment",
+                "calibration_categories_are_reason_codes": false,
+                "deterministic_oracle_findings_overridable": false
+              }
+            },
+            "judgment_payload_contract": {
+              "const": {
+                "payload_schema_revision": "frd/semantic-judge-payload/v1",
+                "model_output_root_fields": ["schema_revision", "judgments"],
+                "root_closed": true,
+                "judgment_fields": [
+                  "dimension",
+                  "classification",
+                  "reasons",
+                  "rationale"
+                ],
+                "reason_fields": ["code", "evidence_refs"],
+                "eligible_dimension_membership": "exactly_once",
+                "judgment_order": "frozen_eligible_dimension_order",
+                "evidence_reference_contract": {
+                  "per_reason_minimum": 1,
+                  "per_reason_maximum": 8,
+                  "unique": true,
+                  "order": "allowed_evidence_inventory_order",
+                  "permitted_ids_only": true,
+                  "paths_forbidden": true,
+                  "copied_evidence_forbidden": true,
+                  "invented_ids_forbidden": true
+                },
+                "reason_cardinality": {
+                  "pass": {"minimum": 1, "maximum": 1},
+                  "unresolved": {"minimum": 1, "maximum": 1},
+                  "fail": {"minimum": 1, "maximum": 5}
+                },
+                "rationale_contract": {
+                  "required_per_dimension": true,
+                  "maximum_characters": 600
+                },
+                "aggregate_score_in_model_output": false,
+                "overall_verdict_in_model_output": false,
+                "adoption_recommendation_in_model_output": false,
+                "forbidden_model_output_fields": [
+                  "evaluator_identity",
+                  "request_id",
+                  "response_id",
+                  "returned_model_id",
+                  "service_tier",
+                  "usage",
+                  "cost",
+                  "timestamp",
+                  "artifact_hashes",
+                  "overall_score",
+                  "overall_verdict",
+                  "adoption_recommendation"
+                ],
+                "trusted_result_envelope": {
+                  "owner": "evaluator_harness",
+                  "fields": [
+                    "evaluator_identity",
+                    "request_id",
+                    "response_id",
+                    "returned_model_id",
+                    "service_tier",
+                    "usage",
+                    "validity",
+                    "timestamps",
+                    "cost",
+                    "artifact_hashes"
+                  ]
+                },
+                "invalid_payload_policy": {
+                  "retained": true,
+                  "disposition": "rejected",
+                  "coercion": false,
+                  "semantic_salvage": false,
+                  "automatic_retry": false
+                }
+              }
+            },
+            "confidence_contract": {
+              "const": {
+                "numeric_model_reported_confidence": false,
+                "separate_low_confidence_state": false,
+                "confidence_field_in_model_payload": false,
+                "uncertainty_representation": "unresolved_classification_only",
+                "unresolved_required_for": [
+                  "permitted_evidence_insufficient",
+                  "permitted_evidence_conflicting",
+                  "rubric_boundary_ambiguous"
+                ],
+                "pass_or_fail_requires_rubric_support": true,
+                "asserted_confidence_can_strengthen_or_weaken_classification": false,
+                "guessing_pass_or_fail_when_unresolved_expected": "calibration_failure",
+                "human_adjudication_trigger": "consequential_unresolved_semantic_judgment"
+              }
+            },
+            "result_envelope_contract": {
+              "const": {
+                "schema_revision": "frd/evaluator-result-envelope/v1",
+                "owner": "evaluator_harness",
+                "cardinality": "one_per_judge_attempt",
+                "root_closed": true,
+                "root_fields": [
+                  "schema_revision",
+                  "evaluator_attempt_id",
+                  "run_manifest_identity",
+                  "evaluator_configuration_artifact",
+                  "evaluation_input_artifact",
+                  "candidate_output_artifact",
+                  "raw_provider_response_artifact",
+                  "parsed_model_payload_artifact",
+                  "transport",
+                  "timestamps",
+                  "usage",
+                  "billing",
+                  "validity"
+                ],
+                "run_manifest_identity_fields": [
+                  "run_id",
+                  "manifest_digest",
+                  "manifest_artifact_sha256"
+                ],
+                "artifact_reference_fields": ["path", "sha256"],
+                "transport_fields": [
+                  "provider_id",
+                  "requested_model_id",
+                  "returned_model_id",
+                  "requested_service_tier",
+                  "returned_service_tier",
+                  "request_id",
+                  "response_id"
+                ],
+                "timestamp_fields": ["started_at", "completed_at"],
+                "complete_provider_returned_usage_retained": true,
+                "billing_fields": [
+                  "pricing_artifact",
+                  "calculated_cost_usd_micro"
+                ],
+                "billing_calculation_owner": "evaluator_harness",
+                "validity_values": ["valid", "invalid", "unavailable"],
+                "validity_semantics": {
+                  "valid": "provider_response_retained_and_payload_schema_valid",
+                  "invalid": "provider_response_retained_and_payload_missing_malformed_or_schema_invalid",
+                  "unavailable": "judge_attempt_has_no_usable_judgment_due_to_verified_infrastructure_provider_or_required_trusted_evidence_unavailability"
+                },
+                "raw_provider_response_or_error_retained": true,
+                "invalid_payload_evidence_retained": true,
+                "parsed_model_payload_artifact_presence": {
+                  "valid": "required",
+                  "invalid": "required_if_parseable_else_explicit_absence",
+                  "unavailable": "explicit_absence"
+                },
+                "model_self_attestation_authoritative": false,
+                "aggregate_score_in_envelope": false,
+                "overall_verdict_in_envelope": false,
+                "adoption_recommendation_in_envelope": false,
+                "serialization": "JCS",
+                "identity": "external_sha256",
+                "self_hash_field": false,
+                "immutable": true,
+                "overwrite_forbidden": true
+              }
+            },
+            "evidence_references_required": {"const": true},
+            "scalar_average_forbidden": {"const": true}
+          }
+        },
+        "semantic_judge_identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "provider_id",
+            "model_id",
+            "model_version",
+            "prompt_artifact",
+            "settings_artifact",
+            "tool_versions_artifact",
+            "rubric_sha256_by_dimension",
+            "calibration_set_sha256"
+          ],
+          "properties": {
+            "provider_id": {"$ref": "urn:haffey:frd:wire:1#/$defs/Id"},
+            "model_id": {"$ref": "urn:haffey:frd:wire:1#/$defs/Id"},
+            "model_version": {"$ref": "urn:haffey:frd:wire:1#/$defs/Id"},
+            "prompt_artifact": {"$ref": "#/$defs/Artifact"},
+            "settings_artifact": {"$ref": "#/$defs/Artifact"},
+            "tool_versions_artifact": {"$ref": "#/$defs/Artifact"},
+            "rubric_sha256_by_dimension": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "investigation",
+                "recovery_selection",
+                "execution",
+                "communication",
+                "useful_scenario_completion"
+              ],
+              "properties": {
+                "investigation": {"$ref": "urn:haffey:frd:wire:1#/$defs/Digest"},
+                "recovery_selection": {"$ref": "urn:haffey:frd:wire:1#/$defs/Digest"},
+                "execution": {"$ref": "urn:haffey:frd:wire:1#/$defs/Digest"},
+                "communication": {"$ref": "urn:haffey:frd:wire:1#/$defs/Digest"},
+                "useful_scenario_completion": {"$ref": "urn:haffey:frd:wire:1#/$defs/Digest"}
+              }
+            },
+            "calibration_set_sha256": {
+              "$ref": "urn:haffey:frd:wire:1#/$defs/Digest"
+            }
+          }
+        },
+        "configuration_artifact_contract": {
+          "const": {
+            "schema_revision": "frd/evaluator-configuration/v1",
+            "owner": "evaluator_harness",
+            "population_cardinality": 4,
+            "one_per_calibration_ladder_step": true,
+            "root_closed": true,
+            "root_fields": [
+              "schema_revision",
+              "evaluator_configuration_id",
+              "evaluator_configuration_revision",
+              "ladder_ordinal",
+              "provider",
+              "request",
+              "prompt_artifact",
+              "input_schema_artifact",
+              "output_schema_artifact",
+              "tool_versions_artifact",
+              "dependency_lock_artifact",
+              "rubric_artifacts",
+              "calibration_set_artifact",
+              "environment_artifact"
+            ],
+            "artifact_reference_fields": ["path", "sha256"],
+            "provider_fields": [
+              "provider_id",
+              "api_family",
+              "sdk_language",
+              "sdk_version"
+            ],
+            "provider_common": {
+              "provider_id": "OPENAI",
+              "api_family": "responses",
+              "sdk_language": "python",
+              "sdk_version": "EXACT-PHYSICAL-VERSION-REQUIRED"
+            },
+            "request_fields": [
+              "requested_model_id",
+              "reasoning_effort",
+              "service_tier",
+              "max_output_tokens",
+              "assembled_input_token_ceiling",
+              "stream",
+              "structured_output",
+              "tools",
+              "store",
+              "automatic_sdk_retries",
+              "provider_fallback",
+              "standard_service_fallback",
+              "automatic_second_vote",
+              "temperature",
+              "top_p"
+            ],
+            "request_common": {
+              "reasoning_effort": "high",
+              "service_tier": "flex",
+              "assembled_input_token_ceiling": 32000,
+              "stream": false,
+              "structured_output": "strict_json_schema",
+              "tools": [],
+              "store": false,
+              "automatic_sdk_retries": 0,
+              "provider_fallback": false,
+              "standard_service_fallback": false,
+              "automatic_second_vote": false,
+              "temperature": "omitted",
+              "top_p": "omitted"
+            },
+            "configuration_population": [
+              {
+                "ladder_ordinal": 1,
+                "requested_model_id": "gpt-5.6-sol",
+                "max_output_tokens": 4096
+              },
+              {
+                "ladder_ordinal": 2,
+                "requested_model_id": "gpt-5.6-sol",
+                "max_output_tokens": 8192
+              },
+              {
+                "ladder_ordinal": 3,
+                "requested_model_id": "gpt-6-astra",
+                "max_output_tokens": 4096
+              },
+              {
+                "ladder_ordinal": 4,
+                "requested_model_id": "gpt-6-astra",
+                "max_output_tokens": 8192
+              }
+            ],
+            "rubric_dimensions": [
+              "investigation",
+              "recovery_selection",
+              "execution",
+              "communication",
+              "useful_scenario_completion"
+            ],
+            "exact_prompt_schema_tool_dependency_rubric_calibration_environment_bindings_required": true,
+            "environment_access": "read_only_evidence",
+            "ladder_eligibility_and_selection_owner": "separate_evaluator_selection_record",
+            "selection_status_in_configuration_artifact": false,
+            "selection_observations_in_configuration_artifact": false,
+            "excluded_fields": [
+              "credentials",
+              "pricing",
+              "spend_authority",
+              "usage",
+              "results",
+              "selection_observations"
+            ],
+            "serialization": "JCS",
+            "identity": "external_sha256",
+            "self_hash_field": false,
+            "immutable": true,
+            "overwrite_forbidden": true,
+            "all_root_fields_identity_bearing": true,
+            "identity_change_invalidates_affected_evidence": true
+          }
+        },
+        "model_settings": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "provider_id",
+            "api_family",
+            "sdk_language",
+            "selection_state",
+            "candidate_model_order",
+            "reasoning_effort",
+            "service_tier",
+            "calibration_ladder",
+            "selection_rule",
+            "selection_failure_disposition",
+            "selected_identity_frozen_before_candidate_evaluation",
+            "scheduled_populations",
+            "scheduled_scenario_draw_count",
+            "one_call_per_scheduled_scenario_draw",
+            "all_eligible_dimensions_in_one_call",
+            "assembled_input_token_ceiling",
+            "oversize_input_disposition",
+            "silent_input_truncation",
+            "stream",
+            "structured_output",
+            "tools",
+            "store",
+            "cross_run_cache_reliance",
+            "automatic_sdk_retries",
+            "provider_fallback",
+            "standard_service_fallback",
+            "flex_resource_unavailable_disposition",
+            "automatic_second_vote",
+            "temperature",
+            "top_p",
+            "environment_access",
+            "candidate_model_reuse",
+            "requested_model_id_retained",
+            "returned_model_id_retained",
+            "observed_returned_identity_change",
+            "maximum_identity_claim",
+            "underlying_weight_immutability_claimed",
+            "local_payload_token_measurement_required_before_campaign_authorization",
+            "calibration_usage_evidence_required_before_campaign_authorization",
+            "calibration_and_campaign_spend_authorizations_separate",
+            "calibration_spend_authorization_status",
+            "campaign_spend_authorization_status",
+            "design_ratification_authorizes_call_or_spend"
+          ],
+          "properties": {
+            "provider_id": {"const": "OPENAI"},
+            "api_family": {"const": "responses"},
+            "sdk_language": {"const": "python"},
+            "selection_state": {"const": "pending_calibration"},
+            "candidate_model_order": {
+              "const": ["gpt-5.6-sol", "gpt-6-astra"]
+            },
+            "reasoning_effort": {"const": "high"},
+            "service_tier": {"const": "flex"},
+            "calibration_ladder": {
+              "const": [
+                {
+                  "ordinal": 1,
+                  "requested_model": "gpt-5.6-sol",
+                  "max_output_tokens": 4096,
+                  "eligibility": "always_first"
+                },
+                {
+                  "ordinal": 2,
+                  "requested_model": "gpt-5.6-sol",
+                  "max_output_tokens": 8192,
+                  "eligibility": "same_model_4096_incomplete_only_due_to_output_ceiling"
+                },
+                {
+                  "ordinal": 3,
+                  "requested_model": "gpt-6-astra",
+                  "max_output_tokens": 4096,
+                  "eligibility": "sol_has_no_passing_eligible_configuration"
+                },
+                {
+                  "ordinal": 4,
+                  "requested_model": "gpt-6-astra",
+                  "max_output_tokens": 8192,
+                  "eligibility": "same_model_4096_incomplete_only_due_to_output_ceiling"
+                }
+              ]
+            },
+            "selection_rule": {
+              "const": "first_eligible_configuration_with_50_of_50_correct_zero_false_passes_correct_unresolved_routing_and_no_malformed_missing_or_incomplete_judgment"
+            },
+            "selection_failure_disposition": {"const": "evaluator_unavailable"},
+            "selected_identity_frozen_before_candidate_evaluation": {"const": true},
+            "scheduled_populations": {"const": ["public", "hidden"]},
+            "scheduled_scenario_draw_count": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "one_call_per_scheduled_scenario_draw": {"const": true},
+            "all_eligible_dimensions_in_one_call": {"const": true},
+            "assembled_input_token_ceiling": {"const": 32000},
+            "oversize_input_disposition": {"const": "evaluator_unavailable"},
+            "silent_input_truncation": {"const": false},
+            "stream": {"const": false},
+            "structured_output": {"const": "strict_json_schema"},
+            "tools": {"const": []},
+            "store": {"const": false},
+            "cross_run_cache_reliance": {"const": false},
+            "automatic_sdk_retries": {"const": 0},
+            "provider_fallback": {"const": false},
+            "standard_service_fallback": {"const": false},
+            "flex_resource_unavailable_disposition": {
+              "const": "verified_infrastructure_failure_under_existing_preregistered_rerun_rule"
+            },
+            "automatic_second_vote": {"const": false},
+            "temperature": {"const": "omitted"},
+            "top_p": {"const": "omitted"},
+            "environment_access": {
+              "const": "separate_frozen_environment_with_read_only_evidence_access"
+            },
+            "candidate_model_reuse": {"const": false},
+            "requested_model_id_retained": {"const": true},
+            "returned_model_id_retained": {"const": true},
+            "observed_returned_identity_change": {
+              "const": "invalidate_affected_judgments"
+            },
+            "maximum_identity_claim": {
+              "const": "provider_exposed_requested_and_returned_model_ids"
+            },
+            "underlying_weight_immutability_claimed": {"const": false},
+            "local_payload_token_measurement_required_before_campaign_authorization": {
+              "const": true
+            },
+            "calibration_usage_evidence_required_before_campaign_authorization": {
+              "const": true
+            },
+            "calibration_and_campaign_spend_authorizations_separate": {"const": true},
+            "calibration_spend_authorization_status": {"const": "pending"},
+            "campaign_spend_authorization_status": {
+              "const": "pending_after_model_selection_and_usage_observation"
+            },
+            "design_ratification_authorizes_call_or_spend": {"const": false}
+          }
+        },
+        "calibration_contract": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "outcome_dimensions",
+            "classification_matrix",
+            "unresolved_boundary_matrix",
+            "total_control_count",
+            "control_observation_shape",
+            "primary_target_dimension_and_expected_classification_bound",
+            "other_eligible_dimensions_have_known_expected_classifications",
+            "independent_authorship_and_custody",
+            "expected_answers_hidden_from_evaluator",
+            "population_content_addressed_and_frozen_before_calibration",
+            "execution_policy",
+            "pass_percent",
+            "false_pass_maximum",
+            "unresolved_boundary_correct_percent",
+            "malformed_missing_or_incomplete_maximum",
+            "output_ceiling_only_incomplete_disposition",
+            "existing_semantic_seed_count",
+            "existing_seeds_count_before_complete_frozen_embedding",
+            "false_pass_count_recorded",
+            "false_fail_count_recorded",
+            "failure_disposition",
+            "empirical_claim"
+          ],
+          "properties": {
+            "outcome_dimensions": {
+              "const": [
+                "investigation",
+                "recovery_selection",
+                "execution",
+                "communication",
+                "useful_scenario_completion"
+              ]
+            },
+            "classification_matrix": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "categories",
+                "controls_per_dimension_category",
+                "specimen_variants_per_cell",
+                "control_count"
+              ],
+              "properties": {
+                "categories": {
+                  "const": [
+                    "known_correct",
+                    "known_wrong",
+                    "materially_incomplete",
+                    "fluent_but_false"
+                  ]
+                },
+                "controls_per_dimension_category": {"const": 2},
+                "specimen_variants_per_cell": {
+                  "const": ["straightforward", "adversarial_near_boundary"]
+                },
+                "control_count": {"const": 40}
+              }
+            },
+            "unresolved_boundary_matrix": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "classification",
+                "controls_per_dimension",
+                "control_count",
+                "human_adjudication_routing_required"
+              ],
+              "properties": {
+                "classification": {"const": "unresolved"},
+                "controls_per_dimension": {"const": 2},
+                "control_count": {"const": 10},
+                "human_adjudication_routing_required": {"const": true}
+              }
+            },
+            "total_control_count": {"const": 50},
+            "control_observation_shape": {"const": "complete_case_observation"},
+            "primary_target_dimension_and_expected_classification_bound": {"const": true},
+            "other_eligible_dimensions_have_known_expected_classifications": {"const": true},
+            "independent_authorship_and_custody": {"const": true},
+            "expected_answers_hidden_from_evaluator": {"const": true},
+            "population_content_addressed_and_frozen_before_calibration": {"const": true},
+            "execution_policy": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "same_population_for_every_eligible_configuration",
+                "same_fixed_blinded_order_for_every_eligible_configuration",
+                "entire_population_required_per_configuration",
+                "selective_reruns",
+                "replacement_controls",
+                "mid_step_stopping"
+              ],
+              "properties": {
+                "same_population_for_every_eligible_configuration": {"const": true},
+                "same_fixed_blinded_order_for_every_eligible_configuration": {"const": true},
+                "entire_population_required_per_configuration": {"const": true},
+                "selective_reruns": {"const": false},
+                "replacement_controls": {"const": false},
+                "mid_step_stopping": {"const": false}
+              }
+            },
+            "pass_percent": {"const": 100},
+            "false_pass_maximum": {"const": 0},
+            "unresolved_boundary_correct_percent": {"const": 100},
+            "malformed_missing_or_incomplete_maximum": {"const": 0},
+            "output_ceiling_only_incomplete_disposition": {
+              "const": "may_unlock_next_same_model_ladder_step_but_does_not_pass"
+            },
+            "existing_semantic_seed_count": {"const": 3},
+            "existing_seeds_count_before_complete_frozen_embedding": {"const": 0},
+            "false_pass_count_recorded": {"const": true},
+            "false_fail_count_recorded": {"const": true},
+            "failure_disposition": {"const": "evaluator_unavailable"},
+            "empirical_claim": {
+              "const": "screening_gate_not_statistical_proof_of_evaluator_reliability"
+            }
+          }
+        },
+        "human_adjudication": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required_for",
+            "adjudicator_id",
+            "procedure_artifact",
+            "second_automatic_vote_forbidden",
+            "original_judgment_retained",
+            "original_judgment_overwrite_forbidden"
+          ],
+          "properties": {
+            "required_for": {
+              "const": [
+                "consequential_unresolved_semantic_judgment"
+              ]
+            },
+            "adjudicator_id": {"$ref": "urn:haffey:frd:wire:1#/$defs/Id"},
+            "procedure_artifact": {"$ref": "#/$defs/Artifact"},
+            "second_automatic_vote_forbidden": {"const": true},
+            "original_judgment_retained": {"const": true},
+            "original_judgment_overwrite_forbidden": {"const": true}
+          }
+        },
+        "freeze_rules": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "frozen_before_candidate_evaluation",
+            "identity_fields",
+            "identity_change_invalidates_affected_evidence"
+          ],
+          "properties": {
+            "frozen_before_candidate_evaluation": {"const": true},
+            "identity_fields": {
+              "const": [
+                "provider",
+                "model",
+                "model_version",
+                "prompt",
+                "settings",
+                "tool_versions",
+                "rubrics",
+                "calibration_set"
+              ]
+            },
+            "identity_change_invalidates_affected_evidence": {"const": true}
+          }
+        }
+      }
+    },
+    "evidence_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "content_policy",
+        "custody_policy",
+        "evidence_requirements"
+      ],
+      "properties": {
+        "content_policy": {"$ref": "#/$defs/Artifact"},
+        "custody_policy": {"$ref": "#/$defs/Artifact"},
+        "evidence_requirements": {"$ref": "#/$defs/Artifact"}
+      }
+    },
+    "evidence_rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "complete_command_output_required",
+        "dirty_control_for_silence_detector_required",
+        "mechanical_result_derivation_required",
+        "first_failures_retained",
+        "deterministic_and_evaluation_results_separate"
+      ],
+      "properties": {
+        "complete_command_output_required": {"const": true},
+        "dirty_control_for_silence_detector_required": {"const": true},
+        "mechanical_result_derivation_required": {"const": true},
+        "first_failures_retained": {"const": true},
+        "deterministic_and_evaluation_results_separate": {"const": true}
+      }
+    },
+    "change_rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "load_bearing_identities",
+        "identity_change_invalidates_affected_evidence",
+        "thresholds_frozen_before_results",
+        "remediation_receives_new_identity",
+        "prior_observations_preserved"
+      ],
+      "properties": {
+        "load_bearing_identities": {
+          "const": [
+            "acceptance_policy",
+            "candidate",
+            "dataset",
+            "fixture",
+            "judge",
+            "prompt",
+            "provider_profile"
+          ]
+        },
+        "identity_change_invalidates_affected_evidence": {"const": true},
+        "thresholds_frozen_before_results": {"const": true},
+        "remediation_receives_new_identity": {"const": true},
+        "prior_observations_preserved": {"const": true}
+      }
+    }
+  },
+  "$defs": {
+    "Artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^[^\\r\\n]+$"
+        },
+        "sha256": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Digest"
+        }
+      }
+    },
+    "NamedArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "artifact"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "artifact": {
+          "$ref": "#/$defs/Artifact"
+        }
+      }
+    },
+    "VersionedArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision",
+        "artifact"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "revision": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "artifact": {
+          "$ref": "#/$defs/Artifact"
+        }
+      }
+    },
+    "Suite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "suite_id",
+        "level",
+        "mode",
+        "environment_id",
+        "population_ids",
+        "command_artifact"
+      ],
+      "properties": {
+        "suite_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "level": {
+          "enum": [
+            "unit",
+            "integration",
+            "contract",
+            "e2e",
+            "evaluation"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "deterministic",
+            "versioned_evaluation"
+          ]
+        },
+        "environment_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "population_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+          }
+        },
+        "command_artifact": {
+          "$ref": "#/$defs/Artifact"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {"const": "versioned_evaluation"}
+            },
+            "required": ["mode"]
+          },
+          "then": {
+            "properties": {
+              "level": {"const": "evaluation"}
+            }
+          },
+          "else": {
+            "properties": {
+              "level": {
+                "not": {"const": "evaluation"}
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "obligation_ids",
+        "suite_ids",
+        "population_ids",
+        "pass_rule",
+        "unavailable_disposition"
+      ],
+      "properties": {
+        "obligation_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+          }
+        },
+        "suite_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+          }
+        },
+        "population_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+          }
+        },
+        "pass_rule": {"const": "all"},
+        "unavailable_disposition": {"const": "unavailable"}
+      }
+    }
+  }
+}

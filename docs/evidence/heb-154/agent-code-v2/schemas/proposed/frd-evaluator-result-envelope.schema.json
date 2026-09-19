@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:haffey:frd:evaluator-result-envelope:1",
+  "title": "FRD evaluator result envelope — candidate",
+  "$comment": "Closed harness-owned envelope translated from VERIFY-evaluator-result-envelope solely for HEB-154 testing of the agent-code skill. The complete provider-returned usage is retained as a content-addressed artifact so this schema does not invent provider-specific normalized fields. This envelope contains one immutable judge-attempt record, not an aggregate score, overall verdict, adoption recommendation, provider-call authority or test result. Emit accepted instances as JCS bytes and identify them externally by SHA-256.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_revision",
+    "evaluator_attempt_id",
+    "run_manifest_identity",
+    "evaluator_configuration_artifact",
+    "evaluation_input_artifact",
+    "candidate_output_artifact",
+    "raw_provider_response_artifact",
+    "parsed_model_payload_artifact",
+    "transport",
+    "timestamps",
+    "usage",
+    "billing",
+    "validity"
+  ],
+  "properties": {
+    "schema_revision": {
+      "const": "frd/evaluator-result-envelope/v1"
+    },
+    "evaluator_attempt_id": {
+      "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+    },
+    "run_manifest_identity": {
+      "$ref": "urn:haffey:frd:run-manifest-identity:1"
+    },
+    "evaluator_configuration_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+    },
+    "evaluation_input_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+    },
+    "candidate_output_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+    },
+    "raw_provider_response_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+    },
+    "parsed_model_payload_artifact": {
+      "oneOf": [
+        {"$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"},
+        {"type": "null"}
+      ]
+    },
+    "transport": {
+      "$ref": "#/$defs/Transport"
+    },
+    "timestamps": {
+      "$ref": "#/$defs/Timestamps"
+    },
+    "usage": {
+      "$ref": "#/$defs/Usage"
+    },
+    "billing": {
+      "$ref": "#/$defs/Billing"
+    },
+    "validity": {
+      "enum": ["valid", "invalid", "unavailable"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"validity": {"const": "valid"}},
+        "required": ["validity"]
+      },
+      "then": {
+        "properties": {
+          "parsed_model_payload_artifact": {
+            "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+          },
+          "transport": {
+            "allOf": [
+              {"$ref": "#/$defs/Transport"},
+              {
+                "properties": {
+                  "returned_model_id": {"$ref": "urn:haffey:frd:wire:1#/$defs/Id"},
+                  "returned_service_tier": {"$ref": "urn:haffey:frd:wire:1#/$defs/Id"},
+                  "response_id": {"$ref": "urn:haffey:frd:wire:1#/$defs/Id"}
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"validity": {"const": "invalid"}},
+        "required": ["validity"]
+      },
+      "then": {
+        "properties": {
+          "transport": {
+            "allOf": [
+              {"$ref": "#/$defs/Transport"},
+              {
+                "properties": {
+                  "returned_model_id": {"$ref": "urn:haffey:frd:wire:1#/$defs/Id"},
+                  "returned_service_tier": {"$ref": "urn:haffey:frd:wire:1#/$defs/Id"},
+                  "response_id": {"$ref": "urn:haffey:frd:wire:1#/$defs/Id"}
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"validity": {"const": "unavailable"}},
+        "required": ["validity"]
+      },
+      "then": {
+        "properties": {
+          "parsed_model_payload_artifact": {"type": "null"}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "NullableId": {
+      "oneOf": [
+        {"$ref": "urn:haffey:frd:wire:1#/$defs/Id"},
+        {"type": "null"}
+      ]
+    },
+    "Transport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider_id",
+        "requested_model_id",
+        "returned_model_id",
+        "requested_service_tier",
+        "returned_service_tier",
+        "request_id",
+        "response_id"
+      ],
+      "properties": {
+        "provider_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "requested_model_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "returned_model_id": {
+          "$ref": "#/$defs/NullableId"
+        },
+        "requested_service_tier": {
+          "const": "flex"
+        },
+        "returned_service_tier": {
+          "$ref": "#/$defs/NullableId"
+        },
+        "request_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "response_id": {
+          "$ref": "#/$defs/NullableId"
+        }
+      }
+    },
+    "Timestamps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["started_at", "completed_at"],
+      "properties": {
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider_usage_artifact"],
+      "properties": {
+        "provider_usage_artifact": {
+          "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+        }
+      }
+    },
+    "Billing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pricing_artifact", "calculated_cost_usd_micro"],
+      "properties": {
+        "pricing_artifact": {
+          "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+        },
+        "calculated_cost_usd_micro": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

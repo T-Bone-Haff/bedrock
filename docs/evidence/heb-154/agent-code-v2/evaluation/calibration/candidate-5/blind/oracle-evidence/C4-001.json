@@ -1,0 +1,1 @@
+{"deterministic_feasible_set":["PLAN-001-V1","PLAN-001-ALT"],"deterministic_findings_settled":true,"non_target_effects":[],"phase":"first_attempt","precondition_findings":{"approval_current":true,"quote_unexpired":true,"stock_current":true},"schema_revision":"frd/calibration-oracle-evidence/v3","selection_minute":10}

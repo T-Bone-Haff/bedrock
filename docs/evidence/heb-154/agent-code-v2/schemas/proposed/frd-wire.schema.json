@@ -224,14 +224,72 @@
         }
       }
     },
+    "PolicyOverride": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approval_opportunity_id",
+        "decision"
+      ],
+      "properties": {
+        "approval_opportunity_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "decision": {
+          "enum": [
+            "denied",
+            "unavailable"
+          ]
+        }
+      }
+    },
+    "ApprovalPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_schema_revision",
+        "policy_id",
+        "policy_revision",
+        "issuer_id",
+        "default_decision",
+        "opportunity_overrides"
+      ],
+      "properties": {
+        "policy_schema_revision": {
+          "const": "frd/approval-policy/v1"
+        },
+        "policy_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "policy_revision": {
+          "$ref": "#/$defs/Id"
+        },
+        "issuer_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "default_decision": {
+          "const": "grant_valid"
+        },
+        "opportunity_overrides": {
+          "type": "array",
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/PolicyOverride"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
     "Grant": {
       "type": "object",
       "additionalProperties": false,
       "required": [
         "approval_id",
+        "approval_opportunity_id",
         "issuer_id",
         "policy_id",
         "policy_revision",
+        "policy_digest",
         "plan_digest",
         "approved_plan",
         "issued_at_minute",
@@ -243,6 +301,9 @@
         "approval_id": {
           "$ref": "#/$defs/Id"
         },
+        "approval_opportunity_id": {
+          "$ref": "#/$defs/Id"
+        },
         "issuer_id": {
           "$ref": "#/$defs/Id"
         },
@@ -251,6 +312,9 @@
         },
         "policy_revision": {
           "$ref": "#/$defs/Id"
+        },
+        "policy_digest": {
+          "$ref": "#/$defs/Digest"
         },
         "plan_digest": {
           "$ref": "#/$defs/Digest"
@@ -744,11 +808,34 @@
         "stale_order",
         "stale_source",
         "stale_quote",
-        "expired_quote",
         "invalid_authority",
         "expired_authority",
         "terms_mismatch",
         "reservation_mismatch",
+        "order_write_rejected"
+      ]
+    },
+    "InventoryReserveRejectionReason": {
+      "enum": [
+        "invalid_authority",
+        "terms_mismatch",
+        "expired_authority",
+        "stale_order",
+        "stale_source",
+        "stale_quote",
+        "allocation_exists",
+        "no_stock"
+      ]
+    },
+    "ArrangementRecordRejectionReason": {
+      "enum": [
+        "invalid_authority",
+        "terms_mismatch",
+        "reservation_mismatch",
+        "expired_authority",
+        "stale_order",
+        "stale_source",
+        "stale_quote",
         "order_write_rejected"
       ]
     },
@@ -776,6 +863,46 @@
         },
         "reason": {
           "$ref": "#/$defs/RejectionReason"
+        },
+        "closure": {
+          "$ref": "#/$defs/Closure"
+        }
+      }
+    },
+    "InventoryRejected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "reason",
+        "closure"
+      ],
+      "properties": {
+        "tag": {
+          "const": "rejected"
+        },
+        "reason": {
+          "$ref": "#/$defs/InventoryReserveRejectionReason"
+        },
+        "closure": {
+          "$ref": "#/$defs/Closure"
+        }
+      }
+    },
+    "ArrangementRejected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "reason",
+        "closure"
+      ],
+      "properties": {
+        "tag": {
+          "const": "rejected"
+        },
+        "reason": {
+          "$ref": "#/$defs/ArrangementRecordRejectionReason"
         },
         "closure": {
           "$ref": "#/$defs/Closure"
@@ -993,6 +1120,30 @@
         },
         "reason": {
           "$ref": "#/$defs/Text"
+        }
+      }
+    },
+    "ApprovalInvalidationReason": {
+      "enum": [
+        "stale_order",
+        "stale_source",
+        "stale_quote",
+        "expired_quote"
+      ]
+    },
+    "ApprovalInvalidated": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "reason"
+      ],
+      "properties": {
+        "tag": {
+          "const": "invalidated"
+        },
+        "reason": {
+          "$ref": "#/$defs/ApprovalInvalidationReason"
         }
       }
     },
@@ -1554,10 +1705,14 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "approval_opportunity_id",
         "plan",
         "plan_digest"
       ],
       "properties": {
+        "approval_opportunity_id": {
+          "$ref": "#/$defs/Id"
+        },
         "plan": {
           "$ref": "#/$defs/Plan"
         },
@@ -1608,6 +1763,9 @@
         },
         {
           "$ref": "#/$defs/Reasonunavailable"
+        },
+        {
+          "$ref": "#/$defs/ApprovalInvalidated"
         }
       ]
     },
@@ -1698,7 +1856,7 @@
           "$ref": "#/$defs/CommittedReservation"
         },
         {
-          "$ref": "#/$defs/Rejected"
+          "$ref": "#/$defs/InventoryRejected"
         },
         {
           "$ref": "#/$defs/MutationUnresolved"
@@ -1792,7 +1950,7 @@
           "$ref": "#/$defs/CommittedArrangement"
         },
         {
-          "$ref": "#/$defs/Rejected"
+          "$ref": "#/$defs/ArrangementRejected"
         },
         {
           "$ref": "#/$defs/MutationUnresolved"
