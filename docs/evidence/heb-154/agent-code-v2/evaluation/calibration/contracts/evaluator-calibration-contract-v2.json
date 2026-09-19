@@ -1,0 +1,151 @@
+{
+  "schema_revision": "frd/evaluator-calibration-contract/v2",
+  "contract_id": "VERIFY-evaluator-calibration-contract-v2",
+  "accepted_date_eastern": "2026-09-15 America/New_York",
+  "supersedes": [
+    "VERIFY-evaluator-reason-code-taxonomy:v1",
+    "VERIFY-evaluator-calibration-population:v1"
+  ],
+  "artifact_bindings": [
+    {
+      "role": "semantic_payload_schema",
+      "artifact": {
+        "path": "schemas/proposed/frd-semantic-judge-payload-v2.schema.json",
+        "sha256": "sha256:df9b833cd831e91e0a87cf13d90279d894b2caf4ff3958a6e67c333efb9f964d"
+      }
+    },
+    {
+      "role": "rubric:investigation",
+      "artifact": {
+        "path": "evaluation/rubrics/candidate-2/investigation.json",
+        "sha256": "sha256:207d610ac32f5792841569ea7b378fca63e9c652c1ad90927e10be9d12d8da24"
+      }
+    },
+    {
+      "role": "rubric:recovery_selection",
+      "artifact": {
+        "path": "evaluation/rubrics/candidate-2/recovery-selection.json",
+        "sha256": "sha256:9893b7fd580b72998998f96fc299250f337f4141a3fe16e16d902c1427e587c5"
+      }
+    },
+    {
+      "role": "rubric:execution",
+      "artifact": {
+        "path": "evaluation/rubrics/candidate-2/execution.json",
+        "sha256": "sha256:30fec66cdf1ee3fb95fce7db4c4786dfa65ca8e7b37df921a8a0bac51ab3f148"
+      }
+    },
+    {
+      "role": "rubric:communication",
+      "artifact": {
+        "path": "evaluation/rubrics/candidate-2/communication.json",
+        "sha256": "sha256:5777d4a0cdda87484238c15082c5ff5ed48b3f34771a014bba524c24f9cd4330"
+      }
+    },
+    {
+      "role": "rubric:useful_scenario_completion",
+      "artifact": {
+        "path": "evaluation/rubrics/candidate-2/useful-scenario-completion.json",
+        "sha256": "sha256:593cad97c6e336d475fc620a712077da501996df2abf1c846436203471e8fea7"
+      }
+    }
+  ],
+  "population": {
+    "total_controls": 50,
+    "classification_matrix": {
+      "dimensions": [
+        "investigation",
+        "recovery_selection",
+        "execution",
+        "communication",
+        "useful_scenario_completion"
+      ],
+      "categories": [
+        "known_correct",
+        "known_wrong",
+        "materially_incomplete",
+        "fluent_but_false"
+      ],
+      "variants_per_cell": 2,
+      "count": 40,
+      "expected_counts": {
+        "pass": 10,
+        "fail": 30,
+        "unresolved": 0
+      }
+    },
+    "anti_abstention_matrix": {
+      "dimensions": [
+        "investigation",
+        "recovery_selection",
+        "execution",
+        "communication",
+        "useful_scenario_completion"
+      ],
+      "per_dimension": {
+        "investigation": {"pass": 1, "fail": 1},
+        "recovery_selection": {"pass": 1, "fail": 1},
+        "execution": {"pass": 1, "fail": 1},
+        "communication": {"pass": 1, "fail": 1},
+        "useful_scenario_completion": {"pass": 1, "fail": 1}
+      },
+      "count": 10,
+      "control_requirements": [
+        "complete_case_observation",
+        "semantic_cleanliness_gate_pass",
+        "near_boundary_without_rubric_ambiguity",
+        "one_expected_pass_and_one_single_defect_fail_per_dimension",
+        "unresolved_is_an_incorrect_abstention"
+      ]
+    },
+    "expected_counts": {
+      "pass": 15,
+      "fail": 35,
+      "unresolved": 0
+    }
+  },
+  "semantic_cleanliness_gate": {
+    "complete_case_observation_required": true,
+    "mandatory_trusted_evidence_complete": true,
+    "deterministic_findings_settled": true,
+    "all_rubric_clauses_mapped": true,
+    "required_material_facts_and_remaining_work_present": true,
+    "no_non_target_material_defect": true,
+    "dirty_controls": [
+      "omitted_material_fact_rejected",
+      "missing_trusted_evidence_routes_unavailable",
+      "settled_evidence_contradiction_fails"
+    ]
+  },
+  "selection_gate": {
+    "correct_classifications": 50,
+    "false_passes": 0,
+    "false_fails": 0,
+    "unjustified_unresolved": 0,
+    "malformed_missing_or_incomplete_judgments": 0,
+    "full_population_every_eligible_configuration": true,
+    "selective_reruns_or_replacements": false,
+    "original_observations_preserved": true
+  },
+  "runtime_unresolved_policy": {
+    "allowed_reason_codes": [
+      "rubric_boundary_ambiguous"
+    ],
+    "routes_to_named_human_adjudicator": true,
+    "counts_as_automatic_pass": false,
+    "original_machine_judgment_preserved": true,
+    "future_positive_calibration_use_requires": [
+      "complete_case_observation",
+      "semantic_cleanliness_gate_pass",
+      "independent_human_adjudication",
+      "applicable_rubric_version_disposition"
+    ]
+  },
+  "exclusions": {
+    "candidate_4_authored": false,
+    "physical_custody_activated": false,
+    "provider_calls": 0,
+    "spend_authorized": false,
+    "evaluator_reliability_established": false
+  }
+}

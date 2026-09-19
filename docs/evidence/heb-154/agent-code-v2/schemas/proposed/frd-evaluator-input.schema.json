@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:haffey:frd:evaluator-input:1",
+  "title": "FRD semantic evaluator input — candidate",
+  "$comment": "Physical closed artifact translated from VERIFY-evaluator-input-artifact solely for HEB-154 testing of the agent-code skill. Referenced content must be separately checked for exact bytes and leakage exclusions. Emit instances as JCS bytes and identify them externally by SHA-256.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_revision",
+    "evaluation_task_id",
+    "hidden_ground_truth_artifact",
+    "candidate_output_artifact",
+    "eligible_dimensions",
+    "rubric_bindings",
+    "output_schema_artifact",
+    "allowed_evidence"
+  ],
+  "properties": {
+    "schema_revision": {
+      "const": "frd/evaluator-input/v1"
+    },
+    "evaluation_task_id": {
+      "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+    },
+    "hidden_ground_truth_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+    },
+    "candidate_output_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+    },
+    "eligible_dimensions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/Dimension"
+      }
+    },
+    "rubric_bindings": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {
+        "$ref": "#/$defs/RubricBinding"
+      }
+    },
+    "output_schema_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+    },
+    "allowed_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 256,
+      "items": {
+        "$ref": "#/$defs/EvidenceBinding"
+      }
+    }
+  },
+  "$defs": {
+    "Dimension": {
+      "enum": [
+        "investigation",
+        "recovery_selection",
+        "execution",
+        "communication",
+        "useful_scenario_completion"
+      ]
+    },
+    "RubricBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dimension", "artifact"],
+      "properties": {
+        "dimension": {
+          "$ref": "#/$defs/Dimension"
+        },
+        "artifact": {
+          "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+        }
+      }
+    },
+    "EvidenceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "artifact"],
+      "properties": {
+        "evidence_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "artifact": {
+          "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+        }
+      }
+    }
+  }
+}

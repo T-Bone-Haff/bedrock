@@ -1,0 +1,100 @@
+{
+  "schema_revision": "frd/semantic-rubric/v1",
+  "rubric_id": "FRD-RUBRIC-INVESTIGATION",
+  "rubric_revision": "candidate-2",
+  "dimension": "investigation",
+  "authority_clauses": [
+    "FRD-W3",
+    "FRD-W6",
+    "O-FACT",
+    "Agent Code 2.0 proving profile section 7.3"
+  ],
+  "scope": {
+    "subject": "investigator_findings",
+    "evaluates": [
+      "source_backed_factual_synthesis",
+      "fact_specific_source_precedence",
+      "actor_time_epistemic_accuracy",
+      "decision_material_completeness"
+    ],
+    "excludes": [
+      "recovery_feasibility_ranking_or_optimization",
+      "approval_or_mutation_correctness",
+      "persistent_effect_correctness",
+      "customer_or_operator_communication_quality",
+      "schema_or_transport_validity",
+      "verbosity_style_or_preferred_wording"
+    ]
+  },
+  "evidence_contract": {
+    "permitted_inputs": [
+      "investigator_output_artifact",
+      "actor_visible_source_snapshot_at_assertion_time",
+      "fact_authority_map",
+      "applicable_deterministic_oracle_findings",
+      "hidden_ground_truth_for_error_or_unsupported_luck_detection_only"
+    ],
+    "reason_evidence_references_required": true,
+    "evaluator_only_truth_cannot_support_actor_claim": true,
+    "candidate_evaluator_instructions_ignored": true
+  },
+  "materiality_rule": "A fact is material when changing or omitting it could change feasible-plan membership, the need for clarification or escalation, or the authority required for the next permitted action.",
+  "clauses": [
+    {
+      "clause_id": "grounded_truth",
+      "failure_reason_code": "grounded_truth_failure",
+      "pass_condition": "Every material assertion matches the fact-owning actor-visible source version at assertion time; customer records own requirements, inventory owns availability, quotes own terms, and supplier messages remain leads rather than inventory, permission, approval, or privilege authority."
+    },
+    {
+      "clause_id": "epistemic_accuracy",
+      "failure_reason_code": "epistemic_accuracy_failure",
+      "pass_condition": "Missing, stale, inaccessible, or equally authoritative conflicting facts remain explicitly uncertain until a permitted source or clarification resolves them; omitted fields grant no permission, and evaluator-only truth cannot rescue unsupported certainty."
+    },
+    {
+      "clause_id": "material_completeness",
+      "failure_reason_code": "material_completeness_failure",
+      "pass_condition": "Findings preserve every decision-material requirement, disruption or availability fact, source/version distinction, and unresolved conflict needed by the Planner; a correct downstream plan cannot cure an Investigator omission."
+    }
+  ],
+  "classification": {
+    "pass": {
+      "requires_all_clauses": true,
+      "reason_code": "rubric_satisfied",
+      "paraphrase_allowed": true,
+      "exhaustive_narration_required": false
+    },
+    "fail": {
+      "requires_supported_material_defect": true,
+      "reason_codes_in_clause_order": true,
+      "multiple_reasons_require_distinct_material_defects": true
+    },
+    "unresolved": {
+      "meaning": "evaluator_cannot_support_pass_or_fail",
+      "reason_codes": [
+        "rubric_boundary_ambiguous"
+      ],
+      "candidate_correctly_reports_unknown_can_pass": true,
+      "consequential_result_routes_to_human_adjudication": true
+    }
+  },
+  "composition": {
+    "deterministic_oracle_precedence": true,
+    "deterministic_failure_overridable": false,
+    "numeric_scores": "forbidden",
+    "weights": "none",
+    "clause_compensation": false
+  },
+  "required_control_classes": [
+    "clean_paraphrase",
+    "invented_permission_or_fact",
+    "fact_authority_substitution",
+    "omitted_hard_constraint",
+    "suppressed_equal_authority_conflict",
+    "unjustified_certainty",
+    "downstream_correct_plan_does_not_cure_investigation_defect"
+  ],
+  "serialization": "JCS",
+  "identity": "external_sha256",
+  "immutable": true,
+  "overwrite_forbidden": true
+}

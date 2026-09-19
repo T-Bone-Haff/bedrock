@@ -1,0 +1,125 @@
+{
+  "schema_pack_revision": "draft-1",
+  "status": "candidate; SOURCE-order and SOURCE-events accepted as presented; not schema closure or physical freeze",
+  "artifact_sha256": {
+    "frd-wire.schema.json": "sha256:51e60579846f23a1739a2d13e69555744d5025620f6e4cb5abc12714c4cd908b",
+    "frd-source-body.schema.json": "sha256:38c4195653dec04dd2ce3590bfd1074889059410e2b0ffbd1e7be5b7fedbe609",
+    "frd-source-derivation.schema.json": "sha256:d466552be4007bb05f511efeb6d59addc649335a6eb0c80ce9c0e9effd8c8b88",
+    "wire-schema-examples.json": "sha256:ffc347a1e71e6e8cff8e49c2fd1dcedd413c01a27d7ca56590423dbe19c5d29a",
+    "test_wire_schema.py": "sha256:55c683bacc8e4da1ccfafaeeb41e17ffb39a0027923444048f4ff3608da5ac99",
+    "requirements-authoring.txt": "sha256:52c68606f5df78df7c35126bc28404c02c9cba5d96f9ceb9ba04b08b089809cf",
+    "README.md": "sha256:294bf9f8b9f1f3e284bc66d68f1671b7587db8906164bf47ff387ebd23677f1a"
+  },
+  "wire_design_sha256": "sha256:837f85d9d4e136d0ffa5fd27dc2b7dff12f4c4cec4b721b0d601a0322b9d046c",
+  "schema_ids": {
+    "frd-wire.schema.json": "urn:haffey:frd:wire:1",
+    "frd-source-body.schema.json": "urn:haffey:frd:source-body:1",
+    "frd-source-derivation.schema.json": "urn:haffey:frd:source-derivation:1"
+  },
+  "actions": {
+    "order_context.read": {
+      "request": "#/$defs/OrderContextReadRequest",
+      "response": "#/$defs/OrderContextReadResponse",
+      "payload": "#/$defs/OrderContextReadPayload",
+      "result": "#/$defs/OrderContextReadResult"
+    },
+    "source.read": {
+      "request": "#/$defs/SourceReadRequest",
+      "response": "#/$defs/SourceReadResponse",
+      "payload": "#/$defs/SourceReadPayload",
+      "result": "#/$defs/SourceReadResult"
+    },
+    "availability.read": {
+      "request": "#/$defs/AvailabilityReadRequest",
+      "response": "#/$defs/AvailabilityReadResponse",
+      "payload": "#/$defs/AvailabilityReadPayload",
+      "result": "#/$defs/AvailabilityReadResult"
+    },
+    "requirements.clarify": {
+      "request": "#/$defs/RequirementsClarifyRequest",
+      "response": "#/$defs/RequirementsClarifyResponse",
+      "payload": "#/$defs/RequirementsClarifyPayload",
+      "result": "#/$defs/RequirementsClarifyResult"
+    },
+    "approval.request": {
+      "request": "#/$defs/ApprovalRequestRequest",
+      "response": "#/$defs/ApprovalRequestResponse",
+      "payload": "#/$defs/ApprovalRequestPayload",
+      "result": "#/$defs/ApprovalRequestResult"
+    },
+    "inventory.reserve": {
+      "request": "#/$defs/InventoryReserveRequest",
+      "response": "#/$defs/InventoryReserveResponse",
+      "payload": "#/$defs/InventoryReservePayload",
+      "result": "#/$defs/InventoryReserveResult"
+    },
+    "arrangement.record": {
+      "request": "#/$defs/ArrangementRecordRequest",
+      "response": "#/$defs/ArrangementRecordResponse",
+      "payload": "#/$defs/ArrangementRecordPayload",
+      "result": "#/$defs/ArrangementRecordResult"
+    },
+    "operation.reconcile": {
+      "request": "#/$defs/OperationReconcileRequest",
+      "response": "#/$defs/OperationReconcileResponse",
+      "payload": "#/$defs/OperationReconcilePayload",
+      "result": "#/$defs/OperationReconcileResult"
+    },
+    "operation.cancel": {
+      "request": "#/$defs/OperationCancelRequest",
+      "response": "#/$defs/OperationCancelResponse",
+      "payload": "#/$defs/OperationCancelPayload",
+      "result": "#/$defs/OperationCancelResult"
+    }
+  },
+  "source_body_definitions": [
+    {
+      "definition": "OrderInitial",
+      "kind": "order",
+      "applicability": "Original/unamended order. Reservation alone leaves it unchanged.",
+      "disposition": "existing_source_shape"
+    },
+    {
+      "definition": "OrderArrangedProposed",
+      "kind": "order",
+      "applicability": "Accepted SOURCE-order post-arrangement shape. Stable draft-era definition identifier retained; relational enforcement remains pending.",
+      "disposition": "accepted_design"
+    },
+    {
+      "definition": "CustomerBriefPack",
+      "kind": "customer_brief",
+      "applicability": "Actual public-pack structured briefs (order_id retained) and matching-shape event revisions under accepted SOURCE-events; typed catalog still pending.",
+      "disposition": "existing_shape; SOURCE-events design accepted; full derivation pending"
+    },
+    {
+      "definition": "CustomerBriefReference",
+      "kind": "customer_brief",
+      "applicability": "Actual frd-01 reference brief only (no inserted order_id).",
+      "disposition": "existing_source_shape"
+    },
+    {
+      "definition": "Stock",
+      "kind": "stock",
+      "applicability": "Existing stock fields; revision/quantity state validity separately checked.",
+      "disposition": "existing_source_shape"
+    },
+    {
+      "definition": "Quote",
+      "kind": "quote",
+      "applicability": "Existing quote fields; SOURCE-events provenance design accepted; typed publication catalog pending.",
+      "disposition": "existing_source_shape"
+    },
+    {
+      "definition": "SupplierNoticeProposed",
+      "kind": "supplier_notice",
+      "applicability": "Accepted SOURCE-events structured supplier body; trusted visibility/provenance external. Stable draft-era definition identifier retained; full catalog and enforcement pending.",
+      "disposition": "accepted_design"
+    }
+  ],
+  "remaining_gates": [
+    "policy/error precedence",
+    "full source materialization and independent complete per-case catalog",
+    "lexical/byte/relational and actual runtime enforcement",
+    "remaining hook/admin/evidence/DDL/export/enrollment/campaign gates"
+  ]
+}

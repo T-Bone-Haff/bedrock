@@ -1,0 +1,3646 @@
+{
+  "schema_pack_revision": "draft-1",
+  "scope": "Synthetic structure-only examples; not business outcomes, a frozen case population, complete JCS vectors or service responses. Proposed source bindings are explicitly marked. Matching hashes do not establish authority or effects.",
+  "examples": [
+    {
+      "id": "request:order_context.read",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OrderContextReadRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "order_context.read",
+        "payload": {}
+      }
+    },
+    {
+      "id": "response:order_context.read:context",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OrderContextReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "context",
+          "scope": {
+            "catalog_epoch": 1,
+            "complete": true,
+            "member_refs": [
+              {
+                "kind": "order",
+                "record_id": "ORDER-A",
+                "revision": 1,
+                "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "kind": "customer_brief",
+                "record_id": "BRIEF-A",
+                "revision": 1,
+                "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+              }
+            ]
+          },
+          "order": {
+            "source_ref": {
+              "kind": "order",
+              "record_id": "ORDER-A",
+              "revision": 1,
+              "content_digest": "sha256:1ab35137cd0d5131d487dc007f8b4fa53b1d474e0d331c975c08c13082997f08"
+            },
+            "body_utf8": "{\"order_id\":\"ORDER-A\",\"revision\":1,\"customer_id\":\"CUSTOMER-A\",\"requested_sku\":\"DISPLAY-STD\",\"quantity\":2,\"destination\":\"SITE-A\",\"status\":\"disrupted\",\"original_source\":\"NORTH\",\"reservation_id\":null,\"recovery_plan\":null,\"shipment_status\":\"not_dispatched\",\"delivery_status\":\"not_delivered\"}",
+            "body_length_bytes": 287
+          },
+          "customer_briefs": [
+            {
+              "source_ref": {
+                "kind": "customer_brief",
+                "record_id": "BRIEF-A",
+                "revision": 1,
+                "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+              },
+              "body_utf8": "{\"message\":\"We need both of the standard display kits at Site A by minute 180. They must be the exact model we ordered; please do not substitute another model. Keep any extra transport cost at or below USD 25 for the whole order. Either depot is fine if those conditions are met.\",\"order_id\":\"ORDER-A\",\"record_id\":\"BRIEF-A\",\"revision\":1,\"source_class\":\"authenticated_customer_request\"}",
+              "body_length_bytes": 385
+            }
+          ],
+          "supplier_notices": [],
+          "publications": [
+            {
+              "publication_id": "PUB-ORDER-A",
+              "catalog_epoch": 1,
+              "source_ref": {
+                "kind": "order",
+                "record_id": "ORDER-A",
+                "revision": 1,
+                "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "supersedes": [],
+              "published_at_minute": 0
+            },
+            {
+              "publication_id": "PUB-BRIEF-A",
+              "catalog_epoch": 1,
+              "source_ref": {
+                "kind": "customer_brief",
+                "record_id": "BRIEF-A",
+                "revision": 1,
+                "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+              },
+              "supersedes": [],
+              "published_at_minute": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "error:order_context.read:identity_conflict",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OrderContextReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "identity_conflict",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:order_context.read:unauthorized_replay",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OrderContextReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "unauthorized_replay",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:order_context.read:run_sealed",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OrderContextReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "run_sealed",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:order_context.read:fixture_unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OrderContextReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "fixture_unavailable",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "request:source.read",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "SourceReadRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "source.read",
+        "payload": {
+          "source_ref": {
+            "kind": "customer_brief",
+            "record_id": "BRIEF-A",
+            "revision": 1,
+            "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+          }
+        }
+      }
+    },
+    {
+      "id": "response:source.read:source",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "SourceReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "source",
+          "source": {
+            "source_ref": {
+              "kind": "customer_brief",
+              "record_id": "BRIEF-A",
+              "revision": 1,
+              "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+            },
+            "body_utf8": "{\"message\":\"We need both of the standard display kits at Site A by minute 180. They must be the exact model we ordered; please do not substitute another model. Keep any extra transport cost at or below USD 25 for the whole order. Either depot is fine if those conditions are met.\",\"order_id\":\"ORDER-A\",\"record_id\":\"BRIEF-A\",\"revision\":1,\"source_class\":\"authenticated_customer_request\"}",
+            "body_length_bytes": 385
+          }
+        }
+      }
+    },
+    {
+      "id": "response:source.read:unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "SourceReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unavailable",
+          "reason": "Referenced record unavailable."
+        }
+      }
+    },
+    {
+      "id": "response:source.read:denied",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "SourceReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "denied",
+          "reason": "Source outside scope."
+        }
+      }
+    },
+    {
+      "id": "error:source.read:identity_conflict",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "SourceReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "identity_conflict",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:source.read:unauthorized_replay",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "SourceReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "unauthorized_replay",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:source.read:run_sealed",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "SourceReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "run_sealed",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:source.read:fixture_unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "SourceReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "fixture_unavailable",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "request:availability.read",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "AvailabilityReadRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "availability.read",
+        "payload": {
+          "skus": [
+            "DISPLAY-STD"
+          ],
+          "sites": [
+            "WEST"
+          ]
+        }
+      }
+    },
+    {
+      "id": "response:availability.read:availability",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "AvailabilityReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "availability",
+          "scope": {
+            "catalog_epoch": 1,
+            "complete": true,
+            "member_refs": [
+              {
+                "kind": "stock",
+                "record_id": "STOCK-WEST-STD",
+                "revision": 1,
+                "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "kind": "quote",
+                "record_id": "Q-WEST",
+                "revision": 1,
+                "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+              }
+            ]
+          },
+          "skus": [
+            "DISPLAY-STD"
+          ],
+          "sites": [
+            "WEST"
+          ],
+          "inventory": [
+            {
+              "source_ref": {
+                "kind": "stock",
+                "record_id": "STOCK-WEST-STD",
+                "revision": 1,
+                "content_digest": "sha256:914629a80d287e2e6ed8deb2d28a441438cec76540c501b11161f84fddac1f75"
+              },
+              "body_utf8": "{\"stock_id\":\"STOCK-WEST-STD\",\"revision\":1,\"site\":\"WEST\",\"sku\":\"DISPLAY-STD\",\"available\":2}",
+              "body_length_bytes": 90
+            }
+          ],
+          "quotes": [
+            {
+              "source_ref": {
+                "kind": "quote",
+                "record_id": "Q-WEST",
+                "revision": 1,
+                "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+              },
+              "body_utf8": "{\"currency\":\"USD\",\"destination\":\"SITE-A\",\"estimated_arrival_time\":120,\"expires_at\":30,\"extra_transport_cost_minor\":2000,\"quantity\":2,\"quote_id\":\"Q-WEST\",\"revision\":1,\"site\":\"WEST\",\"sku\":\"DISPLAY-STD\"}",
+              "body_length_bytes": 200
+            }
+          ],
+          "publications": [
+            {
+              "publication_id": "PUB-STOCK-WEST-STD",
+              "catalog_epoch": 1,
+              "source_ref": {
+                "kind": "stock",
+                "record_id": "STOCK-WEST-STD",
+                "revision": 1,
+                "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "supersedes": [],
+              "published_at_minute": 0
+            },
+            {
+              "publication_id": "PUB-Q-WEST",
+              "catalog_epoch": 1,
+              "source_ref": {
+                "kind": "quote",
+                "record_id": "Q-WEST",
+                "revision": 1,
+                "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+              },
+              "supersedes": [],
+              "published_at_minute": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "error:availability.read:identity_conflict",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "AvailabilityReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "identity_conflict",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:availability.read:unauthorized_replay",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "AvailabilityReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "unauthorized_replay",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:availability.read:run_sealed",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "AvailabilityReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "run_sealed",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:availability.read:fixture_unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "AvailabilityReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "fixture_unavailable",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "request:requirements.clarify",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "RequirementsClarifyRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "requirements.clarify",
+        "payload": {
+          "field": "deadline",
+          "question": "What is the accepted deadline?",
+          "source_refs": [
+            {
+              "kind": "customer_brief",
+              "record_id": "BRIEF-A",
+              "revision": 1,
+              "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "response:requirements.clarify:accepted_revision",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "RequirementsClarifyResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "accepted_revision",
+          "source": {
+            "source_ref": {
+              "kind": "customer_brief",
+              "record_id": "BRIEF-A",
+              "revision": 1,
+              "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+            },
+            "body_utf8": "{\"message\":\"We need both of the standard display kits at Site A by minute 180. They must be the exact model we ordered; please do not substitute another model. Keep any extra transport cost at or below USD 25 for the whole order. Either depot is fine if those conditions are met.\",\"order_id\":\"ORDER-A\",\"record_id\":\"BRIEF-A\",\"revision\":1,\"source_class\":\"authenticated_customer_request\"}",
+            "body_length_bytes": 385
+          },
+          "publication": {
+            "publication_id": "PUB-BRIEF-A",
+            "catalog_epoch": 1,
+            "source_ref": {
+              "kind": "customer_brief",
+              "record_id": "BRIEF-A",
+              "revision": 1,
+              "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+            },
+            "supersedes": [],
+            "published_at_minute": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "response:requirements.clarify:unresolved",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "RequirementsClarifyResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "Conflicting requirements remain."
+        }
+      }
+    },
+    {
+      "id": "response:requirements.clarify:unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "RequirementsClarifyResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unavailable",
+          "reason": "Owner unavailable."
+        }
+      }
+    },
+    {
+      "id": "error:requirements.clarify:identity_conflict",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "RequirementsClarifyResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "identity_conflict",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:requirements.clarify:unauthorized_replay",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "RequirementsClarifyResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "unauthorized_replay",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:requirements.clarify:run_sealed",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "RequirementsClarifyResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "run_sealed",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:requirements.clarify:fixture_unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "RequirementsClarifyResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "fixture_unavailable",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "request:approval.request",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ApprovalRequestRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "approval.request",
+        "payload": {
+          "plan": {
+            "plan_id": "PLAN-A",
+            "revision": 1,
+            "order_id": "ORDER-A",
+            "order_revision": 1,
+            "requirement_source_refs": [
+              {
+                "kind": "customer_brief",
+                "record_id": "BRIEF-A",
+                "revision": 1,
+                "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+              }
+            ],
+            "terms": {
+              "quote_ref": {
+                "kind": "quote",
+                "record_id": "Q-WEST",
+                "revision": 1,
+                "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+              },
+              "site": "WEST",
+              "sku": "DISPLAY-STD",
+              "quantity": 2,
+              "destination": "SITE-A",
+              "estimated_arrival_time": 120,
+              "extra_transport_cost_minor": 2000,
+              "currency": "USD",
+              "expires_at": 30
+            }
+          },
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc"
+        }
+      }
+    },
+    {
+      "id": "response:approval.request:granted",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ApprovalRequestResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "granted",
+          "grant": {
+            "approval_id": "APPROVAL-A",
+            "issuer_id": "FIXTURE-OPERATOR",
+            "policy_id": "POLICY-EXAMPLE",
+            "policy_revision": "draft-1",
+            "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+            "approved_plan": {
+              "plan_id": "PLAN-A",
+              "revision": 1,
+              "order_id": "ORDER-A",
+              "order_revision": 1,
+              "requirement_source_refs": [
+                {
+                  "kind": "customer_brief",
+                  "record_id": "BRIEF-A",
+                  "revision": 1,
+                  "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+                }
+              ],
+              "terms": {
+                "quote_ref": {
+                  "kind": "quote",
+                  "record_id": "Q-WEST",
+                  "revision": 1,
+                  "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+                },
+                "site": "WEST",
+                "sku": "DISPLAY-STD",
+                "quantity": 2,
+                "destination": "SITE-A",
+                "estimated_arrival_time": 120,
+                "extra_transport_cost_minor": 2000,
+                "currency": "USD",
+                "expires_at": 30
+              }
+            },
+            "issued_at_minute": 5,
+            "expires_at_minute": 30,
+            "allowed_operations": [
+              "inventory.reserve",
+              "arrangement.record"
+            ],
+            "arrangement_requires_matching_reservation": true
+          },
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d"
+        }
+      }
+    },
+    {
+      "id": "response:approval.request:denied",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ApprovalRequestResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "denied",
+          "reason": "Proposal not authorized."
+        }
+      }
+    },
+    {
+      "id": "response:approval.request:unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ApprovalRequestResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unavailable",
+          "reason": "Approver unavailable."
+        }
+      }
+    },
+    {
+      "id": "error:approval.request:identity_conflict",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ApprovalRequestResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "identity_conflict",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:approval.request:unauthorized_replay",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ApprovalRequestResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "unauthorized_replay",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:approval.request:run_sealed",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ApprovalRequestResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "run_sealed",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:approval.request:fixture_unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ApprovalRequestResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "fixture_unavailable",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "request:inventory.reserve",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "inventory.reserve",
+        "payload": {
+          "operation_key": "OP-RESERVE-A",
+          "attempt_id": "ATTEMPT-A-0",
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+          "approval_id": "APPROVAL-A",
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+          "expected_order_revision": 1,
+          "terms": {
+            "quote_ref": {
+              "kind": "quote",
+              "record_id": "Q-WEST",
+              "revision": 1,
+              "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+            },
+            "site": "WEST",
+            "sku": "DISPLAY-STD",
+            "quantity": 2,
+            "destination": "SITE-A",
+            "estimated_arrival_time": 120,
+            "extra_transport_cost_minor": 2000,
+            "currency": "USD",
+            "expires_at": 30
+          },
+          "reservation_id": null,
+          "semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+        }
+      }
+    },
+    {
+      "id": "response:inventory.reserve:committed",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "committed",
+          "operation_kind": "inventory.reserve",
+          "effect": {
+            "reservation_id": "RESERVATION-A",
+            "committed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+            "approval_id": "APPROVAL-A",
+            "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+            "terms": {
+              "quote_ref": {
+                "kind": "quote",
+                "record_id": "Q-WEST",
+                "revision": 1,
+                "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+              },
+              "site": "WEST",
+              "sku": "DISPLAY-STD",
+              "quantity": 2,
+              "destination": "SITE-A",
+              "estimated_arrival_time": 120,
+              "extra_transport_cost_minor": 2000,
+              "currency": "USD",
+              "expires_at": 30
+            },
+            "stock_id": "STOCK-WEST-STD",
+            "stock_revision_before": 1,
+            "stock_revision_after": 2,
+            "committed_at_minute": 6
+          }
+        }
+      }
+    },
+    {
+      "id": "response:inventory.reserve:rejected",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "no_stock",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "response:inventory.reserve:unresolved",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "pending"
+        }
+      }
+    },
+    {
+      "id": "error:inventory.reserve:identity_conflict",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "identity_conflict",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:inventory.reserve:unauthorized_replay",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "unauthorized_replay",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:inventory.reserve:run_sealed",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "run_sealed",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:inventory.reserve:fixture_unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "fixture_unavailable",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "request:arrangement.record",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "arrangement.record",
+        "payload": {
+          "operation_key": "OP-RESERVE-A",
+          "attempt_id": "ATTEMPT-A-0",
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+          "approval_id": "APPROVAL-A",
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+          "expected_order_revision": 1,
+          "terms": {
+            "quote_ref": {
+              "kind": "quote",
+              "record_id": "Q-WEST",
+              "revision": 1,
+              "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+            },
+            "site": "WEST",
+            "sku": "DISPLAY-STD",
+            "quantity": 2,
+            "destination": "SITE-A",
+            "estimated_arrival_time": 120,
+            "extra_transport_cost_minor": 2000,
+            "currency": "USD",
+            "expires_at": 30
+          },
+          "reservation_id": "RESERVATION-A",
+          "semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+        }
+      }
+    },
+    {
+      "id": "response:arrangement.record:committed",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "committed",
+          "operation_kind": "arrangement.record",
+          "effect": {
+            "arrangement_id": "ARRANGEMENT-A",
+            "committed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+            "approval_id": "APPROVAL-A",
+            "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+            "terms": {
+              "quote_ref": {
+                "kind": "quote",
+                "record_id": "Q-WEST",
+                "revision": 1,
+                "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+              },
+              "site": "WEST",
+              "sku": "DISPLAY-STD",
+              "quantity": 2,
+              "destination": "SITE-A",
+              "estimated_arrival_time": 120,
+              "extra_transport_cost_minor": 2000,
+              "currency": "USD",
+              "expires_at": 30
+            },
+            "reservation_id": "RESERVATION-A",
+            "order_revision_before": 1,
+            "order_revision_after": 2,
+            "committed_at_minute": 7,
+            "service_status": "arrangement_recorded"
+          }
+        }
+      }
+    },
+    {
+      "id": "response:arrangement.record:rejected",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "order_write_rejected",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "response:arrangement.record:unresolved",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "pending"
+        }
+      }
+    },
+    {
+      "id": "error:arrangement.record:identity_conflict",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "identity_conflict",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:arrangement.record:unauthorized_replay",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "unauthorized_replay",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:arrangement.record:run_sealed",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "run_sealed",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:arrangement.record:fixture_unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "fixture_unavailable",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "request:operation.reconcile",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "operation.reconcile",
+        "payload": {
+          "operation_key": "OP-RESERVE-A",
+          "attempt_id": "ATTEMPT-A-0",
+          "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "operation_kind": "inventory.reserve",
+          "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      }
+    },
+    {
+      "id": "response:operation.reconcile:committed",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "committed",
+          "original_result_utf8": "{\"tag\":\"committed\",\"operation_kind\":\"inventory.reserve\",\"effect\":{\"reservation_id\":\"RESERVATION-A\",\"committed_attempt\":{\"operation\":{\"run_id\":\"RUN-WIRE-EXAMPLE\",\"order_id\":\"ORDER-A\",\"operation_key\":\"OP-RESERVE-A\",\"operation_kind\":\"inventory.reserve\",\"semantic_effect_digest\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"},\"attempt_id\":\"ATTEMPT-A-0\",\"generation\":0,\"original_request_digest\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"},\"plan_digest\":\"sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc\",\"approval_id\":\"APPROVAL-A\",\"grant_digest\":\"sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d\",\"terms\":{\"quote_ref\":{\"kind\":\"quote\",\"record_id\":\"Q-WEST\",\"revision\":1,\"content_digest\":\"sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361\"},\"site\":\"WEST\",\"sku\":\"DISPLAY-STD\",\"quantity\":2,\"destination\":\"SITE-A\",\"estimated_arrival_time\":120,\"extra_transport_cost_minor\":2000,\"currency\":\"USD\",\"expires_at\":30},\"stock_id\":\"STOCK-WEST-STD\",\"stock_revision_before\":1,\"stock_revision_after\":2,\"committed_at_minute\":6}}",
+          "original_result_digest": "sha256:0258885df8a5fe6e719296c078a73313f38f79e4857616b09fd5cf252042fd3c"
+        }
+      }
+    },
+    {
+      "id": "response:operation.reconcile:closed_not_applied",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "closed_not_applied",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "response:operation.reconcile:unresolved",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "not_found"
+        }
+      }
+    },
+    {
+      "id": "error:operation.reconcile:identity_conflict",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "identity_conflict",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:operation.reconcile:unauthorized_replay",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "unauthorized_replay",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:operation.reconcile:run_sealed",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "run_sealed",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:operation.reconcile:fixture_unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "fixture_unavailable",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "request:operation.cancel",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationCancelRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "operation.cancel",
+        "payload": {
+          "operation_key": "OP-RESERVE-A",
+          "attempt_id": "ATTEMPT-A-0"
+        }
+      }
+    },
+    {
+      "id": "response:operation.cancel:accepted",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationCancelResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "accepted"
+        }
+      }
+    },
+    {
+      "id": "response:operation.cancel:unsupported",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationCancelResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unsupported"
+        }
+      }
+    },
+    {
+      "id": "error:operation.cancel:identity_conflict",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationCancelResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "identity_conflict",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:operation.cancel:unauthorized_replay",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationCancelResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "unauthorized_replay",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:operation.cancel:run_sealed",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationCancelResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "run_sealed",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "error:operation.cancel:fixture_unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationCancelResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "error": {
+          "code": "fixture_unavailable",
+          "message": "Synthetic error specimen; no effect conclusion."
+        }
+      }
+    },
+    {
+      "id": "protocol:invalid_json",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ProtocolError",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "error_code": "invalid_json",
+        "receipt_id": "RECEIPT-A"
+      }
+    },
+    {
+      "id": "protocol:invalid_envelope",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ProtocolError",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "error_code": "invalid_envelope",
+        "receipt_id": "RECEIPT-A"
+      }
+    },
+    {
+      "id": "protocol:unauthenticated",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ProtocolError",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "error_code": "unauthenticated",
+        "receipt_id": "RECEIPT-A"
+      }
+    },
+    {
+      "id": "protocol:forbidden_scope",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ProtocolError",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "error_code": "forbidden_scope",
+        "receipt_id": "RECEIPT-A"
+      }
+    },
+    {
+      "id": "protocol:body_too_large",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ProtocolError",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "error_code": "body_too_large",
+        "receipt_id": "RECEIPT-A"
+      }
+    },
+    {
+      "id": "protocol:unsupported_media_type",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ProtocolError",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "error_code": "unsupported_media_type",
+        "receipt_id": "RECEIPT-A"
+      }
+    },
+    {
+      "id": "protocol:unsupported_revision",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ProtocolError",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "error_code": "unsupported_revision",
+        "receipt_id": "RECEIPT-A"
+      }
+    },
+    {
+      "id": "reason:inventory.reserve:no_stock",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "no_stock",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:inventory.reserve:allocation_exists",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "allocation_exists",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:inventory.reserve:stale_order",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "stale_order",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:inventory.reserve:stale_source",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "stale_source",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:inventory.reserve:stale_quote",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "stale_quote",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:inventory.reserve:expired_quote",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "expired_quote",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:inventory.reserve:invalid_authority",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "invalid_authority",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:inventory.reserve:expired_authority",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "expired_authority",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:inventory.reserve:terms_mismatch",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "terms_mismatch",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:inventory.reserve:reservation_mismatch",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "reservation_mismatch",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:inventory.reserve:order_write_rejected",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "order_write_rejected",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "unknown:inventory.reserve:pending",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "pending"
+        }
+      }
+    },
+    {
+      "id": "unknown:inventory.reserve:journal_unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "journal_unavailable"
+        }
+      }
+    },
+    {
+      "id": "unknown:inventory.reserve:identity_conflict",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "identity_conflict"
+        }
+      }
+    },
+    {
+      "id": "unknown:inventory.reserve:finality_unproven",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "finality_unproven"
+        }
+      }
+    },
+    {
+      "id": "unknown:inventory.reserve:not_found",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "not_found"
+        }
+      }
+    },
+    {
+      "id": "unknown:inventory.reserve:stale_generation",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "stale_generation"
+        }
+      }
+    },
+    {
+      "id": "reason:arrangement.record:no_stock",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "no_stock",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:arrangement.record:allocation_exists",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "allocation_exists",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:arrangement.record:stale_order",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "stale_order",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:arrangement.record:stale_source",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "stale_source",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:arrangement.record:stale_quote",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "stale_quote",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:arrangement.record:expired_quote",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "expired_quote",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:arrangement.record:invalid_authority",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "invalid_authority",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:arrangement.record:expired_authority",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "expired_authority",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:arrangement.record:terms_mismatch",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "terms_mismatch",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:arrangement.record:reservation_mismatch",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "reservation_mismatch",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "reason:arrangement.record:order_write_rejected",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "order_write_rejected",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6,
+            "replay_permit_id": "PERMIT-A"
+          }
+        }
+      }
+    },
+    {
+      "id": "unknown:arrangement.record:pending",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "pending"
+        }
+      }
+    },
+    {
+      "id": "unknown:arrangement.record:journal_unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "journal_unavailable"
+        }
+      }
+    },
+    {
+      "id": "unknown:arrangement.record:identity_conflict",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "identity_conflict"
+        }
+      }
+    },
+    {
+      "id": "unknown:arrangement.record:finality_unproven",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "finality_unproven"
+        }
+      }
+    },
+    {
+      "id": "unknown:arrangement.record:not_found",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "not_found"
+        }
+      }
+    },
+    {
+      "id": "unknown:arrangement.record:stale_generation",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "stale_generation"
+        }
+      }
+    },
+    {
+      "id": "unknown:reconcile:pending",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "pending"
+        }
+      }
+    },
+    {
+      "id": "unknown:reconcile:journal_unavailable",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "journal_unavailable"
+        }
+      }
+    },
+    {
+      "id": "unknown:reconcile:identity_conflict",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "identity_conflict"
+        }
+      }
+    },
+    {
+      "id": "unknown:reconcile:finality_unproven",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "finality_unproven"
+        }
+      }
+    },
+    {
+      "id": "unknown:reconcile:not_found",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "not_found"
+        }
+      }
+    },
+    {
+      "id": "unknown:reconcile:stale_generation",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "stale_generation"
+        }
+      }
+    },
+    {
+      "id": "body:OrderInitial",
+      "schema_file": "frd-source-body.schema.json",
+      "definition": "OrderInitial",
+      "design_status": "existing_structured_records",
+      "expected_schema": true,
+      "value": {
+        "order_id": "ORDER-A",
+        "revision": 1,
+        "customer_id": "CUSTOMER-A",
+        "requested_sku": "DISPLAY-STD",
+        "quantity": 2,
+        "destination": "SITE-A",
+        "status": "disrupted",
+        "original_source": "NORTH",
+        "reservation_id": null,
+        "recovery_plan": null,
+        "shipment_status": "not_dispatched",
+        "delivery_status": "not_delivered"
+      }
+    },
+    {
+      "id": "body:CustomerBriefPack",
+      "schema_file": "frd-source-body.schema.json",
+      "definition": "CustomerBriefPack",
+      "design_status": "existing_structured_records",
+      "expected_schema": true,
+      "value": {
+        "record_id": "BRIEF-A",
+        "revision": 1,
+        "source_class": "authenticated_customer_request",
+        "message": "We need both of the standard display kits at Site A by minute 180. They must be the exact model we ordered; please do not substitute another model. Keep any extra transport cost at or below USD 25 for the whole order. Either depot is fine if those conditions are met.",
+        "order_id": "ORDER-A"
+      }
+    },
+    {
+      "id": "body:CustomerBriefReference",
+      "schema_file": "frd-source-body.schema.json",
+      "definition": "CustomerBriefReference",
+      "design_status": "existing_structured_records",
+      "expected_schema": true,
+      "value": {
+        "record_id": "BRIEF-A",
+        "revision": 1,
+        "source_class": "authenticated_customer_request",
+        "message": "We need both of the standard display kits at Site A by minute 180. They must be the exact model we ordered; please do not substitute another model. Keep any extra transport cost at or below USD 25 for the whole order. Either depot is fine if those conditions are met."
+      }
+    },
+    {
+      "id": "body:Stock",
+      "schema_file": "frd-source-body.schema.json",
+      "definition": "Stock",
+      "design_status": "existing_structured_records",
+      "expected_schema": true,
+      "value": {
+        "stock_id": "STOCK-WEST-STD",
+        "revision": 1,
+        "site": "WEST",
+        "sku": "DISPLAY-STD",
+        "available": 2
+      }
+    },
+    {
+      "id": "body:Quote",
+      "schema_file": "frd-source-body.schema.json",
+      "definition": "Quote",
+      "design_status": "existing_structured_records",
+      "expected_schema": true,
+      "value": {
+        "quote_id": "Q-WEST",
+        "revision": 1,
+        "site": "WEST",
+        "sku": "DISPLAY-STD",
+        "quantity": 2,
+        "destination": "SITE-A",
+        "estimated_arrival_time": 120,
+        "extra_transport_cost_minor": 2000,
+        "currency": "USD",
+        "expires_at": 30
+      }
+    },
+    {
+      "id": "body:OrderArrangedProposed",
+      "schema_file": "frd-source-body.schema.json",
+      "definition": "OrderArrangedProposed",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "order_id": "ORDER-A",
+        "revision": 2,
+        "customer_id": "CUSTOMER-A",
+        "requested_sku": "DISPLAY-STD",
+        "quantity": 2,
+        "destination": "SITE-A",
+        "status": "arrangement_recorded",
+        "original_source": "NORTH",
+        "reservation_id": "RESERVATION-A",
+        "recovery_plan": {
+          "arrangement_id": "ARRANGEMENT-A",
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+          "approval_id": "APPROVAL-A",
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+          "terms": {
+            "quote_ref": {
+              "kind": "quote",
+              "record_id": "Q-WEST",
+              "revision": 1,
+              "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+            },
+            "site": "WEST",
+            "sku": "DISPLAY-STD",
+            "quantity": 2,
+            "destination": "SITE-A",
+            "estimated_arrival_time": 120,
+            "extra_transport_cost_minor": 2000,
+            "currency": "USD",
+            "expires_at": 30
+          }
+        },
+        "shipment_status": "not_dispatched",
+        "delivery_status": "not_delivered"
+      }
+    },
+    {
+      "id": "body:SupplierNoticeProposed",
+      "schema_file": "frd-source-body.schema.json",
+      "definition": "SupplierNoticeProposed",
+      "design_status": "accepted_design_translation",
+      "expected_schema": true,
+      "value": {
+        "record_id": "NOTICE-EXAMPLE",
+        "revision": 1,
+        "source_class": "supplier_data",
+        "message": "Supplier statement, not approval authority."
+      }
+    },
+    {
+      "id": "derivation:existing-brief",
+      "schema_file": "frd-source-derivation.schema.json",
+      "definition": null,
+      "design_status": "candidate_physical_binding",
+      "expected_schema": true,
+      "value": {
+        "manifest_revision": "frd-source-derivation-1",
+        "derivation": "jcs-structured-record",
+        "input_artifact": {
+          "path": "scenarios/proposed/scenario-pack.json",
+          "sha256": "sha256:46cd351ab957e974829695c0562093ab664e1fb81249b9124a3a58a144fdf0b0"
+        },
+        "world_id": "ordinary",
+        "json_pointer": "/worlds/0/initial_state/briefs/0",
+        "source_body_definition": "CustomerBriefPack",
+        "source": {
+          "source_ref": {
+            "kind": "customer_brief",
+            "record_id": "BRIEF-A",
+            "revision": 1,
+            "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+          },
+          "body_utf8": "{\"message\":\"We need both of the standard display kits at Site A by minute 180. They must be the exact model we ordered; please do not substitute another model. Keep any extra transport cost at or below USD 25 for the whole order. Either depot is fine if those conditions are met.\",\"order_id\":\"ORDER-A\",\"record_id\":\"BRIEF-A\",\"revision\":1,\"source_class\":\"authenticated_customer_request\"}",
+          "body_length_bytes": 385
+        }
+      }
+    },
+    {
+      "id": "invalid:reserve-has-reservation",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "inventory.reserve",
+        "payload": {
+          "operation_key": "OP-RESERVE-A",
+          "attempt_id": "ATTEMPT-A-0",
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+          "approval_id": "APPROVAL-A",
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+          "expected_order_revision": 1,
+          "terms": {
+            "quote_ref": {
+              "kind": "quote",
+              "record_id": "Q-WEST",
+              "revision": 1,
+              "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+            },
+            "site": "WEST",
+            "sku": "DISPLAY-STD",
+            "quantity": 2,
+            "destination": "SITE-A",
+            "estimated_arrival_time": 120,
+            "extra_transport_cost_minor": 2000,
+            "currency": "USD",
+            "expires_at": 30
+          },
+          "reservation_id": "RESERVATION-A",
+          "semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+        }
+      }
+    },
+    {
+      "id": "invalid:arrange-missing-reservation",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "arrangement.record",
+        "payload": {
+          "operation_key": "OP-RESERVE-A",
+          "attempt_id": "ATTEMPT-A-0",
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+          "approval_id": "APPROVAL-A",
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+          "expected_order_revision": 1,
+          "terms": {
+            "quote_ref": {
+              "kind": "quote",
+              "record_id": "Q-WEST",
+              "revision": 1,
+              "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+            },
+            "site": "WEST",
+            "sku": "DISPLAY-STD",
+            "quantity": 2,
+            "destination": "SITE-A",
+            "estimated_arrival_time": 120,
+            "extra_transport_cost_minor": 2000,
+            "currency": "USD",
+            "expires_at": 30
+          },
+          "reservation_id": null,
+          "semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+        }
+      }
+    },
+    {
+      "id": "invalid:grant-input-unknown-plan-field",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ApprovalRequestRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "approval.request",
+        "payload": {
+          "plan": {
+            "plan_id": "PLAN-A",
+            "revision": 1,
+            "order_id": "ORDER-A",
+            "order_revision": 1,
+            "requirement_source_refs": [
+              {
+                "kind": "customer_brief",
+                "record_id": "BRIEF-A",
+                "revision": 1,
+                "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+              }
+            ],
+            "terms": {
+              "quote_ref": {
+                "kind": "quote",
+                "record_id": "Q-WEST",
+                "revision": 1,
+                "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+              },
+              "site": "WEST",
+              "sku": "DISPLAY-STD",
+              "quantity": 2,
+              "destination": "SITE-A",
+              "estimated_arrival_time": 120,
+              "extra_transport_cost_minor": 2000,
+              "currency": "USD",
+              "expires_at": 30
+            },
+            "oracle_answer": true
+          },
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc"
+        }
+      }
+    },
+    {
+      "id": "invalid:plan-references-quote-as-brief",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ApprovalRequestRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "approval.request",
+        "payload": {
+          "plan": {
+            "plan_id": "PLAN-A",
+            "revision": 1,
+            "order_id": "ORDER-A",
+            "order_revision": 1,
+            "requirement_source_refs": [
+              {
+                "kind": "quote",
+                "record_id": "BRIEF-A",
+                "revision": 1,
+                "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+              }
+            ],
+            "terms": {
+              "quote_ref": {
+                "kind": "quote",
+                "record_id": "Q-WEST",
+                "revision": 1,
+                "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+              },
+              "site": "WEST",
+              "sku": "DISPLAY-STD",
+              "quantity": 2,
+              "destination": "SITE-A",
+              "estimated_arrival_time": 120,
+              "extra_transport_cost_minor": 2000,
+              "currency": "USD",
+              "expires_at": 30
+            }
+          },
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc"
+        }
+      }
+    },
+    {
+      "id": "invalid:quote-ref-is-stock",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ApprovalRequestRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "approval.request",
+        "payload": {
+          "plan": {
+            "plan_id": "PLAN-A",
+            "revision": 1,
+            "order_id": "ORDER-A",
+            "order_revision": 1,
+            "requirement_source_refs": [
+              {
+                "kind": "customer_brief",
+                "record_id": "BRIEF-A",
+                "revision": 1,
+                "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+              }
+            ],
+            "terms": {
+              "quote_ref": {
+                "kind": "stock",
+                "record_id": "Q-WEST",
+                "revision": 1,
+                "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+              },
+              "site": "WEST",
+              "sku": "DISPLAY-STD",
+              "quantity": 2,
+              "destination": "SITE-A",
+              "estimated_arrival_time": 120,
+              "extra_transport_cost_minor": 2000,
+              "currency": "USD",
+              "expires_at": 30
+            }
+          },
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc"
+        }
+      }
+    },
+    {
+      "id": "invalid:duplicate-sku",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "AvailabilityReadRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "availability.read",
+        "payload": {
+          "skus": [
+            "DISPLAY-STD",
+            "DISPLAY-STD"
+          ],
+          "sites": [
+            "WEST"
+          ]
+        }
+      }
+    },
+    {
+      "id": "invalid:grant-operation-order",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ApprovalRequestResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "granted",
+          "grant": {
+            "approval_id": "APPROVAL-A",
+            "issuer_id": "FIXTURE-OPERATOR",
+            "policy_id": "POLICY-EXAMPLE",
+            "policy_revision": "draft-1",
+            "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+            "approved_plan": {
+              "plan_id": "PLAN-A",
+              "revision": 1,
+              "order_id": "ORDER-A",
+              "order_revision": 1,
+              "requirement_source_refs": [
+                {
+                  "kind": "customer_brief",
+                  "record_id": "BRIEF-A",
+                  "revision": 1,
+                  "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+                }
+              ],
+              "terms": {
+                "quote_ref": {
+                  "kind": "quote",
+                  "record_id": "Q-WEST",
+                  "revision": 1,
+                  "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+                },
+                "site": "WEST",
+                "sku": "DISPLAY-STD",
+                "quantity": 2,
+                "destination": "SITE-A",
+                "estimated_arrival_time": 120,
+                "extra_transport_cost_minor": 2000,
+                "currency": "USD",
+                "expires_at": 30
+              }
+            },
+            "issued_at_minute": 5,
+            "expires_at_minute": 30,
+            "allowed_operations": [
+              "arrangement.record",
+              "inventory.reserve"
+            ],
+            "arrangement_requires_matching_reservation": true
+          },
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d"
+        }
+      }
+    },
+    {
+      "id": "invalid:rejected-without-closure",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "rejected",
+          "reason": "no_stock"
+        }
+      }
+    },
+    {
+      "id": "invalid:closure-without-permit",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "closed_not_applied",
+          "closure": {
+            "closed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-RESERVE-A",
+                "operation_kind": "inventory.reserve",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "fence_event_id": "FENCE-A",
+            "closed_at_minute": 6
+          }
+        }
+      }
+    },
+    {
+      "id": "invalid:cancel-leaks-commit",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationCancelResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "accepted",
+          "effect_applied": true
+        }
+      }
+    },
+    {
+      "id": "invalid:unresolved-leaks-result",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "OperationReconcileResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "unresolved",
+          "reason": "not_found",
+          "original_result_utf8": "{}"
+        }
+      }
+    },
+    {
+      "id": "invalid:service-desk-status-confused",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "ArrangementRecordResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "committed",
+          "operation_kind": "arrangement.record",
+          "effect": {
+            "arrangement_id": "ARRANGEMENT-A",
+            "committed_attempt": {
+              "operation": {
+                "run_id": "RUN-WIRE-EXAMPLE",
+                "order_id": "ORDER-A",
+                "operation_key": "OP-ARRANGE-A",
+                "operation_kind": "arrangement.record",
+                "semantic_effect_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "attempt_id": "ATTEMPT-A-0",
+              "generation": 0,
+              "original_request_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+            "approval_id": "APPROVAL-A",
+            "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+            "terms": {
+              "quote_ref": {
+                "kind": "quote",
+                "record_id": "Q-WEST",
+                "revision": 1,
+                "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+              },
+              "site": "WEST",
+              "sku": "DISPLAY-STD",
+              "quantity": 2,
+              "destination": "SITE-A",
+              "estimated_arrival_time": 120,
+              "extra_transport_cost_minor": 2000,
+              "currency": "USD",
+              "expires_at": 30
+            },
+            "reservation_id": "RESERVATION-A",
+            "order_revision_before": 1,
+            "order_revision_after": 2,
+            "committed_at_minute": 7,
+            "service_status": "recovery_arranged"
+          }
+        }
+      }
+    },
+    {
+      "id": "invalid:result-and-error",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "SourceReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8,
+        "result": {
+          "tag": "source",
+          "source": {
+            "source_ref": {
+              "kind": "customer_brief",
+              "record_id": "BRIEF-A",
+              "revision": 1,
+              "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+            },
+            "body_utf8": "{\"message\":\"We need both of the standard display kits at Site A by minute 180. They must be the exact model we ordered; please do not substitute another model. Keep any extra transport cost at or below USD 25 for the whole order. Either depot is fine if those conditions are met.\",\"order_id\":\"ORDER-A\",\"record_id\":\"BRIEF-A\",\"revision\":1,\"source_class\":\"authenticated_customer_request\"}",
+            "body_length_bytes": 385
+          }
+        },
+        "error": {
+          "code": "fixture_unavailable",
+          "message": "No."
+        }
+      }
+    },
+    {
+      "id": "invalid:no-result-no-error",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "SourceReadResponse",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "request_id": "REQUEST-A-0",
+        "observation_id": "OBS-A",
+        "observed_at_minute": 8
+      }
+    },
+    {
+      "id": "invalid:id-newline",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "SourceReadRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A\n",
+        "order_id": "ORDER-A",
+        "action": "source.read",
+        "payload": {
+          "source_ref": {
+            "kind": "customer_brief",
+            "record_id": "BRIEF-A",
+            "revision": 1,
+            "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+          }
+        }
+      }
+    },
+    {
+      "id": "invalid:numeric-bool",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "inventory.reserve",
+        "payload": {
+          "operation_key": "OP-RESERVE-A",
+          "attempt_id": "ATTEMPT-A-0",
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+          "approval_id": "APPROVAL-A",
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+          "expected_order_revision": 1,
+          "terms": {
+            "quote_ref": {
+              "kind": "quote",
+              "record_id": "Q-WEST",
+              "revision": 1,
+              "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+            },
+            "site": "WEST",
+            "sku": "DISPLAY-STD",
+            "quantity": true,
+            "destination": "SITE-A",
+            "estimated_arrival_time": 120,
+            "extra_transport_cost_minor": 2000,
+            "currency": "USD",
+            "expires_at": 30
+          },
+          "reservation_id": null,
+          "semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+        }
+      }
+    },
+    {
+      "id": "invalid:numeric-string",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "inventory.reserve",
+        "payload": {
+          "operation_key": "OP-RESERVE-A",
+          "attempt_id": "ATTEMPT-A-0",
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+          "approval_id": "APPROVAL-A",
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+          "expected_order_revision": 1,
+          "terms": {
+            "quote_ref": {
+              "kind": "quote",
+              "record_id": "Q-WEST",
+              "revision": 1,
+              "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+            },
+            "site": "WEST",
+            "sku": "DISPLAY-STD",
+            "quantity": "2",
+            "destination": "SITE-A",
+            "estimated_arrival_time": 120,
+            "extra_transport_cost_minor": 2000,
+            "currency": "USD",
+            "expires_at": 30
+          },
+          "reservation_id": null,
+          "semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+        }
+      }
+    },
+    {
+      "id": "invalid:unsafe-integer",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "inventory.reserve",
+        "payload": {
+          "operation_key": "OP-RESERVE-A",
+          "attempt_id": "ATTEMPT-A-0",
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+          "approval_id": "APPROVAL-A",
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+          "expected_order_revision": 1,
+          "terms": {
+            "quote_ref": {
+              "kind": "quote",
+              "record_id": "Q-WEST",
+              "revision": 1,
+              "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+            },
+            "site": "WEST",
+            "sku": "DISPLAY-STD",
+            "quantity": 9007199254740992,
+            "destination": "SITE-A",
+            "estimated_arrival_time": 120,
+            "extra_transport_cost_minor": 2000,
+            "currency": "USD",
+            "expires_at": 30
+          },
+          "reservation_id": null,
+          "semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+        }
+      }
+    },
+    {
+      "id": "invalid:quantity-zero",
+      "schema_file": "frd-wire.schema.json",
+      "definition": "InventoryReserveRequest",
+      "design_status": "accepted_design_translation",
+      "expected_schema": false,
+      "value": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "inventory.reserve",
+        "payload": {
+          "operation_key": "OP-RESERVE-A",
+          "attempt_id": "ATTEMPT-A-0",
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+          "approval_id": "APPROVAL-A",
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+          "expected_order_revision": 1,
+          "terms": {
+            "quote_ref": {
+              "kind": "quote",
+              "record_id": "Q-WEST",
+              "revision": 1,
+              "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+            },
+            "site": "WEST",
+            "sku": "DISPLAY-STD",
+            "quantity": 0,
+            "destination": "SITE-A",
+            "estimated_arrival_time": 120,
+            "extra_transport_cost_minor": 2000,
+            "currency": "USD",
+            "expires_at": 30
+          },
+          "reservation_id": null,
+          "semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+        }
+      }
+    },
+    {
+      "id": "invalid:negative-stock",
+      "schema_file": "frd-source-body.schema.json",
+      "definition": "Stock",
+      "design_status": "existing_structured_records",
+      "expected_schema": false,
+      "value": {
+        "stock_id": "STOCK-WEST-STD",
+        "revision": 1,
+        "site": "WEST",
+        "sku": "DISPLAY-STD",
+        "available": -1
+      }
+    },
+    {
+      "id": "invalid:premature-order-reservation",
+      "schema_file": "frd-source-body.schema.json",
+      "definition": "OrderInitial",
+      "design_status": "existing_structured_records",
+      "expected_schema": false,
+      "value": {
+        "order_id": "ORDER-A",
+        "revision": 1,
+        "customer_id": "CUSTOMER-A",
+        "requested_sku": "DISPLAY-STD",
+        "quantity": 2,
+        "destination": "SITE-A",
+        "status": "disrupted",
+        "original_source": "NORTH",
+        "reservation_id": "RESERVATION-A",
+        "recovery_plan": null,
+        "shipment_status": "not_dispatched",
+        "delivery_status": "not_delivered"
+      }
+    },
+    {
+      "id": "invalid:bad-pointer-escape",
+      "schema_file": "frd-source-derivation.schema.json",
+      "definition": null,
+      "design_status": "candidate_physical_binding",
+      "expected_schema": false,
+      "value": {
+        "manifest_revision": "frd-source-derivation-1",
+        "derivation": "jcs-structured-record",
+        "input_artifact": {
+          "path": "scenarios/proposed/scenario-pack.json",
+          "sha256": "sha256:46cd351ab957e974829695c0562093ab664e1fb81249b9124a3a58a144fdf0b0"
+        },
+        "world_id": "ordinary",
+        "json_pointer": "/worlds/~2",
+        "source_body_definition": "CustomerBriefPack",
+        "source": {
+          "source_ref": {
+            "kind": "customer_brief",
+            "record_id": "BRIEF-A",
+            "revision": 1,
+            "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+          },
+          "body_utf8": "{\"message\":\"We need both of the standard display kits at Site A by minute 180. They must be the exact model we ordered; please do not substitute another model. Keep any extra transport cost at or below USD 25 for the whole order. Either depot is fine if those conditions are met.\",\"order_id\":\"ORDER-A\",\"record_id\":\"BRIEF-A\",\"revision\":1,\"source_class\":\"authenticated_customer_request\"}",
+          "body_length_bytes": 385
+        }
+      }
+    },
+    {
+      "id": "invalid:parent-traversal",
+      "schema_file": "frd-source-derivation.schema.json",
+      "definition": null,
+      "design_status": "candidate_physical_binding",
+      "expected_schema": false,
+      "value": {
+        "manifest_revision": "frd-source-derivation-1",
+        "derivation": "jcs-structured-record",
+        "input_artifact": {
+          "path": "../private.json",
+          "sha256": "sha256:46cd351ab957e974829695c0562093ab664e1fb81249b9124a3a58a144fdf0b0"
+        },
+        "world_id": "ordinary",
+        "json_pointer": "/worlds/0/initial_state/briefs/0",
+        "source_body_definition": "CustomerBriefPack",
+        "source": {
+          "source_ref": {
+            "kind": "customer_brief",
+            "record_id": "BRIEF-A",
+            "revision": 1,
+            "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+          },
+          "body_utf8": "{\"message\":\"We need both of the standard display kits at Site A by minute 180. They must be the exact model we ordered; please do not substitute another model. Keep any extra transport cost at or below USD 25 for the whole order. Either depot is fine if those conditions are met.\",\"order_id\":\"ORDER-A\",\"record_id\":\"BRIEF-A\",\"revision\":1,\"source_class\":\"authenticated_customer_request\"}",
+          "body_length_bytes": 385
+        }
+      }
+    }
+  ]
+}

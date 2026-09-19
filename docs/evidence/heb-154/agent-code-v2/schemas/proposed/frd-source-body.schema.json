@@ -1,0 +1,329 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:haffey:frd:source-body:1",
+  "title": "FRD source bodies — candidate, with accepted source bindings",
+  "$comment": "Root accepts the listed candidate shapes, not source provenance or applicability. Select the precise definition by source kind and actual source artifact. Current initial pack/reference records and ordinary stock/quote/brief revisions preserve their fields. SOURCE-order and SOURCE-events are accepted design. Definitions ending in Proposed retain stable draft-era identifiers; the suffix is historical, not their disposition. Acceptance does not prove enforcement.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/OrderInitial"
+    },
+    {
+      "$ref": "#/$defs/OrderArrangedProposed"
+    },
+    {
+      "$ref": "#/$defs/Stock"
+    },
+    {
+      "$ref": "#/$defs/Quote"
+    },
+    {
+      "$ref": "#/$defs/CustomerBriefPack"
+    },
+    {
+      "$ref": "#/$defs/CustomerBriefReference"
+    },
+    {
+      "$ref": "#/$defs/SupplierNoticeProposed"
+    }
+  ],
+  "$defs": {
+    "OrderInitial": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "order_id",
+        "revision",
+        "customer_id",
+        "requested_sku",
+        "quantity",
+        "destination",
+        "original_source",
+        "shipment_status",
+        "delivery_status",
+        "status",
+        "reservation_id",
+        "recovery_plan"
+      ],
+      "properties": {
+        "order_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "revision": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Positive"
+        },
+        "customer_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "requested_sku": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "quantity": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Positive"
+        },
+        "destination": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "original_source": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "shipment_status": {
+          "const": "not_dispatched"
+        },
+        "delivery_status": {
+          "const": "not_delivered"
+        },
+        "status": {
+          "const": "disrupted"
+        },
+        "reservation_id": {
+          "type": "null"
+        },
+        "recovery_plan": {
+          "type": "null"
+        }
+      }
+    },
+    "RecoveryPlanProposed": {
+      "$comment": "Accepted SOURCE-order binding, separately ratified as presented. Stable draft-era definition identifier retained.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "arrangement_id",
+        "plan_digest",
+        "approval_id",
+        "grant_digest",
+        "terms"
+      ],
+      "properties": {
+        "arrangement_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "plan_digest": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Digest"
+        },
+        "approval_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "grant_digest": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Digest"
+        },
+        "terms": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Terms"
+        }
+      }
+    },
+    "OrderArrangedProposed": {
+      "$comment": "Accepted SOURCE-order exact post-arrangement source shape; stable draft-era definition identifier retained. Original request/physical-fulfillment fields remain unchanged; reservation alone does not change this order.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "order_id",
+        "revision",
+        "customer_id",
+        "requested_sku",
+        "quantity",
+        "destination",
+        "original_source",
+        "shipment_status",
+        "delivery_status",
+        "status",
+        "reservation_id",
+        "recovery_plan"
+      ],
+      "properties": {
+        "order_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "revision": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Positive"
+        },
+        "customer_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "requested_sku": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "quantity": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Positive"
+        },
+        "destination": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "original_source": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "shipment_status": {
+          "const": "not_dispatched"
+        },
+        "delivery_status": {
+          "const": "not_delivered"
+        },
+        "status": {
+          "const": "arrangement_recorded"
+        },
+        "reservation_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "recovery_plan": {
+          "$ref": "#/$defs/RecoveryPlanProposed"
+        }
+      }
+    },
+    "Stock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stock_id",
+        "revision",
+        "site",
+        "sku",
+        "available"
+      ],
+      "properties": {
+        "stock_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "revision": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Positive"
+        },
+        "site": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "sku": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "available": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/UInt"
+        }
+      }
+    },
+    "Quote": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "quote_id",
+        "revision",
+        "site",
+        "sku",
+        "quantity",
+        "destination",
+        "estimated_arrival_time",
+        "extra_transport_cost_minor",
+        "currency",
+        "expires_at"
+      ],
+      "properties": {
+        "quote_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "revision": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Positive"
+        },
+        "site": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "sku": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "quantity": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Positive"
+        },
+        "destination": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "estimated_arrival_time": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/UInt"
+        },
+        "extra_transport_cost_minor": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/UInt"
+        },
+        "currency": {
+          "const": "USD"
+        },
+        "expires_at": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/UInt"
+        }
+      }
+    },
+    "CustomerBriefPack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "revision",
+        "source_class",
+        "message",
+        "order_id"
+      ],
+      "properties": {
+        "record_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "revision": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Positive"
+        },
+        "source_class": {
+          "const": "authenticated_customer_request"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 262144
+        },
+        "order_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        }
+      }
+    },
+    "CustomerBriefReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "revision",
+        "source_class",
+        "message"
+      ],
+      "properties": {
+        "record_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "revision": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Positive"
+        },
+        "source_class": {
+          "const": "authenticated_customer_request"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 262144
+        }
+      }
+    },
+    "SupplierNoticeProposed": {
+      "$comment": "Accepted SOURCE-events binding; stable draft-era definition identifier retained: supplier-only provenance; body labels do not create authority. Order visibility is a trusted catalog relation, not invented message content.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "revision",
+        "source_class",
+        "message"
+      ],
+      "properties": {
+        "record_id": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+        },
+        "revision": {
+          "$ref": "urn:haffey:frd:wire:1#/$defs/Positive"
+        },
+        "source_class": {
+          "const": "supplier_data"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 262144
+        }
+      }
+    }
+  }
+}

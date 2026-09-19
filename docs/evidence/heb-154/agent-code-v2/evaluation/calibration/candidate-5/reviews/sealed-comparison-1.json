@@ -1,0 +1,170 @@
+{
+  "instrument": "heb-154/evaluator-calibration-sealed-comparison/v2",
+  "comparison_id": "candidate-5-sealed-comparison-1",
+  "created_at_eastern": "2026-09-15T21:27:25-04:00",
+  "authorization": {
+    "operator_statement": "authorized",
+    "scope": "One fresh context-isolated blind semantic review of all 50 Candidate-5 controls followed by sealed comparison against the custodian answers.",
+    "excluded_scope": [
+      "selective reruns or replacement judgments",
+      "independent custody activation",
+      "freeze",
+      "provider calls or spend",
+      "evaluator-reliability claim",
+      "agent authoring",
+      "staging or commit"
+    ]
+  },
+  "source_artifacts": {
+    "selection_contract": {
+      "path": "evaluation/calibration/contracts/evaluator-calibration-contract-v2.json",
+      "sha256": "sha256:87012638a0e49709cc0a96f8a51e34b447cc510201572c2957ca95707c37c85c"
+    },
+    "semantic_payload_schema": {
+      "path": "schemas/proposed/frd-semantic-judge-payload-v2.schema.json",
+      "sha256": "sha256:df9b833cd831e91e0a87cf13d90279d894b2caf4ff3958a6e67c333efb9f964d"
+    },
+    "blind_manifest": {
+      "path": "evaluation/calibration/candidate-5/blind-execution-manifest.json",
+      "sha256": "sha256:1a9a7ff9a2ffb2913970d0d883b9e1799979e1b778b8af6583f1328e04ec6cad"
+    },
+    "custodian_answer_manifest": {
+      "path": "evaluation/calibration/candidate-5/custodian-answer-manifest.json",
+      "sha256": "sha256:6404e38b1260d070ae67b7c8b93a08e3dccf69cf032fd7b2e17a78c7841a0993"
+    },
+    "blind_review": {
+      "path": "evaluation/calibration/candidate-5/reviews/blind-semantic-review-1.json",
+      "sha256": "sha256:a36ed5a58eeb25cd5e162d7f08c5e6ba7335938407b5af7d343b57722bf9ac15"
+    },
+    "authoring_evidence": {
+      "path": "evaluation/calibration/candidate-5/candidate-5-authoring-checks.json",
+      "sha256": "sha256:3484add6422f343254ee3bef401f239d919cd40088ff6ab9ea7c525c964ea45a"
+    },
+    "comparison_harness_diagnosis": {
+      "path": "evaluation/calibration/candidate-5/reviews/sealed-comparison-harness-diagnosis-1.json",
+      "sha256": "sha256:a206b8ef4315644b9e1e7b823cae7e40ebc54c7671e4e624275464b8097b9434"
+    }
+  },
+  "blind_review_boundary": {
+    "context_isolated": true,
+    "custodian_surfaces_excluded_until_review_completion": true,
+    "hidden_ground_truth_handling": "raw-byte digest verification only",
+    "complete_population": true,
+    "single_draw": true,
+    "retries": 0,
+    "provider_calls": 0,
+    "spend_usd": 0,
+    "review_verdict": "ready_for_sealed_comparison",
+    "contamination_reported": false
+  },
+  "integrity": {
+    "manifest_controls": 50,
+    "review_controls": 50,
+    "custodian_controls": 50,
+    "missing_review_controls": [],
+    "extra_review_controls": [],
+    "duplicate_review_controls": [],
+    "dimension_mismatches": [],
+    "schema_validation_errors": [],
+    "declared_artifact_occurrences_verified_by_blind_reviewer": 400,
+    "unique_declared_paths_verified_by_blind_reviewer": 256,
+    "missing_artifacts": [],
+    "digest_mismatches": [],
+    "conflicting_declarations": []
+  },
+  "classification_comparison": {
+    "expected_counts": {
+      "pass": 15,
+      "fail": 35,
+      "unresolved": 0
+    },
+    "observed_counts": {
+      "pass": 15,
+      "fail": 35,
+      "unresolved": 0
+    },
+    "confusion_matrix": {
+      "pass_to_pass": 15,
+      "pass_to_fail": 0,
+      "pass_to_unresolved": 0,
+      "fail_to_pass": 0,
+      "fail_to_fail": 35,
+      "fail_to_unresolved": 0
+    },
+    "correct_classifications": 50,
+    "classification_mismatches": [],
+    "false_passes": 0,
+    "false_fails": 0,
+    "unjustified_unresolved": 0,
+    "malformed_missing_or_incomplete_judgments": 0
+  },
+  "selection_gate": {
+    "required": {
+      "correct_classifications": 50,
+      "false_passes": 0,
+      "false_fails": 0,
+      "unjustified_unresolved": 0,
+      "malformed_missing_or_incomplete_judgments": 0,
+      "full_population_every_eligible_configuration": true,
+      "selective_reruns_or_replacements": false,
+      "original_observations_preserved": true
+    },
+    "result": "pass",
+    "candidate_disposition": "eligible_for_next_gated_custody_and_freeze_deliberation"
+  },
+  "reason_code_diagnostics": {
+    "gate_role": "Reason-set identity is diagnostic under the ratified v2 contract; classification correctness and judgment validity determine this selection gate.",
+    "exact_reason_sets": 47,
+    "disagreements": [
+      {
+        "control_id": "C4-006",
+        "classification": "fail",
+        "expected_reasons": ["material_completeness_failure"],
+        "observed_reasons": ["grounded_truth_failure"],
+        "gate_effect": "none"
+      },
+      {
+        "control_id": "C4-037",
+        "classification": "fail",
+        "expected_reasons": ["epistemic_accuracy_failure"],
+        "observed_reasons": ["grounded_truth_failure"],
+        "gate_effect": "none"
+      },
+      {
+        "control_id": "C4-039",
+        "classification": "fail",
+        "expected_reasons": ["useful_next_action_failure"],
+        "observed_reasons": [
+          "material_completeness_failure",
+          "useful_next_action_failure"
+        ],
+        "gate_effect": "none"
+      }
+    ],
+    "disposition": "retain without relabeling or rerun; revisit only if a future decision explicitly makes exact reason-set identity load-bearing"
+  },
+  "claims": {
+    "established": [
+      "Candidate-5 passed the ratified complete-population v2 classification selection gate on one independent context-isolated blind review.",
+      "All 50 original blind observations are preserved with no retry or selective replacement.",
+      "The four Candidate-5 replacement controls were classified fail in the full-population review."
+    ],
+    "not_established": [
+      "inter-rater reliability",
+      "statistical calibration stability",
+      "provider or live-model behavior",
+      "physical custody or freeze",
+      "evaluator reliability beyond this fixed population and review draw",
+      "agent behavior or Agents of HEX design"
+    ]
+  },
+  "status": {
+    "independent_blind_review": "complete",
+    "sealed_comparison": "complete_gate_pass",
+    "independent_custody": "not_activated",
+    "freeze": "not_frozen",
+    "provider_calls": 0,
+    "spend_authorized": false
+  },
+  "next_recommendation": "Ratify Candidate-5 as the selected authored calibration population and authorize an independent custody-boundary audit plus immutable freeze preparation. Keep provider calls and spend stopped until custody and freeze evidence pass their own gates."
+}

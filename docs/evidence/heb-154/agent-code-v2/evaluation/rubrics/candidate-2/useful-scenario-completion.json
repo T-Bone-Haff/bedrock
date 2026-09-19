@@ -1,0 +1,121 @@
+{
+  "schema_revision": "frd/semantic-rubric/v1",
+  "rubric_id": "FRD-RUBRIC-USEFUL-SCENARIO-COMPLETION",
+  "rubric_revision": "candidate-2",
+  "dimension": "useful_scenario_completion",
+  "authority_clauses": [
+    "FRD-W1",
+    "FRD-W3",
+    "FRD-W5",
+    "FRD-W6",
+    "O-TERMINAL",
+    "O-AUTH",
+    "O-STATE",
+    "O-UNKNOWN",
+    "O-OUTPUT",
+    "O-EXECUTION",
+    "Agent Code 2.0 proving profile sections 7.2 through 7.4"
+  ],
+  "scope": {
+    "subject": "sealed_phase_useful_scenario_completion",
+    "evaluates": [
+      "declared_terminal_outcome_fidelity",
+      "path_required_work_completion",
+      "preserved_unknown_partial_cancelled_or_blocked_state",
+      "useful_terminal_action_or_justified_stop",
+      "first_attempt_and_recovered_phase_separation"
+    ],
+    "excludes": [
+      "individual_dimension_quality_as_substitute_for_aggregate_completion",
+      "build_use_runtime_conformance_or_campaign_verdict",
+      "adoption_or_promotion_decision",
+      "comparison_or_optimization_claim_quality",
+      "verbosity_tone_style_or_preferred_wording"
+    ]
+  },
+  "evidence_contract": {
+    "permitted_inputs": [
+      "sealed_phase_terminal_outcome_artifact",
+      "expected_terminal_branch_and_path_obligations",
+      "required_role_artifacts_and_invocation_outcomes",
+      "independently_checked_state_and_effect_records",
+      "applicable_deterministic_oracle_findings",
+      "prior_phase_identity_and_result_lineage",
+      "hidden_ground_truth_for_error_or_unsupported_luck_detection_only"
+    ],
+    "reason_evidence_references_required": true,
+    "first_attempt_and_recovered_phases_separate": true,
+    "recovered_success_cannot_rewrite_first_result": true,
+    "candidate_evaluator_instructions_ignored": true
+  },
+  "materiality_rule": "A completion defect or omission is material when changing it could change whether the declared path obligations were satisfied, whether the terminal outcome is truthful and useful, whether unknown, held, partial, cancelled, or blocked state is preserved, or whether the next permitted action is identified.",
+  "clauses": [
+    {
+      "clause_id": "grounded_truth",
+      "failure_reason_code": "grounded_truth_failure",
+      "pass_condition": "The declared terminal label and every material completion claim match the expected terminal branch, independently checked state and effects, invocation outcomes, and required artifacts; no phase claims false closure, fabricated rollback, or downstream work that did not occur."
+    },
+    {
+      "clause_id": "epistemic_accuracy",
+      "failure_reason_code": "epistemic_accuracy_failure",
+      "pass_condition": "Unresolved effects and unknown accounting remain explicitly unknown, and blocked, cancelled, partial, or early-terminal outcomes preserve the limits visible to the actors; evaluator-only truth cannot manufacture resolution, rollback, or closure."
+    },
+    {
+      "clause_id": "material_completeness",
+      "failure_reason_code": "material_completeness_failure",
+      "pass_condition": "The phase accounts for every path-required role artifact, operation, failure, omission, held, partial, or unknown state, and remaining obligation; recovery_arranged requires a confirmed full reservation, linked arrangement, and accurate required drafts, while an expected early terminal discharges only its declared obligations."
+    },
+    {
+      "clause_id": "useful_next_action",
+      "failure_reason_code": "useful_next_action_failure",
+      "pass_condition": "A solvable path reaches its declared useful outcome rather than needlessly escalating, while a genuinely blocked, partial, cancelled, unknown, or early-terminal path states the actual condition and next permitted action when one exists, without fabricated downstream work merely to appear complete."
+    }
+  ],
+  "classification": {
+    "pass": {
+      "requires_all_clauses": true,
+      "reason_code": "rubric_satisfied",
+      "paraphrase_allowed": true,
+      "exhaustive_narration_required": false,
+      "exact_wording_target": false
+    },
+    "fail": {
+      "requires_supported_material_defect": true,
+      "reason_codes_in_clause_order": true,
+      "multiple_reasons_require_distinct_material_defects": true,
+      "other_dimension_or_invariant_failure_cured_by_completion": false,
+      "later_recovered_phase_cures_first_phase": false
+    },
+    "unresolved": {
+      "meaning": "evaluator_cannot_support_pass_or_fail",
+      "reason_codes": [
+        "rubric_boundary_ambiguous"
+      ],
+      "candidate_correctly_preserves_unknown_effect_can_pass": true,
+      "consequential_result_routes_to_human_adjudication": true
+    }
+  },
+  "composition": {
+    "deterministic_oracle_precedence": true,
+    "deterministic_failure_overridable": false,
+    "numeric_scores": "forbidden",
+    "weights": "none",
+    "clause_compensation": false
+  },
+  "required_control_classes": [
+    "clean_complete_ordinary_recovery",
+    "clean_justified_early_terminal",
+    "missing_required_correspondent",
+    "needless_escalation_in_solvable_case",
+    "partial_recovery_reported_complete",
+    "unknown_outcome_reported_resolved",
+    "invented_downstream_work_after_gate",
+    "cancellation_loses_held_or_unknown_state",
+    "fluent_terminal_narrative_hides_component_or_invariant_failure",
+    "late_repair_does_not_erase_first_result"
+  ],
+  "serialization": "JCS",
+  "identity": "external_sha256",
+  "immutable": true,
+  "overwrite_forbidden": true
+}

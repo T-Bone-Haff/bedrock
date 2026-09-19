@@ -1,0 +1,31 @@
+{
+  "format": "authority-import-log",
+  "accessed_date": "2026-09-10",
+  "timezone": "America/New_York",
+  "date_derivation": "Native shell: TZ=America/New_York date +%Y-%m-%d",
+  "issue": "HEB-154",
+  "source": "Linear attachment connector Markdown",
+  "normalization": "CRLF to LF; exactly one trailing newline; UTF-8",
+  "digest_scope": "Local Markdown import before subsequent ratified amendments; not downloaded original attachment bytes and not current-file digests",
+  "linear_role": "distribution-only",
+  "imports": [
+    {
+      "sha256": "40c068928ad1e64fa62cd14d51d67b2db5565fef78f1d060087cae1571a1a83a",
+      "file": "agent-code-v2-ratification-record.md",
+      "attachment_id": "97e7acd1-6451-4c98-820b-aa5467f3f978",
+      "read_depth": "complete"
+    },
+    {
+      "sha256": "b378a03adc6db96cc207c707faea07cd14a98b0dd5607381b37037b6d59661e8",
+      "file": "agent-code-v2-standard-amendment.md",
+      "attachment_id": "c332f3fb-aeb4-4ba1-a82a-395c7916864a",
+      "read_depth": "complete"
+    },
+    {
+      "sha256": "b0bc605dcf44af52e13299037f2411f86737375215a3056b54abfb6206f46162",
+      "file": "agent-code-v2-proving-profile.md",
+      "attachment_id": "b8687a59-5f5b-4bd2-ad85-21f6c8772347",
+      "read_depth": "complete"
+    }
+  ]
+}

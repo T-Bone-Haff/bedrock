@@ -1,0 +1,520 @@
+{
+  "record_type": "frd-machine-schema-authoring/draft-1",
+  "recorded_date": "2026-09-12",
+  "date_frame": "America/New_York; native shell derived",
+  "status": "candidate_authoring_checks_passed; SOURCE-order and SOURCE-events pending",
+  "scope": "Three machine-schema candidates, exact action entry points, structural examples, advisory lexical/byte/relational specimen detectors and initial public/reference source shapes. No physical freeze, full materialization, runtime implementation, cold-build or agent-accuracy result.",
+  "read_depth": {
+    "whole": [
+      "Repository orientation and continuity fact sheet (the latter not status authority)",
+      "Selected construct-spec/testing/debug skills and required template/schema/profile/evidence references, verified byte-identical to repository-owned copies",
+      "Wire companion, with truncated identity section reread completely",
+      "Root README"
+    ],
+    "complete_scoped": [
+      "All public-world initial-state source projections",
+      "All public case event schedules",
+      "Reference actor-visible and operator-event projections",
+      "Parent EC-state-commit section and matching PG state/status passages",
+      "Latest WIRE-outcomes ratification section",
+      "Current amendment/status/changelog passages in root README, wire, execution, physical and PG documents",
+      "Current identity-vector values and example-source bodies used by schema specimens"
+    ],
+    "mechanical": [
+      "All prior evidence-root file identities",
+      "All existing authored byte vectors, public registry/event-kind inventories and named metadata checks",
+      "Exact accepted flat record declarations versus required/property schema fields",
+      "Complete example/test population and every listed schema artifact"
+    ],
+    "partial_disclosed": [
+      "Combined wire/instruction result truncated the identity section; that section reread whole.",
+      "Bulk document JSON fetch exceeded output budget and was not usable; replaced by complete scoped amendment passages, not claimed whole-parent rereads.",
+      "Interrupted first test run returned truncated console. Complete named failing-test output and a self-contained reproduction retained; interrupted aggregate is not a suite verdict."
+    ],
+    "excluded": [
+      "Full public pack human reread outside named projections",
+      "Hidden/native source/case populations",
+      "Docker/PostgreSQL/HTTP/provider/agent substrate"
+    ]
+  },
+  "before_sha256": {
+    "agent-code-v2-standard-amendment.md": "c9f12ce0fc2b432a6c362920eae5bc25b5270ce07f687673406ba27fec2cf7db",
+    "postgresql-persistence-contract.md": "3eef8ab08bcdd824d24d344a7b76dcbab8bcca160e598351606ea8168ccd708d",
+    "physical-runtime-binding.md": "d58f8c8b251a19f488e0953c6c1a1e6bfcc4b307f5e672cdf6be86b465b6199b",
+    "scenario-and-oracle-pack.md": "c64ebfee8cebcacdaafab271c49fd2482550682a144342bb6b9fe64a5128a918",
+    "authority-imports.json": "0f6052dc14661a7373d016a6daa662414eb8f104b95e61e960d3e7d94ddb3a8a",
+    "README.md": "2759f153aa57b8d4847666041af15a4c097781c944b6acd8ca175d5a78072db7",
+    "consumer-proving-design.md": "f2bd11e71fad9a385c9e9e71c8a10e8dfce1a34ed05e19b7532445291ffae826",
+    "execution-contract.md": "a12010b288fb3b03b6898b8b82e4eccda3538331ba8e35531b6fdd822a95f303",
+    "business-world-and-reference-case.md": "a111a70d78b5bb01073b2c6ff69e3ea53edf96a54907f2fefebdc5acb7aaba4b",
+    "agent-code-v2-proving-profile.md": "26951a635cac2612dbc41a3a2adfa4b5d9c50d3f32c098957299d3107e35ebe2",
+    "wire-and-identity-contract.md": "a59791d69bf9ef03ec6bac540b5f46c4f51a8da854ec23fd2e85e66ff840e284",
+    "agent-code-v2-ratification-record.md": "5194ec422fb75e40e7c913f4d5bda430485d9f01eaba16218604b8ee641aaef9",
+    "scenarios/proposed/en-route-ratification-authoring-checks.json": "dee3cc8e5e17bf30ec65f18df5597b6a15d853619f653b3ca17d336362bb635d",
+    "scenarios/proposed/authoring-checks-sp3.json": "eebce20490e3c2fff0c4603e4b246d0f021b93217e790380c89c08f2cb320945",
+    "scenarios/proposed/wire-sources-ratification-authoring-checks.json": "ed74abddd783ec61481432235ca46e4ff3c13c3c145fb8fa1eb0698f1b93023f",
+    "scenarios/proposed/scenario-pack.json": "46cd351ab957e974829695c0562093ab664e1fb81249b9124a3a58a144fdf0b0",
+    "scenarios/proposed/wire-outcomes-ratification-authoring-checks.json": "56789eff7c66f758a788148d4dc47135d884a8edfeac597305fdecdab757a756",
+    "scenarios/proposed/authoring-checks-sp2.json": "c7a308beab27350ebe2165020ab61f0d34e443869f5c56188d3133292ef2a5ed",
+    "scenarios/proposed/physical-runtime-authoring-checks.json": "638979ce484d7001080e741d2dddfd418d78196ceb20d3d0aceee2fe0b744804",
+    "scenarios/proposed/pg-transaction-ratification-authoring-checks.json": "9012750de9d6824467c325edf01dc70962dc3c6f1a25066c45bb244db63d57b5",
+    "scenarios/proposed/execution-boundary-authoring-checks.json": "f7107119961d182eb441dbd84e01b6f6bc62f3f0771da74864a86a3bcdb7766c",
+    "scenarios/proposed/check_pack.py": "fa5e156104292b4a55388e071aee38c0d081de2200a4856486fe4d7fe3c5aec7",
+    "scenarios/proposed/pb-persistence-enrollment-authoring-checks.json": "1ce5272ca3deb22ab641e5aaa26734beb3a840168da32fa83bcd3b3460cc21f9",
+    "scenarios/proposed/wire-identity-ratification-authoring-checks.json": "aa412cc966d51b95878ad0744786851101467f6b6700feba90941203852ba9ba",
+    "scenarios/proposed/pb-persistence-credentials-authoring-checks.json": "1e74029b8a14eb6359df68947dd5bdf5def8ca85e7229b700e0204da22b08d53",
+    "scenarios/proposed/wire-drafting-authoring-checks.json": "71515c90af4d9f43c36a265bae10efdbf6915891ec864098c28f1b04446e3fc1",
+    "scenarios/proposed/wire-envelope-ratification-authoring-checks.json": "8c490d1ad434c07aae1b97198f7b933e729f02c545d3540599e8660cd2e9866b",
+    "scenarios/proposed/pb-persistence-postgresql-authoring-checks.json": "14c7a4d01afb5f53fdf1cffc900d2275f9cd63fb63d9ecf9a8898c7f226eb419",
+    "scenarios/proposed/execution-state-commit-authoring-checks.json": "ed30075fd13134f5cf1142b6557e914027725f6451b88e916b59563020e2f04e",
+    "scenarios/proposed/pb-transport-http-authoring-checks.json": "4896a45ed0590f2e9c2a12f7cbb7df7bd03c342fc0de6fd247d4b7dc0236bcc7",
+    "scenarios/proposed/execution-contract-authoring-checks.json": "df6db00d5608aeb117fd4b1ade7170cf6cf4b84c6384398165fecf60f4baa6a0",
+    "scenarios/proposed/en-lifecycle-ratification-authoring-checks.json": "68d6b1fcf01c1339bde3a76f10ea07b2b43ecdef109c46dda1a34df5952b19e0",
+    "scenarios/proposed/pg-export-ratification-authoring-checks.json": "22dd88b0e54d0bcc3a2edf239197bef3a6eecc69a466d192a014e6b96e8714da",
+    "scenarios/proposed/execution-journal-authoring-checks.json": "51d881d00ea07ec196757acad83594b3c3b63d1b705ca05303de891fde5d98ab",
+    "scenarios/proposed/postgresql-persistence-authoring-checks.json": "4446eb5f19e2a713499ad9e0ac73e59b3d3deeb61a5a7dcf3ff0273db78f9ea2",
+    "scenarios/proposed/pb-runtime-ratification-authoring-checks.json": "0a006e2bbab0e0ac44e43a4873944bf02a17ccde2ecb6007fa4da4170be8f9fa",
+    "scenarios/proposed/en-scope-ratification-authoring-checks.json": "379dc45b69b8689ad7bc601a27023b503690a8980899fb1d841ae9dfd6d1b974",
+    "scenarios/proposed/authoring-checks-sp1.json": "d07748e71fdf5b7d20cb9c979c8791ae272eafb782400cb99ddbb3322ad15ae9",
+    "scenarios/proposed/en-custody-ratification-authoring-checks.json": "89b98f8af4549812b236498b867d8a075607f874acc1b235825d887780a50124",
+    "scenarios/proposed/authoring-checks.json": "27297c015f831a9017d7b0d8c4719133da68717a71c464ac8159585f5cdafa42",
+    "scenarios/proposed/pg-state-ratification-authoring-checks.json": "49548a7b0d51e284706ddd81d368d6764dfdff72dc66d4354d377548e81ff623",
+    "scenarios/proposed/frd-01.json": "b323dcea8f0ecefa1cb98e0ab169e0347e42bffb6fd2e2b0c3bd94f9d9592661",
+    "scenarios/proposed/wire-identity-examples.json": "4cd287fa38a31899d793d9e604f2ead41263c9bffbadbbf4a5a935b7a0dc6d0b",
+    "scenarios/proposed/pg-finality-ratification-authoring-checks.json": "9bc082c14e87f0ed38fd45813e22329546e4390c1ab1f2552f24d1bdd7c69df3",
+    "scenarios/proposed/en-access-ratification-authoring-checks.json": "824d4c26abc9e7b8ab61e5e0bd7b793a337782d7624637ab9e01acd99bdc89a8",
+    "scenarios/proposed/execution-event-evidence-authoring-checks.json": "0ae938caa071685964ebe3e446200a67cba3dca754952bf147698206a9dc21cf"
+  },
+  "after_sha256": {
+    "README.md": "c97c7c12568e98f91610e2b16fe2203e051048075034e3a19624ba488dc0930b",
+    "agent-code-v2-proving-profile.md": "26951a635cac2612dbc41a3a2adfa4b5d9c50d3f32c098957299d3107e35ebe2",
+    "agent-code-v2-ratification-record.md": "3c6e32793e705c0c03fd46f0c679384260d355512cb77de25ef3e85bf611047f",
+    "agent-code-v2-standard-amendment.md": "c9f12ce0fc2b432a6c362920eae5bc25b5270ce07f687673406ba27fec2cf7db",
+    "authority-imports.json": "0f6052dc14661a7373d016a6daa662414eb8f104b95e61e960d3e7d94ddb3a8a",
+    "business-world-and-reference-case.md": "a111a70d78b5bb01073b2c6ff69e3ea53edf96a54907f2fefebdc5acb7aaba4b",
+    "consumer-proving-design.md": "f2bd11e71fad9a385c9e9e71c8a10e8dfce1a34ed05e19b7532445291ffae826",
+    "execution-contract.md": "3083ca308f16524f74c25a8ec87287da3413be30b8559d03c679b3d7b831c42a",
+    "physical-runtime-binding.md": "b0499af8e650359425c3d26be6f4a51f5568ac0372c66b20b5d8c9efc3a28694",
+    "postgresql-persistence-contract.md": "d7ce9a6389f58bed6c1df063d7ccd9cdefee501ecb5e9d679420853e789693bb",
+    "scenario-and-oracle-pack.md": "c64ebfee8cebcacdaafab271c49fd2482550682a144342bb6b9fe64a5128a918",
+    "scenarios/proposed/authoring-checks-sp1.json": "d07748e71fdf5b7d20cb9c979c8791ae272eafb782400cb99ddbb3322ad15ae9",
+    "scenarios/proposed/authoring-checks-sp2.json": "c7a308beab27350ebe2165020ab61f0d34e443869f5c56188d3133292ef2a5ed",
+    "scenarios/proposed/authoring-checks-sp3.json": "eebce20490e3c2fff0c4603e4b246d0f021b93217e790380c89c08f2cb320945",
+    "scenarios/proposed/authoring-checks.json": "27297c015f831a9017d7b0d8c4719133da68717a71c464ac8159585f5cdafa42",
+    "scenarios/proposed/check_pack.py": "fa5e156104292b4a55388e071aee38c0d081de2200a4856486fe4d7fe3c5aec7",
+    "scenarios/proposed/en-access-ratification-authoring-checks.json": "824d4c26abc9e7b8ab61e5e0bd7b793a337782d7624637ab9e01acd99bdc89a8",
+    "scenarios/proposed/en-custody-ratification-authoring-checks.json": "89b98f8af4549812b236498b867d8a075607f874acc1b235825d887780a50124",
+    "scenarios/proposed/en-lifecycle-ratification-authoring-checks.json": "68d6b1fcf01c1339bde3a76f10ea07b2b43ecdef109c46dda1a34df5952b19e0",
+    "scenarios/proposed/en-route-ratification-authoring-checks.json": "dee3cc8e5e17bf30ec65f18df5597b6a15d853619f653b3ca17d336362bb635d",
+    "scenarios/proposed/en-scope-ratification-authoring-checks.json": "379dc45b69b8689ad7bc601a27023b503690a8980899fb1d841ae9dfd6d1b974",
+    "scenarios/proposed/execution-boundary-authoring-checks.json": "f7107119961d182eb441dbd84e01b6f6bc62f3f0771da74864a86a3bcdb7766c",
+    "scenarios/proposed/execution-contract-authoring-checks.json": "df6db00d5608aeb117fd4b1ade7170cf6cf4b84c6384398165fecf60f4baa6a0",
+    "scenarios/proposed/execution-event-evidence-authoring-checks.json": "0ae938caa071685964ebe3e446200a67cba3dca754952bf147698206a9dc21cf",
+    "scenarios/proposed/execution-journal-authoring-checks.json": "51d881d00ea07ec196757acad83594b3c3b63d1b705ca05303de891fde5d98ab",
+    "scenarios/proposed/execution-state-commit-authoring-checks.json": "ed30075fd13134f5cf1142b6557e914027725f6451b88e916b59563020e2f04e",
+    "scenarios/proposed/frd-01.json": "b323dcea8f0ecefa1cb98e0ab169e0347e42bffb6fd2e2b0c3bd94f9d9592661",
+    "scenarios/proposed/pb-persistence-credentials-authoring-checks.json": "1e74029b8a14eb6359df68947dd5bdf5def8ca85e7229b700e0204da22b08d53",
+    "scenarios/proposed/pb-persistence-enrollment-authoring-checks.json": "1ce5272ca3deb22ab641e5aaa26734beb3a840168da32fa83bcd3b3460cc21f9",
+    "scenarios/proposed/pb-persistence-postgresql-authoring-checks.json": "14c7a4d01afb5f53fdf1cffc900d2275f9cd63fb63d9ecf9a8898c7f226eb419",
+    "scenarios/proposed/pb-runtime-ratification-authoring-checks.json": "0a006e2bbab0e0ac44e43a4873944bf02a17ccde2ecb6007fa4da4170be8f9fa",
+    "scenarios/proposed/pb-transport-http-authoring-checks.json": "4896a45ed0590f2e9c2a12f7cbb7df7bd03c342fc0de6fd247d4b7dc0236bcc7",
+    "scenarios/proposed/pg-export-ratification-authoring-checks.json": "22dd88b0e54d0bcc3a2edf239197bef3a6eecc69a466d192a014e6b96e8714da",
+    "scenarios/proposed/pg-finality-ratification-authoring-checks.json": "9bc082c14e87f0ed38fd45813e22329546e4390c1ab1f2552f24d1bdd7c69df3",
+    "scenarios/proposed/pg-state-ratification-authoring-checks.json": "49548a7b0d51e284706ddd81d368d6764dfdff72dc66d4354d377548e81ff623",
+    "scenarios/proposed/pg-transaction-ratification-authoring-checks.json": "9012750de9d6824467c325edf01dc70962dc3c6f1a25066c45bb244db63d57b5",
+    "scenarios/proposed/physical-runtime-authoring-checks.json": "638979ce484d7001080e741d2dddfd418d78196ceb20d3d0aceee2fe0b744804",
+    "scenarios/proposed/postgresql-persistence-authoring-checks.json": "4446eb5f19e2a713499ad9e0ac73e59b3d3deeb61a5a7dcf3ff0273db78f9ea2",
+    "scenarios/proposed/scenario-pack.json": "46cd351ab957e974829695c0562093ab664e1fb81249b9124a3a58a144fdf0b0",
+    "scenarios/proposed/wire-drafting-authoring-checks.json": "71515c90af4d9f43c36a265bae10efdbf6915891ec864098c28f1b04446e3fc1",
+    "scenarios/proposed/wire-envelope-ratification-authoring-checks.json": "8c490d1ad434c07aae1b97198f7b933e729f02c545d3540599e8660cd2e9866b",
+    "scenarios/proposed/wire-identity-examples.json": "4cd287fa38a31899d793d9e604f2ead41263c9bffbadbbf4a5a935b7a0dc6d0b",
+    "scenarios/proposed/wire-identity-ratification-authoring-checks.json": "aa412cc966d51b95878ad0744786851101467f6b6700feba90941203852ba9ba",
+    "scenarios/proposed/wire-outcomes-ratification-authoring-checks.json": "56789eff7c66f758a788148d4dc47135d884a8edfeac597305fdecdab757a756",
+    "scenarios/proposed/wire-sources-ratification-authoring-checks.json": "ed74abddd783ec61481432235ca46e4ff3c13c3c145fb8fa1eb0698f1b93023f",
+    "schemas/proposed/README.md": "8035211c039d9d1241e44188399284c7e06662482577387f771389aeb7f2a10a",
+    "schemas/proposed/frd-source-body.schema.json": "405bfe834949feae843fbfb6646fedcf39899baff2ad09ffb443ce04cc4769cd",
+    "schemas/proposed/frd-source-derivation.schema.json": "724b94b95ec8f6578e8ee8529abc3d679f42a5e2197bfb7bd0352bc037349df3",
+    "schemas/proposed/frd-wire.schema.json": "51e60579846f23a1739a2d13e69555744d5025620f6e4cb5abc12714c4cd908b",
+    "schemas/proposed/requirements-authoring.txt": "52c68606f5df78df7c35126bc28404c02c9cba5d96f9ceb9ba04b08b089809cf",
+    "schemas/proposed/test_wire_schema.py": "55c683bacc8e4da1ccfafaeeb41e17ffb39a0027923444048f4ff3608da5ac99",
+    "schemas/proposed/wire-schema-bindings.json": "a932400c263eea397a76282a275b3fbe307f33d9eda564965bd3d58748436f28",
+    "schemas/proposed/wire-schema-examples.json": "a375132b9608929f77d16b7dfb3d828ebe1a7ee9f0daf9aa0671d5b6be70fc49",
+    "wire-and-identity-contract.md": "e942a7c4e41845ffe32521eba19537ab1067d86c8c55c2e805f09a4634be84c1"
+  },
+  "artifact_bindings": {
+    "schema_pack_revision": "draft-1",
+    "status": "candidate; SOURCE-order and SOURCE-events proposed; not schema closure or physical freeze",
+    "artifact_sha256": {
+      "frd-wire.schema.json": "sha256:51e60579846f23a1739a2d13e69555744d5025620f6e4cb5abc12714c4cd908b",
+      "frd-source-body.schema.json": "sha256:405bfe834949feae843fbfb6646fedcf39899baff2ad09ffb443ce04cc4769cd",
+      "frd-source-derivation.schema.json": "sha256:724b94b95ec8f6578e8ee8529abc3d679f42a5e2197bfb7bd0352bc037349df3",
+      "wire-schema-examples.json": "sha256:a375132b9608929f77d16b7dfb3d828ebe1a7ee9f0daf9aa0671d5b6be70fc49",
+      "test_wire_schema.py": "sha256:55c683bacc8e4da1ccfafaeeb41e17ffb39a0027923444048f4ff3608da5ac99",
+      "requirements-authoring.txt": "sha256:52c68606f5df78df7c35126bc28404c02c9cba5d96f9ceb9ba04b08b089809cf",
+      "README.md": "sha256:8035211c039d9d1241e44188399284c7e06662482577387f771389aeb7f2a10a"
+    },
+    "wire_design_sha256": "sha256:e942a7c4e41845ffe32521eba19537ab1067d86c8c55c2e805f09a4634be84c1",
+    "schema_ids": {
+      "frd-wire.schema.json": "urn:haffey:frd:wire:1",
+      "frd-source-body.schema.json": "urn:haffey:frd:source-body:1",
+      "frd-source-derivation.schema.json": "urn:haffey:frd:source-derivation:1"
+    },
+    "actions": {
+      "order_context.read": {
+        "request": "#/$defs/OrderContextReadRequest",
+        "response": "#/$defs/OrderContextReadResponse",
+        "payload": "#/$defs/OrderContextReadPayload",
+        "result": "#/$defs/OrderContextReadResult"
+      },
+      "source.read": {
+        "request": "#/$defs/SourceReadRequest",
+        "response": "#/$defs/SourceReadResponse",
+        "payload": "#/$defs/SourceReadPayload",
+        "result": "#/$defs/SourceReadResult"
+      },
+      "availability.read": {
+        "request": "#/$defs/AvailabilityReadRequest",
+        "response": "#/$defs/AvailabilityReadResponse",
+        "payload": "#/$defs/AvailabilityReadPayload",
+        "result": "#/$defs/AvailabilityReadResult"
+      },
+      "requirements.clarify": {
+        "request": "#/$defs/RequirementsClarifyRequest",
+        "response": "#/$defs/RequirementsClarifyResponse",
+        "payload": "#/$defs/RequirementsClarifyPayload",
+        "result": "#/$defs/RequirementsClarifyResult"
+      },
+      "approval.request": {
+        "request": "#/$defs/ApprovalRequestRequest",
+        "response": "#/$defs/ApprovalRequestResponse",
+        "payload": "#/$defs/ApprovalRequestPayload",
+        "result": "#/$defs/ApprovalRequestResult"
+      },
+      "inventory.reserve": {
+        "request": "#/$defs/InventoryReserveRequest",
+        "response": "#/$defs/InventoryReserveResponse",
+        "payload": "#/$defs/InventoryReservePayload",
+        "result": "#/$defs/InventoryReserveResult"
+      },
+      "arrangement.record": {
+        "request": "#/$defs/ArrangementRecordRequest",
+        "response": "#/$defs/ArrangementRecordResponse",
+        "payload": "#/$defs/ArrangementRecordPayload",
+        "result": "#/$defs/ArrangementRecordResult"
+      },
+      "operation.reconcile": {
+        "request": "#/$defs/OperationReconcileRequest",
+        "response": "#/$defs/OperationReconcileResponse",
+        "payload": "#/$defs/OperationReconcilePayload",
+        "result": "#/$defs/OperationReconcileResult"
+      },
+      "operation.cancel": {
+        "request": "#/$defs/OperationCancelRequest",
+        "response": "#/$defs/OperationCancelResponse",
+        "payload": "#/$defs/OperationCancelPayload",
+        "result": "#/$defs/OperationCancelResult"
+      }
+    },
+    "source_body_definitions": [
+      {
+        "definition": "OrderInitial",
+        "kind": "order",
+        "applicability": "Original/unamended order. Reservation alone leaves it unchanged.",
+        "disposition": "existing_source_shape"
+      },
+      {
+        "definition": "OrderArrangedProposed",
+        "kind": "order",
+        "applicability": "Post-arrangement exact shape proposed; SOURCE-order ratification required.",
+        "disposition": "proposed"
+      },
+      {
+        "definition": "CustomerBriefPack",
+        "kind": "customer_brief",
+        "applicability": "Actual public-pack structured briefs (order_id retained) and matching-shape proposed event revisions.",
+        "disposition": "existing_shape; event derivation pending SOURCE-events"
+      },
+      {
+        "definition": "CustomerBriefReference",
+        "kind": "customer_brief",
+        "applicability": "Actual frd-01 reference brief only (no inserted order_id).",
+        "disposition": "existing_source_shape"
+      },
+      {
+        "definition": "Stock",
+        "kind": "stock",
+        "applicability": "Existing stock fields; revision/quantity state validity separately checked.",
+        "disposition": "existing_source_shape"
+      },
+      {
+        "definition": "Quote",
+        "kind": "quote",
+        "applicability": "Existing quote fields; future typed publication provenance pending SOURCE-events.",
+        "disposition": "existing_source_shape"
+      },
+      {
+        "definition": "SupplierNoticeProposed",
+        "kind": "supplier_notice",
+        "applicability": "Proposed structured supplier body; trusted visibility/provenance external; SOURCE-events ratification required.",
+        "disposition": "proposed"
+      }
+    ],
+    "remaining_gates": [
+      "SOURCE-order",
+      "SOURCE-events",
+      "policy/error precedence",
+      "full source materialization and independent complete per-case catalog",
+      "lexical/byte/relational and actual runtime enforcement",
+      "remaining hook/admin/evidence/DDL/export/enrollment/campaign gates"
+    ]
+  },
+  "source_population_scope": "Complete public-world initial source lists and reference actor-visible source lists only; all event schedules read separately as prose, not materialized; excludes hidden/native/runtime populations.",
+  "source_population": {
+    "ordinary": {
+      "orders": 1,
+      "briefs": 1,
+      "inventory": 6,
+      "quotes": 5,
+      "supplier_notices": 0
+    },
+    "west-only": {
+      "orders": 1,
+      "briefs": 1,
+      "inventory": 6,
+      "quotes": 5,
+      "supplier_notices": 0
+    },
+    "missing-deadline": {
+      "orders": 1,
+      "briefs": 1,
+      "inventory": 6,
+      "quotes": 5,
+      "supplier_notices": 0
+    },
+    "cost-at-cap": {
+      "orders": 1,
+      "briefs": 1,
+      "inventory": 6,
+      "quotes": 5,
+      "supplier_notices": 0
+    },
+    "contention-strict": {
+      "orders": 2,
+      "briefs": 2,
+      "inventory": 6,
+      "quotes": 2,
+      "supplier_notices": 0
+    },
+    "combined-strict": {
+      "orders": 2,
+      "briefs": 2,
+      "inventory": 6,
+      "quotes": 1,
+      "supplier_notices": 0
+    },
+    "combined-substitution": {
+      "orders": 2,
+      "briefs": 2,
+      "inventory": 6,
+      "quotes": 1,
+      "supplier_notices": 0
+    }
+  },
+  "reference_population": {
+    "order": 1,
+    "accepted_customer_brief": 1,
+    "inventory": 6,
+    "transport_quotes": 5
+  },
+  "environment": {
+    "python": "3.14.6 (v3.14.6:c63aec69bd5, Jun 10 2026, 08:07:54) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "interpreter": "/private/tmp/heb154-schema-validation.Pll1O9/bin/python",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "rpds-py": "2026.6.3",
+      "packaging": "26.3",
+      "iniconfig": "2.3.0",
+      "Pygments": "2.21.0",
+      "jsonschema-specifications": "2025.9.1",
+      "jsonschema": "4.25.1",
+      "pytest": "8.4.2",
+      "referencing": "0.37.0",
+      "pluggy": "1.6.0",
+      "attrs": "26.1.0",
+      "pip": "26.1.2"
+    },
+    "temporary_environment": "/private/tmp/heb154-schema-validation.Pll1O9",
+    "notes": [
+      "Authoring only. No shared environment modified.",
+      "Initial local probes found legacy jsonschema 4.17.3; repository-pinned 4.25.1 used for final validation.",
+      "Restricted-network install failed; approved scoped retry installed authoring dependencies from public PyPI. No proving-fixture provisioning or service-network changes."
+    ]
+  },
+  "pre_repair_schema_sha256": {
+    "frd-source-body.schema.json": "405bfe834949feae843fbfb6646fedcf39899baff2ad09ffb443ce04cc4769cd",
+    "wire-schema-examples.json": "a375132b9608929f77d16b7dfb3d828ebe1a7ee9f0daf9aa0671d5b6be70fc49",
+    "frd-wire.schema.json": "e233555c86c9819f20b8c1cfcc8d6d2b3606f39ab073ff2b5a84a803016c27d8",
+    "frd-source-derivation.schema.json": "deefa62603ea333fa85514883c1cb3672431c389b397fde73c74fbce12bf12ae",
+    "test_wire_schema.py": "ed2c2ac462242420d4a4fac57ec5c2f1805b238aa7f4555d1c2952113ff345b4"
+  },
+  "first_run_partial": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 /Users/thaffey/anaconda3/bin/python -m pytest -q -p no:cacheprovider docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py",
+    "initial_output": "....FFFFF",
+    "continuation_output": "FFFFFFFF.FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF.FFFFFF.. [ 24%]\n.....FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+    "interrupted_exit_code": 2,
+    "interrupted_output": "Warning: truncated output (original token count: 300437)\n... 153171 bytes omitted ...\n\nF.....F.FFFFFF.FFFFFFF.FFFFF [ 48%]\n..FF..FFFFFFFFFFFFF.FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\n=================================== FAILURES ===================================\n__________ test_schema_specimens[response:order_context.read:context] __________\n\nself = <jsonschema.validators.RefResolver object at 0x10b92f190>, url = ''\n\n    def resolve_from_url(self, url):\n        \"\"\"\n        Resolve the given URL.\n        \"\"\"\n        url, fragment = urldefrag(url)\n        if not url:\n            url = self.base_uri\n    \n        try:\n>           document = self.store[url]\n                       ^^^^^^^^^^^^^^^\n\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:909: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = {'http://json-schema.org/draft-03/schema': {'$schema': 'http://json-schema.org/draft-03/schema#', 'id': 'http://json-s... {'$ref': '#/$defs/UInt'}, 'result': {'$ref': '#/$defs/OrderContextReadResult'}}}, {'$ref': '#/$defs/ErrorResponse'}]}}\nuri = ''\n\n    def __getitem__(self, uri):\n>       return self.store[self.normalize(uri)]\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       KeyError: ''\n\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/_utils.py:28: KeyError\n\nDuring handling of the above exception, another exception occurred:\n\nself = <jsonschema.validators.RefResolver object at 0x10b92f190>, url = ''\n\n    def resolve_from_url(self, url):\n        \"\"\"\n        Resolve the given URL.\n        \"\"\"\n        url, fragment = urldefrag(url)\n        if not url:\n            url = self.base_uri\n    \n        try:\n            document = self.store[url]\n        except KeyError:\n            try:\n>               document = self.resolve_remote(url)\n                           ^^^^^^^^^^^^^^^^^^^^^^^^\n\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:912: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:1018: in resolve_remote\n    with urlopen(uri) as url:\n         ^^^^^^^^^^^^\n../../../anaconda3/lib/python3.11/urllib/request.py:216: in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n../../../anaconda3/lib/python3.11/urllib/request.py:503: in open\n    req = Request(fullurl, data)\n          ^^^^^^^^^^^^^^^^^^^^^^\n../../../anacond…260952 tokens truncated…:test_closed_records_and_required_fields[error:approval.request:unauthorized_replay]\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_closed_records_and_required_fields[error:approval.request:run_sealed]\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_closed_records_and_required_fields[error:approval.request:fixture_unavailable]\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_closed_records_and_required_fields[request:inventory.reserve]\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_closed_records_and_required_fields[response:inventory.reserve:committed]\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_closed_records_and_required_fields[response:inventory.reserve:rejected]\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_closed_records_and_required_fields[response:inventory.reserve:unresolved]\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_closed_records_and_required_fields[error:inventory.reserve:identity_conflict]\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_closed_records_and_required_fields[error:inventory.reserve:unauthorized_replay]\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_closed_records_and_required_fields[error:inventory.reserve:run_sealed]\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_closed_records_and_required_fields[error:inventory.reserve:fixture_unavailable]\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_closed_records_and_required_fields[request:arrangement.record]\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_closed_records_and_required_fields[response:arrangement.record:committed]\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_closed_records_and_required_fields[response:arrangement.record:rejected]\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n/Users/thaffey/anaconda3/lib/python3.11/ast.py:278: KeyboardInterrupt\n(to show a full traceback on KeyboardInterrupt use --full-trace)\n170 failed, 26 passed in 21.42s\n",
+    "read_depth": "Partial, interrupted and tool-truncated; not a complete failing-test inventory."
+  },
+  "targeted_first_failure": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 /Users/thaffey/anaconda3/bin/python -m pytest -q -p no:cacheprovider --tb=short 'docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_schema_specimens[response:order_context.read:context]'",
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n__________ test_schema_specimens[response:order_context.read:context] __________\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:909: in resolve_from_url\n    document = self.store[url]\n               ^^^^^^^^^^^^^^^\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/_utils.py:28: in __getitem__\n    return self.store[self.normalize(uri)]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   KeyError: ''\n\nDuring handling of the above exception, another exception occurred:\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:912: in resolve_from_url\n    document = self.resolve_remote(url)\n               ^^^^^^^^^^^^^^^^^^^^^^^^\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:1018: in resolve_remote\n    with urlopen(uri) as url:\n         ^^^^^^^^^^^^\n../../../anaconda3/lib/python3.11/urllib/request.py:216: in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n../../../anaconda3/lib/python3.11/urllib/request.py:503: in open\n    req = Request(fullurl, data)\n          ^^^^^^^^^^^^^^^^^^^^^^\n../../../anaconda3/lib/python3.11/urllib/request.py:322: in __init__\n    self.full_url = url\n    ^^^^^^^^^^^^^\n../../../anaconda3/lib/python3.11/urllib/request.py:348: in full_url\n    self._parse()\n../../../anaconda3/lib/python3.11/urllib/request.py:377: in _parse\n    raise ValueError(\"unknown url type: %r\" % self.full_url)\nE   ValueError: unknown url type: ''\n\nDuring handling of the above exception, another exception occurred:\ndocs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py:186: in test_schema_specimens\n    errors = list(validator(item[\"schema_file\"], item[\"definition\"]).iter_errors(item[\"value\"]))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:288: in iter_errors\n    for error in errors:\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/_validators.py:298: in ref\n    yield from validator.descend(instance, resolved)\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:305: in descend\n    for error in self.evolve(schema=schema).iter_errors(instance):\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:288: in iter_errors\n    for error in errors:\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/_validators.py:383: in oneOf\n    errs = list(validator.descend(instance, subschema, schema_path=index))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:305: in descend\n    for error in self.evolve(schema=schema).iter_errors(instance):\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:288: in iter_errors\n    for error in errors:\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/_validators.py:332: in properties\n    yield from validator.descend(\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:305: in descend\n    for error in self.evolve(schema=schema).iter_errors(instance):\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:288: in iter_errors\n    for error in errors:\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/_validators.py:298: in ref\n    yield from validator.descend(instance, resolved)\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:305: in descend\n    for error in self.evolve(schema=schema).iter_errors(instance):\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:288: in iter_errors\n    for error in errors:\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/_validators.py:383: in oneOf\n    errs = list(validator.descend(instance, subschema, schema_path=index))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:305: in descend\n    for error in self.evolve(schema=schema).iter_errors(instance):\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:288: in iter_errors\n    for error in errors:\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/_validators.py:294: in ref\n    scope, resolved = validator.resolver.resolve(ref)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:898: in resolve\n    return url, self._remote_cache(url)\n                ^^^^^^^^^^^^^^^^^^^^^^^\n../../../anaconda3/lib/python3.11/site-packages/jsonschema/validators.py:914: in resolve_from_url\n    raise exceptions.RefResolutionError(exc)\nE   jsonschema.exceptions.RefResolutionError: unknown url type: ''\n=========================== short test summary info ============================\nFAILED docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py::test_schema_specimens[response:order_context.read:context]\n1 failed in 0.26s\n"
+  },
+  "same_engine_resolver_control": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 /private/tmp/heb154-schema-validation.Pll1O9/bin/python - <<'PY'\nimport json,runpy\nfrom importlib.metadata import version\nfrom jsonschema import Draft202012Validator\nfrom referencing import Registry,Resource\nm=runpy.run_path('docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py')\nitem=m['BY_ID']['response:order_context.read:context']\nlegacy={}\ntry:\n    legacy['valid']=m['validator'](item['schema_file'],item['definition']).is_valid(item['value'])\nexcept Exception as exc:\n    legacy={'error_type':type(exc).__name__,'error':str(exc)}\nregistry=Registry().with_resources((s['$id'],Resource.from_contents(s)) for s in m['SCHEMAS'].values())\ns=m['SCHEMAS'][item['schema_file']]\nv=Draft202012Validator({'$ref':s['$id']+'#/$defs/'+item['definition']},registry=registry)\ngood=v.is_valid(item['value'])\ndirty=v.is_valid({**item['value'],'unexpected_control':True})\nassert good and not dirty\nprint(json.dumps({'result':'resolver_discrimination_passed','jsonschema':version('jsonschema'),'legacy_resolver_same_engine':legacy,'registry_same_schema_positive':good,'registry_dirty_unknown_field':dirty,'scope':'One exact first-failure specimen on unchanged schemas, comparing legacy resolver with the maintained in-memory registry in the same pinned engine; not full-suite conformance.'},indent=2))\nPY",
+    "exit_code": 0,
+    "stdout": "{\n  \"result\": \"resolver_discrimination_passed\",\n  \"jsonschema\": \"4.25.1\",\n  \"legacy_resolver_same_engine\": {\n    \"error_type\": \"_RefResolutionError\",\n    \"error\": \"unknown url type: ''\"\n  },\n  \"registry_same_schema_positive\": true,\n  \"registry_dirty_unknown_field\": false,\n  \"scope\": \"One exact first-failure specimen on unchanged schemas, comparing legacy resolver with the maintained in-memory registry in the same pinned engine; not full-suite conformance.\"\n}\n"
+  },
+  "self_contained_resolver_probe": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 /private/tmp/heb154-schema-validation.Pll1O9/bin/python - <<'PY'\nimport json,hashlib\nfrom pathlib import Path\nfrom importlib.metadata import version\nfrom jsonschema import Draft202012Validator,RefResolver\nfrom referencing import Registry,Resource\nr=Path('docs/evidence/heb-154/agent-code-v2/schemas/proposed')\nnames=['frd-wire.schema.json','frd-source-body.schema.json','frd-source-derivation.schema.json']\nschemas=[json.loads((r/n).read_text()) for n in names]\nitems=json.loads((r/'wire-schema-examples.json').read_text())['examples']\nitem=next(i for i in items if i['id']=='response:order_context.read:context')\nselected={'$ref':schemas[0]['$id']+'#/$defs/'+item['definition']}\nstore={s['$id']:s for s in schemas}\ntry:\n    old=Draft202012Validator(selected,resolver=RefResolver.from_schema(schemas[0],store=store)).is_valid(item['value'])\n    legacy={'valid':old}\nexcept Exception as exc: legacy={'error_type':type(exc).__name__,'error':str(exc)}\nregistry=Registry().with_resources((s['$id'],Resource.from_contents(s)) for s in schemas)\nv=Draft202012Validator(selected,registry=registry)\ngood=v.is_valid(item['value'])\nbad=v.is_valid({**item['value'],'unexpected_control':True})\nassert 'error_type' in legacy and good and not bad\nprint(json.dumps({'result':'self_contained_resolver_regression_reproduced','engine':version('jsonschema'),'legacy':legacy,'registry_positive':good,'registry_unknown_field_control':bad,'scope':'Same final schemas, example and engine; only referencing mechanism differs. Root cause is the legacy resolver path, not proved to be every URN in every validator.','input_sha256':{n:hashlib.sha256((r/n).read_bytes()).hexdigest() for n in names+['wire-schema-examples.json']}},indent=2))\nPY",
+    "exit_code": 0,
+    "stdout": "<stdin>:4: DeprecationWarning: jsonschema.RefResolver is deprecated as of v4.18.0, in favor of the https://github.com/python-jsonschema/referencing library, which provides more compliant referencing behavior as well as more flexible APIs for customization. A future release will remove RefResolver. Please file a feature request (on referencing) if you are missing an API for the kind of customization you need.\n{\n  \"result\": \"self_contained_resolver_regression_reproduced\",\n  \"engine\": \"4.25.1\",\n  \"legacy\": {\n    \"error_type\": \"_RefResolutionError\",\n    \"error\": \"unknown url type: ''\"\n  },\n  \"registry_positive\": true,\n  \"registry_unknown_field_control\": false,\n  \"scope\": \"Same final schemas, example and engine; only referencing mechanism differs. Root cause is the legacy resolver path, not proved to be every URN in every validator.\",\n  \"input_sha256\": {\n    \"frd-wire.schema.json\": \"51e60579846f23a1739a2d13e69555744d5025620f6e4cb5abc12714c4cd908b\",\n    \"frd-source-body.schema.json\": \"405bfe834949feae843fbfb6646fedcf39899baff2ad09ffb443ce04cc4769cd\",\n    \"frd-source-derivation.schema.json\": \"724b94b95ec8f6578e8ee8529abc3d679f42a5e2197bfb7bd0352bc037349df3\",\n    \"wire-schema-examples.json\": \"a375132b9608929f77d16b7dfb3d828ebe1a7ee9f0daf9aa0671d5b6be70fc49\"\n  }\n}\n"
+  },
+  "diagnosis": {
+    "schema_version": "1.0.0",
+    "symptom": "Authoring tests failed to resolve nested local schema fragments under URN identities before they could validate many specimens.",
+    "scope": "Offline schema-authoring harness only; original available jsonschema 4.17.3 and same legacy resolver path in pinned 4.25.1. No fixture/runtime/agent failure inferred.",
+    "mode": "offline-diagnosis",
+    "timeline": [
+      "First suite began on existing Anaconda jsonschema 4.17.3; reference failures accumulated. Interrupted the run; returned console was truncated, so that run is partial evidence.",
+      "Complete targeted reproduction retained for the first named failing context-response specimen.",
+      "Installed repository-pinned jsonschema 4.25.1 and authoring pytest in an isolated temporary environment after restricted-network failure and approved retry.",
+      "Same-engine comparison showed legacy resolver failure and maintained local-registry success on the unchanged positive, with dirty unknown-field rejection.",
+      "Changed the authoring harness to Registry/Resource, retained a self-contained resolver reproduction and regression test, and passed the complete final authoring suite."
+    ],
+    "evidence": [
+      {
+        "source": "This report's first_run_partial, targeted_first_failure, same_engine_resolver_control, self_contained_resolver_probe, pre_repair_schema_sha256 and final_schema_tests; canonical HEB-154 repository evidence, retained with prior reports. No sensitive inputs or live substrate captured.",
+        "captured_at": "2026-09-12T15:21:27-04:00",
+        "classification": "Internal synthetic engineering evidence; timestamp is report snapshot assembly in native America/New_York, not an invented failure timestamp.",
+        "integrity": "Exact available commands/stdout and pre/post artifact SHA-256 values retained. Interrupted first-run stdout is explicitly truncated; complete targeted and self-contained reproductions supply bounded inspectable evidence."
+      }
+    ],
+    "hypotheses": [
+      {
+        "iteration": 1,
+        "hypothesis": "The first failing specimen is structurally invalid against its schema.",
+        "prediction": "It will be rejected after resolving the same schema using an independently configured registry.",
+        "falsifier": "The same positive validates and a schema-invalid control is rejected without changing the schema.",
+        "evidence": "same_engine_resolver_control and self_contained_resolver_probe: registry_positive=true, unknown-field control=false.",
+        "disposition": "falsified",
+        "unexplained": []
+      },
+      {
+        "iteration": 2,
+        "hypothesis": "Changing only the validator package version fixes the failure.",
+        "prediction": "The legacy resolver will succeed in the repository-pinned 4.25.1 engine.",
+        "falsifier": "It still resolves to an empty URI and raises a reference-resolution error in that engine.",
+        "evidence": "Both same-engine comparisons retain legacy unknown url type: '' in 4.25.1.",
+        "disposition": "falsified",
+        "unexplained": []
+      },
+      {
+        "iteration": 3,
+        "hypothesis": "The legacy resolver path loses the applicable base during nested fragment resolution; the maintained in-memory registry handles these schema references correctly.",
+        "prediction": "With identical schema/example/engine, legacy resolution fails while Registry validates the positive and rejects the dirty example.",
+        "falsifier": "Both mechanisms fail, or registry falsely accepts the dirty example.",
+        "evidence": "Self-contained probe reproduces that exact discrimination; complete repaired authoring suite also passes.",
+        "disposition": "supported",
+        "unexplained": []
+      }
+    ],
+    "containment": "Stopped the oversized failing run; treated its reference failures as unavailable schema-validation evidence, not as business/schema verdicts. No schema relaxation or runtime change.",
+    "conclusion": {
+      "status": "root_cause_identified",
+      "confidence": "high",
+      "statement": "The harness used the legacy RefResolver path, which resolved nested fragments in this URN-based schema set to an empty URI. Replacing that path with the documented in-memory Registry fixes the observed failure without changing the schema under the same engine. Claim is bounded to this reproduced path, not all URNs or all validators."
+    },
+    "repair": {
+      "authorized": true,
+      "action": "Within the authorized schema/authoring-test work, bind a local Registry/Resource population with refusal of unknown references, use the repository-pinned validator in an isolated temporary environment, and retain a matching positive/dirty regression. No fixture/runtime or accepted business-policy changes."
+    },
+    "verification": [
+      "Complete targeted failure before repair, same-engine discrimination and final self-contained probe retained.",
+      "Complete final schema-authoring pytest suite passes, including reference positive/dirty controls.",
+      "Current public-pack and static metadata/vector checks pass; repeated pack stdout is identical.",
+      "No runtime/canary gate applies to this offline harness repair. Real HTTP/SQL/agent boundaries remain unverified."
+    ],
+    "residual_risk": "One observed resolver-path defect; not a prevalence claim. Schemas remain candidates with SOURCE-order and SOURCE-events unratified. Structural acceptance does not prove authority, canonical terminal-result bytes, durable finality or agent accuracy.",
+    "owner": "Codex authoring-harness repair; Tad Haffey retains design acceptance."
+  },
+  "final_schema_tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 /private/tmp/heb154-schema-validation.Pll1O9/bin/python -m pytest -q --tb=short -p no:cacheprovider docs/evidence/heb-154/agent-code-v2/schemas/proposed/test_wire_schema.py",
+    "exit_code": 0,
+    "stdout": "........................................................................ [ 24%]\n........................................................................ [ 48%]\n........................................................................ [ 72%]\n........................................................................ [ 96%]\n..........                                                               [100%]\n298 passed in 0.63s\n"
+  },
+  "static_event_inventory": {
+    "command": "python3 - <<'PY'\nimport hashlib, json, pathlib, re\nroot = pathlib.Path(\"docs/evidence/heb-154/agent-code-v2\")\npack_path = root / \"scenarios/proposed/scenario-pack.json\"\ndoc_path = root / \"execution-contract.md\"\npack = json.loads(pack_path.read_text())\ndoc = doc_path.read_text()\nquote = chr(96)\nexpected = {}\nfor case in pack[\"cases\"]:\n    expected.setdefault(case[\"family_id\"], set()).update(event[\"kind\"] for event in case[\"event_schedule\"])\ndef bindings(text):\n    rows = re.findall(r\"^\\| (FRD-\\d{2}) \\| ([^|]+) \\|\", text, re.M)\n    if len(rows) != len({row[0] for row in rows}):\n        raise ValueError(\"duplicate_family_binding\")\n    actual = {family: set(re.findall(quote + r\"([^\" + quote + r\"]+)\" + quote, cell)) for family, cell in rows}\n    if actual != expected:\n        raise ValueError(\"event_family_binding_mismatch\")\n    return actual\ndef references(text):\n    oracle_refs = set(re.findall(r\"\\bO-[A-Z]+(?:-[A-Z]+)*\\b\", text))\n    control_refs = set(re.findall(r\"\\bCTRL-[A-Z]+(?:-[A-Z]+)*\\b\", text))\n    if not oracle_refs <= {row[\"oracle_id\"] for row in pack[\"oracles\"]}:\n        raise ValueError(\"unknown_oracle_reference\")\n    if not control_refs <= {row[\"control_id\"] for row in pack[\"controls\"]}:\n        raise ValueError(\"unknown_control_reference\")\n    return sorted(oracle_refs), sorted(control_refs)\nactual = bindings(doc)\noracle_refs, control_refs = references(doc)\nobligations = re.findall(r\"^\\| (FRDX-[a-z-]+) \\| ([^|]+) \\| ([^|]+) \\| ([^|]+) \\|$\", doc, re.M)\nassert obligations and len(obligations) == len({row[0] for row in obligations})\nassert all(all(cell.strip() for cell in row[1:]) for row in obligations)\ncaught = []\ndef dirty(name, function, text, expected_reason):\n    try:\n        function(text)\n    except ValueError as exc:\n        assert str(exc) == expected_reason, str(exc)\n        caught.append(name)\n    else:\n        raise AssertionError(\"undetected_dirty_control:\" + name)\ndirty(\"missing_event_kind\", bindings, doc.replace(quote + \"advance_clock\" + quote, quote + \"omitted_event_control\" + quote, 1), \"event_family_binding_mismatch\")\ndirty(\"missing_family_row\", bindings, re.sub(r\"^\\| FRD-01 \\|[^\\n]+\\n\", \"\", doc, count=1, flags=re.M), \"event_family_binding_mismatch\")\ndirty(\"unknown_oracle_reference\", references, doc + \"\\nO-UNDECLARED\\n\", \"unknown_oracle_reference\")\ndirty(\"unknown_control_reference\", references, doc + \"\\nCTRL-UNDECLARED\\n\", \"unknown_control_reference\")\nprint(json.dumps({\n    \"scope\": \"Static authoring check of the complete public registry's family/event-kind membership against the execution draft, named oracle/control references and populated obligation columns. Does not validate prose semantics, execute events, exercise service fences/transactions/access controls, evaluate agents, or inspect hidden/native fixture populations.\",\n    \"result\": \"static_inventory_checks_passed\",\n    \"case_ids\": [c[\"case_id\"] for c in pack[\"cases\"]],\n    \"event_kinds_by_family\": {k: sorted(v) for k, v in sorted(actual.items())},\n    \"obligation_ids\": [row[0] for row in obligations],\n    \"oracle_references\": oracle_refs,\n    \"control_references\": control_refs,\n    \"authoring_dirty_controls_detected\": caught,\n    \"pack_sha256\": hashlib.sha256(pack_path.read_bytes()).hexdigest(),\n    \"execution_contract_sha256\": hashlib.sha256(doc_path.read_bytes()).hexdigest()\n}, indent=2))\nPY",
+    "exit_code": 0,
+    "stdout": "{\n  \"scope\": \"Static authoring check of the complete public registry's family/event-kind membership against the execution draft, named oracle/control references and populated obligation columns. Does not validate prose semantics, execute events, exercise service fences/transactions/access controls, evaluate agents, or inspect hidden/native fixture populations.\",\n  \"result\": \"static_inventory_checks_passed\",\n  \"case_ids\": [\n    \"FRD-01A\",\n    \"FRD-01B\",\n    \"FRD-01C\",\n    \"FRD-02A\",\n    \"FRD-02B\",\n    \"FRD-03A\",\n    \"FRD-03B\",\n    \"FRD-04A\",\n    \"FRD-05A\",\n    \"FRD-05B\",\n    \"FRD-06A\",\n    \"FRD-06B\",\n    \"FRD-07A\",\n    \"FRD-07B\",\n    \"FRD-08A\",\n    \"FRD-09A\",\n    \"FRD-09B\",\n    \"FRD-10A\",\n    \"FRD-10B\",\n    \"FRD-10C\",\n    \"FRD-10D\",\n    \"FRD-11A\",\n    \"FRD-11B\",\n    \"FRD-11C\",\n    \"FRD-11D\",\n    \"FRD-11E\",\n    \"FRD-11F\",\n    \"FRD-11G\",\n    \"FRD-12A\",\n    \"FRD-12B\",\n    \"FRD-12C\",\n    \"FRD-13A\",\n    \"FRD-13B\",\n    \"FRD-13C\",\n    \"FRD-14A\",\n    \"FRD-14B\",\n    \"FRD-14C\"\n  ],\n  \"event_kinds_by_family\": {\n    \"FRD-01\": [\n      \"advance_clock\"\n    ],\n    \"FRD-02\": [\n      \"conflicting_records\",\n      \"supplier_notice\"\n    ],\n    \"FRD-03\": [\n      \"accepted_revision\",\n      \"clarification_unavailable\"\n    ],\n    \"FRD-04\": [\n      \"supplier_notice\"\n    ],\n    \"FRD-05\": [\n      \"barrier\",\n      \"reservation_order\"\n    ],\n    \"FRD-06\": [\n      \"approval_response\",\n      \"environmental_stock_change\"\n    ],\n    \"FRD-07\": [\n      \"commit_then_drop_reply\",\n      \"journal_result\"\n    ],\n    \"FRD-08\": [\n      \"drop_before_commit\",\n      \"journal_result\"\n    ],\n    \"FRD-09\": [\n      \"commit_then_drop_reply\",\n      \"definitive_rejection\",\n      \"journal_result\"\n    ],\n    \"FRD-10\": [\n      \"cancel\",\n      \"cancel_in_flight\",\n      \"process_restart\"\n    ],\n    \"FRD-11\": [\n      \"profile_output_limit\",\n      \"profile_refusal\",\n      \"raw_response\",\n      \"response_transform\",\n      \"stream_interrupt\"\n    ],\n    \"FRD-12\": [\n      \"budget_exhausted\",\n      \"unsupported_capability\",\n      \"usage_unavailable\"\n    ],\n    \"FRD-13\": [\n      \"declared_compaction\",\n      \"reorder_data\",\n      \"undeclared_context_loss\"\n    ],\n    \"FRD-14\": [\n      \"barrier\",\n      \"branch_on_permission\",\n      \"finish\",\n      \"journal_result\",\n      \"new_quote\",\n      \"reservation_conflict\",\n      \"supplier_notice\",\n      \"timeout_then_restart\"\n    ]\n  },\n  \"obligation_ids\": [\n    \"FRDX-access\",\n    \"FRDX-sources\",\n    \"FRDX-approval\",\n    \"FRDX-reservation\",\n    \"FRDX-arrangement\",\n    \"FRDX-finality\",\n    \"FRDX-restart\",\n    \"FRDX-cancel\",\n    \"FRDX-exposure\",\n    \"FRDX-evidence\"\n  ],\n  \"oracle_references\": [\n    \"O-ACCESS\",\n    \"O-AUTH\",\n    \"O-BUILD\",\n    \"O-EXECUTION\",\n    \"O-EXPOSURE\",\n    \"O-FACT\",\n    \"O-OUTPUT\",\n    \"O-PLAN\",\n    \"O-STATE\",\n    \"O-TERMINAL\",\n    \"O-UNKNOWN\"\n  ],\n  \"control_references\": [\n    \"CTRL-ACCESS\",\n    \"CTRL-AUTH\",\n    \"CTRL-BUILD-TRACE\",\n    \"CTRL-DOUBLE\",\n    \"CTRL-EARLY\",\n    \"CTRL-EXPOSURE\",\n    \"CTRL-FACT\",\n    \"CTRL-FIRST-FAILURE\",\n    \"CTRL-POPULATION\",\n    \"CTRL-REPLAY\",\n    \"CTRL-STATE\",\n    \"CTRL-UNKNOWN\"\n  ],\n  \"authoring_dirty_controls_detected\": [\n    \"missing_event_kind\",\n    \"missing_family_row\",\n    \"unknown_oracle_reference\",\n    \"unknown_control_reference\"\n  ],\n  \"pack_sha256\": \"46cd351ab957e974829695c0562093ab664e1fb81249b9124a3a58a144fdf0b0\",\n  \"execution_contract_sha256\": \"3083ca308f16524f74c25a8ec87287da3413be30b8559d03c679b3d7b831c42a\"\n}\n"
+  },
+  "pack_integrity": {
+    "command": "python3 docs/evidence/heb-154/agent-code-v2/scenarios/proposed/check_pack.py",
+    "exit_code": 0,
+    "stdout": "{\n  \"instrument\": \"frd-pack-authoring-check/draft-1\",\n  \"scope\": \"Complete local public draft registry, initial-state arithmetic and local links in all root Markdown documents; no agents, event execution, runtime or semantic oracle calibration, hidden cases, provider calls or adoption evidence.\",\n  \"result\": \"authoring_checks_passed\",\n  \"python\": \"3.14.6\",\n  \"interpreter\": \"/usr/local/bin/python3\",\n  \"case_ids\": [\n    \"FRD-01A\",\n    \"FRD-01B\",\n    \"FRD-01C\",\n    \"FRD-02A\",\n    \"FRD-02B\",\n    \"FRD-03A\",\n    \"FRD-03B\",\n    \"FRD-04A\",\n    \"FRD-05A\",\n    \"FRD-05B\",\n    \"FRD-06A\",\n    \"FRD-06B\",\n    \"FRD-07A\",\n    \"FRD-07B\",\n    \"FRD-08A\",\n    \"FRD-09A\",\n    \"FRD-09B\",\n    \"FRD-10A\",\n    \"FRD-10B\",\n    \"FRD-10C\",\n    \"FRD-10D\",\n    \"FRD-11A\",\n    \"FRD-11B\",\n    \"FRD-11C\",\n    \"FRD-11D\",\n    \"FRD-11E\",\n    \"FRD-11F\",\n    \"FRD-11G\",\n    \"FRD-12A\",\n    \"FRD-12B\",\n    \"FRD-12C\",\n    \"FRD-13A\",\n    \"FRD-13B\",\n    \"FRD-13C\",\n    \"FRD-14A\",\n    \"FRD-14B\",\n    \"FRD-14C\"\n  ],\n  \"family_ids\": [\n    \"FRD-01\",\n    \"FRD-02\",\n    \"FRD-03\",\n    \"FRD-04\",\n    \"FRD-05\",\n    \"FRD-06\",\n    \"FRD-07\",\n    \"FRD-08\",\n    \"FRD-09\",\n    \"FRD-10\",\n    \"FRD-11\",\n    \"FRD-12\",\n    \"FRD-13\",\n    \"FRD-14\"\n  ],\n  \"world_ids\": [\n    \"ordinary\",\n    \"west-only\",\n    \"missing-deadline\",\n    \"cost-at-cap\",\n    \"contention-strict\",\n    \"combined-strict\",\n    \"combined-substitution\"\n  ],\n  \"initial_world_sha256\": {\n    \"ordinary\": \"25b96660264c52bb5e8de094d99bfce419bdb4c1176d0b1d40cf9138b3ee0b84\",\n    \"west-only\": \"c6593ab47c07ccb67fa4429c37464f9b6e1a3c75c64aceee14fd681bf20199ff\",\n    \"missing-deadline\": \"ede2eb4da83c7801eab0cc6c280e83fcb855bcce3259f52829c56737717bd2cc\",\n    \"cost-at-cap\": \"a123ad9304edc665ad412334974fd220d4b8f62488261eabecdaf5ac6f8ea1d4\",\n    \"contention-strict\": \"1901b4d2eb7402176292f4a913336fcaf9b72a82b4b260122bcc78f580f14904\",\n    \"combined-strict\": \"e5fcb0b4a5e40728807dff857093d7a3037518b8c43ff4df9996caa78e6aa2a7\",\n    \"combined-substitution\": \"9fa0235a14936d0587f94fb227efd26dcb8456e7b29168cc75f64a95cbf3939e\"\n  },\n  \"oracle_specifications\": [\n    \"O-FACT\",\n    \"O-PLAN\",\n    \"O-AUTH\",\n    \"O-STATE\",\n    \"O-UNKNOWN\",\n    \"O-OUTPUT\",\n    \"O-TERMINAL\",\n    \"O-EXECUTION\",\n    \"O-ACCESS\",\n    \"O-EXPOSURE\",\n    \"O-BUILD\"\n  ],\n  \"unexecuted_oracle_control_specifications\": [\n    \"CTRL-FACT\",\n    \"CTRL-PLAN\",\n    \"CTRL-BOUNDARIES\",\n    \"CTRL-IDENTITY\",\n    \"CTRL-AUTH\",\n    \"CTRL-EARLY\",\n    \"CTRL-STATE\",\n    \"CTRL-DOUBLE\",\n    \"CTRL-UNKNOWN\",\n    \"CTRL-REPLAY\",\n    \"CTRL-SEMANTIC-TRUE-FALSE\",\n    \"CTRL-SEMANTIC-INCOMPLETE\",\n    \"CTRL-SEMANTIC-EQUIVALENT\",\n    \"CTRL-TERMINAL\",\n    \"CTRL-ALWAYS-ESCALATE\",\n    \"CTRL-CONTEXT\",\n    \"CTRL-USAGE\",\n    \"CTRL-ACCESS\",\n    \"CTRL-EXPOSURE\",\n    \"CTRL-POPULATION\",\n    \"CTRL-FIRST-FAILURE\",\n    \"CTRL-BUILD-TRACE\"\n  ],\n  \"authoring_dirty_controls_detected\": [\n    \"missing_case\",\n    \"duplicate_case\",\n    \"unknown_world\",\n    \"unknown_pair\",\n    \"wrong_feasible_set\",\n    \"unpaired_oracle\",\n    \"world_bytes_drift\",\n    \"baseline_drift_with_fresh_digest\",\n    \"case_world_digest\",\n    \"missing_local_link\",\n    \"duplicate_json_key\"\n  ],\n  \"initial_boundary_checks\": [\n    \"cost and arrival equality accepted\",\n    \"expiry equality rejected\"\n  ],\n  \"input_sha256\": {\n    \"scenarios/proposed/scenario-pack.json\": \"46cd351ab957e974829695c0562093ab664e1fb81249b9124a3a58a144fdf0b0\",\n    \"scenarios/proposed/frd-01.json\": \"b323dcea8f0ecefa1cb98e0ab169e0347e42bffb6fd2e2b0c3bd94f9d9592661\",\n    \"README.md\": \"c97c7c12568e98f91610e2b16fe2203e051048075034e3a19624ba488dc0930b\",\n    \"agent-code-v2-proving-profile.md\": \"26951a635cac2612dbc41a3a2adfa4b5d9c50d3f32c098957299d3107e35ebe2\",\n    \"agent-code-v2-ratification-record.md\": \"3c6e32793e705c0c03fd46f0c679384260d355512cb77de25ef3e85bf611047f\",\n    \"agent-code-v2-standard-amendment.md\": \"c9f12ce0fc2b432a6c362920eae5bc25b5270ce07f687673406ba27fec2cf7db\",\n    \"business-world-and-reference-case.md\": \"a111a70d78b5bb01073b2c6ff69e3ea53edf96a54907f2fefebdc5acb7aaba4b\",\n    \"consumer-proving-design.md\": \"f2bd11e71fad9a385c9e9e71c8a10e8dfce1a34ed05e19b7532445291ffae826\",\n    \"execution-contract.md\": \"3083ca308f16524f74c25a8ec87287da3413be30b8559d03c679b3d7b831c42a\",\n    \"physical-runtime-binding.md\": \"b0499af8e650359425c3d26be6f4a51f5568ac0372c66b20b5d8c9efc3a28694\",\n    \"postgresql-persistence-contract.md\": \"d7ce9a6389f58bed6c1df063d7ccd9cdefee501ecb5e9d679420853e789693bb\",\n    \"scenario-and-oracle-pack.md\": \"c64ebfee8cebcacdaafab271c49fd2482550682a144342bb6b9fe64a5128a918\",\n    \"wire-and-identity-contract.md\": \"e942a7c4e41845ffe32521eba19537ab1067d86c8c55c2e805f09a4634be84c1\",\n    \"scenarios/proposed/check_pack.py\": \"fa5e156104292b4a55388e071aee38c0d081de2200a4856486fe4d7fe3c5aec7\"\n  }\n}\n"
+  },
+  "static_binding_metadata": {
+    "command": "python3 - <<'PY'\nimport hashlib, json, pathlib, re\nroot = pathlib.Path('docs/evidence/heb-154/agent-code-v2')\npath = root / 'physical-runtime-binding.md'\nparent = root / 'execution-contract.md'\ndoc, authority = path.read_text(), parent.read_text()\nexpected = {'PB-runtime', 'PB-transport', 'PB-persistence'}\nknown = set(re.findall(r'\\bFRDX-[a-z-]+\\b', authority))\ndef validate(text):\n    rows = re.findall(r'^\\| (PB-[a-z-]+) \\|', text, re.M)\n    if set(rows) != expected or len(rows) != len(expected):\n        raise ValueError('decision_membership')\n    if not re.search(r'^\\| Status \\| PROPOSED;', text, re.M):\n        raise ValueError('proposal_status')\n    refs = set(re.findall(r'\\bFRDX-[a-z-]+\\b', text))\n    if not refs <= known:\n        raise ValueError('unknown_obligation')\n    return sorted(refs)\nrefs = validate(doc)\ncontrols = []\nfor name, changed, reason in [\n    ('missing_decision', re.sub(r'^\\| PB-runtime \\|[^\\n]+\\n', '', doc, count=1, flags=re.M), 'decision_membership'),\n    ('unknown_obligation', doc + '\\nFRDX-undeclared\\n', 'unknown_obligation'),\n    ('false_status', doc.replace('| Status | PROPOSED;', '| Status | IMPLEMENTED;', 1), 'proposal_status')\n]:\n    try:\n        validate(changed)\n    except ValueError as exc:\n        assert str(exc) == reason\n        controls.append(name)\n    else:\n        raise AssertionError('dirty_control_not_detected:' + name)\nprint(json.dumps({'scope': 'Static membership/status/reference checks of the complete physical-runtime draft only; not prose correctness, enforceability, full physical-schema completeness or runtime proof.', 'result': 'static_binding_metadata_passed', 'decision_ids': sorted(expected), 'referenced_existing_obligations': refs, 'authoring_dirty_controls_detected': controls, 'input_sha256': {'physical-runtime-binding.md': hashlib.sha256(path.read_bytes()).hexdigest(), 'execution-contract.md': hashlib.sha256(parent.read_bytes()).hexdigest()}}, indent=2))\nPY",
+    "exit_code": 0,
+    "stdout": "{\n  \"scope\": \"Static membership/status/reference checks of the complete physical-runtime draft only; not prose correctness, enforceability, full physical-schema completeness or runtime proof.\",\n  \"result\": \"static_binding_metadata_passed\",\n  \"decision_ids\": [\n    \"PB-persistence\",\n    \"PB-runtime\",\n    \"PB-transport\"\n  ],\n  \"referenced_existing_obligations\": [\n    \"FRDX-access\",\n    \"FRDX-approval\",\n    \"FRDX-arrangement\",\n    \"FRDX-cancel\",\n    \"FRDX-evidence\",\n    \"FRDX-exposure\",\n    \"FRDX-finality\",\n    \"FRDX-reservation\",\n    \"FRDX-restart\"\n  ],\n  \"authoring_dirty_controls_detected\": [\n    \"missing_decision\",\n    \"unknown_obligation\",\n    \"false_status\"\n  ],\n  \"input_sha256\": {\n    \"physical-runtime-binding.md\": \"b0499af8e650359425c3d26be6f4a51f5568ac0372c66b20b5d8c9efc3a28694\",\n    \"execution-contract.md\": \"3083ca308f16524f74c25a8ec87287da3413be30b8559d03c679b3d7b831c42a\"\n  }\n}\n"
+  },
+  "enrollment_heading_inventory": {
+    "command": "python3 - <<'PY'\nimport hashlib, json, pathlib, re\np = pathlib.Path('docs/evidence/heb-154/agent-code-v2/physical-runtime-binding.md')\ndoc = p.read_text()\nexpected = ['EN-access', 'EN-route', 'EN-scope', 'EN-custody', 'EN-lifecycle']\ndef check(text):\n    if re.findall(r'^#### (EN-[a-z]+) — ', text, re.M) != expected:\n        raise ValueError('enrollment_heading_membership')\ncheck(doc)\ncontrols = []\nfor name, changed in [('missing_enrollment_heading', doc.replace('#### EN-access — ', '#### omitted — ', 1)), ('duplicate_enrollment_heading', doc + '\\n#### EN-access — duplicate\\n')]:\n    try:\n        check(changed)\n    except ValueError as exc:\n        assert str(exc) == 'enrollment_heading_membership'\n        controls.append(name)\n    else:\n        raise AssertionError(name)\nprint(json.dumps({'scope': 'All EN proposal headings in the complete physical-binding document, exact membership and order only; not ratification, prose correctness, implementation completeness or access enforcement.', 'result': 'enrollment_heading_inventory_passed', 'decision_ids': expected, 'authoring_dirty_controls_detected': controls, 'physical_runtime_sha256': hashlib.sha256(p.read_bytes()).hexdigest()}, indent=2))\nPY",
+    "exit_code": 0,
+    "stdout": "{\n  \"scope\": \"All EN proposal headings in the complete physical-binding document, exact membership and order only; not ratification, prose correctness, implementation completeness or access enforcement.\",\n  \"result\": \"enrollment_heading_inventory_passed\",\n  \"decision_ids\": [\n    \"EN-access\",\n    \"EN-route\",\n    \"EN-scope\",\n    \"EN-custody\",\n    \"EN-lifecycle\"\n  ],\n  \"authoring_dirty_controls_detected\": [\n    \"missing_enrollment_heading\",\n    \"duplicate_enrollment_heading\"\n  ],\n  \"physical_runtime_sha256\": \"b0499af8e650359425c3d26be6f4a51f5568ac0372c66b20b5d8c9efc3a28694\"\n}\n"
+  },
+  "static_pg_metadata": {
+    "command": "python3 - <<'PY'\nimport hashlib, json, pathlib, re\nroot = pathlib.Path('docs/evidence/heb-154/agent-code-v2')\np = root / 'postgresql-persistence-contract.md'\nparent = root / 'execution-contract.md'\npack_path = root / 'scenarios/proposed/scenario-pack.json'\ndoc = p.read_text()\nknown = set(re.findall(r'\\bFRDX-[a-z-]+\\b', parent.read_text()))\ncases = {c['case_id'] for c in json.loads(pack_path.read_text())['cases']}\nexpected = ['PG-state', 'PG-transaction', 'PG-finality', 'PG-export']\ndef check(text):\n    if re.findall(r'^\\| (PG-[a-z-]+) \\|', text, re.M) != expected:\n        raise ValueError('pg_decision_membership')\n    if re.findall(r'^## [0-9]+\\. (PG-[a-z-]+) — ', text, re.M) != expected:\n        raise ValueError('pg_heading_membership')\n    if not re.search(r'^\\| Status \\| PROPOSED;', text, re.M):\n        raise ValueError('proposal_status')\n    refs = set(re.findall(r'\\bFRDX-[a-z-]+\\b', text))\n    if not refs <= known:\n        raise ValueError('unknown_obligation')\n    case_refs = set(re.findall(r'\\bFRD-[0-9]{2}[A-Z]\\b', text))\n    if not case_refs <= cases:\n        raise ValueError('unknown_case')\n    return sorted(refs), sorted(case_refs)\nrefs, case_refs = check(doc)\ncontrols = []\nfor name, altered, reason in [\n    ('missing_pg_decision', re.sub(r'^\\| PG-state \\|[^\\n]+\\n', '', doc, count=1, flags=re.M), 'pg_decision_membership'),\n    ('duplicate_pg_heading', doc + '\\n## 9. PG-state — duplicate\\n', 'pg_heading_membership'),\n    ('false_implemented_status', doc.replace('| Status | PROPOSED;', '| Status | IMPLEMENTED;', 1), 'proposal_status'),\n    ('unknown_obligation', doc + '\\nFRDX-undeclared\\n', 'unknown_obligation'),\n    ('unknown_case', doc + '\\nFRD-99Z\\n', 'unknown_case')\n]:\n    try:\n        check(altered)\n    except ValueError as exc:\n        assert str(exc) == reason\n        controls.append(name)\n    else:\n        raise AssertionError('undetected_control:' + name)\nprint(json.dumps({'scope':'Complete PostgreSQL persistence draft decision-table/heading membership and order, proposed-status marker, and FRDX/public-case reference membership only. Not SQL, prose-semantic correctness, constraints, races, grants, export, hidden/provider populations or agent accuracy.', 'result':'static_pg_metadata_passed', 'decision_ids':expected, 'obligation_references':refs, 'case_references':case_refs, 'authoring_dirty_controls_detected':controls, 'input_sha256':{str(q.relative_to(root)):hashlib.sha256(q.read_bytes()).hexdigest() for q in [p,parent,pack_path]}}, indent=2))\nPY",
+    "exit_code": 0,
+    "stdout": "{\n  \"scope\": \"Complete PostgreSQL persistence draft decision-table/heading membership and order, proposed-status marker, and FRDX/public-case reference membership only. Not SQL, prose-semantic correctness, constraints, races, grants, export, hidden/provider populations or agent accuracy.\",\n  \"result\": \"static_pg_metadata_passed\",\n  \"decision_ids\": [\n    \"PG-state\",\n    \"PG-transaction\",\n    \"PG-finality\",\n    \"PG-export\"\n  ],\n  \"obligation_references\": [\n    \"FRDX-access\",\n    \"FRDX-arrangement\",\n    \"FRDX-cancel\",\n    \"FRDX-evidence\",\n    \"FRDX-exposure\",\n    \"FRDX-finality\",\n    \"FRDX-reservation\",\n    \"FRDX-restart\",\n    \"FRDX-sources\"\n  ],\n  \"case_references\": [\n    \"FRD-07B\",\n    \"FRD-09A\",\n    \"FRD-10D\"\n  ],\n  \"authoring_dirty_controls_detected\": [\n    \"missing_pg_decision\",\n    \"duplicate_pg_heading\",\n    \"false_implemented_status\",\n    \"unknown_obligation\",\n    \"unknown_case\"\n  ],\n  \"input_sha256\": {\n    \"postgresql-persistence-contract.md\": \"d7ce9a6389f58bed6c1df063d7ccd9cdefee501ecb5e9d679420853e789693bb\",\n    \"execution-contract.md\": \"3083ca308f16524f74c25a8ec87287da3413be30b8559d03c679b3d7b831c42a\",\n    \"scenarios/proposed/scenario-pack.json\": \"46cd351ab957e974829695c0562093ab664e1fb81249b9124a3a58a144fdf0b0\"\n  }\n}\n"
+  },
+  "wire_identity_examples": {
+    "command": "python3 - <<'PY'\nimport hashlib,json,pathlib,re\nroot=pathlib.Path('docs/evidence/heb-154/agent-code-v2')\npath=root/'scenarios/proposed/wire-identity-examples.json'\ndata=json.loads(path.read_text())\npack_path=root/'scenarios/proposed/scenario-pack.json'\npack=json.loads(pack_path.read_text())\ndef sha(b): return 'sha256:'+hashlib.sha256(b).hexdigest()\ndef canonical(v):\n    def subset(x):\n        if x is None or isinstance(x,(str,bool)): return\n        if type(x) is int: assert 0 <= x <= 9007199254740991\n        elif isinstance(x,list):\n            for y in x: subset(y)\n        elif isinstance(x,dict):\n            assert all(k.isascii() for k in x)\n            for y in x.values(): subset(y)\n        else: raise AssertionError('outside_specimen_subset')\n    subset(v)\n    return json.dumps(v,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()\ndef check_vector(v):\n    actual=canonical(v['value'])\n    preimage=v['domain'].encode()+b'\\0'+actual\n    if actual.decode()!=v['canonical_utf8'] or preimage.hex()!=v['preimage_hex'] or sha(preimage)!=v['sha256']:\n        raise ValueError('vector_identity_mismatch')\ndef check_source(s):\n    obj=pack\n    for part in s['json_pointer'].split('/')[1:]:\n        obj=obj[int(part)] if isinstance(obj,list) else obj[part]\n    raw=canonical(obj)\n    if s['input_pack_sha256']!=sha(pack_path.read_bytes()) or raw.decode()!=s['body_utf8'] or len(raw)!=s['body_length_bytes'] or sha(raw)!=s['source_ref']['content_digest']:\n        raise ValueError('source_identity_mismatch')\nfor s in data['sources']: check_source(s)\nfor v in data['semantic_vectors']: check_vector(v)\nvs={v['id']:v for v in data['semantic_vectors']}\nassert len(vs)==len(data['semantic_vectors'])\nfor t in data['transmissions']:\n    raw=t['raw_utf8'].encode()\n    assert len(raw)==t['raw_length_bytes'] and sha(raw)==t['raw_sha256']\n    req=json.loads(raw)\n    assert req==t['request']\n    p=req['payload']\n    value={'run_id':req['run_id'],'order_id':req['order_id'],'operation_kind':req['action'],**{k:p[k] for k in ['plan_digest','approval_id','grant_digest','expected_order_revision','terms','reservation_id']}}\n    assert sha(b'frd/effect/v1\\0'+canonical(value))==p['semantic_effect_digest']==t['expected_semantic_effect_digest']==vs['reserve-effect']['sha256']\nassert len({t['raw_sha256'] for t in data['transmissions']})==len(data['transmissions'])\nfor dirty_id in ['arrangement-effect','changed-quantity','changed-authority']:\n    assert vs[dirty_id]['sha256']!=vs['reserve-effect']['sha256']\ncontrols=[]\nfor name,fn,specimen in [('wrong_vector_digest',check_vector,{**vs['plan'],'sha256':'sha256:'+'0'*64}),('normalized_source_bytes',check_source,{**data['sources'][0],'body_utf8':data['sources'][0]['body_utf8']+'\\n'})]:\n    try: fn(specimen)\n    except ValueError: controls.append(name)\n    else: raise AssertionError('inert_detector:'+name)\nassert sha(b'frd/grant/v1\\0'+canonical(vs['plan']['value']))!=vs['plan']['sha256']\ncontrols+=['operation_kind_or_reservation_changed','quantity_changed','grant_digest_changed','domain_changed']\ndef strict_specimen(s):\n    def pairs(ps):\n        d={}\n        for k,v in ps:\n            if k in d: raise ValueError('duplicate_decoded_key')\n            d[k]=v\n        return d\n    def integer(s):\n        if not re.fullmatch(r'0|[1-9][0-9]*',s): raise ValueError('numeric_lexeme')\n        n=int(s)\n        if n>9007199254740991: raise ValueError('numeric_range')\n        return n\n    def reject(s): raise ValueError('numeric_lexeme')\n    return json.loads(s,object_pairs_hook=pairs,parse_int=integer,parse_float=reject,parse_constant=reject)\nassert strict_specimen('{\"quantity\":2}')=={'quantity':2}\nfor v in data['rejection_examples']:\n    try: strict_specimen(v['raw_utf8'])\n    except ValueError: controls.append(v['id'])\n    else: raise AssertionError('inert_rejection:'+v['id'])\ndoc=(root/'wire-and-identity-contract.md').read_text()\nparent=(root/'execution-contract.md').read_text()\nq=chr(96)\npattern=r'^\\| '+q+r'([^'+q+r']+)'+q+r' \\|'\nexpected=['order_context.read','source.read','availability.read','requirements.clarify','approval.request','inventory.reserve','arrangement.record','operation.reconcile','operation.cancel']\nassert all(a in re.findall(pattern,parent,re.M) for a in expected)\ndef metadata(s):\n    actual=[a for a in re.findall(pattern,s,re.M) if a in expected]\n    if actual!=expected: raise ValueError('action_inventory')\n    if re.findall(r'^\\| (WIRE-[a-z]+) \\|',s,re.M)!=['WIRE-envelope','WIRE-identity','WIRE-sources','WIRE-outcomes']: raise ValueError('decision_inventory')\n    if '| Status | PROPOSED;' not in s: raise ValueError('proposal_status')\n    if not set(re.findall(r'\\bFRDX-[a-z-]+\\b',s))<=set(re.findall(r'\\bFRDX-[a-z-]+\\b',parent)): raise ValueError('unknown_obligation')\nmetadata(doc)\nfor name,s in [('missing_action',doc.replace('| '+q+'source.read'+q+' |','| '+q+'omitted.read'+q+' |',1)),('false_implemented',doc.replace('| Status | PROPOSED;','| Status | IMPLEMENTED;',1)),('unknown_obligation',doc+'\\nFRDX-unknown\\n')]:\n    try: metadata(s)\n    except ValueError: controls.append(name)\n    else: raise AssertionError('inert_metadata:'+name)\nprint(json.dumps({'result':'wire_authoring_checks_passed','scope':'Every authored identity vector, transmission and rejection specimen; exact public-pack JSON pointers for two example sources; all nine proposed public action rows and four WIRE decision rows, proposal marker and FRDX references. Python independently recomputes the Node-generated integer/ASCII-key subset only. No general JCS conformance, machine-schema validation, real HTTP parser, SQL finality, policy, complete source materialization, hidden/provider population or agent proof.','semantic_vector_ids':list(vs),'transmission_ids':[t['id'] for t in data['transmissions']],'rejection_ids':[v['id'] for v in data['rejection_examples']],'authoring_dirty_controls_detected':controls,'input_sha256':{str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [path,pack_path,root/'wire-and-identity-contract.md',root/'execution-contract.md']}},indent=2))\nPY",
+    "exit_code": 0,
+    "stdout": "{\n  \"result\": \"wire_authoring_checks_passed\",\n  \"scope\": \"Every authored identity vector, transmission and rejection specimen; exact public-pack JSON pointers for two example sources; all nine proposed public action rows and four WIRE decision rows, proposal marker and FRDX references. Python independently recomputes the Node-generated integer/ASCII-key subset only. No general JCS conformance, machine-schema validation, real HTTP parser, SQL finality, policy, complete source materialization, hidden/provider population or agent proof.\",\n  \"semantic_vector_ids\": [\n    \"plan\",\n    \"grant\",\n    \"reserve-effect\",\n    \"arrangement-effect\",\n    \"changed-quantity\",\n    \"changed-authority\"\n  ],\n  \"transmission_ids\": [\n    \"original\",\n    \"same-value-different-format\",\n    \"permitted-replay-shape\"\n  ],\n  \"rejection_ids\": [\n    \"duplicate-decoded-key\",\n    \"fraction-token\",\n    \"unsafe-integer\",\n    \"negative-zero\"\n  ],\n  \"authoring_dirty_controls_detected\": [\n    \"wrong_vector_digest\",\n    \"normalized_source_bytes\",\n    \"operation_kind_or_reservation_changed\",\n    \"quantity_changed\",\n    \"grant_digest_changed\",\n    \"domain_changed\",\n    \"duplicate-decoded-key\",\n    \"fraction-token\",\n    \"unsafe-integer\",\n    \"negative-zero\",\n    \"missing_action\",\n    \"false_implemented\",\n    \"unknown_obligation\"\n  ],\n  \"input_sha256\": {\n    \"scenarios/proposed/wire-identity-examples.json\": \"4cd287fa38a31899d793d9e604f2ead41263c9bffbadbbf4a5a935b7a0dc6d0b\",\n    \"scenarios/proposed/scenario-pack.json\": \"46cd351ab957e974829695c0562093ab664e1fb81249b9124a3a58a144fdf0b0\",\n    \"wire-and-identity-contract.md\": \"e942a7c4e41845ffe32521eba19537ab1067d86c8c55c2e805f09a4634be84c1\",\n    \"execution-contract.md\": \"3083ca308f16524f74c25a8ec87287da3413be30b8559d03c679b3d7b831c42a\"\n  }\n}\n"
+  },
+  "preservation_and_links": {
+    "command": "python3 - <<'PY'\nimport json,hashlib,re\nfrom pathlib import Path\nr=Path('docs/evidence/heb-154/agent-code-v2')\nbefore=json.loads(\"{\\\"agent-code-v2-standard-amendment.md\\\":\\\"c9f12ce0fc2b432a6c362920eae5bc25b5270ce07f687673406ba27fec2cf7db\\\",\\\"postgresql-persistence-contract.md\\\":\\\"3eef8ab08bcdd824d24d344a7b76dcbab8bcca160e598351606ea8168ccd708d\\\",\\\"physical-runtime-binding.md\\\":\\\"d58f8c8b251a19f488e0953c6c1a1e6bfcc4b307f5e672cdf6be86b465b6199b\\\",\\\"scenario-and-oracle-pack.md\\\":\\\"c64ebfee8cebcacdaafab271c49fd2482550682a144342bb6b9fe64a5128a918\\\",\\\"authority-imports.json\\\":\\\"0f6052dc14661a7373d016a6daa662414eb8f104b95e61e960d3e7d94ddb3a8a\\\",\\\"README.md\\\":\\\"2759f153aa57b8d4847666041af15a4c097781c944b6acd8ca175d5a78072db7\\\",\\\"consumer-proving-design.md\\\":\\\"f2bd11e71fad9a385c9e9e71c8a10e8dfce1a34ed05e19b7532445291ffae826\\\",\\\"execution-contract.md\\\":\\\"a12010b288fb3b03b6898b8b82e4eccda3538331ba8e35531b6fdd822a95f303\\\",\\\"business-world-and-reference-case.md\\\":\\\"a111a70d78b5bb01073b2c6ff69e3ea53edf96a54907f2fefebdc5acb7aaba4b\\\",\\\"agent-code-v2-proving-profile.md\\\":\\\"26951a635cac2612dbc41a3a2adfa4b5d9c50d3f32c098957299d3107e35ebe2\\\",\\\"wire-and-identity-contract.md\\\":\\\"a59791d69bf9ef03ec6bac540b5f46c4f51a8da854ec23fd2e85e66ff840e284\\\",\\\"agent-code-v2-ratification-record.md\\\":\\\"5194ec422fb75e40e7c913f4d5bda430485d9f01eaba16218604b8ee641aaef9\\\",\\\"scenarios/proposed/en-route-ratification-authoring-checks.json\\\":\\\"dee3cc8e5e17bf30ec65f18df5597b6a15d853619f653b3ca17d336362bb635d\\\",\\\"scenarios/proposed/authoring-checks-sp3.json\\\":\\\"eebce20490e3c2fff0c4603e4b246d0f021b93217e790380c89c08f2cb320945\\\",\\\"scenarios/proposed/wire-sources-ratification-authoring-checks.json\\\":\\\"ed74abddd783ec61481432235ca46e4ff3c13c3c145fb8fa1eb0698f1b93023f\\\",\\\"scenarios/proposed/scenario-pack.json\\\":\\\"46cd351ab957e974829695c0562093ab664e1fb81249b9124a3a58a144fdf0b0\\\",\\\"scenarios/proposed/wire-outcomes-ratification-authoring-checks.json\\\":\\\"56789eff7c66f758a788148d4dc47135d884a8edfeac597305fdecdab757a756\\\",\\\"scenarios/proposed/authoring-checks-sp2.json\\\":\\\"c7a308beab27350ebe2165020ab61f0d34e443869f5c56188d3133292ef2a5ed\\\",\\\"scenarios/proposed/physical-runtime-authoring-checks.json\\\":\\\"638979ce484d7001080e741d2dddfd418d78196ceb20d3d0aceee2fe0b744804\\\",\\\"scenarios/proposed/pg-transaction-ratification-authoring-checks.json\\\":\\\"9012750de9d6824467c325edf01dc70962dc3c6f1a25066c45bb244db63d57b5\\\",\\\"scenarios/proposed/execution-boundary-authoring-checks.json\\\":\\\"f7107119961d182eb441dbd84e01b6f6bc62f3f0771da74864a86a3bcdb7766c\\\",\\\"scenarios/proposed/check_pack.py\\\":\\\"fa5e156104292b4a55388e071aee38c0d081de2200a4856486fe4d7fe3c5aec7\\\",\\\"scenarios/proposed/pb-persistence-enrollment-authoring-checks.json\\\":\\\"1ce5272ca3deb22ab641e5aaa26734beb3a840168da32fa83bcd3b3460cc21f9\\\",\\\"scenarios/proposed/wire-identity-ratification-authoring-checks.json\\\":\\\"aa412cc966d51b95878ad0744786851101467f6b6700feba90941203852ba9ba\\\",\\\"scenarios/proposed/pb-persistence-credentials-authoring-checks.json\\\":\\\"1e74029b8a14eb6359df68947dd5bdf5def8ca85e7229b700e0204da22b08d53\\\",\\\"scenarios/proposed/wire-drafting-authoring-checks.json\\\":\\\"71515c90af4d9f43c36a265bae10efdbf6915891ec864098c28f1b04446e3fc1\\\",\\\"scenarios/proposed/wire-envelope-ratification-authoring-checks.json\\\":\\\"8c490d1ad434c07aae1b97198f7b933e729f02c545d3540599e8660cd2e9866b\\\",\\\"scenarios/proposed/pb-persistence-postgresql-authoring-checks.json\\\":\\\"14c7a4d01afb5f53fdf1cffc900d2275f9cd63fb63d9ecf9a8898c7f226eb419\\\",\\\"scenarios/proposed/execution-state-commit-authoring-checks.json\\\":\\\"ed30075fd13134f5cf1142b6557e914027725f6451b88e916b59563020e2f04e\\\",\\\"scenarios/proposed/pb-transport-http-authoring-checks.json\\\":\\\"4896a45ed0590f2e9c2a12f7cbb7df7bd03c342fc0de6fd247d4b7dc0236bcc7\\\",\\\"scenarios/proposed/execution-contract-authoring-checks.json\\\":\\\"df6db00d5608aeb117fd4b1ade7170cf6cf4b84c6384398165fecf60f4baa6a0\\\",\\\"scenarios/proposed/en-lifecycle-ratification-authoring-checks.json\\\":\\\"68d6b1fcf01c1339bde3a76f10ea07b2b43ecdef109c46dda1a34df5952b19e0\\\",\\\"scenarios/proposed/pg-export-ratification-authoring-checks.json\\\":\\\"22dd88b0e54d0bcc3a2edf239197bef3a6eecc69a466d192a014e6b96e8714da\\\",\\\"scenarios/proposed/execution-journal-authoring-checks.json\\\":\\\"51d881d00ea07ec196757acad83594b3c3b63d1b705ca05303de891fde5d98ab\\\",\\\"scenarios/proposed/postgresql-persistence-authoring-checks.json\\\":\\\"4446eb5f19e2a713499ad9e0ac73e59b3d3deeb61a5a7dcf3ff0273db78f9ea2\\\",\\\"scenarios/proposed/pb-runtime-ratification-authoring-checks.json\\\":\\\"0a006e2bbab0e0ac44e43a4873944bf02a17ccde2ecb6007fa4da4170be8f9fa\\\",\\\"scenarios/proposed/en-scope-ratification-authoring-checks.json\\\":\\\"379dc45b69b8689ad7bc601a27023b503690a8980899fb1d841ae9dfd6d1b974\\\",\\\"scenarios/proposed/authoring-checks-sp1.json\\\":\\\"d07748e71fdf5b7d20cb9c979c8791ae272eafb782400cb99ddbb3322ad15ae9\\\",\\\"scenarios/proposed/en-custody-ratification-authoring-checks.json\\\":\\\"89b98f8af4549812b236498b867d8a075607f874acc1b235825d887780a50124\\\",\\\"scenarios/proposed/authoring-checks.json\\\":\\\"27297c015f831a9017d7b0d8c4719133da68717a71c464ac8159585f5cdafa42\\\",\\\"scenarios/proposed/pg-state-ratification-authoring-checks.json\\\":\\\"49548a7b0d51e284706ddd81d368d6764dfdff72dc66d4354d377548e81ff623\\\",\\\"scenarios/proposed/frd-01.json\\\":\\\"b323dcea8f0ecefa1cb98e0ab169e0347e42bffb6fd2e2b0c3bd94f9d9592661\\\",\\\"scenarios/proposed/wire-identity-examples.json\\\":\\\"4cd287fa38a31899d793d9e604f2ead41263c9bffbadbbf4a5a935b7a0dc6d0b\\\",\\\"scenarios/proposed/pg-finality-ratification-authoring-checks.json\\\":\\\"9bc082c14e87f0ed38fd45813e22329546e4390c1ab1f2552f24d1bdd7c69df3\\\",\\\"scenarios/proposed/en-access-ratification-authoring-checks.json\\\":\\\"824d4c26abc9e7b8ab61e5e0bd7b793a337782d7624637ab9e01acd99bdc89a8\\\",\\\"scenarios/proposed/execution-event-evidence-authoring-checks.json\\\":\\\"0ae938caa071685964ebe3e446200a67cba3dca754952bf147698206a9dc21cf\\\"}\")\nchanged={'README.md','wire-and-identity-contract.md','execution-contract.md','physical-runtime-binding.md','postgresql-persistence-contract.md','agent-code-v2-ratification-record.md'}\nafter={str(p.relative_to(r)):hashlib.sha256(p.read_bytes()).hexdigest() for p in r.rglob('*') if p.is_file()}\ndef preserved(values):\n    if any(values.get(n)!=d for n,d in before.items() if n not in changed):raise ValueError('historical_artifact_changed')\npreserved(after)\nrecord=(r/'agent-code-v2-ratification-record.md').read_bytes()\nheading=b'\\n## WIRE-SCHEMA-DRAFTING'\nassert record.count(heading)==1\nprefix=record.split(heading)[0]\ndef prefix_check(value):\n    if hashlib.sha256(value).hexdigest()!=before['agent-code-v2-ratification-record.md']:raise ValueError('ratification_prefix_changed')\nprefix_check(prefix)\np=r/'schemas/proposed/README.md'\ntext=p.read_text()\ndef links(value):\n    targets=re.findall(r'\\[[^\\]]+\\]\\(([^)]+)\\)',value)\n    local=[target.split('#')[0] for target in targets if not re.match(r'^[a-z]+:',target)]\n    if any(not (p.parent/target).resolve().is_file() for target in local):raise ValueError('missing_local_link')\n    return local\nlocal=links(text)\ncontrols=[]\nfor name,fn,value,reason in [('changed_protected_artifact',preserved,{**after,'scenarios/proposed/scenario-pack.json':'0'*64},'historical_artifact_changed'),('rewritten_ratification',prefix_check,prefix+b'x','ratification_prefix_changed'),('missing_schema_link',links,text+'\\n[missing](missing-schema-control.json)\\n','missing_local_link')]:\n    try:fn(value)\n    except ValueError as exc:\n        assert str(exc)==reason\n        controls.append(name)\n    else:raise AssertionError('inert_control:'+name)\nassert '**SOURCE-order** and **SOURCE-events** below remain proposed' in text\nprint(json.dumps({'result':'preservation_and_scoped_links_passed','scope':'Every pre-existing evidence-root artifact except the six explicitly amended documents; complete prior ratification prefix; every local link in the new schema README only. Existing checker separately covers all root-Markdown links. Not a general semantic/custody/runtime audit.','preserved_paths':[n for n in before if n not in changed],'prefix_sha256':hashlib.sha256(prefix).hexdigest(),'schema_readme_local_links':local,'dirty_controls_detected':controls},indent=2))\nPY",
+    "exit_code": 0,
+    "stdout": "{\n  \"result\": \"preservation_and_scoped_links_passed\",\n  \"scope\": \"Every pre-existing evidence-root artifact except the six explicitly amended documents; complete prior ratification prefix; every local link in the new schema README only. Existing checker separately covers all root-Markdown links. Not a general semantic/custody/runtime audit.\",\n  \"preserved_paths\": [\n    \"agent-code-v2-standard-amendment.md\",\n    \"scenario-and-oracle-pack.md\",\n    \"authority-imports.json\",\n    \"consumer-proving-design.md\",\n    \"business-world-and-reference-case.md\",\n    \"agent-code-v2-proving-profile.md\",\n    \"scenarios/proposed/en-route-ratification-authoring-checks.json\",\n    \"scenarios/proposed/authoring-checks-sp3.json\",\n    \"scenarios/proposed/wire-sources-ratification-authoring-checks.json\",\n    \"scenarios/proposed/scenario-pack.json\",\n    \"scenarios/proposed/wire-outcomes-ratification-authoring-checks.json\",\n    \"scenarios/proposed/authoring-checks-sp2.json\",\n    \"scenarios/proposed/physical-runtime-authoring-checks.json\",\n    \"scenarios/proposed/pg-transaction-ratification-authoring-checks.json\",\n    \"scenarios/proposed/execution-boundary-authoring-checks.json\",\n    \"scenarios/proposed/check_pack.py\",\n    \"scenarios/proposed/pb-persistence-enrollment-authoring-checks.json\",\n    \"scenarios/proposed/wire-identity-ratification-authoring-checks.json\",\n    \"scenarios/proposed/pb-persistence-credentials-authoring-checks.json\",\n    \"scenarios/proposed/wire-drafting-authoring-checks.json\",\n    \"scenarios/proposed/wire-envelope-ratification-authoring-checks.json\",\n    \"scenarios/proposed/pb-persistence-postgresql-authoring-checks.json\",\n    \"scenarios/proposed/execution-state-commit-authoring-checks.json\",\n    \"scenarios/proposed/pb-transport-http-authoring-checks.json\",\n    \"scenarios/proposed/execution-contract-authoring-checks.json\",\n    \"scenarios/proposed/en-lifecycle-ratification-authoring-checks.json\",\n    \"scenarios/proposed/pg-export-ratification-authoring-checks.json\",\n    \"scenarios/proposed/execution-journal-authoring-checks.json\",\n    \"scenarios/proposed/postgresql-persistence-authoring-checks.json\",\n    \"scenarios/proposed/pb-runtime-ratification-authoring-checks.json\",\n    \"scenarios/proposed/en-scope-ratification-authoring-checks.json\",\n    \"scenarios/proposed/authoring-checks-sp1.json\",\n    \"scenarios/proposed/en-custody-ratification-authoring-checks.json\",\n    \"scenarios/proposed/authoring-checks.json\",\n    \"scenarios/proposed/pg-state-ratification-authoring-checks.json\",\n    \"scenarios/proposed/frd-01.json\",\n    \"scenarios/proposed/wire-identity-examples.json\",\n    \"scenarios/proposed/pg-finality-ratification-authoring-checks.json\",\n    \"scenarios/proposed/en-access-ratification-authoring-checks.json\",\n    \"scenarios/proposed/execution-event-evidence-authoring-checks.json\"\n  ],\n  \"prefix_sha256\": \"5194ec422fb75e40e7c913f4d5bda430485d9f01eaba16218604b8ee641aaef9\",\n  \"schema_readme_local_links\": [\n    \"../../wire-and-identity-contract.md\",\n    \"frd-wire.schema.json\",\n    \"frd-source-body.schema.json\",\n    \"frd-source-derivation.schema.json\",\n    \"wire-schema-bindings.json\",\n    \"wire-schema-examples.json\",\n    \"test_wire_schema.py\",\n    \"wire-schema-authoring-checks.json\",\n    \"requirements-authoring.txt\"\n  ],\n  \"dirty_controls_detected\": [\n    \"changed_protected_artifact\",\n    \"rewritten_ratification\",\n    \"missing_schema_link\"\n  ]\n}\n"
+  },
+  "repeat_pack_integrity": {
+    "command": "python3 docs/evidence/heb-154/agent-code-v2/scenarios/proposed/check_pack.py",
+    "exit_code": 0,
+    "stdout": "{\n  \"instrument\": \"frd-pack-authoring-check/draft-1\",\n  \"scope\": \"Complete local public draft registry, initial-state arithmetic and local links in all root Markdown documents; no agents, event execution, runtime or semantic oracle calibration, hidden cases, provider calls or adoption evidence.\",\n  \"result\": \"authoring_checks_passed\",\n  \"python\": \"3.14.6\",\n  \"interpreter\": \"/usr/local/bin/python3\",\n  \"case_ids\": [\n    \"FRD-01A\",\n    \"FRD-01B\",\n    \"FRD-01C\",\n    \"FRD-02A\",\n    \"FRD-02B\",\n    \"FRD-03A\",\n    \"FRD-03B\",\n    \"FRD-04A\",\n    \"FRD-05A\",\n    \"FRD-05B\",\n    \"FRD-06A\",\n    \"FRD-06B\",\n    \"FRD-07A\",\n    \"FRD-07B\",\n    \"FRD-08A\",\n    \"FRD-09A\",\n    \"FRD-09B\",\n    \"FRD-10A\",\n    \"FRD-10B\",\n    \"FRD-10C\",\n    \"FRD-10D\",\n    \"FRD-11A\",\n    \"FRD-11B\",\n    \"FRD-11C\",\n    \"FRD-11D\",\n    \"FRD-11E\",\n    \"FRD-11F\",\n    \"FRD-11G\",\n    \"FRD-12A\",\n    \"FRD-12B\",\n    \"FRD-12C\",\n    \"FRD-13A\",\n    \"FRD-13B\",\n    \"FRD-13C\",\n    \"FRD-14A\",\n    \"FRD-14B\",\n    \"FRD-14C\"\n  ],\n  \"family_ids\": [\n    \"FRD-01\",\n    \"FRD-02\",\n    \"FRD-03\",\n    \"FRD-04\",\n    \"FRD-05\",\n    \"FRD-06\",\n    \"FRD-07\",\n    \"FRD-08\",\n    \"FRD-09\",\n    \"FRD-10\",\n    \"FRD-11\",\n    \"FRD-12\",\n    \"FRD-13\",\n    \"FRD-14\"\n  ],\n  \"world_ids\": [\n    \"ordinary\",\n    \"west-only\",\n    \"missing-deadline\",\n    \"cost-at-cap\",\n    \"contention-strict\",\n    \"combined-strict\",\n    \"combined-substitution\"\n  ],\n  \"initial_world_sha256\": {\n    \"ordinary\": \"25b96660264c52bb5e8de094d99bfce419bdb4c1176d0b1d40cf9138b3ee0b84\",\n    \"west-only\": \"c6593ab47c07ccb67fa4429c37464f9b6e1a3c75c64aceee14fd681bf20199ff\",\n    \"missing-deadline\": \"ede2eb4da83c7801eab0cc6c280e83fcb855bcce3259f52829c56737717bd2cc\",\n    \"cost-at-cap\": \"a123ad9304edc665ad412334974fd220d4b8f62488261eabecdaf5ac6f8ea1d4\",\n    \"contention-strict\": \"1901b4d2eb7402176292f4a913336fcaf9b72a82b4b260122bcc78f580f14904\",\n    \"combined-strict\": \"e5fcb0b4a5e40728807dff857093d7a3037518b8c43ff4df9996caa78e6aa2a7\",\n    \"combined-substitution\": \"9fa0235a14936d0587f94fb227efd26dcb8456e7b29168cc75f64a95cbf3939e\"\n  },\n  \"oracle_specifications\": [\n    \"O-FACT\",\n    \"O-PLAN\",\n    \"O-AUTH\",\n    \"O-STATE\",\n    \"O-UNKNOWN\",\n    \"O-OUTPUT\",\n    \"O-TERMINAL\",\n    \"O-EXECUTION\",\n    \"O-ACCESS\",\n    \"O-EXPOSURE\",\n    \"O-BUILD\"\n  ],\n  \"unexecuted_oracle_control_specifications\": [\n    \"CTRL-FACT\",\n    \"CTRL-PLAN\",\n    \"CTRL-BOUNDARIES\",\n    \"CTRL-IDENTITY\",\n    \"CTRL-AUTH\",\n    \"CTRL-EARLY\",\n    \"CTRL-STATE\",\n    \"CTRL-DOUBLE\",\n    \"CTRL-UNKNOWN\",\n    \"CTRL-REPLAY\",\n    \"CTRL-SEMANTIC-TRUE-FALSE\",\n    \"CTRL-SEMANTIC-INCOMPLETE\",\n    \"CTRL-SEMANTIC-EQUIVALENT\",\n    \"CTRL-TERMINAL\",\n    \"CTRL-ALWAYS-ESCALATE\",\n    \"CTRL-CONTEXT\",\n    \"CTRL-USAGE\",\n    \"CTRL-ACCESS\",\n    \"CTRL-EXPOSURE\",\n    \"CTRL-POPULATION\",\n    \"CTRL-FIRST-FAILURE\",\n    \"CTRL-BUILD-TRACE\"\n  ],\n  \"authoring_dirty_controls_detected\": [\n    \"missing_case\",\n    \"duplicate_case\",\n    \"unknown_world\",\n    \"unknown_pair\",\n    \"wrong_feasible_set\",\n    \"unpaired_oracle\",\n    \"world_bytes_drift\",\n    \"baseline_drift_with_fresh_digest\",\n    \"case_world_digest\",\n    \"missing_local_link\",\n    \"duplicate_json_key\"\n  ],\n  \"initial_boundary_checks\": [\n    \"cost and arrival equality accepted\",\n    \"expiry equality rejected\"\n  ],\n  \"input_sha256\": {\n    \"scenarios/proposed/scenario-pack.json\": \"46cd351ab957e974829695c0562093ab664e1fb81249b9124a3a58a144fdf0b0\",\n    \"scenarios/proposed/frd-01.json\": \"b323dcea8f0ecefa1cb98e0ab169e0347e42bffb6fd2e2b0c3bd94f9d9592661\",\n    \"README.md\": \"c97c7c12568e98f91610e2b16fe2203e051048075034e3a19624ba488dc0930b\",\n    \"agent-code-v2-proving-profile.md\": \"26951a635cac2612dbc41a3a2adfa4b5d9c50d3f32c098957299d3107e35ebe2\",\n    \"agent-code-v2-ratification-record.md\": \"3c6e32793e705c0c03fd46f0c679384260d355512cb77de25ef3e85bf611047f\",\n    \"agent-code-v2-standard-amendment.md\": \"c9f12ce0fc2b432a6c362920eae5bc25b5270ce07f687673406ba27fec2cf7db\",\n    \"business-world-and-reference-case.md\": \"a111a70d78b5bb01073b2c6ff69e3ea53edf96a54907f2fefebdc5acb7aaba4b\",\n    \"consumer-proving-design.md\": \"f2bd11e71fad9a385c9e9e71c8a10e8dfce1a34ed05e19b7532445291ffae826\",\n    \"execution-contract.md\": \"3083ca308f16524f74c25a8ec87287da3413be30b8559d03c679b3d7b831c42a\",\n    \"physical-runtime-binding.md\": \"b0499af8e650359425c3d26be6f4a51f5568ac0372c66b20b5d8c9efc3a28694\",\n    \"postgresql-persistence-contract.md\": \"d7ce9a6389f58bed6c1df063d7ccd9cdefee501ecb5e9d679420853e789693bb\",\n    \"scenario-and-oracle-pack.md\": \"c64ebfee8cebcacdaafab271c49fd2482550682a144342bb6b9fe64a5128a918\",\n    \"wire-and-identity-contract.md\": \"e942a7c4e41845ffe32521eba19537ab1067d86c8c55c2e805f09a4634be84c1\",\n    \"scenarios/proposed/check_pack.py\": \"fa5e156104292b4a55388e071aee38c0d081de2200a4856486fe4d7fe3c5aec7\"\n  }\n}\n"
+  },
+  "predecessor": {
+    "path": "scenarios/proposed/wire-outcomes-ratification-authoring-checks.json",
+    "sha256": "56789eff7c66f758a788148d4dc47135d884a8edfeac597305fdecdab757a756"
+  },
+  "limitations": [
+    "Synthetic schema specimens are not business-correct service responses; shape-only identities and simplified observations are explicitly labeled.",
+    "Selected lexical/source/commit/completeness helpers are test specimens, not production fixture implementations.",
+    "All original initial structured sources are tested; later event records are not yet materialized and SOURCE-events is not ratified.",
+    "Full canonicalization, operation/fence/replay durability, authority/policy, HTTP framing, source trust/access and agent build-use/accuracy remain separate proof.",
+    "Schema tests use real Draft202012Validator; no custom replacement schema engine. Protocol byte/lexeme obligations still require separate enforcement.",
+    "Source/order exact proposed bindings passing tests does not accept them. Final strategy thresholds/budgets and physical/campaign gates remain open."
+  ],
+  "lifecycle": {
+    "accepted": "Proceed with schema authoring; four prior WIRE designs remain accepted within scope",
+    "proposed": [
+      "SOURCE-order",
+      "SOURCE-events"
+    ],
+    "machine_schema_closure": "pending",
+    "runtime_implementation": "not authorized or performed",
+    "freeze": "pending",
+    "adoption": "pending",
+    "retro": "Deferred until the end."
+  }
+}

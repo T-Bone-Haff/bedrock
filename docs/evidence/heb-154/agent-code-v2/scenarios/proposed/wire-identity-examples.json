@@ -1,0 +1,406 @@
+{
+  "revision": "draft-1",
+  "status": "proposed-authoring-examples-not-runtime",
+  "scope": "Selected integer/ASCII-key identity examples only, not full JCS conformance, machine-schema validation, actual grant issuance or permitted runtime replay. POLICY-EXAMPLE is a vector label, not an implemented policy.",
+  "sources": [
+    {
+      "input_pack_sha256": "sha256:46cd351ab957e974829695c0562093ab664e1fb81249b9124a3a58a144fdf0b0",
+      "world_id": "ordinary",
+      "json_pointer": "/worlds/0/initial_state/briefs/0",
+      "source_ref": {
+        "kind": "customer_brief",
+        "record_id": "BRIEF-A",
+        "revision": 1,
+        "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+      },
+      "body_utf8": "{\"message\":\"We need both of the standard display kits at Site A by minute 180. They must be the exact model we ordered; please do not substitute another model. Keep any extra transport cost at or below USD 25 for the whole order. Either depot is fine if those conditions are met.\",\"order_id\":\"ORDER-A\",\"record_id\":\"BRIEF-A\",\"revision\":1,\"source_class\":\"authenticated_customer_request\"}",
+      "body_length_bytes": 385
+    },
+    {
+      "input_pack_sha256": "sha256:46cd351ab957e974829695c0562093ab664e1fb81249b9124a3a58a144fdf0b0",
+      "world_id": "ordinary",
+      "json_pointer": "/worlds/0/initial_state/quotes/0",
+      "source_ref": {
+        "kind": "quote",
+        "record_id": "Q-WEST",
+        "revision": 1,
+        "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+      },
+      "body_utf8": "{\"currency\":\"USD\",\"destination\":\"SITE-A\",\"estimated_arrival_time\":120,\"expires_at\":30,\"extra_transport_cost_minor\":2000,\"quantity\":2,\"quote_id\":\"Q-WEST\",\"revision\":1,\"site\":\"WEST\",\"sku\":\"DISPLAY-STD\"}",
+      "body_length_bytes": 200
+    }
+  ],
+  "semantic_vectors": [
+    {
+      "id": "plan",
+      "domain": "frd/plan/v1",
+      "value": {
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "plan": {
+          "plan_id": "PLAN-A",
+          "revision": 1,
+          "order_id": "ORDER-A",
+          "order_revision": 1,
+          "requirement_source_refs": [
+            {
+              "kind": "customer_brief",
+              "record_id": "BRIEF-A",
+              "revision": 1,
+              "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+            }
+          ],
+          "terms": {
+            "quote_ref": {
+              "kind": "quote",
+              "record_id": "Q-WEST",
+              "revision": 1,
+              "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+            },
+            "site": "WEST",
+            "sku": "DISPLAY-STD",
+            "quantity": 2,
+            "destination": "SITE-A",
+            "estimated_arrival_time": 120,
+            "extra_transport_cost_minor": 2000,
+            "currency": "USD",
+            "expires_at": 30
+          }
+        }
+      },
+      "canonical_utf8": "{\"plan\":{\"order_id\":\"ORDER-A\",\"order_revision\":1,\"plan_id\":\"PLAN-A\",\"requirement_source_refs\":[{\"content_digest\":\"sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430\",\"kind\":\"customer_brief\",\"record_id\":\"BRIEF-A\",\"revision\":1}],\"revision\":1,\"terms\":{\"currency\":\"USD\",\"destination\":\"SITE-A\",\"estimated_arrival_time\":120,\"expires_at\":30,\"extra_transport_cost_minor\":2000,\"quantity\":2,\"quote_ref\":{\"content_digest\":\"sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361\",\"kind\":\"quote\",\"record_id\":\"Q-WEST\",\"revision\":1},\"site\":\"WEST\",\"sku\":\"DISPLAY-STD\"}},\"run_id\":\"RUN-WIRE-EXAMPLE\"}",
+      "preimage_hex": "6672642f706c616e2f7631007b22706c616e223a7b226f726465725f6964223a224f524445522d41222c226f726465725f7265766973696f6e223a312c22706c616e5f6964223a22504c414e2d41222c22726571756972656d656e745f736f757263655f72656673223a5b7b22636f6e74656e745f646967657374223a227368613235363a37366164643438306636376136383261663366373431373035626634343861343364373738623965353634323930656238313338383764666432373938343330222c226b696e64223a22637573746f6d65725f6272696566222c227265636f72645f6964223a2242524945462d41222c227265766973696f6e223a317d5d2c227265766973696f6e223a312c227465726d73223a7b2263757272656e6379223a22555344222c2264657374696e6174696f6e223a22534954452d41222c22657374696d617465645f6172726976616c5f74696d65223a3132302c22657870697265735f6174223a33302c2265787472615f7472616e73706f72745f636f73745f6d696e6f72223a323030302c227175616e74697479223a322c2271756f74655f726566223a7b22636f6e74656e745f646967657374223a227368613235363a62303766353666373231353432376138313033313737643632386461373137316333306666623966326131326232343535633137653539373439363166333631222c226b696e64223a2271756f7465222c227265636f72645f6964223a22512d57455354222c227265766973696f6e223a317d2c2273697465223a2257455354222c22736b75223a22444953504c41592d535444227d7d2c2272756e5f6964223a2252554e2d574952452d4558414d504c45227d",
+      "sha256": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc"
+    },
+    {
+      "id": "grant",
+      "domain": "frd/grant/v1",
+      "value": {
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "grant": {
+          "approval_id": "APPROVAL-A",
+          "issuer_id": "FIXTURE-OPERATOR",
+          "policy_id": "POLICY-EXAMPLE",
+          "policy_revision": "draft-1",
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+          "approved_plan": {
+            "plan_id": "PLAN-A",
+            "revision": 1,
+            "order_id": "ORDER-A",
+            "order_revision": 1,
+            "requirement_source_refs": [
+              {
+                "kind": "customer_brief",
+                "record_id": "BRIEF-A",
+                "revision": 1,
+                "content_digest": "sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430"
+              }
+            ],
+            "terms": {
+              "quote_ref": {
+                "kind": "quote",
+                "record_id": "Q-WEST",
+                "revision": 1,
+                "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+              },
+              "site": "WEST",
+              "sku": "DISPLAY-STD",
+              "quantity": 2,
+              "destination": "SITE-A",
+              "estimated_arrival_time": 120,
+              "extra_transport_cost_minor": 2000,
+              "currency": "USD",
+              "expires_at": 30
+            }
+          },
+          "issued_at_minute": 5,
+          "expires_at_minute": 30,
+          "allowed_operations": [
+            "inventory.reserve",
+            "arrangement.record"
+          ],
+          "arrangement_requires_matching_reservation": true
+        }
+      },
+      "canonical_utf8": "{\"grant\":{\"allowed_operations\":[\"inventory.reserve\",\"arrangement.record\"],\"approval_id\":\"APPROVAL-A\",\"approved_plan\":{\"order_id\":\"ORDER-A\",\"order_revision\":1,\"plan_id\":\"PLAN-A\",\"requirement_source_refs\":[{\"content_digest\":\"sha256:76add480f67a682af3f741705bf448a43d778b9e564290eb813887dfd2798430\",\"kind\":\"customer_brief\",\"record_id\":\"BRIEF-A\",\"revision\":1}],\"revision\":1,\"terms\":{\"currency\":\"USD\",\"destination\":\"SITE-A\",\"estimated_arrival_time\":120,\"expires_at\":30,\"extra_transport_cost_minor\":2000,\"quantity\":2,\"quote_ref\":{\"content_digest\":\"sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361\",\"kind\":\"quote\",\"record_id\":\"Q-WEST\",\"revision\":1},\"site\":\"WEST\",\"sku\":\"DISPLAY-STD\"}},\"arrangement_requires_matching_reservation\":true,\"expires_at_minute\":30,\"issued_at_minute\":5,\"issuer_id\":\"FIXTURE-OPERATOR\",\"plan_digest\":\"sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc\",\"policy_id\":\"POLICY-EXAMPLE\",\"policy_revision\":\"draft-1\"},\"run_id\":\"RUN-WIRE-EXAMPLE\"}",
+      "preimage_hex": "6672642f6772616e742f7631007b226772616e74223a7b22616c6c6f7765645f6f7065726174696f6e73223a5b22696e76656e746f72792e72657365727665222c22617272616e67656d656e742e7265636f7264225d2c22617070726f76616c5f6964223a22415050524f56414c2d41222c22617070726f7665645f706c616e223a7b226f726465725f6964223a224f524445522d41222c226f726465725f7265766973696f6e223a312c22706c616e5f6964223a22504c414e2d41222c22726571756972656d656e745f736f757263655f72656673223a5b7b22636f6e74656e745f646967657374223a227368613235363a37366164643438306636376136383261663366373431373035626634343861343364373738623965353634323930656238313338383764666432373938343330222c226b696e64223a22637573746f6d65725f6272696566222c227265636f72645f6964223a2242524945462d41222c227265766973696f6e223a317d5d2c227265766973696f6e223a312c227465726d73223a7b2263757272656e6379223a22555344222c2264657374696e6174696f6e223a22534954452d41222c22657374696d617465645f6172726976616c5f74696d65223a3132302c22657870697265735f6174223a33302c2265787472615f7472616e73706f72745f636f73745f6d696e6f72223a323030302c227175616e74697479223a322c2271756f74655f726566223a7b22636f6e74656e745f646967657374223a227368613235363a62303766353666373231353432376138313033313737643632386461373137316333306666623966326131326232343535633137653539373439363166333631222c226b696e64223a2271756f7465222c227265636f72645f6964223a22512d57455354222c227265766973696f6e223a317d2c2273697465223a2257455354222c22736b75223a22444953504c41592d535444227d7d2c22617272616e67656d656e745f72657175697265735f6d61746368696e675f7265736572766174696f6e223a747275652c22657870697265735f61745f6d696e757465223a33302c226973737565645f61745f6d696e757465223a352c226973737565725f6964223a22464958545552452d4f50455241544f52222c22706c616e5f646967657374223a227368613235363a36323632643032333835363633386130633235393730363964393936653033353061373433303365323830333934383436363462393665396266326438346263222c22706f6c6963795f6964223a22504f4c4943592d4558414d504c45222c22706f6c6963795f7265766973696f6e223a2264726166742d31227d2c2272756e5f6964223a2252554e2d574952452d4558414d504c45227d",
+      "sha256": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d"
+    },
+    {
+      "id": "reserve-effect",
+      "domain": "frd/effect/v1",
+      "value": {
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "order_id": "ORDER-A",
+        "operation_kind": "inventory.reserve",
+        "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+        "approval_id": "APPROVAL-A",
+        "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+        "expected_order_revision": 1,
+        "terms": {
+          "quote_ref": {
+            "kind": "quote",
+            "record_id": "Q-WEST",
+            "revision": 1,
+            "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+          },
+          "site": "WEST",
+          "sku": "DISPLAY-STD",
+          "quantity": 2,
+          "destination": "SITE-A",
+          "estimated_arrival_time": 120,
+          "extra_transport_cost_minor": 2000,
+          "currency": "USD",
+          "expires_at": 30
+        },
+        "reservation_id": null
+      },
+      "canonical_utf8": "{\"approval_id\":\"APPROVAL-A\",\"expected_order_revision\":1,\"grant_digest\":\"sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d\",\"operation_kind\":\"inventory.reserve\",\"order_id\":\"ORDER-A\",\"plan_digest\":\"sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc\",\"reservation_id\":null,\"run_id\":\"RUN-WIRE-EXAMPLE\",\"terms\":{\"currency\":\"USD\",\"destination\":\"SITE-A\",\"estimated_arrival_time\":120,\"expires_at\":30,\"extra_transport_cost_minor\":2000,\"quantity\":2,\"quote_ref\":{\"content_digest\":\"sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361\",\"kind\":\"quote\",\"record_id\":\"Q-WEST\",\"revision\":1},\"site\":\"WEST\",\"sku\":\"DISPLAY-STD\"}}",
+      "preimage_hex": "6672642f6566666563742f7631007b22617070726f76616c5f6964223a22415050524f56414c2d41222c2265787065637465645f6f726465725f7265766973696f6e223a312c226772616e745f646967657374223a227368613235363a34306234656237623736613236396433373237396666643230346335623638373237336361643331333139616330353562663337363735383332306234383464222c226f7065726174696f6e5f6b696e64223a22696e76656e746f72792e72657365727665222c226f726465725f6964223a224f524445522d41222c22706c616e5f646967657374223a227368613235363a36323632643032333835363633386130633235393730363964393936653033353061373433303365323830333934383436363462393665396266326438346263222c227265736572766174696f6e5f6964223a6e756c6c2c2272756e5f6964223a2252554e2d574952452d4558414d504c45222c227465726d73223a7b2263757272656e6379223a22555344222c2264657374696e6174696f6e223a22534954452d41222c22657374696d617465645f6172726976616c5f74696d65223a3132302c22657870697265735f6174223a33302c2265787472615f7472616e73706f72745f636f73745f6d696e6f72223a323030302c227175616e74697479223a322c2271756f74655f726566223a7b22636f6e74656e745f646967657374223a227368613235363a62303766353666373231353432376138313033313737643632386461373137316333306666623966326131326232343535633137653539373439363166333631222c226b696e64223a2271756f7465222c227265636f72645f6964223a22512d57455354222c227265766973696f6e223a317d2c2273697465223a2257455354222c22736b75223a22444953504c41592d535444227d7d",
+      "sha256": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+    },
+    {
+      "id": "arrangement-effect",
+      "domain": "frd/effect/v1",
+      "value": {
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "order_id": "ORDER-A",
+        "operation_kind": "arrangement.record",
+        "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+        "approval_id": "APPROVAL-A",
+        "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+        "expected_order_revision": 1,
+        "terms": {
+          "quote_ref": {
+            "kind": "quote",
+            "record_id": "Q-WEST",
+            "revision": 1,
+            "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+          },
+          "site": "WEST",
+          "sku": "DISPLAY-STD",
+          "quantity": 2,
+          "destination": "SITE-A",
+          "estimated_arrival_time": 120,
+          "extra_transport_cost_minor": 2000,
+          "currency": "USD",
+          "expires_at": 30
+        },
+        "reservation_id": "RESERVATION-A"
+      },
+      "canonical_utf8": "{\"approval_id\":\"APPROVAL-A\",\"expected_order_revision\":1,\"grant_digest\":\"sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d\",\"operation_kind\":\"arrangement.record\",\"order_id\":\"ORDER-A\",\"plan_digest\":\"sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc\",\"reservation_id\":\"RESERVATION-A\",\"run_id\":\"RUN-WIRE-EXAMPLE\",\"terms\":{\"currency\":\"USD\",\"destination\":\"SITE-A\",\"estimated_arrival_time\":120,\"expires_at\":30,\"extra_transport_cost_minor\":2000,\"quantity\":2,\"quote_ref\":{\"content_digest\":\"sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361\",\"kind\":\"quote\",\"record_id\":\"Q-WEST\",\"revision\":1},\"site\":\"WEST\",\"sku\":\"DISPLAY-STD\"}}",
+      "preimage_hex": "6672642f6566666563742f7631007b22617070726f76616c5f6964223a22415050524f56414c2d41222c2265787065637465645f6f726465725f7265766973696f6e223a312c226772616e745f646967657374223a227368613235363a34306234656237623736613236396433373237396666643230346335623638373237336361643331333139616330353562663337363735383332306234383464222c226f7065726174696f6e5f6b696e64223a22617272616e67656d656e742e7265636f7264222c226f726465725f6964223a224f524445522d41222c22706c616e5f646967657374223a227368613235363a36323632643032333835363633386130633235393730363964393936653033353061373433303365323830333934383436363462393665396266326438346263222c227265736572766174696f6e5f6964223a225245534552564154494f4e2d41222c2272756e5f6964223a2252554e2d574952452d4558414d504c45222c227465726d73223a7b2263757272656e6379223a22555344222c2264657374696e6174696f6e223a22534954452d41222c22657374696d617465645f6172726976616c5f74696d65223a3132302c22657870697265735f6174223a33302c2265787472615f7472616e73706f72745f636f73745f6d696e6f72223a323030302c227175616e74697479223a322c2271756f74655f726566223a7b22636f6e74656e745f646967657374223a227368613235363a62303766353666373231353432376138313033313737643632386461373137316333306666623966326131326232343535633137653539373439363166333631222c226b696e64223a2271756f7465222c227265636f72645f6964223a22512d57455354222c227265766973696f6e223a317d2c2273697465223a2257455354222c22736b75223a22444953504c41592d535444227d7d",
+      "sha256": "sha256:0151a730a41795548e76a5ca69058181c6ab2d0abb90b0f054e2277a6728dfee"
+    },
+    {
+      "id": "changed-quantity",
+      "domain": "frd/effect/v1",
+      "value": {
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "order_id": "ORDER-A",
+        "operation_kind": "inventory.reserve",
+        "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+        "approval_id": "APPROVAL-A",
+        "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+        "expected_order_revision": 1,
+        "terms": {
+          "quote_ref": {
+            "kind": "quote",
+            "record_id": "Q-WEST",
+            "revision": 1,
+            "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+          },
+          "site": "WEST",
+          "sku": "DISPLAY-STD",
+          "quantity": 1,
+          "destination": "SITE-A",
+          "estimated_arrival_time": 120,
+          "extra_transport_cost_minor": 2000,
+          "currency": "USD",
+          "expires_at": 30
+        },
+        "reservation_id": null
+      },
+      "canonical_utf8": "{\"approval_id\":\"APPROVAL-A\",\"expected_order_revision\":1,\"grant_digest\":\"sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d\",\"operation_kind\":\"inventory.reserve\",\"order_id\":\"ORDER-A\",\"plan_digest\":\"sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc\",\"reservation_id\":null,\"run_id\":\"RUN-WIRE-EXAMPLE\",\"terms\":{\"currency\":\"USD\",\"destination\":\"SITE-A\",\"estimated_arrival_time\":120,\"expires_at\":30,\"extra_transport_cost_minor\":2000,\"quantity\":1,\"quote_ref\":{\"content_digest\":\"sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361\",\"kind\":\"quote\",\"record_id\":\"Q-WEST\",\"revision\":1},\"site\":\"WEST\",\"sku\":\"DISPLAY-STD\"}}",
+      "preimage_hex": "6672642f6566666563742f7631007b22617070726f76616c5f6964223a22415050524f56414c2d41222c2265787065637465645f6f726465725f7265766973696f6e223a312c226772616e745f646967657374223a227368613235363a34306234656237623736613236396433373237396666643230346335623638373237336361643331333139616330353562663337363735383332306234383464222c226f7065726174696f6e5f6b696e64223a22696e76656e746f72792e72657365727665222c226f726465725f6964223a224f524445522d41222c22706c616e5f646967657374223a227368613235363a36323632643032333835363633386130633235393730363964393936653033353061373433303365323830333934383436363462393665396266326438346263222c227265736572766174696f6e5f6964223a6e756c6c2c2272756e5f6964223a2252554e2d574952452d4558414d504c45222c227465726d73223a7b2263757272656e6379223a22555344222c2264657374696e6174696f6e223a22534954452d41222c22657374696d617465645f6172726976616c5f74696d65223a3132302c22657870697265735f6174223a33302c2265787472615f7472616e73706f72745f636f73745f6d696e6f72223a323030302c227175616e74697479223a312c2271756f74655f726566223a7b22636f6e74656e745f646967657374223a227368613235363a62303766353666373231353432376138313033313737643632386461373137316333306666623966326131326232343535633137653539373439363166333631222c226b696e64223a2271756f7465222c227265636f72645f6964223a22512d57455354222c227265766973696f6e223a317d2c2273697465223a2257455354222c22736b75223a22444953504c41592d535444227d7d",
+      "sha256": "sha256:9d256b2b997264d34d6b7ad245e1af8c560879ccdb7cd46fe0fd555ef28e2477"
+    },
+    {
+      "id": "changed-authority",
+      "domain": "frd/effect/v1",
+      "value": {
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "order_id": "ORDER-A",
+        "operation_kind": "inventory.reserve",
+        "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+        "approval_id": "APPROVAL-A",
+        "grant_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "expected_order_revision": 1,
+        "terms": {
+          "quote_ref": {
+            "kind": "quote",
+            "record_id": "Q-WEST",
+            "revision": 1,
+            "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+          },
+          "site": "WEST",
+          "sku": "DISPLAY-STD",
+          "quantity": 2,
+          "destination": "SITE-A",
+          "estimated_arrival_time": 120,
+          "extra_transport_cost_minor": 2000,
+          "currency": "USD",
+          "expires_at": 30
+        },
+        "reservation_id": null
+      },
+      "canonical_utf8": "{\"approval_id\":\"APPROVAL-A\",\"expected_order_revision\":1,\"grant_digest\":\"sha256:0000000000000000000000000000000000000000000000000000000000000000\",\"operation_kind\":\"inventory.reserve\",\"order_id\":\"ORDER-A\",\"plan_digest\":\"sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc\",\"reservation_id\":null,\"run_id\":\"RUN-WIRE-EXAMPLE\",\"terms\":{\"currency\":\"USD\",\"destination\":\"SITE-A\",\"estimated_arrival_time\":120,\"expires_at\":30,\"extra_transport_cost_minor\":2000,\"quantity\":2,\"quote_ref\":{\"content_digest\":\"sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361\",\"kind\":\"quote\",\"record_id\":\"Q-WEST\",\"revision\":1},\"site\":\"WEST\",\"sku\":\"DISPLAY-STD\"}}",
+      "preimage_hex": "6672642f6566666563742f7631007b22617070726f76616c5f6964223a22415050524f56414c2d41222c2265787065637465645f6f726465725f7265766973696f6e223a312c226772616e745f646967657374223a227368613235363a30303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030222c226f7065726174696f6e5f6b696e64223a22696e76656e746f72792e72657365727665222c226f726465725f6964223a224f524445522d41222c22706c616e5f646967657374223a227368613235363a36323632643032333835363633386130633235393730363964393936653033353061373433303365323830333934383436363462393665396266326438346263222c227265736572766174696f6e5f6964223a6e756c6c2c2272756e5f6964223a2252554e2d574952452d4558414d504c45222c227465726d73223a7b2263757272656e6379223a22555344222c2264657374696e6174696f6e223a22534954452d41222c22657374696d617465645f6172726976616c5f74696d65223a3132302c22657870697265735f6174223a33302c2265787472615f7472616e73706f72745f636f73745f6d696e6f72223a323030302c227175616e74697479223a322c2271756f74655f726566223a7b22636f6e74656e745f646967657374223a227368613235363a62303766353666373231353432376138313033313737643632386461373137316333306666623966326131326232343535633137653539373439363166333631222c226b696e64223a2271756f7465222c227265636f72645f6964223a22512d57455354222c227265766973696f6e223a317d2c2273697465223a2257455354222c22736b75223a22444953504c41592d535444227d7d",
+      "sha256": "sha256:85a5af7754832bbaa8bf99a83b1108177dec6f37320eddb54134218c300fdd3b"
+    }
+  ],
+  "transmissions": [
+    {
+      "id": "original",
+      "request": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "inventory.reserve",
+        "payload": {
+          "operation_key": "OP-RESERVE-A",
+          "attempt_id": "ATTEMPT-A-0",
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+          "approval_id": "APPROVAL-A",
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+          "expected_order_revision": 1,
+          "terms": {
+            "quote_ref": {
+              "kind": "quote",
+              "record_id": "Q-WEST",
+              "revision": 1,
+              "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+            },
+            "site": "WEST",
+            "sku": "DISPLAY-STD",
+            "quantity": 2,
+            "destination": "SITE-A",
+            "estimated_arrival_time": 120,
+            "extra_transport_cost_minor": 2000,
+            "currency": "USD",
+            "expires_at": 30
+          },
+          "reservation_id": null,
+          "semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+        }
+      },
+      "raw_utf8": "{\"protocol_revision\":\"frd-wire-1\",\"run_id\":\"RUN-WIRE-EXAMPLE\",\"request_id\":\"REQUEST-A-0\",\"order_id\":\"ORDER-A\",\"action\":\"inventory.reserve\",\"payload\":{\"operation_key\":\"OP-RESERVE-A\",\"attempt_id\":\"ATTEMPT-A-0\",\"plan_digest\":\"sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc\",\"approval_id\":\"APPROVAL-A\",\"grant_digest\":\"sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d\",\"expected_order_revision\":1,\"terms\":{\"quote_ref\":{\"kind\":\"quote\",\"record_id\":\"Q-WEST\",\"revision\":1,\"content_digest\":\"sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361\"},\"site\":\"WEST\",\"sku\":\"DISPLAY-STD\",\"quantity\":2,\"destination\":\"SITE-A\",\"estimated_arrival_time\":120,\"extra_transport_cost_minor\":2000,\"currency\":\"USD\",\"expires_at\":30},\"reservation_id\":null,\"semantic_effect_digest\":\"sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115\"}}",
+      "raw_length_bytes": 892,
+      "raw_sha256": "sha256:51e8c69a16e043ee98ff9558e5d03867a9b54c11d0ddd010678fe8ff341177c2",
+      "expected_semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+    },
+    {
+      "id": "same-value-different-format",
+      "request": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-0",
+        "order_id": "ORDER-A",
+        "action": "inventory.reserve",
+        "payload": {
+          "operation_key": "OP-RESERVE-A",
+          "attempt_id": "ATTEMPT-A-0",
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+          "approval_id": "APPROVAL-A",
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+          "expected_order_revision": 1,
+          "terms": {
+            "quote_ref": {
+              "kind": "quote",
+              "record_id": "Q-WEST",
+              "revision": 1,
+              "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+            },
+            "site": "WEST",
+            "sku": "DISPLAY-STD",
+            "quantity": 2,
+            "destination": "SITE-A",
+            "estimated_arrival_time": 120,
+            "extra_transport_cost_minor": 2000,
+            "currency": "USD",
+            "expires_at": 30
+          },
+          "reservation_id": null,
+          "semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+        }
+      },
+      "raw_utf8": "{\n  \"protocol_revision\": \"frd-wire-1\",\n  \"run_id\": \"RUN-WIRE-EXAMPLE\",\n  \"request_id\": \"REQUEST-A-0\",\n  \"order_id\": \"ORDER-A\",\n  \"action\": \"inventory.reserve\",\n  \"payload\": {\n    \"operation_key\": \"OP-RESERVE-A\",\n    \"attempt_id\": \"ATTEMPT-A-0\",\n    \"plan_digest\": \"sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc\",\n    \"approval_id\": \"APPROVAL-A\",\n    \"grant_digest\": \"sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d\",\n    \"expected_order_revision\": 1,\n    \"terms\": {\n      \"quote_ref\": {\n        \"kind\": \"quote\",\n        \"record_id\": \"Q-WEST\",\n        \"revision\": 1,\n        \"content_digest\": \"sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361\"\n      },\n      \"site\": \"WEST\",\n      \"sku\": \"DISPLAY-STD\",\n      \"quantity\": 2,\n      \"destination\": \"SITE-A\",\n      \"estimated_arrival_time\": 120,\n      \"extra_transport_cost_minor\": 2000,\n      \"currency\": \"USD\",\n      \"expires_at\": 30\n    },\n    \"reservation_id\": null,\n    \"semantic_effect_digest\": \"sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115\"\n  }\n}\n",
+      "raw_length_bytes": 1099,
+      "raw_sha256": "sha256:46bdd7b3bf70523e780597821fc1481f568bbe1ede5568750d79b039305b40e8",
+      "expected_semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+    },
+    {
+      "id": "permitted-replay-shape",
+      "request": {
+        "protocol_revision": "frd-wire-1",
+        "run_id": "RUN-WIRE-EXAMPLE",
+        "request_id": "REQUEST-A-1",
+        "order_id": "ORDER-A",
+        "action": "inventory.reserve",
+        "payload": {
+          "operation_key": "OP-RESERVE-A",
+          "attempt_id": "ATTEMPT-A-1",
+          "plan_digest": "sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc",
+          "approval_id": "APPROVAL-A",
+          "grant_digest": "sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d",
+          "expected_order_revision": 1,
+          "terms": {
+            "quote_ref": {
+              "kind": "quote",
+              "record_id": "Q-WEST",
+              "revision": 1,
+              "content_digest": "sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361"
+            },
+            "site": "WEST",
+            "sku": "DISPLAY-STD",
+            "quantity": 2,
+            "destination": "SITE-A",
+            "estimated_arrival_time": 120,
+            "extra_transport_cost_minor": 2000,
+            "currency": "USD",
+            "expires_at": 30
+          },
+          "reservation_id": null,
+          "semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115",
+          "replay_permit_id": "PERMIT-A-0"
+        }
+      },
+      "raw_utf8": "{\"protocol_revision\":\"frd-wire-1\",\"run_id\":\"RUN-WIRE-EXAMPLE\",\"request_id\":\"REQUEST-A-1\",\"order_id\":\"ORDER-A\",\"action\":\"inventory.reserve\",\"payload\":{\"operation_key\":\"OP-RESERVE-A\",\"attempt_id\":\"ATTEMPT-A-1\",\"plan_digest\":\"sha256:6262d023856638a0c2597069d996e0350a74303e28039484664b96e9bf2d84bc\",\"approval_id\":\"APPROVAL-A\",\"grant_digest\":\"sha256:40b4eb7b76a269d37279ffd204c5b687273cad31319ac055bf376758320b484d\",\"expected_order_revision\":1,\"terms\":{\"quote_ref\":{\"kind\":\"quote\",\"record_id\":\"Q-WEST\",\"revision\":1,\"content_digest\":\"sha256:b07f56f7215427a8103177d628da7171c30ffb9f2a12b2455c17e5974961f361\"},\"site\":\"WEST\",\"sku\":\"DISPLAY-STD\",\"quantity\":2,\"destination\":\"SITE-A\",\"estimated_arrival_time\":120,\"extra_transport_cost_minor\":2000,\"currency\":\"USD\",\"expires_at\":30},\"reservation_id\":null,\"semantic_effect_digest\":\"sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115\",\"replay_permit_id\":\"PERMIT-A-0\"}}",
+      "raw_length_bytes": 924,
+      "raw_sha256": "sha256:2be25f23287a054a178b4795f717e855e3eb6500c559dafb342a6ef93ffa2731",
+      "expected_semantic_effect_digest": "sha256:0a0127cbb6e057f2e2c47c4cdb84fc74d95d5e94d2c12ffb5eff8f9f18476115"
+    }
+  ],
+  "rejection_examples": [
+    {
+      "id": "duplicate-decoded-key",
+      "raw_utf8": "{\"quantity\":2,\"\\u0071uantity\":1}",
+      "expected": "reject_before_ordinary_object_conversion"
+    },
+    {
+      "id": "fraction-token",
+      "raw_utf8": "{\"quantity\":2.0}",
+      "expected": "reject_numeric_lexeme"
+    },
+    {
+      "id": "unsafe-integer",
+      "raw_utf8": "{\"quantity\":9007199254740992}",
+      "expected": "reject_before_rounding"
+    },
+    {
+      "id": "negative-zero",
+      "raw_utf8": "{\"quantity\":-0}",
+      "expected": "reject_numeric_lexeme"
+    }
+  ]
+}

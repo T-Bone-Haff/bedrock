@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:haffey:frd:evaluator-configuration:1",
+  "title": "FRD semantic evaluator configuration — candidate",
+  "$comment": "Physical closed artifact translated from VERIFY-evaluator-configuration-artifact solely for HEB-154 testing of the agent-code skill. It carries no credential, pricing, spend authority, result, usage or selection observation. Emit instances as JCS bytes and identify them externally by SHA-256.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_revision",
+    "evaluator_configuration_id",
+    "evaluator_configuration_revision",
+    "ladder_ordinal",
+    "provider",
+    "request",
+    "prompt_artifact",
+    "input_schema_artifact",
+    "output_schema_artifact",
+    "tool_versions_artifact",
+    "dependency_lock_artifact",
+    "rubric_artifacts",
+    "calibration_set_artifact",
+    "environment_artifact"
+  ],
+  "properties": {
+    "schema_revision": {
+      "const": "frd/evaluator-configuration/v1"
+    },
+    "evaluator_configuration_id": {
+      "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+    },
+    "evaluator_configuration_revision": {
+      "$ref": "urn:haffey:frd:wire:1#/$defs/Id"
+    },
+    "ladder_ordinal": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider_id",
+        "api_family",
+        "sdk_language",
+        "sdk_version"
+      ],
+      "properties": {
+        "provider_id": {"const": "OPENAI"},
+        "api_family": {"const": "responses"},
+        "sdk_language": {"const": "python"},
+        "sdk_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\r\\n]+$"
+        }
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requested_model_id",
+        "reasoning_effort",
+        "service_tier",
+        "max_output_tokens",
+        "assembled_input_token_ceiling",
+        "stream",
+        "structured_output",
+        "tools",
+        "store",
+        "automatic_sdk_retries",
+        "provider_fallback",
+        "standard_service_fallback",
+        "automatic_second_vote",
+        "temperature",
+        "top_p"
+      ],
+      "properties": {
+        "requested_model_id": {
+          "enum": ["gpt-5.6-sol", "gpt-6-astra"]
+        },
+        "reasoning_effort": {"const": "high"},
+        "service_tier": {"const": "flex"},
+        "max_output_tokens": {
+          "enum": [4096, 8192]
+        },
+        "assembled_input_token_ceiling": {"const": 32000},
+        "stream": {"const": false},
+        "structured_output": {"const": "strict_json_schema"},
+        "tools": {"const": []},
+        "store": {"const": false},
+        "automatic_sdk_retries": {"const": 0},
+        "provider_fallback": {"const": false},
+        "standard_service_fallback": {"const": false},
+        "automatic_second_vote": {"const": false},
+        "temperature": {"const": "omitted"},
+        "top_p": {"const": "omitted"}
+      }
+    },
+    "prompt_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+    },
+    "input_schema_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+    },
+    "output_schema_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+    },
+    "tool_versions_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+    },
+    "dependency_lock_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+    },
+    "rubric_artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "investigation",
+        "recovery_selection",
+        "execution",
+        "communication",
+        "useful_scenario_completion"
+      ],
+      "properties": {
+        "investigation": {
+          "$ref": "urn:haffey:frd:verification-contract:1#/$defs/VersionedArtifact"
+        },
+        "recovery_selection": {
+          "$ref": "urn:haffey:frd:verification-contract:1#/$defs/VersionedArtifact"
+        },
+        "execution": {
+          "$ref": "urn:haffey:frd:verification-contract:1#/$defs/VersionedArtifact"
+        },
+        "communication": {
+          "$ref": "urn:haffey:frd:verification-contract:1#/$defs/VersionedArtifact"
+        },
+        "useful_scenario_completion": {
+          "$ref": "urn:haffey:frd:verification-contract:1#/$defs/VersionedArtifact"
+        }
+      }
+    },
+    "calibration_set_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/VersionedArtifact"
+    },
+    "environment_artifact": {
+      "$ref": "urn:haffey:frd:verification-contract:1#/$defs/Artifact"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"ladder_ordinal": {"const": 1}},
+        "required": ["ladder_ordinal"]
+      },
+      "then": {
+        "properties": {
+          "request": {
+            "properties": {
+              "requested_model_id": {"const": "gpt-5.6-sol"},
+              "max_output_tokens": {"const": 4096}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"ladder_ordinal": {"const": 2}},
+        "required": ["ladder_ordinal"]
+      },
+      "then": {
+        "properties": {
+          "request": {
+            "properties": {
+              "requested_model_id": {"const": "gpt-5.6-sol"},
+              "max_output_tokens": {"const": 8192}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"ladder_ordinal": {"const": 3}},
+        "required": ["ladder_ordinal"]
+      },
+      "then": {
+        "properties": {
+          "request": {
+            "properties": {
+              "requested_model_id": {"const": "gpt-6-astra"},
+              "max_output_tokens": {"const": 4096}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"ladder_ordinal": {"const": 4}},
+        "required": ["ladder_ordinal"]
+      },
+      "then": {
+        "properties": {
+          "request": {
+            "properties": {
+              "requested_model_id": {"const": "gpt-6-astra"},
+              "max_output_tokens": {"const": 8192}
+            }
+          }
+        }
+      }
+    }
+  ]
+}

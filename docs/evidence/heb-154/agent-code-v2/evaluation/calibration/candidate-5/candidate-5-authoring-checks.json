@@ -1,0 +1,117 @@
+{
+  "instrument": "agent-code-v2-evaluator-calibration-candidate-authoring-check/v5",
+  "date": "2026-09-15 America/New_York",
+  "authorization": {
+    "operator_statement": "proceed based on your recommendation",
+    "authorized_scope": "Author full Candidate-5 by preserving the v2 evaluator contract and candidate-2 rubrics, retaining Candidate-4's 46 sound controls, and replacing only its four independently diagnosed false-pass controls with the proven semantic-nonredundancy construction.",
+    "excluded_scope": [
+      "independent Candidate-5 blind review",
+      "sealed comparison",
+      "independent custody",
+      "freeze",
+      "provider calls or spend",
+      "agent authoring",
+      "Agents of HEX overall design",
+      "staging or commit"
+    ]
+  },
+  "result": "candidate_authored_pending_independent_blind_review",
+  "population": {
+    "controls": 50,
+    "retained_controls": 46,
+    "replacement_controls": 4,
+    "classification_controls": 40,
+    "anti_abstention_controls": 10,
+    "pass_controls": 15,
+    "fail_controls": 35,
+    "unresolved_controls": 0,
+    "eligible_judgments": 50,
+    "terminal_paths": 8,
+    "phases": 2,
+    "risk_classes": 50,
+    "anti_abstention_pairs": 5
+  },
+  "identity_model": {
+    "dataset_revision": "candidate-5",
+    "control_order": "C4-001 through C4-050 retained in place for explicit cross-dataset ordinal lineage.",
+    "artifact_namespace": "agent-code-v2-root-relative",
+    "generated_files": 402,
+    "declared_artifact_occurrences": 400,
+    "unique_declared_paths": 256,
+    "conflicting_declared_hashes": 0
+  },
+  "retention_evidence": {
+    "controls": 46,
+    "claim": "For every nonreplacement control, candidate output, actor evidence, oracle evidence, hidden ground truth, expected payload and clean candidate output are byte-identical to Candidate-4. Evaluator inputs and truth contracts differ only where Candidate-5 namespace binding requires new artifact paths or hashes.",
+    "source_dataset": "candidate-4"
+  },
+  "replacements": [
+    {
+      "control_id": "C4-009",
+      "proof_pair": "arrangement_failure",
+      "proof_control": "SNP-3LR",
+      "dimension": "execution",
+      "replacement_sha256": "010bfdfbfe86ec5eb64550456d5248bfccd095721efb192b640ac20576d91496",
+      "semantic_nonredundancy": "passed"
+    },
+    {
+      "control_id": "C4-030",
+      "proof_pair": "reconciliation_requirement",
+      "proof_control": "SNP-1NX",
+      "dimension": "execution",
+      "replacement_sha256": "77e6132b303a9951aa973104ac3638f4890a39ac3a24aafc864e96a743d4e820",
+      "semantic_nonredundancy": "passed"
+    },
+    {
+      "control_id": "C4-035",
+      "proof_pair": "quote_validity",
+      "proof_control": "SNP-4WB",
+      "dimension": "recovery_selection",
+      "replacement_sha256": "50bf77a227defd2a437fd56601e044dd31469957db09a85e7442d8725dce098b",
+      "semantic_nonredundancy": "passed"
+    },
+    {
+      "control_id": "C4-039",
+      "proof_pair": "operator_review_action",
+      "proof_control": "SNP-2MW",
+      "dimension": "communication",
+      "replacement_sha256": "34e41d25ada81b3d0aabc438aab19f2ac14a528cd265fc5290c6f0e7027d5197",
+      "semantic_nonredundancy": "passed"
+    }
+  ],
+  "test_evidence": {
+    "meaningful_red": "Before implementation, all three Candidate-5 tests failed at the intended boundary with candidate-5 materializer is absent.",
+    "focused_green": "3 passed in 0.17 seconds.",
+    "full_green": "405 passed in 2.75 seconds across the complete seven-file Agent-Code-v2 authoring suite.",
+    "public_pack_checker": "authoring_checks_passed for its declared complete public-pack scope.",
+    "json_population": "All 1,892 JSON files below Agent-Code-v2 parsed before this authoring record was added; zero parse errors.",
+    "dirty_controls": [
+      "blind label leakage is rejected",
+      "alternate semantic carrier on a replacement is rejected",
+      "artifact identity drift is rejected by declared digests",
+      "source lineage drift is rejected by pinned hashes"
+    ],
+    "authoring_harness_diagnosis": "authoring-harness-diagnosis-1.json",
+    "authoring_harness_diagnosis_sha256": "e3f89a8163c31da9a80c8723a0eab33a3f2693c596d590b16b277ecc8fef44c8"
+  },
+  "integrity_sha256": {
+    "materialize_calibration_set.py": "3ba5d2f6ff7cd02ddb1c7c0ac8fe105f81b374acb09c685314fbb61ac3bb3c9d",
+    "test_candidate_5.py": "19ead2084a39c0c88e8cc371f60f882994ae8188b2f7710436800b5655638cc0",
+    "blind-execution-manifest.json": "1a9a7ff9a2ffb2913970d0d883b9e1799979e1b778b8af6583f1328e04ec6cad",
+    "custodian-answer-manifest.json": "6404e38b1260d070ae67b7c8b93a08e3dccf69cf032fd7b2e17a78c7841a0993"
+  },
+  "status": {
+    "independent_review": "pending",
+    "independent_custody": "not_activated",
+    "freeze": "not_frozen",
+    "provider_calls": 0,
+    "spend_authorized": false
+  },
+  "limitations": [
+    "Candidate-5 has deterministic authoring evidence but no independent blind classification result yet.",
+    "The semantic-nonredundancy method has independent blind evidence on four replacement pairs, which remains a small empirical population.",
+    "The retained controls inherit Candidate-4's single-review empirical floor.",
+    "No live model, provider, runtime, custody or agent behavior was exercised."
+  ],
+  "next_recommendation": "Authorize one fresh context-isolated blind semantic review of all 50 Candidate-5 controls, followed by a sealed comparison against the custodian answers. Do not activate custody, freeze or provider spend before that result is dispositioned."
+}

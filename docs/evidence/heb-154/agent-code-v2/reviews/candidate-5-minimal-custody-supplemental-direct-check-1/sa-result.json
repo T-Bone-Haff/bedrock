@@ -1,0 +1,71 @@
+{
+  "reviewer_result": {
+    "schema_version": "1.0.0",
+    "kind": "reviewer_result",
+    "invocation_id": "c5-supplemental-sa-1",
+    "source": "C5-MIN-CUSTODY-CONSTRUCT-1@459c4a93fa3f9048f31478a70ee1889dba475d828cc174c380c7eba8af3ea1fb",
+    "stance": "SA",
+    "findings": [
+      {
+        "id": "ca41c23463c9e226eaa315edc4f970be81c8a898479d99e6e7a55f15f94bb4a1",
+        "severity": "BLOCKING",
+        "targets": ["RC-3", "C5M-2"],
+        "locus": "candidate-5-minimal-custody-construct-spec.md § Decision C5C-isolate, paragraphs 2-3 and Obligations C5M-2",
+        "stance": "SA",
+        "claim": "The specified boundary proof inventories mounts and probes filesystem paths but does not bind or inspect the evaluator's stdout/stderr descriptors or the effective Docker logging driver. Evaluator bytes can therefore persist in a Docker host log outside /run/out while every specified mount probe passes, so the complete Docker-runtime-surface proof and write-only-result-volume property are not established.",
+        "cited_authority": {
+          "kind": "canonical",
+          "ref": "candidate-5-minimal-custody-test-definition.md C5M-2; DDR-HEB-154-001-candidate-5-custody-boundary-reset.md RC-3"
+        },
+        "status": "open",
+        "related_finding_ids": []
+      }
+    ],
+    "survived_attacks": [
+      {
+        "surface": "RC-1 survived approval-to-consumption drift, expiry and insufficient-remaining-window attacks because the exact pricing, spend-authorization and launch-authorization bytes are plan-bound, re-read after approval, fully revalidated immediately before the durable start marker, and required to cover the complete launch-admission window.",
+        "cited_authority": {"kind": "canonical", "ref": "DDR-HEB-154-001-candidate-5-custody-boundary-reset.md RC-1"}
+      },
+      {
+        "surface": "RC-2 survived passphrase propagation attacks across child processes, reusable or inherited descriptors, environment, arguments, files, logs and model input because each exact /usr/bin/hdiutil invocation receives one fresh stdin pipe whose write end is immediately closed.",
+        "cited_authority": {"kind": "canonical", "ref": "DDR-HEB-154-001-candidate-5-custody-boundary-reset.md RC-2"}
+      },
+      {
+        "surface": "C5M-3 survived wrong-hash, denial, EOF, non-TTY, stale-prerequisite and persisted-key attacks through the exact plan hash approval grammar, launch-edge revalidation, one in-memory passphrase and fail-closed refusal paths.",
+        "cited_authority": {"kind": "canonical", "ref": "candidate-5-minimal-custody-test-definition.md C5M-3"}
+      }
+    ]
+  },
+  "checks": [
+    {
+      "target_id": "RC-1",
+      "outcome": "closed",
+      "basis": "Attacked approval freshness with post-presentation byte drift, scope mismatch, expiry and an authorization interval shorter than the declared launch-admission window; the construct requires exact post-approval re-read and revalidation before the durable start marker and refuses without consuming the run identity on every tested failure.",
+      "report_ref": "candidate-5-minimal-custody-construct-spec.md § Decision C5C-plan, paragraphs 4-6; Decision C5C-stop, phase steps 1-4"
+    },
+    {
+      "target_id": "RC-2",
+      "outcome": "closed",
+      "basis": "Traced the passphrase from the single no-echo TTY read through every image create and attach operation and attacked reuse or propagation through child processes, inherited descriptors, environment, arguments, files, receipts, logs and model input; only one fresh stdin pipe to exact /usr/bin/hdiutil is permitted per operation and its write end is immediately closed.",
+      "report_ref": "candidate-5-minimal-custody-construct-spec.md § Decision C5C-plan, paragraphs 7-8 and invariants C5C-one-secret/C5C-one-supervisor"
+    },
+    {
+      "target_id": "RC-3",
+      "outcome": "falsified",
+      "basis": "Attacked the claimed complete Docker writable-surface proof through evaluator stdout/stderr and the effective container log driver; these descriptor-backed Docker persistence paths are neither bound nor inspected by the specified mount inventory and filesystem probes.",
+      "report_ref": "ca41c23463c9e226eaa315edc4f970be81c8a898479d99e6e7a55f15f94bb4a1"
+    },
+    {
+      "target_id": "C5M-2",
+      "outcome": "falsified",
+      "basis": "Combined stopped-container inspection and in-container mount probes, then tested whether evaluator bytes could persist outside /run/out through standard output or error captured by Docker logging; the specified proof can pass without denying or classifying that path.",
+      "report_ref": "ca41c23463c9e226eaa315edc4f970be81c8a898479d99e6e7a55f15f94bb4a1"
+    },
+    {
+      "target_id": "C5M-3",
+      "outcome": "closed",
+      "basis": "Attacked plan completeness, exact-hash approval, wrong hash, denial, EOF, non-TTY input, stale prerequisites, passphrase leakage and key persistence; the construct binds the named inputs, implementation, evaluator configuration, roots, exclusions and prerequisites, requires one exact approval and one in-memory passphrase, and fails closed before launch on each tested violation.",
+      "report_ref": "candidate-5-minimal-custody-construct-spec.md § Decision C5C-plan, paragraphs 1-8, Correctness invariants and Risks and failure behavior"
+    }
+  ]
+}

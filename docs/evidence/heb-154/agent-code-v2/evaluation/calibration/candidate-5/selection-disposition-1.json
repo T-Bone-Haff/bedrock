@@ -1,0 +1,84 @@
+{
+  "instrument": "heb-154/evaluator-calibration-selection-disposition/v1",
+  "selection_id": "candidate-5-selection-disposition-1",
+  "recorded_date": "2026-09-15",
+  "timezone": "America/New_York",
+  "authorization": {
+    "operator_statement": "Candidate-5 Ratified! proceed with next phase",
+    "ratified_scope": "Candidate-5 is the selected authored calibration population.",
+    "authorized_next_phase": [
+      "codify_selection_disposition",
+      "independent_custody_boundary_audit",
+      "immutable_freeze_preparation"
+    ],
+    "excluded_scope": [
+      "final_freeze_activation",
+      "provider_calls_or_spend",
+      "calibration_execution",
+      "agent_authoring",
+      "Agents_of_HEX_overall_design",
+      "staging_or_commit"
+    ]
+  },
+  "selected_population": {
+    "dataset_revision": "candidate-5",
+    "control_identity": "C4-001_through_C4-050_retained_for_ordinal_lineage",
+    "control_count": 50
+  },
+  "bindings": {
+    "selection_contract": {
+      "path": "evaluation/calibration/contracts/evaluator-calibration-contract-v2.json",
+      "sha256": "sha256:87012638a0e49709cc0a96f8a51e34b447cc510201572c2957ca95707c37c85c"
+    },
+    "semantic_payload_schema": {
+      "path": "schemas/proposed/frd-semantic-judge-payload-v2.schema.json",
+      "sha256": "sha256:df9b833cd831e91e0a87cf13d90279d894b2caf4ff3958a6e67c333efb9f964d"
+    },
+    "blind_manifest": {
+      "path": "evaluation/calibration/candidate-5/blind-execution-manifest.json",
+      "sha256": "sha256:1a9a7ff9a2ffb2913970d0d883b9e1799979e1b778b8af6583f1328e04ec6cad"
+    },
+    "custodian_answer_manifest": {
+      "path": "evaluation/calibration/candidate-5/custodian-answer-manifest.json",
+      "sha256": "sha256:6404e38b1260d070ae67b7c8b93a08e3dccf69cf032fd7b2e17a78c7841a0993"
+    },
+    "authoring_evidence": {
+      "path": "evaluation/calibration/candidate-5/candidate-5-authoring-checks.json",
+      "sha256": "sha256:3484add6422f343254ee3bef401f239d919cd40088ff6ab9ea7c525c964ea45a"
+    },
+    "blind_semantic_review": {
+      "path": "evaluation/calibration/candidate-5/reviews/blind-semantic-review-1.json",
+      "sha256": "sha256:a36ed5a58eeb25cd5e162d7f08c5e6ba7335938407b5af7d343b57722bf9ac15"
+    },
+    "sealed_comparison": {
+      "path": "evaluation/calibration/candidate-5/reviews/sealed-comparison-1.json",
+      "sha256": "sha256:776e1cad9003646c389a117c793f501ac75c4be8b71939f8c2ebdb9032aaa872"
+    },
+    "comparison_harness_diagnosis": {
+      "path": "evaluation/calibration/candidate-5/reviews/sealed-comparison-harness-diagnosis-1.json",
+      "sha256": "sha256:a206b8ef4315644b9e1e7b823cae7e40ebc54c7671e4e624275464b8097b9434"
+    }
+  },
+  "decision": {
+    "status": "ratified",
+    "selection_gate_result": "pass",
+    "classification_result": {
+      "controls": 50,
+      "correct_classifications": 50,
+      "false_passes": 0,
+      "false_fails": 0,
+      "unresolved": 0,
+      "malformed_missing_or_incomplete": 0
+    },
+    "reason_code_disagreements": 3,
+    "reason_code_gate_effect": "none_under_ratified_v2_contract"
+  },
+  "empirical_floor": "One complete-population independent context-isolated blind review draw; this selects the fixed population but does not establish inter-rater, statistical, provider, or live-evaluator reliability.",
+  "status": {
+    "selection": "ratified",
+    "custody": "audit_pending_at_selection",
+    "freeze": "not_frozen",
+    "provider_calls": 0,
+    "spend_authorized": false
+  }
+}
