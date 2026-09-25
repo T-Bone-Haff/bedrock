@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "profile": "high-risk",
+  "scope": "Pre-PR snapshot of fresh adapter-promotion review, combining lead scope review with independently produced credential/transport review. No code blockers found; verdict pauses only for not-yet-run GitHub CI. Final gate closure must be recorded against the exact PR head before merge. Exact paths and hashes are in verification.json.",
+  "checked_surfaces": [
+    "Lead read all nine package files, current Bedrock origin/main orientation, complete workflow, full HEB-127 promotion criteria and origin DDR-002.",
+    "Independent clean-context reviewer read whole package, model/GraphQL contracts, tests and original verification evidence; no blockers.",
+    "Independent reviewer reran 45 tests, all ten schema documents and valid/malformed/Unicode/deep-error controls; failures surfaced unknown mutation outcomes with one request.",
+    "Lead export/source comparison: eight files unchanged; only README portability/link edits. New workflow uses pinned existing actions, read-only token, no credentials/live API, bounded verification job.",
+    "Origin HEX tests reconsume the separately installed extracted wheel without source import. Package name retained for API compatibility.",
+    "Fourteen-path allowlist excludes deferred runtime, native tools, credential helpers and installed plugin changes. Origin design and evidence remain immutable links instead of copies."
+  ],
+  "gates": [
+    {
+      "name": "Independent transport and credential review",
+      "disposition": "passed",
+      "reason": "No findings after whole-source review and independent offline controls. No runtime credential discovery or storage; fixed endpoint and explicit no-retry behavior."
+    },
+    {
+      "name": "Scope and reuse boundary",
+      "disposition": "passed",
+      "reason": "Dependency/import graph is standalone. Only library, CI, root pointer and compact evidence are allowed. Further consumers remain prospective."
+    },
+    {
+      "name": "Tests/schema/wheel reconsumption",
+      "disposition": "passed",
+      "reason": "Complete 45-test package and installed-wheel consumer suites pass; ten schema documents valid with invalid-query control rejected."
+    },
+    {
+      "name": "Diff hygiene and source identity",
+      "disposition": "passed",
+      "reason": "Allowlisted files checked with known-dirty hygiene control; origin hashes and changed README scope recorded."
+    },
+    {
+      "name": "GitHub CI execution",
+      "disposition": "unavailable",
+      "reason": "Not yet executed before PR creation; separate required merge gate owned by lead. Code review approval is not permission to merge without successful exact-head checks."
+    },
+    {
+      "name": "Dedicated type/lint scan",
+      "disposition": "not-relevant",
+      "reason": "No such package-specific gate configured; manual typing/input-boundary review and runtime tests performed. No static-analysis completion claim."
+    },
+    {
+      "name": "Fresh vulnerability scan",
+      "disposition": "not-relevant",
+      "reason": "Extraction changes no dependency declarations or resolved local runtime; existing scan provenance read. No fresh advisory-absence claim."
+    },
+    {
+      "name": "Plugin cold acceptance/release",
+      "disposition": "not-relevant",
+      "reason": "Standalone library under packages; installed plugin and marketplace content unchanged. No manifest bump, tag, release or rollout."
+    }
+  ],
+  "findings": [],
+  "verdict": "pause"
+}

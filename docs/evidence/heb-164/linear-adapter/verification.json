@@ -1,0 +1,75 @@
+{
+  "source": {
+    "sourceRepository": "Haffey-Enterprises/HEX",
+    "sourceCommit": "0b82e1ebd4d7edb64b5a3096aafb555818566266",
+    "files": {
+      "packages/hex-linear/README.md": "b3400a3fed41909e79261a2d98d1b02fa72e5d32c6b6c91aa98391b562e198dd",
+      "packages/hex-linear/pyproject.toml": "b16d23bb5d0745e40f5d5807552a2a853c4355a523dd11b1a7bd9111cf369105",
+      "packages/hex-linear/scripts/check_schema.py": "05621164150c5ef1624b0a9ea2929f6f59cee5f7d4e82f2aaf5beb1ee24e94f4",
+      "packages/hex-linear/src/hex_linear/__init__.py": "2bdf52e20bb97b733f076b5b59673a8656408d2b9c7f9df466dec601752d2208",
+      "packages/hex-linear/src/hex_linear/_documents.py": "487e3378766b8c3210ac9b571c3f4db2b3f4c1bed9202ef336a372c194c0a8a5",
+      "packages/hex-linear/src/hex_linear/client.py": "9166b20c21e2f01aff3dfa4297fec3063a529be7c2d77866205004db2aa7f8dc",
+      "packages/hex-linear/src/hex_linear/models.py": "775f166d7023af0796f904edcc9f02fdca38bcf53d47e014aac49980fe1f2116",
+      "packages/hex-linear/src/hex_linear/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "packages/hex-linear/tests/test_client.py": "855f05942f1643fe521bc112f1cb0d03dacfb0c2ec2ce6614f9479c300613c93"
+    },
+    "scope": "Nine tracked package files only; no original commit history, HEX runtime fixtures, OAuth callers or historical evidence copied."
+  },
+  "candidatePackageSHA256": {
+    "packages/hex-linear/README.md": "f7faed20382c4e336acd9c608c84e56f2d2f4136eae7bcc5c3cf93e823036f39",
+    "packages/hex-linear/pyproject.toml": "b16d23bb5d0745e40f5d5807552a2a853c4355a523dd11b1a7bd9111cf369105",
+    "packages/hex-linear/scripts/check_schema.py": "05621164150c5ef1624b0a9ea2929f6f59cee5f7d4e82f2aaf5beb1ee24e94f4",
+    "packages/hex-linear/src/hex_linear/__init__.py": "2bdf52e20bb97b733f076b5b59673a8656408d2b9c7f9df466dec601752d2208",
+    "packages/hex-linear/src/hex_linear/_documents.py": "487e3378766b8c3210ac9b571c3f4db2b3f4c1bed9202ef336a372c194c0a8a5",
+    "packages/hex-linear/src/hex_linear/client.py": "9166b20c21e2f01aff3dfa4297fec3063a529be7c2d77866205004db2aa7f8dc",
+    "packages/hex-linear/src/hex_linear/models.py": "775f166d7023af0796f904edcc9f02fdca38bcf53d47e014aac49980fe1f2116",
+    "packages/hex-linear/src/hex_linear/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "packages/hex-linear/tests/test_client.py": "855f05942f1643fe521bc112f1cb0d03dacfb0c2ec2ce6614f9479c300613c93"
+  },
+  "dateEastern": "2026-09-24",
+  "baseCommit": "38154752fb190f06c1dba528d0096bd5e9e4a881",
+  "authorizedDestination": "T-Bone-Haff/bedrock main via PR",
+  "allowedChangedPaths": [
+    ".github/workflows/linear-adapter.yml",
+    "README.md",
+    "docs/evidence/heb-164/linear-adapter/README.md",
+    "docs/evidence/heb-164/linear-adapter/review.json",
+    "docs/evidence/heb-164/linear-adapter/verification.json",
+    "packages/hex-linear/README.md",
+    "packages/hex-linear/pyproject.toml",
+    "packages/hex-linear/scripts/check_schema.py",
+    "packages/hex-linear/src/hex_linear/__init__.py",
+    "packages/hex-linear/src/hex_linear/_documents.py",
+    "packages/hex-linear/src/hex_linear/client.py",
+    "packages/hex-linear/src/hex_linear/models.py",
+    "packages/hex-linear/src/hex_linear/py.typed",
+    "packages/hex-linear/tests/test_client.py"
+  ],
+  "sourceChanges": "Only README example identifiers and immutable design link; all runtime/test/build/checker files match origin.",
+  "tests": {
+    "source": "45 passed in 0.07s",
+    "wheelConsumer": "45 passed in 0.05s",
+    "consumerProof": "Original HEX test suite executed against separately installed extracted wheel; imported package path checked explicitly. No original source import.",
+    "environment": "Python 3.14.6/macOS; GitHub CI adds Python 3.11 and 3.14 on Linux."
+  },
+  "wheelSHA256": "43cd172504993e0445e8d157ec78397f57b2370635c73409f23ee0f046953359",
+  "schema": {
+    "sourceCommit": "41cff77b3a62d93a30c3c3ceabc92ab77333f9da",
+    "sha256": "dcfdea8bdd8134d5afa7a7161d78c60c67e10290a4434d4ffaa61ca4ba63aeb7",
+    "documents": 10,
+    "allValidated": true,
+    "negativeControlRejected": true
+  },
+  "reviewers": [
+    "Lead scope/placement review",
+    "Independent linear_promotion_review, clean context, whole package review"
+  ],
+  "hygiene": "Every allowlisted candidate file checked; known-dirty exclusion control rejected.",
+  "excluded": "No imported runtime fixtures, native code, bootstrap/credential scripts, Keychain policies, whole historical evidence corpus or HEX branch history.",
+  "limitations": [
+    "No new live API trial or credential access.",
+    "Independent vulnerability scan not refreshed; prior runtime scan evidence retained in origin. No new dependency or version-range changes.",
+    "No library publishing, plugin release, marketplace change or deployed consumer migration.",
+    "CI statuses belong to the exact PR head and must pass before merge."
+  ]
+}

@@ -8,6 +8,14 @@ Self-contained Claude skills distilled from the HE-Bedrock governance corpus. Th
 
 The kit spans the authoring-through-review lifecycle on the house stacks — service, infrastructure, agent, frontend, and pipeline work alike. Each capability is a self-contained skill that Claude auto-discovers and triggers by task; the live roster is the plugin's [`skills/`](plugins/bedrock/skills) folder, every skill carries its own description, and the plugin manifest carries the current summary. This README deliberately restates neither.
 
+## Shared libraries
+
+[Linear API client](packages/hex-linear/README.md) is a standalone Python library
+for direct issue and comment operations. Install it separately from the skills
+plugin; it takes caller-supplied credentials and has no assistant-app dependency.
+Its import name remains `hex_linear` for compatibility with the originating
+consumer. [Extraction and verification](docs/evidence/heb-164/linear-adapter/README.md).
+
 ## Stack binding
 
 Bindings are declared per skill, not kit-wide. The service-side skills assume **Python 3.11+ / FastAPI / async SQLAlchemy / GCP / GitHub**; the frontend skill binds **TypeScript / React / Vite** with plain CSS on design tokens; the pipeline skill binds **GitHub Actions + GCP** on the house branch model; reasoning-protocol skills like `debug` and `author-standard` are stack-agnostic. `agent-code` and `design-review-loop` expose provider/runner-neutral cores plus explicit optional profiles. A profile binds the portable contract without becoming its authority.
