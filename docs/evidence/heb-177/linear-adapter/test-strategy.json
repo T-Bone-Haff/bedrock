@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "subject": "HEB-177 additive hex-linear work-record adapter",
+  "profile": "Haffey pytest rebind: standalone async HTTPX library; MockTransport retained; no FastAPI/database runtime",
+  "levels": [
+    "unit"
+  ],
+  "coverage": {
+    "line_threshold": 90,
+    "branch_threshold": 80,
+    "critical_paths": [
+      "Observable context omission versus null",
+      "Target and edge endpoint binding",
+      "Parent omission/set/clear and direct-child continuation",
+      "Incoming/outgoing relation direction and identity-checked deletion",
+      "Comment attribution",
+      "One attempt and uncertain writes",
+      "Sanitized errors and invalid-input non-occurrence"
+    ],
+    "exclusions": [],
+    "mutation_threshold": null
+  },
+  "nondeterminism": "none",
+  "gate": "merge"
+}
