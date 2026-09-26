@@ -1,0 +1,277 @@
+{
+  "local_date": "2026-09-26",
+  "timezone": "America/New_York",
+  "base_commit": "2d18b1b4c418168e3362c9a5e641b05a1579307d",
+  "branch": "codex/heb-177-work-record-adapter",
+  "state": "Unstaged offline candidate; no commit or publication",
+  "candidate_files_sha256": {
+    "docs/evidence/heb-177/linear-adapter/README.md": "f2b485c90c80daf6cf76c0d48fb07bfd5f1f539fa7c456698195cc30ea6300e8",
+    "docs/evidence/heb-177/linear-adapter/test-strategy.json": "9f1551e7d06fde27cd2074047006a3f67325172b125c68f5e872db35677659b4",
+    "packages/hex-linear/README.md": "00555991c81767c31c904b39be69c70efd35c6f3de98d19c8cbd35d9d3438ab5",
+    "packages/hex-linear/pyproject.toml": "d5f5a55bef04df3e68d29778d7cc9f05762e1888965cd68160af7f2dc4d6a97d",
+    "packages/hex-linear/src/hex_linear/__init__.py": "6d9c7d1f0b037c1e30605eac5be625eec1f9aac38c723a9aae8bdfe98c454ccc",
+    "packages/hex-linear/src/hex_linear/_documents.py": "5bcd01494baa7c2751a97a1bdded419fcbbe039b904355fbc5abf848de736aed",
+    "packages/hex-linear/src/hex_linear/client.py": "d6da4f83de87fbc6820d9268bad6f1009c0f3b119b519983a20478e4e44fcadd",
+    "packages/hex-linear/src/hex_linear/models.py": "87a95698427d2d254b191294d060733acafd464036cc55023315d0d4dace4ee9",
+    "packages/hex-linear/tests/test_client.py": "9fb7afdc40bd58f5c0702b8135079b3a651d5a095bbf00d4e495d0aaf1d6b8bf"
+  },
+  "fingerprint_scope": "All seven modified package files and two supporting evidence files; this verification record is excluded from its own hash map. No changes outside this named candidate population; CI workflow unchanged.",
+  "python": "3.14.6",
+  "source_unit_tests": {
+    "passed": 96,
+    "failed": 0,
+    "collection": "Complete packages/hex-linear/tests population, no deselection",
+    "coverage": {
+      "covered_lines": 287,
+      "num_statements": 296,
+      "percent_covered": 95.20202020202021,
+      "percent_covered_display": "95",
+      "missing_lines": 9,
+      "excluded_lines": 0,
+      "percent_statements_covered": 96.95945945945945,
+      "percent_statements_covered_display": "97",
+      "num_branches": 100,
+      "num_partial_branches": 10,
+      "covered_branches": 90,
+      "missing_branches": 10,
+      "percent_branches_covered": 90.0,
+      "percent_branches_covered_display": "90"
+    },
+    "line_percent": 96.95945945945945,
+    "branch_percent": 90.0,
+    "junit_sha256": "29001871c8d0dc871f445ec23aad60f5a8f31a02befcb5d8393f0101e7ef4934"
+  },
+  "meaningful_red": {
+    "initial_suite": {
+      "passed": 45,
+      "failed": 39
+    },
+    "behavioral_failures": [
+      "Missing context accepted for nine requested fields",
+      "Wrong issue identity accepted",
+      "Parent assignment rejected before request"
+    ],
+    "structural_failures": "New methods/model fields absent; these are not all claimed as behavioral red",
+    "full_output_sha256": "c5716af51df876ec605816c0a3d80692c7d1b6086675a6584dae31cdde62a970",
+    "deletion_scope_control": "Bare edge UUID reached transport before observed-edge guard; after guard the same input is rejected before a request.",
+    "harness_note": "The initial pytest run completed and its whole result was read; a subsequent shell receipt assignment used a reserved zsh variable and failed. No test outcome was inferred from that shell exit."
+  },
+  "schema": {
+    "official_current_revision": "689ccc1e905d97df14272621b96a8614c5d3c2cb",
+    "unchanged_ci_pin": "41cff77b3a62d93a30c3c3ceabc92ab77333f9da",
+    "sha256": "dcfdea8bdd8134d5afa7a7161d78c60c67e10290a4434d4ffaa61ca4ba63aeb7",
+    "current_equals_pin": true,
+    "read_depth": "Whole schema parsed; relevant field definitions/descriptions inspected, not whole-schema prose review",
+    "documents": {
+      "Viewer": [],
+      "GetIssue": [],
+      "ListIssues": [],
+      "CreateIssue": [],
+      "UpdateIssue": [],
+      "ListComments": [],
+      "CreateComment": [],
+      "ListTeams": [],
+      "ListStates": [],
+      "ListUsers": [],
+      "ListIssueLabels": [],
+      "CreateRelation": [],
+      "DeleteRelation": [],
+      "ListOutgoingRelations": [],
+      "ListIncomingRelations": []
+    },
+    "invalid_query_rejected": true
+  },
+  "wheel": {
+    "wheel_sha256": "fd7ddfde942d8bb863518b8c23735858f41d71554061813356bc6fcea4795c8f",
+    "installed_import": "/Users/thaffey/Documents/Haffey Enterprises/Working/HEB-177-2026-09-26/offline/wheel-venv/lib/python3.14/site-packages/hex_linear",
+    "source_wheel_installed_hashes": {
+      "_documents.py": "5bcd01494baa7c2751a97a1bdded419fcbbe039b904355fbc5abf848de736aed",
+      "models.py": "87a95698427d2d254b191294d060733acafd464036cc55023315d0d4dace4ee9",
+      "client.py": "d6da4f83de87fbc6820d9268bad6f1009c0f3b119b519983a20478e4e44fcadd",
+      "__init__.py": "6d9c7d1f0b037c1e30605eac5be625eec1f9aac38c723a9aae8bdfe98c454ccc",
+      "py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "altered_byte_rejected": true,
+    "tests_passed": 96,
+    "tests_failed": 0,
+    "run_cwd": "/private/tmp",
+    "junit_sha256": "b6cb292a9abb1b5f050b99ec1bd98ffcbcc095a415992fb831fd5cc56f57c738"
+  },
+  "controls": {
+    "strategy_valid": true,
+    "invalid_strategy_rejected": true,
+    "candidate_allowlist_passed": true,
+    "configured_term_hygiene_passed": true,
+    "hygiene_dirty_control_rejected": true,
+    "diff_whitespace_passed": true,
+    "staged_files": [],
+    "target_repository_skill_contracts_match_installed": true,
+    "final_population_extra_path_control_rejected": true,
+    "review_result_schema_valid": true
+  },
+  "review": {
+    "status": "Independent re-review complete; HEB177-IR-01 resolved; no current findings. Offline implementation ready; merge paused for required hosted CI.",
+    "initial_finding": {
+      "id": "HEB177-IR-01",
+      "class": "correctness",
+      "impact": "medium",
+      "likelihood": "unknown",
+      "confidence": "high",
+      "locus": "packages/hex-linear/src/hex_linear/models.py:2 before repair",
+      "evidence": "Postponed annotations made every IssueCreate key required at runtime. Positive TypedDict control without postponed annotations retained NotRequired metadata.",
+      "blocking": true,
+      "disposition": "Repaired by removing postponed annotations and quoting the two dataclass forward references; regression failed before fix, complete96-test source and wheel suites now pass."
+    },
+    "independence": "Separate agent /root/adapter_review with clean context and read-only remit; source/diff/schema and final evidence verified independently. Author retains overall implementation ownership.",
+    "final_result": {
+      "schema_version": 1,
+      "profile": "high-risk",
+      "scope": "Final independent read-only review of the corrected HEB-177 hex-linear adapter candidate against 2d18b1b4c418168e3362c9a5e641b05a1579307d. Offline implementation readiness established; merge remains paused for required hosted CI.",
+      "checked_surfaces": [
+        "Whole changed adapter code, models, GraphQL documents, package metadata, README and tests reviewed in the initial independent pass; initial truncated combined diff was replaced with complete file-scoped reads.",
+        "Whole corrected models.py, complete current test_client.py and final verification.json freshly read for this re-review. Supporting evidence README.md and test-strategy.json were read whole and their current hashes verified.",
+        "HEB177-IR-01 resolved: module-wide postponed annotations removed, only the two dataclass forward references quoted, and exact IssueCreate/IssueUpdate required/optional metadata assertions pass independently.",
+        "Full current Git status with all untracked files inspected: exactly seven modified package files and three new evidence files. Exact allowlist comparison passed and an extra-path control was rejected.",
+        "All nine files recorded in candidate_files_sha256 match current bytes; verification.json explicitly excludes itself. Altered-byte controls rejected.",
+        "Final wheel SHA-256 independently verified as fd7ddfde942d8bb863518b8c23735858f41d71554061813356bc6fcea4795c8f. All five package member byte sequences agree across source, wheel and installed package; altered-byte controls rejected.",
+        "Fresh independent complete source suite: 96 passed. Both retained source and installed-wheel JUnit reports were parsed completely, hash-checked and confirmed to contain 96 cases with zero failures, errors or skipped cases.",
+        "Complete retained coverage JSON parsed; reported totals agree with verification.json across exactly four runtime modules: 287/296 statements and 90/100 branches, with no exclusions.",
+        "All 15 shipped GraphQL documents independently validated during the initial review with an invalid-field rejection control. Current schema hash and current-versus-pinned byte equality independently rechecked. Relevant schema definitions were read; whole-schema prose was not reviewed.",
+        "Reviewed deletion receipt identity, caller-owned provenance limits, incoming/outgoing endpoint binding, parent pagination, omission-versus-null semantics, comment attribution, compatibility and one-attempt uncertain outcomes. No provider calls or credential access."
+      ],
+      "gates": [
+        {
+          "name": "Scope and architecture",
+          "disposition": "passed",
+          "reason": "Exact final candidate population matches the declared seven package files and three evidence files; generated build artifacts are absent from current Git status."
+        },
+        {
+          "name": "Compatibility and prior finding resolution",
+          "disposition": "passed",
+          "reason": "HEB177-IR-01 is resolved. IssueCreate requires only teamId/title and retains five optional fields; IssueUpdate retains six optional fields and no required fields. Existing positional model construction remains covered."
+        },
+        {
+          "name": "Destructive operation and error boundaries",
+          "disposition": "passed",
+          "reason": "Reviewed exact deletion ID receipt, supported-type and self-edge checks, response endpoint binding and one-attempt uncertain outcomes. Documentation explicitly limits provenance and atomicity claims; current suite exercises both blocks and related deletion using the actual creation result."
+        },
+        {
+          "name": "Offline unit and coverage gates",
+          "disposition": "passed",
+          "reason": "Fresh independent complete source run: 96 passed. Retained coverage matches 96.95945945945945 percent statements and 90 percent branches over all four runtime modules, exceeding declared 90/80 thresholds without exclusions."
+        },
+        {
+          "name": "Provider schema validation",
+          "disposition": "passed",
+          "reason": "All 15 documents validated with a rejected invalid-query control. Current pinned schema SHA-256 verified and supplied current schema bytes are identical. Static validity does not prove provider effects."
+        },
+        {
+          "name": "Wheel and evidence integrity",
+          "disposition": "passed",
+          "reason": "Final wheel SHA verified; all five source/wheel/installed members match; both current JUnit report hashes match and each contains 96 successful cases. All recorded candidate file hashes match current bytes."
+        },
+        {
+          "name": "Hosted Python compatibility matrix",
+          "disposition": "unavailable",
+          "reason": "Required existing Python 3.11/3.14 hosted CI has not run for this uncommitted candidate. Author/operator must complete the separately authorized Git gate before merge; this unavailable required gate determines the pause verdict."
+        },
+        {
+          "name": "Live provider acceptance",
+          "disposition": "not-relevant",
+          "reason": "Outside this explicitly offline implementation gate. Provider permissions, parent clearing, relation effects and withheld-acknowledgment behavior remain unproved and require later operator-owned HEB-177 acceptance."
+        },
+        {
+          "name": "Lint formatting and static typing",
+          "disposition": "not-relevant",
+          "reason": "The package has no configured dedicated lint, formatter or static-type gate. No such tool execution is claimed."
+        },
+        {
+          "name": "Dependency security and license delta",
+          "disposition": "not-relevant",
+          "reason": "No runtime or test dependency changes. A fresh whole-environment vulnerability or license audit was not performed or implied."
+        },
+        {
+          "name": "Deployment migration and performance",
+          "disposition": "not-relevant",
+          "reason": "No deployment, persistence migration, background runtime, retry strategy or performance objective changes in this adapter slice."
+        }
+      ],
+      "findings": [],
+      "verdict": "pause"
+    }
+  },
+  "limits": [
+    "No live Linear request or credential access; schema downloads only",
+    "No provider permission/parent-clear/relation-effect proof",
+    "No withheld-ack live trial, judgment cases or HEX instruction delivery in this gate",
+    "No atomic stale-edit, exactly-once, durable recovery or deletion provenance guarantee",
+    "Python 3.14.6 local only; existing hosted Python 3.11/3.14 CI pending a separate Git gate",
+    "P4 tracker correction remains unpublished"
+  ],
+  "gate_dispositions": {
+    "unit": "passed",
+    "schema": "passed",
+    "wheel": "passed",
+    "strategy": "passed",
+    "configured_term_hygiene": "passed",
+    "independent_review": "passed for offline readiness; merge verdict pause solely for required hosted CI",
+    "hosted_ci": "unavailable: not pushed; required before merge",
+    "live_proof": "not part of offline gate; required for later HEB-177 acceptance",
+    "static_type_lint": "not-relevant: package has no configured type/lint gate; diff and syntax exercised by unit/schema runs",
+    "deployment_sbom_vulnerability_license_scan": "not-relevant to offline code slice: no new runtime dependency/container/deployment; existing dependency range unchanged; no new advisory-status assertion"
+  },
+  "superseded_wheel": {
+    "sha256": "923340197fddbac6f1bbccd24dab0f4c34aef0b32a8969d01ea2ff7516081c68",
+    "reason": "Rebuilt after independent TypedDict metadata compatibility finding; earlier95-test evidence is superseded."
+  },
+  "diagnosis": {
+    "schema_version": "1.0.0",
+    "symptom": "Exported IssueCreate runtime metadata incorrectly marks all fields required",
+    "scope": "Uncommitted HEB-177 adapter candidate models.py on native Python3.14.6",
+    "mode": "offline-diagnosis",
+    "timeline": [
+      "Independent reviewer identified the metadata regression",
+      "Author reproduced subject and a no-future-annotations positive control",
+      "Regression test failed before repair",
+      "Removed future annotations and quoted dataclass forward references; source and wheel 96-test suites passed"
+    ],
+    "evidence": [
+      {
+        "source": "Reviewer HEB177-IR-01 plus author TypedDict metadata probe and retained regression test",
+        "captured_at": "2026-09-26T09:13:23.383470-04:00",
+        "classification": "Internal synthetic code evidence; no credentials or provider records",
+        "integrity": "Final models.py and test_client.py SHA-256 are in candidate_files_sha256; failing subject reported all seven keys required while positive control reported only teamId/title."
+      }
+    ],
+    "hypotheses": [
+      {
+        "iteration": 1,
+        "hypothesis": "Postponed annotations prevent TypedDict from classifying NotRequired at class construction",
+        "prediction": "A no-future control and removal of future annotations restore required/optional keys",
+        "falsifier": "Same metadata defect with evaluated NotRequired annotations",
+        "evidence": "Subject had seven required and zero optional; positive control had two required and one optional. After removing future import, retained exact-key assertions for IssueCreate and IssueUpdate pass.",
+        "disposition": "supported",
+        "unexplained": []
+      }
+    ],
+    "containment": "Candidate remained uncommitted; no downstream or provider use",
+    "conclusion": {
+      "status": "root_cause_identified",
+      "confidence": "high",
+      "statement": "New module-wide postponed annotations altered public TypedDict runtime metadata; replacing only forward dataclass references with strings restores metadata."
+    },
+    "repair": {
+      "authorized": true,
+      "action": "Within existing offline implementation grant, remove future import, quote two dataclass refs and retain metadata regression test."
+    },
+    "verification": [
+      "Regression test red before repair",
+      "Complete source 96-test suite passes",
+      "Complete installed-wheel 96-test suite passes",
+      "Source/wheel/installed package bytes agree"
+    ],
+    "residual_risk": "Local Python 3.14.6 evidence only; hosted 3.11/3.14 CI remains required. No production incident or live provider behavior claimed.",
+    "owner": "HEB-177 implementation author/operator"
+  },
+  "local_artifact_root": "/Users/thaffey/Documents/Haffey Enterprises/Working/HEB-177-2026-09-26/offline"
+}
